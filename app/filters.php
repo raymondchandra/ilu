@@ -88,3 +88,15 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+
+
+Route::filter('check_token', function()
+{
+	
+});
+
+Route::filter('customer_check_token', function()
+{
+	
+});
