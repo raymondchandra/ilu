@@ -30,7 +30,7 @@
 			
 			<div class="s_content_admin">	
 				<div class="container-fluid">
-					<div class="row">
+					<div class="row ">
 						<div class="g-lg-12">
 							<div class="s_title_n_control">
 								<h3 style="float: left;">
@@ -40,26 +40,28 @@
 							</div>
 							<span class="clearfix"></span>
 							<hr></hr>
-							
+					<div class="s_tbl s_set_height_window">
+					<div class="s_cl">
+							<div class="g-lg-6 g-lg-push-3">
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h3 class="panel-title">Login to Admin Panel</h3>
 								</div>
 								<div class="panel-body">
 								
-									<div class="g-lg-8">
+									
 								
 											<form class="form-horizontal" role="form">
 												<div class="form-group">
 													<label for="inputEmail3" class="g-sm-3 control-label">Username/Email</label>
-													<div class="g-sm-9">
+													<div class="g-sm-6">
 														<input type="text" class="form-control" placeholder="Username/Email">	
 													</div>
 												</div>
 											  
 												<div class="form-group">
 													<label for="inputPassword3" class="g-sm-3 control-label">Password</label>
-													<div class="g-sm-9">
+													<div class="g-sm-6">
 														<input type="password" class="form-control" placeholder="Password">	
 													</div>
 												</div>
@@ -77,6 +79,8 @@
 
 							
 						</div>
+						</div>
+						</div>
 					</div>
 				</div>
 			
@@ -89,9 +93,9 @@
 				// Get the dimensions of the viewport
 				var width = $(window).width();
 				var height = $(window).height();
-				var iHeight = $('.irashai').height();
+				var iHeight = $(window).height() - 270;
 				
-				//$('.irashai').width(width);
+				$('.s_set_height_window').height(iHeight);
 				//$('.willkommen').width($('.irashai').width()/2);
 				//$('.willkommen').height(height);
 				//$('body').css('overflow-x','hidden');//.css('overflow-x','visible');
