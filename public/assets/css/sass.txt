@@ -1,0 +1,2 @@
+E:\xampp\htdocs\sjisys.com\assets\css
+sass --watch --style compressed mbf.scss:mbf.css mbf-theme.scss:mbf-theme.css
