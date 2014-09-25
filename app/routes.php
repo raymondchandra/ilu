@@ -26,14 +26,19 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.product.manage_product');
 	});
 
-	Route::get('/add_product_00', function()
+	Route::get('/add_product_setup', function()
 	{
-		return View::make('pages.admin.product.add_product_00');
+		return View::make('pages.admin.product.add_product_setup');
 	});
 
-	Route::get('/add_product_01', function()
+	Route::get('/add_product_general', function()
 	{
-		return View::make('pages.admin.product.add_product_01');
+		return View::make('pages.admin.product.general');
+	});
+	
+	Route::get('/add_product_images', function()
+	{
+		return View::make('pages.admin.product.add_product_images');
 	});
 
     // Second Route
