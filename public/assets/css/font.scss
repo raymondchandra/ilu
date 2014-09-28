@@ -1,0 +1,47 @@
+/*
+	Bulletproof Custom Font Face
+*/ 
+
+/*font-family: 'Lato', sans-serif;*/
+/*Proxima Nova*/
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300);
+
+@font-face {
+  font-family: pn_b;
+  src: url("../fonts/ProximaNova-Bold.eot");
+  /* IE9 Compat Modes */
+  src: url("../fonts/ProximaNova-Bold.eot?#iefix") format("embedded-opentype"), url("../fonts/ProximaNova-Bold.woff") format("woff"), url("../fonts/ProximaNova-Bold.ttf") format("truetype"), url("../fonts/ProximaNova-Bold.svg#svgFontName") format("svg");
+  /* Legacy iOS */
+  font-style: normal; }
+
+@font-face {
+  font-family: pn_sb;
+  src: url("../fonts/ProximaNova-Semibold.eot");
+  /* IE9 Compat Modes */
+  src: url("../fonts/ProximaNova-Semibold.eot?#iefix") format("embedded-opentype"), url("../fonts/ProximaNova-Semibold.woff") format("woff"), url("../fonts/ProximaNova-Semibold.ttf") format("truetype"), url("../fonts/ProximaNova-Semibold.svg#svgFontName") format("svg");
+  /* Legacy iOS */
+  font-style: normal; }
+
+@font-face {
+  font-family: pn_eb;
+  src: url("../fonts/ProximaNova-Extrabold.eot");
+  /* IE9 Compat Modes */
+  src: url("../fonts/ProximaNova-Extrabold.eot?#iefix") format("embedded-opentype"), url("../fonts/ProximaNova-Extrabold.woff") format("woff"), url("../fonts/ProximaNova-Extrabold.ttf") format("truetype"), url("../fonts/ProximaNova-Extrabold.svg#svgFontName") format("svg");
+  /* Legacy iOS */
+  font-style: normal; }
+
+@font-face {
+  font-family: pn_r;
+  src: url("../fonts/ProximaNova-Regular.eot");
+  /* IE9 Compat Modes */
+  src: url("../fonts/ProximaNova-Regular.eot?#iefix") format("embedded-opentype"), url("../fonts/ProximaNova-Regular.woff") format("woff"), url("../fonts/ProximaNova-Regular.ttf") format("truetype"), url("../fonts/ProximaNova-Regular.svg#svgFontName") format("svg");
+  /* Legacy iOS */
+  font-style: normal; }
+
+@font-face {
+  font-family: pn_l;
+  src: url("../fonts/ProximaNova-Light.eot");
+  /* IE9 Compat Modes */
+  src: url("../fonts/ProximaNova-Light.eot?#iefix") format("embedded-opentype"), url("../fonts/ProximaNova-Light.woff") format("woff"), url("../fonts/ProximaNova-Light.ttf") format("truetype"), url("../fonts/ProximaNova-Light.svg#svgFontName") format("svg");
+  /* Legacy iOS */
+  font-style: normal; }

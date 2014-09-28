@@ -70,47 +70,47 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
     //transaction
 
 });
-	//attribute
 
-	//price
+/* routing sementara buat coba html + css + jquery */
+Route::group(array('prefix' => 'test'), function()
+{
 
+    // login
+	Route::get('/login', function()
+	{
+		return View::make('pages.admin.login');
+	});
 	
-	//order
+    // manage product
+	Route::get('/manage_product', function()
+	{
+		return View::make('pages.admin.product.manage_product');
+	});
 
-	//shipment
+	Route::get('/add_product_setup', function()
+	{
+		return View::make('pages.admin.product.add_product_setup');
+	});
 
-	//gallery
+	Route::get('/add_product_general', function()
+	{
+		return View::make('pages.admin.product.general');
+	});
+	
+	Route::get('/add_product_images', function()
+	{
+		return View::make('pages.admin.product.add_product_images');
+	});
 
-	//review
+    // Second Route
+    Route::get('/second', function() {
+        return 'Reaper Man';
+    });
 
-	//promotion
+    // Third Route
+    Route::get('/third', function() {
+        return 'Lords and Ladies';
+    });
 
-	//event
+});
 
-	//tax
-
-	//news
-
-	//ticket
-
-	//support
-
-	//menu
-
-	//voucher
-
-	//wishlist
-
-	//log
-
-	//information
-
-	//message
-
-	//template
-
-	//payment
-
-	//bank
-
-	//seo
