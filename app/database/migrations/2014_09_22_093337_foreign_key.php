@@ -61,6 +61,7 @@ class ForeignKey extends Migration {
 		{
 		    $table->foreign('product_id')->references('id')->on('products');
 		});
+		
 		Schema::table('events', function($table)
 		{
 		    $table->foreign('product_id')->references('id')->on('products');

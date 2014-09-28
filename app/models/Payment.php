@@ -10,4 +10,13 @@ class Payment extends \Eloquent {
 	// Don't forget to fill this array
 	protected $fillable = [];
 
+	public function transaction()
+    {
+    	return $this->belongsTo('Transaction');
+    }
+
+    public function bank()
+    {
+    	return $this->belongsTo('Bank');
+    }
 }
