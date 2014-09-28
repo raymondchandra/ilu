@@ -16,7 +16,7 @@ class CreateReviewsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('product_id')->unsigned();
-			$table->string('review_text');
+			$table->string('text');
 			$table->float('rating');
 			$table->tinyInteger('approved');
 			$table->timestamps();

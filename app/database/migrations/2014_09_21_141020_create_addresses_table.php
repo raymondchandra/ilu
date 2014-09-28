@@ -17,9 +17,12 @@ class CreateAddressesTable extends Migration {
 			$table->increments('id');
 			$table->string('address');
 			$table->string('city');
+			$table->string('province');
 			$table->string('country');
+			$table->string('company');
 			$table->string('postal');
 			$table->integer('profile_id')->unsigned();
+			$table->tinyInteger('is_main');
 			$table->timestamps();
 		});
 	}

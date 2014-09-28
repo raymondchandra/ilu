@@ -19,7 +19,7 @@ class CreatePaymentsTable extends Migration {
 			$table->float('paid_amt');
 			$table->string('full_name');
 			$table->integer('bank_id')->unsigned();
-			$table->dateTime('payment_date');
+			$table->dateTime('date');
 			$table->string('source_bank');
 			$table->string('bank_acc_owner');
 			$table->string('bank_acc_number');

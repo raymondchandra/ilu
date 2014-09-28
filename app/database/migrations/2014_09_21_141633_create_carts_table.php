@@ -16,7 +16,7 @@ class CreateCartsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('account_id')->unsigned();
-			$table->integer('product_id')->unsigned();
+			$table->integer('price_id')->unsigned();
 			$table->integer('quantity');
 			$table->timestamps();
 		});
