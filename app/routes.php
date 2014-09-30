@@ -81,6 +81,16 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.login');
 	});
 	
+    // manage order
+	Route::get('/manage_order', function()
+	{
+		return View::make('pages.admin.order.manage_order');
+	});
+	Route::get('/view_order', function()
+	{
+		return View::make('pages.admin.order.view_order');
+	});
+	
     // manage product
 	Route::get('/manage_product', function()
 	{
@@ -94,7 +104,7 @@ Route::group(array('prefix' => 'test'), function()
 
 	Route::get('/add_product_general', function()
 	{
-		return View::make('pages.admin.product.general');
+		return View::make('pages.admin.product.add_product_general');
 	});
 	
 	Route::get('/add_product_images', function()
@@ -102,15 +112,12 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.product.add_product_images');
 	});
 
-    // Second Route
-    Route::get('/second', function() {
-        return 'Reaper Man';
-    });
+    // Newsletter
+    Route::get('/add_new_newsletter', function()
+	{
+		return View::make('pages.admin.newsletter.add_new_newsletter');
+	});
 
-    // Third Route
-    Route::get('/third', function() {
-        return 'Lords and Ladies';
-    });
 
 });
 

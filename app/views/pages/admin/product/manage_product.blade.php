@@ -14,21 +14,99 @@
 							<hr></hr>
 							
 							<div>
+								<ul class="pagination">
+								  <li><a href="#">&laquo;</a></li>
+								  <li><a href="#">1</a></li>
+								  <li><a href="#">2</a></li>
+								  <li><a href="#">3</a></li>
+								  <li><a href="#">4</a></li>
+								  <li><a href="#">5</a></li>
+								  <li><a href="#">&raquo;</a></li>
+								</ul>
 								<table class="table table-striped table-hover ">
+									<thead class="table-bordered">
+										<tr>
+											<th class="table-bordered"></th>
+											<th class="table-bordered">
+											ID
+												<a href="javascript:void(0)">
+												<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+												</a>
+											</th>
+											<th class="table-bordered">
+												<a href="javascript:void(0)">Nama</a>
+												<a href="javascript:void(0)">
+												<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+												</a>
+											</th>
+											<th class="table-bordered">
+												<a href="javascript:void(0)">Tipe</a>
+												<a href="javascript:void(0)">
+												<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+												</a>
+											</th>
+											<th class="table-bordered">
+												<a href="javascript:void(0)">Attribute Set</a>
+												<a href="javascript:void(0)">
+												<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+												</a>
+											</th>
+											<th class="table-bordered">
+												<a href="javascript:void(0)">SKU</a>
+												<a href="javascript:void(0)">
+												<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+												</a>
+											</th>
+											<th class="table-bordered">
+												<a href="javascript:void(0)">Harga</a>
+												<a href="javascript:void(0)">
+												<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+												</a>
+											</th>
+											<th class="table-bordered">
+												<a href="javascript:void(0)">Qty</a>
+												<a href="javascript:void(0)">
+												<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+												</a>
+											</th>
+											<th class="table-bordered">
+												<a href="javascript:void(0)">Visibility</a>
+												<a href="javascript:void(0)">
+												<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+												</a>
+											</th>
+											<th class="table-bordered">
+												<a href="javascript:void(0)">Status</a>
+												<a href="javascript:void(0)">
+												<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+												</a>
+											</th>
+											<th class="table-bordered">
+												<a href="javascript:void(0)">Website</a>
+												<a href="javascript:void(0)">
+												<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+												</a>
+											</th>
+											<th class="table-bordered">
+											Edit
+											</th>
+										</tr>
+									</thead>
 									<thead>
 										<tr>
-											<th></th>
-											<th>ID</th>
-											<th>Nama</th>
-											<th>Tipe</th>
-											<th>Attribute Set</th>
-											<th>SKU</th>
-											<th>Harga</th>
-											<th>Qty</th>
-											<th>Visibility</th>
-											<th>Status</th>
-											<th>Website</th>
-											<th>Edit</th>
+											<td></th>
+											<td width="125"><input type="text" class="form-control input-sm"></td>
+											<td><input type="text" class="form-control input-sm"></td>
+											
+											<td><input type="text" class="form-control input-sm"></td>
+											<td><input type="text" class="form-control input-sm"></td>
+											<td><input type="text" class="form-control input-sm"></td>
+											<td><input type="text" class="form-control input-sm"></td>
+											<td><input type="text" class="form-control input-sm"></td>
+											<td><input type="text" class="form-control input-sm"></td>
+											<td><input type="text" class="form-control input-sm"></td>
+											<td width="120"><input type="text" class="form-control input-sm"></td>
+											<td><a class="btn btn-primary btn-xs">Filter</a></td>
 										</tr>
 									</thead>
 									<tbody>

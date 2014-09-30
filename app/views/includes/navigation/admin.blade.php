@@ -76,7 +76,13 @@
 				</ul>
 			</li>
 			
-			<li><a href="#">Other Link</a></li>
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Newsletter<span class="caret"></span></a>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="#">Add New Newsletter</a></li>
+					
+				</ul>
+			</li>
 			<li><a href="#">Other Link</a></li>
 			<li><a href="#">Other Link</a></li>
 			<li><a href="#">Other Link</a></li>
