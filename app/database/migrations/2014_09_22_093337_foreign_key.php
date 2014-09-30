@@ -61,6 +61,7 @@ class ForeignKey extends Migration {
 		{
 		    $table->foreign('product_id')->references('id')->on('products');
 		});
+		
 		Schema::table('events', function($table)
 		{
 		    $table->foreign('product_id')->references('id')->on('products');
@@ -100,7 +101,7 @@ class ForeignKey extends Migration {
 		Schema::table('carts', function($table)
 		{
 		    $table->foreign('account_id')->references('id')->on('account_id');
-		    $table->foreign('product_id')->references('id')->on('products');
+		    $table->foreign('price_id')->references('id')->on('prices');
 		});
 	}
 
@@ -199,7 +200,7 @@ class ForeignKey extends Migration {
 		Schema::table('carts', function($table)
 		{
 		    $table->dropForeign('carts_account_id_foreign');
-		    $table->dropForeign('carts_product_id_foreign');
+		    $table->dropForeign('carts_price_id_foreign');
 		});
 	}
 

@@ -96,7 +96,12 @@ Route::filter('check_token', function()
 	
 });
 
-Route::filter('customer_check_token', function()
+Route::filter('auth_user', function()
 {
-	
+	//check customer token
+});
+
+Route::filter('auth_admin', function()
+{
+	//check customer token
 });

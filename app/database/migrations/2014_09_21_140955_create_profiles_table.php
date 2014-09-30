@@ -16,13 +16,19 @@ class CreateProfilesTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('member_id');
-			$table->string('first-name');
-			$table->string('last-name');
-			$table->string('pob');
+			$table->string('full_name');
+			$table->string('name_in_profile');
+			$table->string('no_ktp');
+			$table->string('company_name');
+			$table->string('company_address');
+			
+			//$table->string('first-name');
+			//$table->string('last-name');
+			//$table->string('pob');
 			$table->date('dob');
-			$table->tinyInteger('gender');
+			//$table->tinyInteger('gender');
 			$table->string('email');
-			$table->string('photo');
+			//$table->string('photo');
 			$table->timestamps();
 		});
 	}

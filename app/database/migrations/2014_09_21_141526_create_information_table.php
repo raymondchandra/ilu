@@ -15,7 +15,7 @@ class CreateInformationTable extends Migration {
 		Schema::create('information', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('type');
+			$table->string('title');
 			$table->string('content');
 			$table->integer('edited_by')->unsigned();
 			$table->timestamps();
