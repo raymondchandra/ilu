@@ -37,18 +37,16 @@
 												<div class="form-group">
 													<label class="g-sm-4 control-label">Order Status</label>
 													<div class="g-sm-8">
-														Pending	
+
 														<div class="btn-group">
-														  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-															Edit <span class="caret"></span>
-														  </button>
-														  <ul class="dropdown-menu" role="menu">
-															<li><a href="#">Canceled</a></li>
-															<li><a href="#">Pending</a></li>
-															<li><a href="#">Processing</a></li>
-															<li><a href="#">Complete</a></li>
-															<li><a href="#">Closed</a></li>
-														  </ul>
+															<select class="form-control">
+																<option>Canceled</option>
+																<option>Pending</option>
+																<option>Processing</option>
+																<option>Complete</option>
+																<option>Closed</option>
+															</select>
+														
 														</div>
 														<button type="button" class="btn btn-success" data-toggle="dropdown">
 															OK
@@ -89,75 +87,6 @@
 										</div>
 									</div>
 									
-								
-											<form class="form-horizontal" role="form">
-												<div class="form-group">
-													<label class="g-sm-3 control-label">Name *</label>
-													<div class="g-sm-6">
-														<input type="text" class="form-control">				
-													</div>
-													<div class="g-sm-3">
-														<span class="btn btn-danger">
-															Maaf form harus diisi
-														</span>
-													</div>
-												</div>
-												
-												<div class="form-group">
-													<label class="g-sm-3 control-label">Description *</label>
-													<div class="g-sm-6">
-														<textarea class="form-control" rows="5"></textarea>			
-													</div>
-													<div class="g-sm-3">
-														<span class="btn btn-danger">
-															Maaf form harus diisi
-														</span>
-													</div>
-												</div>
-											  
-												<div class="form-group">
-													<label class="g-sm-3 control-label">Short Description *</label>
-													<div class="g-sm-6">
-														<textarea class="form-control" rows="5"></textarea>			
-													</div>
-													<div class="g-sm-3">
-														<span class="btn btn-danger">
-															Maaf form harus diisi
-														</span>
-													</div>
-												</div>
-												
-												<div class="form-group">
-													<label class="g-sm-3 control-label">Price in IDR *</label>
-													<div class="g-sm-6">
-														<input type="text" class="form-control">				
-													</div>
-													<div class="g-sm-3">
-														<span class="btn btn-danger">
-															Maaf form harus diisi
-														</span>
-													</div>
-												</div>
-												
-												
-												<div class="form-group">
-													<label class="g-sm-3 control-label">SKU *</label>
-													<div class="g-sm-6">
-														<input type="text" class="form-control" >				
-													</div>
-													<div class="g-sm-3">
-														<span class="btn btn-danger">
-															Maaf form harus diisi
-														</span>
-													</div>
-												</div>
-												
-												<div class="form-group">
-													<label class="g-sm-3 control-label">Weight</label>
-													<div class="g-sm-6">
-														<input type="text" class="form-control" >				
-													</div>
-												</div>
 												
 												<!-- <div class="form-group">
 													<label class="g-sm-3 control-label">New from Date</label>
@@ -187,59 +116,6 @@
 													});
 												</script> -->
 												
-												<div class="form-group">
-													<label for="inputPassword3" class="g-sm-3 control-label">Status *</label>
-													<div class="g-sm-6">
-														<select class="form-control">
-															<option value="one">Enabled</option>
-															<option value="two">Disabled</option>
-														</select>
-													</div>
-													<div class="g-sm-3">
-														<span class="btn btn-danger">
-															Maaf form harus diisi
-														</span>
-													</div>
-												</div>
-												
-												<div class="form-group">
-													<label class="g-sm-3 control-label">URL Key</label>
-													<div class="g-sm-6">
-														<input type="text" class="form-control" >				
-													</div>
-												</div>
-												
-												
-												<div class="form-group">
-													<label for="inputPassword3" class="g-sm-3 control-label">Visibility *</label>
-													<div class="g-sm-6">
-														<select class="form-control">
-															<option value="one">Catalog</option>
-															<option value="two">Search</option>
-															<option value="two">Catalog, Search</option>
-														</select>
-													</div>
-													<div class="g-sm-3">
-														<span class="btn btn-danger">
-															Maaf form harus diisi
-														</span>
-													</div>
-												</div>
-												
-												
-												<div class="form-group">
-													<label class="g-sm-3 control-label">Color</label>
-													<div class="g-sm-6">
-														<input type="text" class="form-control" >				
-													</div>
-												</div>
-											  
-												<div class="form-group">
-													<div class=" g-sm-3 g-sm-push-3">
-														<button type="submit" class="btn btn-warning">continue</button>
-													</div>
-												</div>
-											</form>
 								
 									</div>
 							  </div>

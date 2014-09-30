@@ -91,6 +91,12 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.order.view_order');
 	});
 	
+    // manage category
+	Route::get('/manage_category', function()
+	{
+		return View::make('pages.admin.category.manage_category');
+	});
+
     // manage product
 	Route::get('/manage_product', function()
 	{
