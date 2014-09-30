@@ -20,11 +20,6 @@ class Product extends \Eloquent {
         return $this->hasMany('Price');
     }
 
-    public function order()
-    {
-        return $this->hasMany('Order');
-    }
-
     public function gallery()
     {
         return $this->hasMany('Gallery');
@@ -37,7 +32,7 @@ class Product extends \Eloquent {
 
     public function promotion()
     {
-    	return $this->hasOne('Promotion');
+    	return $this->belongsTo('Promotion');
     }
 
     public function wishlist()

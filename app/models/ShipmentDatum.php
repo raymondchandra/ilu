@@ -1,6 +1,6 @@
 <?php
 
-class Event extends \Eloquent {
+class ShipmentDatum extends \Eloquent {
 
 	// Add your validation rules here
 	public static $rules = [

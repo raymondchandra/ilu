@@ -15,4 +15,8 @@ class Shipment extends \Eloquent {
 		return $this->hasMany('Transaction');
 	}
 
+	public function shipmentData()
+	{
+		return $this->belongsTo('ShipmentData');
+	}
 }

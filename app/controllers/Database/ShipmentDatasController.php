@@ -1,9 +1,9 @@
 <?php
 
-class EventsController extends \BaseController {
+class ShipmentDatasController extends \BaseController {
 
 	/**
-	 * Insert a newly created event in database.
+	 * Insert a newly created shipmentdata in database.
 	 *
 	 * @return Response
 	 */
@@ -11,7 +11,7 @@ class EventsController extends \BaseController {
 	{
 		$respond = array();
 		//validate
-		$validator = Validator::make($data = Input::all(), Event::$rules);
+		$validator = Validator::make($data = Input::all(), Shipmentdata::$rules);
 
 		if ($validator->fails())
 		{
@@ -21,7 +21,7 @@ class EventsController extends \BaseController {
 
 		//save
 		try {
-			Event::create($data);
+			Shipmentdata::create($data);
 			$respond = array('code'=>'201','status' => 'Created');
 		} catch (Exception $e) {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
@@ -30,26 +30,26 @@ class EventsController extends \BaseController {
 	}
 
 	/**
-	 * Display all of the event.
+	 * Display all of the shipmentdata.
 	 *
 	 * @return Response
 	 */
 	public function getAll(){
 		$respond = array();
-		$event = Event::all();
-		if (count($event) == 0)
+		$shipmentdata = Shipmentdata::all();
+		if (count($shipmentdata) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$event);
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipmentdata);
 		}
 		return Response::json($respond);
 	}
 
 	/**
-	 * Display the specified event.
+	 * Display the specified shipmentdata.
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -57,20 +57,20 @@ class EventsController extends \BaseController {
 	public function getById($id)
 	{
 		$respond = array();
-		$event = Event::find($id);
-		if (count($event) == 0)
+		$shipmentdata = Shipmentdata::find($id);
+		if (count($shipmentdata) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$event);
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipmentdata);
 		}
 		return Response::json($respond);
 	}
 
 	/**
-	 * Display the specified event by {name}.
+	 * Display the specified shipmentdata by {name}.
 	 *
 	 * @param  
 	 * @return Response
@@ -79,21 +79,21 @@ class EventsController extends \BaseController {
 	public function getBy{name}()
 	{
 		$respond = array();
-		$event = Event::where('','=','')->get();
-		if (count($event) == 0)
+		$shipmentdata = Shipmentdata::where('','=','')->get();
+		if (count($shipmentdata) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$event);
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipmentdata);
 		}
 		return Response::json($respond);
 	}
 	*/
 
 	/**
-	 * Update all value of the specified event in database.
+	 * Update all value of the specified shipmentdata in database.
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -101,15 +101,15 @@ class EventsController extends \BaseController {
 	public function updateFull($id)
 	{
 		$respond = array();
-		$event = Event::find($id);
-		if ($event == null)
+		$shipmentdata = Shipmentdata::find($id);
+		if ($shipmentdata == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
 			//validate
-			$validator = Validator::make($data = Input::all(), Event::$rules);
+			$validator = Validator::make($data = Input::all(), Shipmentdata::$rules);
 
 			if ($validator->fails())
 			{
@@ -118,7 +118,7 @@ class EventsController extends \BaseController {
 			}
 			//save
 			try {
-				$event->update($data);
+				$shipmentdata->update($data);
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
@@ -129,7 +129,7 @@ class EventsController extends \BaseController {
 	}
 
 	/**
-	 * Update {name} value of the specified event in database.
+	 * Update {name} value of the specified shipmentdata in database.
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -138,17 +138,17 @@ class EventsController extends \BaseController {
 	public function update{name}($id)
 	{
 		$respond = array();
-		$event = Event::find($id);
-		if ($event == null)
+		$shipmentdata = Shipmentdata::find($id);
+		if ($shipmentdata == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
 			//edit value
-			//$event-> = ;
+			//$shipmentdata-> = ;
 			try {
-				$event->save();
+				$shipmentdata->save();
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
@@ -161,7 +161,7 @@ class EventsController extends \BaseController {
 	
 	
 	/**
-	 * Remove the specified event from database.
+	 * Remove the specified shipmentdata from database.
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -169,15 +169,15 @@ class EventsController extends \BaseController {
 	public function delete($id)
 	{
 		$respond = array();
-		$event = Event::find($id);
-		if ($event == null)
+		$shipmentdata = Shipmentdata::find($id);
+		if ($shipmentdata == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
 			try {
-				$event->delete();
+				$shipmentdata->delete();
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
@@ -197,8 +197,8 @@ class EventsController extends \BaseController {
 	public function exist()
 	{
 		$respond = array();
-		$event = Event::where('','=','')->get();
-		if (count($event) >= 0)
+		$shipmentdata = Shipmentdata::where('','=','')->get();
+		if (count($shipmentdata) >= 0)
 		{
 			$respond = array('code'=>'200','status' => 'OK');
 		}
