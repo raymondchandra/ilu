@@ -20,11 +20,6 @@ class Product extends \Eloquent {
         return $this->hasMany('Price');
     }
 
-    public function order()
-    {
-        return $this->hasMany('Order');
-    }
-
     public function gallery()
     {
         return $this->hasMany('Gallery');

@@ -47,7 +47,7 @@ class ForeignKey extends Migration {
 		});
 		Schema::table('orders', function($table)
 		{
-		    $table->foreign('product_id')->references('id')->on('products');
+		    $table->foreign('price_id')->references('id')->on('prices');
 		    $table->foreign('transaction_id')->references('id')->on('transactions');
 		});
 		Schema::table('galleries', function($table)

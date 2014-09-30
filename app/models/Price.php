@@ -20,6 +20,11 @@ class Price extends \Eloquent {
         return $this->belongsTo('Attribute','attr_id');
     }
 
+    public function order()
+    {
+        return $this->hasMany('Order');
+    }
+    
     public function tax()
     {
         return $this->belongsTo('Tax');

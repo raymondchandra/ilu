@@ -12,7 +12,7 @@ class Order extends \Eloquent {
 	
 	public function product()
 	{
-		return $this->belongsTo('Product');
+		return $this->belongsTo('Prices');
 	}
 	
 	public function transaction()
