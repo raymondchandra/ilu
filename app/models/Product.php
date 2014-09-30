@@ -37,7 +37,7 @@ class Product extends \Eloquent {
 
     public function promotion()
     {
-    	return $this->hasOne('Promotion');
+    	return $this->belongsTo('Promotion');
     }
 
     public function wishlist()

@@ -15,7 +15,6 @@ class CreatePromotionsTable extends Migration {
 		Schema::create('promotions', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('product_id')->unsigned();
 			$table->float('amount');
 			$table->dateTime('expired');
 			$table->tinyInteger('active');

@@ -27,6 +27,7 @@ class ForeignKey extends Migration {
 		Schema::table('products', function($table)
 		{
 		    $table->foreign('category_id')->references('id')->on('categories');
+		    $table->foreign('promotion_id')->references('id')->on('promotions');
 		});
 		Schema::table('categories', function($table)
 		{
@@ -56,16 +57,6 @@ class ForeignKey extends Migration {
 		Schema::table('reviews', function($table)
 		{
 		    $table->foreign('product_id')->references('id')->on('products');
-		});
-		Schema::table('promotions', function($table)
-		{
-		    $table->foreign('product_id')->references('id')->on('products');
-		});
-		
-		Schema::table('events', function($table)
-		{
-		    $table->foreign('product_id')->references('id')->on('products');
-		    $table->foreign('promo_id')->references('id')->on('promotions');
 		});
 		Schema::table('supportTickets', function($table)
 		{
@@ -160,11 +151,6 @@ class ForeignKey extends Migration {
 		Schema::table('promotions', function($table)
 		{
 		    $table->dropForeign('promotions_product_id_foreign');
-		});
-		Schema::table('events', function($table)
-		{
-		    $table->dropForeign('events_promo_id_foreign');
-		    $table->dropForeign('events_product_id_foreign');
 		});
 		Schema::table('supportTickets', function($table)
 		{

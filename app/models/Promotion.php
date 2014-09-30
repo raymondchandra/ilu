@@ -12,6 +12,6 @@ class Promotion extends \Eloquent {
 	
 	public function product()
 	{
-		return $this->belongsTo('Product');
+		return $this->hasMany('Product');
 	}
 }
