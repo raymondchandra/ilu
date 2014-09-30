@@ -6,7 +6,7 @@
 						
 							<div class="s_title_n_control">
 								<h3 style="float: left;">
-									Manage Caegory
+									Manage Category
 								</h3>
 								<a href="add_product_00" class="btn btn-success" style="float: right; margin-top: 20px;">+ Add Product</a>
 							</div>
