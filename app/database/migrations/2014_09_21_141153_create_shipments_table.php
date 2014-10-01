@@ -15,7 +15,7 @@ class CreateShipmentsTable extends Migration {
 		Schema::create('shipments', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('shipmentData_id');
+			$table->integer('shipmentData_id')->unsigned();
 			$table->string('number');
 			$table->timestamps();
 		});

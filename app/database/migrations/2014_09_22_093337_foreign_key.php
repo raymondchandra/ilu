@@ -91,7 +91,7 @@ class ForeignKey extends Migration {
 		});
 		Schema::table('carts', function($table)
 		{
-		    $table->foreign('account_id')->references('id')->on('account_id');
+		    $table->foreign('account_id')->references('id')->on('accounts');
 		    $table->foreign('price_id')->references('id')->on('prices');
 		});
 	}
@@ -103,31 +103,54 @@ class ForeignKey extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('accounts', function($table)
+		Schema::table('carts', function($table)
 		{
-			$table->dropForeign('accounts_profile_id_foreign');
+		    $table->dropForeign('carts_account_id_foreign');
+		    $table->dropForeign('carts_price_id_foreign');
 		});
-		Schema::table('phones', function($table)
+		Schema::table('payments', function($table)
 		{
-		    $table->dropForeign('phones_profile_id_foreign');
+		    $table->dropForeign('payments_bank_id_foreign');
+		    $table->dropForeign('payments_transaction_id_foreign');
 		});
-		Schema::table('addresses', function($table)
+		Schema::table('information', function($table)
 		{
-		    $table->dropForeign('addresses_profile_id_foreign');
+		    $table->dropForeign('information_edited_by_foreign');
 		});
-		Schema::table('products', function($table)
+		Schema::table('logs', function($table)
 		{
-		    $table->dropForeign('products_category_id_foreign');
+		    $table->dropForeign('logs_account_id_foreign');
 		});
-		Schema::table('categories', function($table)
+		Schema::table('wishlists', function($table)
 		{
-		    $table->dropForeign('categories_parent_category_foreign');
+		    $table->dropForeign('wishlists_product_id_foreign');
+		    $table->dropForeign('wishlists_account_id_foreign');
 		});
-		Schema::table('prices', function($table)
+		Schema::table('vouchers', function($table)
 		{
-		    $table->dropForeign('prices_tax_id_foreign');
-		    $table->dropForeign('prices_attr_id_foreign');
-		    $table->dropForeign('prices_product_id_foreign');
+		    $table->dropForeign('vouchers_account_id_foreign');
+		});
+		Schema::table('supportMsgs', function($table)
+		{
+		    $table->dropForeign('supportmsgs_account_id_foreign');
+		    $table->dropForeign('supportmsgs_ticket_id_foreign');
+		});
+		Schema::table('supportTickets', function($table)
+		{
+		    $table->dropForeign('supporttickets_account_id_foreign');
+		});
+		Schema::table('reviews', function($table)
+		{
+		    $table->dropForeign('reviews_product_id_foreign');
+		});
+		Schema::table('galleries', function($table)
+		{
+		    $table->dropForeign('galleries_product_id_foreign');
+		});
+		Schema::table('orders', function($table)
+		{
+		    $table->dropForeign('orders_transaction_id_foreign');
+		    $table->dropForeign('orders_product_id_foreign');
 		});
 		Schema::table('transactions', function($table)
 		{
@@ -135,59 +158,34 @@ class ForeignKey extends Migration {
 		    $table->dropForeign('transactions_account_id_foreign');
 		    $table->dropForeign('transactions_voucher_id_foreign');
 		});
-		Schema::table('orders', function($table)
+		Schema::table('prices', function($table)
 		{
-		    $table->dropForeign('orders_transaction_id_foreign');
-		    $table->dropForeign('orders_product_id_foreign');
+		    $table->dropForeign('prices_tax_id_foreign');
+		    $table->dropForeign('prices_attr_id_foreign');
+		    $table->dropForeign('prices_product_id_foreign');
 		});
-		Schema::table('galleries', function($table)
+		Schema::table('categories', function($table)
 		{
-		    $table->dropForeign('galleries_product_id_foreign');
+		    $table->dropForeign('categories_parent_category_foreign');
 		});
-		Schema::table('reviews', function($table)
+		Schema::table('products', function($table)
 		{
-		    $table->dropForeign('reviews_product_id_foreign');
+		    $table->dropForeign('products_category_id_foreign');
+		    $table->dropForeign('products_promotion_id_foreign');
 		});
-		Schema::table('promotions', function($table)
+		Schema::table('addresses', function($table)
 		{
-		    $table->dropForeign('promotions_product_id_foreign');
+		    $table->dropForeign('addresses_profile_id_foreign');
 		});
-		Schema::table('supportTickets', function($table)
+		Schema::table('phones', function($table)
 		{
-		    $table->dropForeign('supporttickets_account_id_foreign');
+		    $table->dropForeign('phones_profile_id_foreign');
 		});
-		Schema::table('supportMsgs', function($table)
+		Schema::table('accounts', function($table)
 		{
-		    $table->dropForeign('supportmsgs_account_id_foreign');
-		    $table->dropForeign('supportmsgs_ticket_id_foreign');
+			$table->dropForeign('accounts_profile_id_foreign');
 		});
-		Schema::table('vouchers', function($table)
-		{
-		    $table->dropForeign('vouchers_account_id_foreign');
-		});
-		Schema::table('wishlists', function($table)
-		{
-		    $table->dropForeign('wishlists_product_id_foreign');
-		    $table->dropForeign('wishlists_account_id_foreign');
-		});
-		Schema::table('logs', function($table)
-		{
-		    $table->dropForeign('logs_account_id_foreign');
-		});
-		Schema::table('information', function($table)
-		{
-		    $table->dropForeign('information_edited_by_foreign');
-		});
-		Schema::table('payments', function($table)
-		{
-		    $table->dropForeign('payments_bank_id_foreign');
-		    $table->dropForeign('payments_transaction_id_foreign');
-		});
-		Schema::table('carts', function($table)
-		{
-		    $table->dropForeign('carts_account_id_foreign');
-		    $table->dropForeign('carts_price_id_foreign');
-		});
+		
 	}
 
 }

@@ -22,7 +22,7 @@ class CreateShipmentDatasTable extends Migration {
 			$table->timestamps();
 		});
 
-		Schema::create('shipments', function(Blueprint $table)
+		Schema::table('shipments', function(Blueprint $table)
 		{
 			$table->foreign('shipmentData_id')->references('id')->on('shipmentDatas');
 		});
@@ -36,7 +36,7 @@ class CreateShipmentDatasTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::create('shipments', function(Blueprint $table)
+		Schema::table('shipments', function(Blueprint $table)
 		{
 			$table->dropForeign('shipments_shipmentData_id_foreign');
 		});
