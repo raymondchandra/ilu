@@ -96,6 +96,10 @@ Route::group(array('prefix' => 'test'), function()
 	{
 		return View::make('pages.admin.category.manage_category');
 	});
+	Route::get('/add_category', function()
+	{
+		return View::make('pages.admin.category.add_category');
+	});
 
     // manage product
 	Route::get('/manage_product', function()
