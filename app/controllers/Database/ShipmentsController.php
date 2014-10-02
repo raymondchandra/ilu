@@ -244,18 +244,4 @@ class ShipmentsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function getByResiNumber($number)
-	{
-		$respond = array();
-		$shipment = Shipment::find($id);
-		if (count($shipment) == 0)
-		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		else
-		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipment);
-		}
-		return Response::json($respond);
-	}
 }

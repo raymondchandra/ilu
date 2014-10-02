@@ -275,15 +275,15 @@ class ShipmentDatasController extends \BaseController {
 	}
 	
 	/**
-	 * Update all value of the specified shipmentdata in database.
+	 * insert shipmentdata in database.
 	 *
-	 * @param  $destination, $courier
+	 * 
 	 * @return Response
 	 */
-	public function updateByDestinationAndCourier($destination, $courier)
+	public function insertData()
 	{
 		$respond = array();
-		$shipmentdata = Shipmentdata::where('destination','=',$destination)->where('courier','=',$courier)->get();
+		$shipmentdata = Shipmentdata::where('destination','=','destinasi')->where('courier','=','nama kurirna')->get();
 		if ($shipmentdata == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
