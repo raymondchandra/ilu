@@ -22,7 +22,9 @@ class ShipmentDatasController extends \BaseController {
 		//save
 		try {
 			Shipmentdata::create($data);
-			$respond = array('code'=>'201','status' => 'Created');
+			$idCreate  = $data->id;
+			
+			$respond = array('code'=>'201','status' => 'Created','messages'=> $idCreate);
 		} catch (Exception $e) {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 		}
@@ -275,37 +277,118 @@ class ShipmentDatasController extends \BaseController {
 	}
 	
 	/**
-	 * Update all value of the specified shipmentdata in database.
+	 * Update price value of the specified shipmentdata in database.
 	 *
-	 * @param  $destination, $courier
+	 * @param  $price, $id
 	 * @return Response
 	 */
-	public function updateByDestinationAndCourier($destination, $courier)
+	public function updatePrice($price, $id)
 	{
 		$respond = array();
-		$shipmentdata = Shipmentdata::where('destination','=',$destination)->where('courier','=',$courier)->get();
+		$shipmentdata = Shipmentdata::where('id','=',$id)->first();
 		if ($shipmentdata == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
-			//validate
-			$validator = Validator::make($data = Input::all(), Shipmentdata::$rules);
+			//edit value
+			$shipmentdata->price = $price;
 
-			if ($validator->fails())
-			{
-				$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
-				return Response::json($respond);
-			}
-			//save
 			try {
-				$shipmentdata->update($data);
+				$shipmentdata->save();
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 			}
 			
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Remove spesific courier from database.
+	 *
+	 * @param  $courier
+	 * @return Response
+	 */
+	public function deleteByCourier($courier)
+	{
+		$respond = array();
+		$shipmentdata = Shipmentdata::where('courier','=',$courier)->get();
+		if ($shipmentdata == null)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			try {
+				$shipmentdata->delete();
+				$respond = array('code'=>'204','status' => 'No Content');
+			} catch (Exception $e) {
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
+			
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Remove spesific destination from database.
+	 *
+	 * @param   $destination
+	 * @return Response
+	 */
+	public function deleteByDestination($destination)
+	{
+		$respond = array();
+		$shipmentdata = Shipmentdata::where('destination','=',$destination)->get();
+		if ($shipmentdata == null)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			try {
+				$shipmentdata->delete();
+				$respond = array('code'=>'204','status' => 'No Content');
+			} catch (Exception $e) {
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
+			
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Update price value of the specified shipmentdata in database.
+	 *
+	 * @param  $price, $id
+	 * @return Response
+	 */
+	public function updateCourier($courier, $new_courier)
+	{
+		$respond = array();
+		$shipmentdata = Shipmentdata::where('courier','=',$courier)->get();
+		if ($shipmentdata == null)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			//edit value
+			foreach($shipmentData as $key)
+			{
+				$key->courier = $courier;
+
+				try {
+					$key->save();
+					$respond = array('code'=>'204','status' => 'No Content');
+				} catch (Exception $e) {
+					$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+					break;
+				}
+			}
 		}
 		return Response::json($respond);
 	}

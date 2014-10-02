@@ -22,7 +22,8 @@ class ShipmentsController extends \BaseController {
 		//save
 		try {
 			Shipment::create($data);
-			$respond = array('code'=>'201','status' => 'Created');
+			$idCreate  = $data->id;
+			$respond = array('code'=>'201','status' => 'Created','messages'=>$idCreate);
 		} catch (Exception $e) {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 		}
@@ -211,34 +212,6 @@ class ShipmentsController extends \BaseController {
 	*/
 	
 	/**
-	 * Insert a newly created shipment in database by destination and courier
-	 *	param $destination, $courier
-	 * @return Response
-	 */
-	public function insertByDestinationAndCourier($destination, $courier)
-	{
-		$respond = array();
-		$shipdmentDataId = Shipmentdata::where('destination','=',$destination)->where('courier','=',$courier)->first()->id;
-		//validate
-		$validator = Validator::make($data = Input::all(), Shipment::$rules);
-
-		if ($validator->fails())
-		{
-			$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
-			return Response::json($respond);
-		}
-
-		//save
-		try {
-			Shipment::create($data);
-			$respond = array('code'=>'201','status' => 'Created');
-		} catch (Exception $e) {
-			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
-		}
-		return Response::json($respond);
-	}
-	
-	/**
 	 * Display the specified shipment.
 	 *
 	 * @param  int  $id
@@ -247,7 +220,7 @@ class ShipmentsController extends \BaseController {
 	public function getByResiNumber($number)
 	{
 		$respond = array();
-		$shipment = Shipment::find($id);
+		$shipment = Shipment::where('number','=',$number)->first();
 		if (count($shipment) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -258,4 +231,35 @@ class ShipmentsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	
+	/**
+	 * Update resiNumber value of the specified shipment in database.
+	 *
+	 * @param  int  $number
+	 * @return Response
+	 */
+	
+	public function update{name}($id,$number)
+	{
+		$respond = array();
+		$shipment = Shipment::find($id);
+		if ($shipment == null)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			//edit value
+			$shipment->number = $number;
+			try {
+				$shipment->save();
+				$respond = array('code'=>'204','status' => 'No Content');
+			} catch (Exception $e) {
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
+			
+		}
+		return Response::json($respond);
+	}
+	
 }
