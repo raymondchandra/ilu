@@ -209,5 +209,53 @@ class ShipmentsController extends \BaseController {
 		return Response::json($respond);
 	}
 	*/
+	
+	/**
+	 * Insert a newly created shipment in database by destination and courier
+	 *	param $destination, $courier
+	 * @return Response
+	 */
+	public function insertByDestinationAndCourier($destination, $courier)
+	{
+		$respond = array();
+		$shipdmentDataId = Shipmentdata::where('destination','=',$destination)->where('courier','=',$courier)->first()->id;
+		//validate
+		$validator = Validator::make($data = Input::all(), Shipment::$rules);
 
+		if ($validator->fails())
+		{
+			$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
+			return Response::json($respond);
+		}
+
+		//save
+		try {
+			Shipment::create($data);
+			$respond = array('code'=>'201','status' => 'Created');
+		} catch (Exception $e) {
+			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Display the specified shipment.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function getByResiNumber($number)
+	{
+		$respond = array();
+		$shipment = Shipment::find($id);
+		if (count($shipment) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipment);
+		}
+		return Response::json($respond);
+	}
 }

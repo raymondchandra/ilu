@@ -209,5 +209,104 @@ class ShipmentDatasController extends \BaseController {
 		return Response::json($respond);
 	}
 	*/
+	
+	
+	/**
+	 * find by destination
+	 *
+	 * @param  $destination
+	 * @return Response
+	 */
+	 public function getByDestination($destination)
+	{
+		$respond = array();
+		$shipmentdata = Shipmentdata::where('destination','=',$destination)->get();
+		if (count($shipmentdata) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipmentdata);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * find by courier
+	 *
+	 * @param  $courier
+	 * @return Response
+	 */
+	 public function getByCourier($courier)
+	{
+		$respond = array();
+		$shipmentdata = Shipmentdata::where('courier','=',$courier)->get();
+		if (count($shipmentdata) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipmentdata);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * get all by destination and courier
+	 *
+	 * @param  $destination and $courier
+	 * @return Response
+	 */
+	 public function getByDestinationAndCourier($destination, $courier)
+	{
+		$respond = array();
+		$shipmentdata = Shipmentdata::where('destination','=',$destination)->where('courier','=',$courier)->get();
+		if (count($shipmentdata) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipmentdata);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Update all value of the specified shipmentdata in database.
+	 *
+	 * @param  $destination, $courier
+	 * @return Response
+	 */
+	public function updateByDestinationAndCourier($destination, $courier)
+	{
+		$respond = array();
+		$shipmentdata = Shipmentdata::where('destination','=',$destination)->where('courier','=',$courier)->get();
+		if ($shipmentdata == null)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			//validate
+			$validator = Validator::make($data = Input::all(), Shipmentdata::$rules);
 
+			if ($validator->fails())
+			{
+				$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
+				return Response::json($respond);
+			}
+			//save
+			try {
+				$shipmentdata->update($data);
+				$respond = array('code'=>'204','status' => 'No Content');
+			} catch (Exception $e) {
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
+			
+		}
+		return Response::json($respond);
+	}
 }
