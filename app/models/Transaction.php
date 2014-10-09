@@ -5,6 +5,12 @@ class Transaction extends \Eloquent {
 	// Add your validation rules here
 	public static $rules = [
 		// 'title' => 'required'
+		'invoice' => 'required',
+		'account_id' => 'required|integer',
+		'total_price' => 'required|integer',
+		'status' => 'required',
+		'paid' => 'required|integer',
+		'shipment_id' => 'required|integer'
 	];
 
 	// Don't forget to fill this array

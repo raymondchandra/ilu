@@ -2,7 +2,7 @@
 @section('content')	
 				<div class="container-fluid">
 					<div class="row">
-						<div class="g-lg-12">
+						<div class="col-lg-12">
 							<div class="s_title_n_control">
 								<h3 style="float: left;">
 									New Product
@@ -14,7 +14,7 @@
 							
 							@include('includes.sidebar.manage_product')
 							
-							<div class="g-lg-10">
+							<div class="col-lg-10">
 								<div class="panel panel-default">
 									<div class="panel-heading">
 										<h3 class="panel-title">Create Product Settings</h3>
@@ -22,8 +22,8 @@
 									<div class="panel-body">
 										<form class="form-horizontal" role="form">
 											<div class="form-group">
-												<label for="inputEmail3" class="g-sm-3 control-label">Atrribute Set</label>
-												<div class="g-sm-6">
+												<label for="inputEmail3" class="col-sm-3 control-label">Atrribute Set</label>
+												<div class="col-sm-6">
 													<select class="form-control">
 														<option value="one">One</option>
 														<option value="two">Two</option>
@@ -35,8 +35,8 @@
 											</div>
 										  
 											<div class="form-group">
-												<label for="inputPassword3" class="g-sm-3 control-label">Tipe Product</label>
-												<div class="g-sm-6">
+												<label for="inputPassword3" class="col-sm-3 control-label">Tipe Product</label>
+												<div class="col-sm-6">
 													<select class="form-control">
 														<option value="one">One</option>
 														<option value="two">Two</option>

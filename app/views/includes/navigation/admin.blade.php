@@ -1,7 +1,7 @@
 <!--<div class="s_nav_header">
 	<div class="container-fluid">
 		<div class="row">
-			<div class="g-lg-12">
+			<div class="col-lg-12">
 				<nav>
 					<ul class="s_top_nav">
 						<li>

@@ -2,7 +2,7 @@
 @section('content')		
 				<div class="container-fluid">
 					<div class="row">
-						<div class="g-lg-12">
+						<div class="col-lg-12">
 							<div class="s_title_n_control">
 								<h3 style="float: left;">
 									New Category
@@ -14,7 +14,7 @@
 							
 							{{-- @include('includes.sidebar.manage_product') --}}
 							
-							<div class="g-lg-12">
+							<div class="col-lg-12">
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h3 class="panel-title">General</h3>
@@ -25,11 +25,11 @@
 								
 											<form class="form-horizontal" role="form">
 												<div class="form-group">
-													<label class="g-sm-3 control-label">Name *</label>
-													<div class="g-sm-6">
+													<label class="col-sm-3 control-label">Name *</label>
+													<div class="col-sm-6">
 														<input type="text" class="form-control">				
 													</div>
-													<div class="g-sm-3">
+													<div class="col-sm-3">
 														<span class="btn btn-danger">
 															Maaf form harus diisi
 														</span>
@@ -37,11 +37,11 @@
 												</div>
 												
 												<div class="form-group">
-													<label class="g-sm-3 control-label">Description *</label>
-													<div class="g-sm-6">
+													<label class="col-sm-3 control-label">Description *</label>
+													<div class="col-sm-6">
 														<textarea class="form-control" rows="5"></textarea>			
 													</div>
-													<div class="g-sm-3">
+													<div class="col-sm-3">
 														<span class="btn btn-danger">
 															Maaf form harus diisi
 														</span>
@@ -49,11 +49,11 @@
 												</div>
 											  
 												<div class="form-group">
-													<label class="g-sm-3 control-label">Short Description *</label>
-													<div class="g-sm-6">
+													<label class="col-sm-3 control-label">Short Description *</label>
+													<div class="col-sm-6">
 														<textarea class="form-control" rows="5"></textarea>			
 													</div>
-													<div class="g-sm-3">
+													<div class="col-sm-3">
 														<span class="btn btn-danger">
 															Maaf form harus diisi
 														</span>
@@ -62,11 +62,11 @@
 												
 												
 												<div class="form-group">
-													<label class="g-sm-3 control-label">SKU *</label>
-													<div class="g-sm-6">
+													<label class="col-sm-3 control-label">SKU *</label>
+													<div class="col-sm-6">
 														<input type="text" class="form-control" >				
 													</div>
-													<div class="g-sm-3">
+													<div class="col-sm-3">
 														<span class="btn btn-danger">
 															Maaf form harus diisi
 														</span>
@@ -75,7 +75,7 @@
 												
 												
 												<!-- <div class="form-group">
-													<label class="g-sm-3 control-label">New from Date</label>
+													<label class="col-sm-3 control-label">New from Date</label>
 													<div class='input-group date g-sm-6'>
 														<input type='text' class="form-control"  id='datepicker00'/>
 														<span class="input-group-addon"><span class="glyphicon glyphicon-calendar" ></span>
@@ -89,7 +89,7 @@
 												</script>
 												
 												<div class="form-group">
-													<label class="g-sm-3 control-label">New to Date</label>
+													<label class="col-sm-3 control-label">New to Date</label>
 													<div class='input-group date g-sm-6'>
 														<input type='text' class="form-control"  id='datepicker01'/>
 														<span class="input-group-addon"><span class="glyphicon glyphicon-calendar" ></span>
@@ -102,20 +102,20 @@
 													});
 												</script> -->
 												
-												<div class="form-group">
-													<label for="inputPassword3" class="g-sm-3 control-label">Status *</label>
-													<div class="g-sm-6">
+												<!-- <div class="form-group">
+													<label for="inputPassword3" class="col-sm-3 control-label">Status *</label>
+													<div class="col-sm-6">
 														<select class="form-control">
 															<option value="one">Enabled</option>
 															<option value="two">Disabled</option>
 														</select>
 													</div>
-													<div class="g-sm-3">
+													<div class="col-sm-3">
 														<span class="btn btn-danger">
 															Maaf form harus diisi
 														</span>
 													</div>
-												</div>
+												</div> -->
 												
 												
 												<div class="form-group">

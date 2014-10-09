@@ -13,7 +13,7 @@
 		<!--<link rel="icon" type="image/png" href="assets/img/favicon.png">--> <!-- {{ asset('assets/img/favicon.png') }} -->
 		<script src="{{ asset('assets/js/jquery-1.11.1.min.js') }}"></script>
 		<script src="{{ asset('assets/js/jquery-migrate-1.2.1.min.js') }}"></script>
-		<script src="{{ asset('assets/js/mbf.js') }}"></script>
+		<script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
 		<script src="{{ asset('assets/js/datepicker/js/bootstrap-datepicker.js') }}"></script>
 		
 		<script src="{{ asset('assets/js/tinymce/js/tinymce/tinymce.min.js') }}"></script>
