@@ -22,7 +22,8 @@ class OrdersController extends \BaseController {
 		//save
 		try {
 			Order::create($data);
-			$respond = array('code'=>'201','status' => 'Created');
+			$idCreate  = $data->id;
+			$respond = array('code'=>'201','status' => 'Created','messages'=>$idCreate);
 		} catch (Exception $e) {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 		}
@@ -210,6 +211,4 @@ class OrdersController extends \BaseController {
 	}
 	*/
 	
-	
-
 }

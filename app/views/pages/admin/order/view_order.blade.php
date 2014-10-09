@@ -2,7 +2,7 @@
 @section('content')		
 				<div class="container-fluid">
 					<div class="row">
-						<div class="g-lg-12">
+						<div class="col-lg-12">
 							<div class="s_title_n_control">
 								<h3 style="float: left;">
 									View Order
@@ -14,29 +14,29 @@
 							
 							@include('includes.sidebar.manage_product')
 							
-							<div class="g-lg-10">
+							<div class="col-lg-10">
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h3 class="panel-title">Order Information</h3>
 								</div>
 								<div class="panel-body">
 								
-									<div class="g-lg-6">
+									<div class="col-lg-6">
 										<div class="panel panel-default">
 											<div class="panel-heading">
 												<h3 class="panel-title">Order # 100000056 (the order confirmation email was sent)</h3>
 											</div>
 											<div class="panel-body">
 												<div class="form-group">
-													<label class="g-sm-4 control-label">Order Date</label>
-													<div class="g-sm-8">
+													<label class="col-sm-4 control-label">Order Date</label>
+													<div class="col-sm-8">
 														Mar 28, 2013 8:15:12 AM				
 													</div>
 												</div>
 												<span class="clearfix"></span>
 												<div class="form-group">
-													<label class="g-sm-4 control-label">Order Status</label>
-													<div class="g-sm-8">
+													<label class="col-sm-4 control-label">Order Status</label>
+													<div class="col-sm-8">
 
 														<div class="btn-group">
 															<select class="form-control">
@@ -57,29 +57,29 @@
 										</div>
 									</div>
 									
-									<div class="g-lg-6">
+									<div class="col-lg-6">
 										<div class="panel panel-default">
 											<div class="panel-heading">
 												<h3 class="panel-title">Account Information</h3>
 											</div>
 											<div class="panel-body">
 												<div class="form-group">
-													<label class="g-sm-4 control-label">Customer Name</label>
-													<div class="g-sm-8">
+													<label class="col-sm-4 control-label">Customer Name</label>
+													<div class="col-sm-8">
 														Mark Woodland			
 													</div>
 												</div>
 												<span class="clearfix"></span>
 												<div class="form-group">
-													<label class="g-sm-4 control-label">Email</label>
-													<div class="g-sm-8">
+													<label class="col-sm-4 control-label">Email</label>
+													<div class="col-sm-8">
 														mark@yahoo.com			
 													</div>
 												</div>
 												<span class="clearfix"></span>
 												<div class="form-group">
-													<label class="g-sm-4 control-label">Customer Group</label>
-													<div class="g-sm-8">
+													<label class="col-sm-4 control-label">Customer Group</label>
+													<div class="col-sm-8">
 														Wholesale			
 													</div>
 												</div>
@@ -89,7 +89,7 @@
 									
 												
 												<!-- <div class="form-group">
-													<label class="g-sm-3 control-label">New from Date</label>
+													<label class="col-sm-3 control-label">New from Date</label>
 													<div class='input-group date g-sm-6'>
 														<input type='text' class="form-control"  id='datepicker00'/>
 														<span class="input-group-addon"><span class="glyphicon glyphicon-calendar" ></span>
@@ -103,7 +103,7 @@
 												</script>
 												
 												<div class="form-group">
-													<label class="g-sm-3 control-label">New to Date</label>
+													<label class="col-sm-3 control-label">New to Date</label>
 													<div class='input-group date g-sm-6'>
 														<input type='text' class="form-control"  id='datepicker01'/>
 														<span class="input-group-addon"><span class="glyphicon glyphicon-calendar" ></span>

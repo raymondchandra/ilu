@@ -8,7 +8,7 @@
 		<div class="s_top_header">
 			<div class="container-fluid">
 				<div class="row">
-					<div class="g-lg-12">
+					<div class="col-lg-12">
 						<h2>Ilu Panel</h2>
 					</div>
 				</div>

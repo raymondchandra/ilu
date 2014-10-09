@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'Account' => $baseDir . '/app/models/Account.php',
     'AccountsController' => $baseDir . '/app/controllers/Database/AccountsController.php',
+    'AddColumn' => $baseDir . '/app/database/migrations/2014_10_09_065417_add_column.php',
     'Address' => $baseDir . '/app/models/Address.php',
     'AddressesController' => $baseDir . '/app/controllers/Database/AddressesController.php',
     'Attribute' => $baseDir . '/app/models/Attribute.php',
@@ -1021,7 +1022,7 @@ return array(
     'SeosController' => $baseDir . '/app/controllers/Database/SeosController.php',
     'SessionHandlerInterface' => $vendorDir . '/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs/SessionHandlerInterface.php',
     'Shipment' => $baseDir . '/app/models/Shipment.php',
-    'ShipmentDatasController' => $baseDir . '/app/controllers/ShipmentDatasController.php',
+    'ShipmentDatasController' => $baseDir . '/app/controllers/Database/ShipmentDatasController.php',
     'ShipmentDatum' => $baseDir . '/app/models/ShipmentDatum.php',
     'ShipmentsController' => $baseDir . '/app/controllers/Database/ShipmentsController.php',
     'Stack\\Builder' => $vendorDir . '/stack/builder/src/Stack/Builder.php',
