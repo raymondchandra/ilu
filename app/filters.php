@@ -48,6 +48,44 @@ Route::filter('auth', function()
 	}
 });
 
+Route::filter('auth', function()
+{
+	if (Auth::guest())
+	{
+		if (Request::ajax())
+		{
+			return Response::make('Unauthorized', 401);
+		}
+		else
+		{
+			return Redirect::guest('login');
+		}
+	}
+});
+
+Route::filter('checkAccessToken', function()
+{
+	if (Auth::guest())
+	{
+		//redirect ke login;
+	}
+	else
+	{
+		$accController = new AccountsController();
+		$res = $accController->checkAccTok(Auth::user()->access_token,Auth::user()->username,Auth::user()->role);
+		$res_message = json_decode($json->getContent());
+		$messages = $res_message->{'messages'};
+		if($messages = "OK")
+		{
+			//redirect ke berhasil;
+		}
+		else
+		{
+			//redirect ke login...gagal bro
+		}
+	}
+});
+
 
 Route::filter('auth.basic', function()
 {

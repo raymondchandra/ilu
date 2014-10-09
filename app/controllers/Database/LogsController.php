@@ -235,7 +235,7 @@ class LogsController extends \BaseController {
 		}
 		catch(Exception $e)
 		{
-			$respond = array('code'=>'404','status' => 'Not Found','error' => $e);
+			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 
 		return Response::json($respond);

@@ -319,7 +319,7 @@ class AccountsController extends \BaseController {
 		}
 		else
 		{
-			$respond = array('code'=>'500','status' => 'Internal Server Error');
+			$respond = array('code'=>'500','status' => 'NOK');
 		}
 		return $respond;
 	}
@@ -332,6 +332,7 @@ class AccountsController extends \BaseController {
 		//$res nanti isi nya search, belanja apa aja...
 		$res['search'] = $messages;
 		
+
 	}
 
 }
