@@ -1,5 +1,10 @@
 <?php
-
+Route::get('/tes', function()
+{
+	$acc = new AccountsController();
+	
+	$acc->getHistory(5);
+});
 Route::group(['before' => 'check_token'], function()
 {
 	//account

@@ -11,7 +11,7 @@ class LogsController extends \BaseController {
 	{
 		$respond = array();
 		//validate
-		$validator = Validator::make($data = Input::all(), Log::$rules);
+		$validator = Validator::make($data = Input::all(), Logs::$rules);
 
 		if ($validator->fails())
 		{
@@ -21,7 +21,7 @@ class LogsController extends \BaseController {
 
 		//save
 		try {
-			Log::create($data);
+			Logs::create($data);
 			$respond = array('code'=>'201','status' => 'Created');
 		} catch (Exception $e) {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
@@ -36,7 +36,7 @@ class LogsController extends \BaseController {
 	 */
 	public function getAll(){
 		$respond = array();
-		$log = Log::all();
+		$log = Logs::all();
 		if (count($log) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -57,7 +57,7 @@ class LogsController extends \BaseController {
 	public function getById($id)
 	{
 		$respond = array();
-		$log = Log::find($id);
+		$log = Logs::find($id);
 		if (count($log) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -101,7 +101,7 @@ class LogsController extends \BaseController {
 	public function updateFull($id)
 	{
 		$respond = array();
-		$log = Log::find($id);
+		$log = Logs::find($id);
 		if ($log == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -109,7 +109,7 @@ class LogsController extends \BaseController {
 		else
 		{
 			//validate
-			$validator = Validator::make($data = Input::all(), Log::$rules);
+			$validator = Validator::make($data = Input::all(), Logs::$rules);
 
 			if ($validator->fails())
 			{
@@ -138,7 +138,7 @@ class LogsController extends \BaseController {
 	public function update{name}($id)
 	{
 		$respond = array();
-		$log = Log::find($id);
+		$log = Logs::find($id);
 		if ($log == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -169,7 +169,7 @@ class LogsController extends \BaseController {
 	public function delete($id)
 	{
 		$respond = array();
-		$log = Log::find($id);
+		$log = Logs::find($id);
 		if ($log == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -209,5 +209,47 @@ class LogsController extends \BaseController {
 		return Response::json($respond);
 	}
 	*/
+	
+	/**
+	 * Creating log based on user action.
+	 *
+	 * @param
+	 * 		acc_id int
+	 * 		action varchar (c/r/u/d)
+	 * 		table_affected varchar
+	 * 		purpose varchar
+	 * 		main_param varchar
+	 * @return Response
+	 */
+	public static function createLog($acc_id, $action, $table_affected, $purpose, $main_param)
+	{
+		$log = new Logs();
+		$log->account_id = $acc_id;
+		$log->text_log = $action." @ ".$table_affected;
+		$log->description = $purpose." on ".$main_param;
+
+		try
+		{
+			$log->save();
+			$respond = array('code'=>'200','status' => 'OK');
+		}
+		catch(Exception $e)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found','error' => $e);
+		}
+
+		return Response::json($respond);
+	}
+	
+	
+	
+	public static function getLogByKey($key, $id)
+	{
+		$log = Logs::where('description','LIKE',$key."%")->get();
+		$respond=array('code' => '200', 'status' => 'OK', 'messages' => $log);
+		
+		//return json_encode($respond);
+		return Response::json($respond);
+	}
 
 }

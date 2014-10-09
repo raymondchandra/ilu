@@ -1,6 +1,6 @@
 <?php
 
-class Log extends \Eloquent {
+class Logs extends \Eloquent {
 
 	// Add your validation rules here
 	public static $rules = [
