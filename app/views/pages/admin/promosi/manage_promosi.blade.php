@@ -60,7 +60,7 @@
 								<td>10%</td>
 								
 								<td>
-									<button class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_tax">Edit</button>
+									<button class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_promosi">Edit</button>
 									<!-- Button trigger modal class ".alertYesNo" -->
 									<button class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</button>
 								</td>
@@ -79,6 +79,7 @@
 	
 	@include('includes.modals.alertYesNo')	
 	@include('pages.admin.promosi.pop_up_add_promosi')
+	@include('pages.admin.promosi.pop_up_edit_promosi')
 
 
 @stop

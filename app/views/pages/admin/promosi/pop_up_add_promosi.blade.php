@@ -183,7 +183,7 @@
 						
 					});
 
-/*
+					/*
 					Script untuk remove baris produk
 					*/
 					$( 'body' ).on( "click",'.f_remove_product', function() {

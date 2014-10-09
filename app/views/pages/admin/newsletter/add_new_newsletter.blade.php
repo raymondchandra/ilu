@@ -45,7 +45,7 @@
 														</span>
 													</div>
 												</div>
-											  
+											  	<!--
 												<div class="form-group">
 													<label class="col-sm-3 control-label">Sender Name *</label>
 													<div class="col-sm-6">
@@ -69,7 +69,7 @@
 														</span>
 													</div>
 												</div>
-												
+												-->
 												<div class="form-group">
 													<label class="col-sm-3 control-label">Template Editor *</label>
 													<div class="col-sm-6">
@@ -120,11 +120,9 @@
 												</script> -->
 												
 											  
-												<div class="form-group">
-													<div class=" g-sm-3 g-sm-push-3">
-														<button type="submit" class="btn btn-warning">continue</button>
-													</div>
-												</div>
+												
+														<button type="submit" class="btn btn-success center-block">continue</button>
+													
 											</form>
 								
 									</div>
