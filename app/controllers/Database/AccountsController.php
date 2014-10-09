@@ -209,5 +209,129 @@ class AccountsController extends \BaseController {
 		return Response::json($respond);
 	}
 	*/
+	
+	/**
+	 * Login attempt for administrator(role = 1)
+	 *
+	 * @param
+	 * 		$id string
+	 *		$password string
+	 *		$remember_me yes/no
+	 * @return Response
+	 */
+	public function adminLogin($id, $password, $remember_me)
+	{
+		$data = array('username'=>$username, 'password'=>$password);
+		$remember = $remember_me === "yes";
+		if(Auth::attempt($data, $remember))
+		{
+			if(Auth::user()->status_aktif == 1)
+			{
+				if(Auth::user()->role == 1)
+				{					
+					$respond = array('code'=>'200','status' => 'OK');
+				}
+				else
+				{
+					$respond = array('code'=>'500','status' => 'Internal Server Error');
+				}
+			}
+			else
+			{
+				Auth::logout();
+				$respond = array('code'=>'500','status' => 'Internal Server Error');
+			}
+		}
+		
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Login attempt for user(role = 0)
+	 *
+	 * @param
+	 * 		$id string
+	 *		$password string
+	 *		$remember_me yes/no
+	 * @return Response
+	 */
+	public function userLogin($id, $password,$remember_me)
+	{
+		$data = array('username'=>$username, 'password'=>$password);
+		$remember = $remember_me === "yes";
+		if(Auth::attempt($data, $remember))
+		{
+			if(Auth::user()->status_aktif == 1)
+			{
+				if(Auth::user()->role == 0)
+				{					
+					$respond = array('code'=>'200','status' => 'OK');
+				}
+				else
+				{
+					$respond = array('code'=>'500','status' => 'Internal Server Error');
+				}
+			}
+			else
+			{
+				Auth::logout();
+				$respond = array('code'=>'500','status' => 'Internal Server Error');
+			}
+		}
+		
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Generating accessToken for user
+	 *
+	 * @param
+	 * 		$id string
+	 *		$username string
+	 *		$role yes/no
+	 * @return accTok string
+	 */
+	 public function generateAccessToken($id, $username, $role)
+	 {
+		$temp_str = $id.$username.$role;
+		$accTok = md5($temp_str);
+		
+		return $accTok;
+	 }
+	 
+	 /**
+	 * Checking accesstoken for user
+	 *
+	 * @param
+	 *	    $accTok string
+	 * 		$id string
+	 *		$username string
+	 *		$role string(yes/no)
+	 * @return Response
+	 */
+	public function checkAccTok($accTok,$id, $username, $role)
+	{
+		$temp_str = $id.$username.$role;
+		$accToken = md5($temp_str);
+		if($accToken === $accTok)
+		{
+			$respond = array('code'=>'200','status' => 'OK');
+		}
+		else
+		{
+			$respond = array('code'=>'500','status' => 'Internal Server Error');
+		}
+		return $respond;
+	}
+	
+	public function getHistory($id)
+	{
+		$json = LogsController::getLogByKey("abc",$id);
+		$json_message = json_decode($json->getContent());
+		$messages = $json_message->{'messages'};
+		//$res nanti isi nya search, belanja apa aja...
+		$res['search'] = $messages;
+		
+	}
 
 }
