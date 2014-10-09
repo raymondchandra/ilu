@@ -23,6 +23,12 @@ class AddColumn extends Migration {
 		    $table->string('code');
 
 		});
+
+		Schema::table('shipmentDatas', function($table)
+		{
+		    $table->tinyInteger('deleted');
+
+		});
 	}
 
 	/**
@@ -41,6 +47,12 @@ class AddColumn extends Migration {
 		Schema::table('vouchers', function($table)
 		{
 		    $table->dropColumn('code');
+
+		});
+
+		Schema::table('shipmentDatas', function($table)
+		{
+		    $table->dropColumn('deleted');
 
 		});
 	}
