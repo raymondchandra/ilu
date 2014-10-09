@@ -123,6 +123,10 @@ Route::group(array('prefix' => 'test'), function()
 	});
 
     // Newsletter
+    Route::get('/manage_newsletter', function()
+	{
+		return View::make('pages.admin.newsletter.manage_newsletter');
+	});
     Route::get('/add_new_newsletter', function()
 	{
 		return View::make('pages.admin.newsletter.add_new_newsletter');

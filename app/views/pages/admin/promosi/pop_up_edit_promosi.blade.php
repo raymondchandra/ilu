@@ -5,8 +5,8 @@
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 				<h4 class="modal-title" id="myModalLabel">Edit Promosi</h4>
 			</div>
-			<div class="modal-body">
-				<form class="form-horizontal" role="form">
+			<form class="form-horizontal" role="form">
+				<div class="modal-body">
 					<div class="row">
 						<div class="col-sm-6">
 
@@ -197,12 +197,12 @@
 
 					
 
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-success" data-dismiss="modal">Ya</button>
-				<button type="button" class="btn btn-primary" data-dismiss="modal">Tidak</button>
-			</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success" data-dismiss="modal">Ya</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Tidak</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
