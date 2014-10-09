@@ -6,9 +6,9 @@
 			
 				<div class="s_title_n_control">
 					<h3 style="float: left;">
-						Manage Promosi
+						Manage Newsletter
 					</h3>
-					<button class="btn btn-success" style="float: right; margin-top: 20px;"  data-toggle="modal" data-target=".pop_up_add_promosi">+ Add New Promosi</button>
+					<button class="btn btn-success" style="float: right; margin-top: 20px;" data-toggle="modal" data-target=".pop_up_add_newsletter">+ Add New Tax</button>
 				</div>
 				<span class="clearfix"></span>
 				<hr></hr>
@@ -27,13 +27,13 @@
 						<thead class="table-bordered">
 							<tr>
 								<th class="table-bordered">
-									<a href="javascript:void(0)">Nama</a>
+									<a href="javascript:void(0)">Judul</a>
 									<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
 								<th class="table-bordered">
-									<a href="javascript:void(0)">Nilai Promosi</a>
+									<a href="javascript:void(0)">Subject</a>
 									<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
@@ -56,11 +56,12 @@
 							  ?>
 							<tr> 
 								
-								<td>Something</td>
-								<td>10%</td>
+								<td>Judul</td>
+								<td>Subject</td>
 								
 								<td>
-									<button class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_promosi">Edit</button>
+									<button class="btn btn-info btn-xs" data-toggle="modal" data-target=".pop_up_view_newsletter">View</button>
+									<button class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_newsletter">Edit</button>
 									<!-- Button trigger modal class ".alertYesNo" -->
 									<button class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</button>
 								</td>
@@ -77,9 +78,9 @@
 		</div>
 	</div>
 	
-	@include('includes.modals.alertYesNo')	
-	@include('pages.admin.promosi.pop_up_add_promosi')
-	@include('pages.admin.promosi.pop_up_edit_promosi')
-
+	@include('includes.modals.alertYesNo')
+	@include('pages.admin.newsletter.pop_up_add_newsletter')
+	@include('pages.admin.newsletter.pop_up_edit_newsletter')
+	@include('pages.admin.newsletter.pop_up_view_newsletter')
 
 @stop
