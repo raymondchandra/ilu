@@ -8,7 +8,11 @@ class Order extends \Eloquent {
 	];
 
 	// Don't forget to fill this array
-	protected $fillable = [];
+	protected $fillable = [
+	'price_id',
+				'quantity',
+				'transaction_id',
+				];
 	
 	public function product()
 	{

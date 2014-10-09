@@ -8,7 +8,10 @@ class Wishlist extends \Eloquent {
 	];
 
 	// Don't forget to fill this array
-	protected $fillable = [];
+	protected $fillable = [
+		'account_id',
+		'product_id'
+	];
 
 	public function account()
 	{

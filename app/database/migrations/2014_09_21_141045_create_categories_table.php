@@ -16,7 +16,7 @@ class CreateCategoriesTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('name');
-			$table->integer('parent_category')->unsigned();
+			$table->integer('parent_category')->unsigned()->nullable();
 			$table->tinyInteger('deleted');
 			$table->timestamps();
 		});

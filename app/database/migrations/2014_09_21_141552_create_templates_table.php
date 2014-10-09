@@ -16,7 +16,7 @@ class CreateTemplatesTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('type');
-			$table->string('content');
+			$table->longText('content');
 			$table->tinyInteger('iscurrent');
 			$table->timestamps();
 		});
