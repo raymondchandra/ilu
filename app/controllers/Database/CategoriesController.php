@@ -49,6 +49,44 @@ class CategoriesController extends \BaseController {
 	}
 
 	/**
+	 * Display all of the category.
+	 *
+	 * @return Response
+	 */
+	public function getAllNameAsc(){
+		$respond = array();
+		$category = Category::all()->orderBy('name')->get();
+		if (count($category) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$category);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Display all of the category.
+	 *
+	 * @return Response
+	 */
+	public function getAllNameDesc(){
+		$respond = array();
+		$category = Category::all()->orderBy('name', 'desc')->get();
+		if (count($category) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$category);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
 	 * Display the specified category.
 	 *
 	 * @param  int  $id
@@ -74,12 +112,36 @@ class CategoriesController extends \BaseController {
 	 *
 	 * @param  
 	 * @return Response
-	 */
-	/*
-	public function getBy{name}()
+	 */	
+	 //ini buat get row by name
+	// public function getBy{name}()
+	public function getByName($name)
 	{
 		$respond = array();
-		$category = Category::where('','=','')->get();
+		$category = Category::where('name', 'LIKE','%'.$name.'%')->get();
+		if (count($category) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$category);
+		}
+		return Response::json($respond);
+	}	
+
+	/**
+	 * Display the specified category by {name}.
+	 *
+	 * @param  
+	 * @return Response
+	 */	
+	 //ini buat get row by name
+	// public function getBy{name}()
+	public function getByNameAsc($name)
+	{
+		$respond = array();
+		$category = Category::where('name', 'LIKE','%'.$name.'%')->orderBy('name')->get();
 		if (count($category) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -90,8 +152,78 @@ class CategoriesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-	*/
-
+	
+	/**
+	 * Display the specified category by {name}.
+	 *
+	 * @param  
+	 * @return Response
+	 */	
+	 //ini buat get row by name
+	// public function getBy{name}()
+	public function getByNameDesc($name)
+	{
+		$respond = array();
+		$category = Category::where('name', 'LIKE','%'.$name.'%')->orderBy('name', 'desc')->get();
+		if (count($category) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$category);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Display the specified attribute by {deleted}.
+	 *
+	 * @param  
+	 * @return Response
+	 */
+	//ini buat get row by deleted status
+	// public function getBy{deleted}()
+	public function getByDeleted($deleted)
+	{
+		$respond = array();
+		// $attribute = Attribute::where('','=', '')->get();
+		$category = Category::where('deleted','=', $deleted)->get();
+		if (count($category) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$category);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Display the specified attribute by {deleted}.
+	 *
+	 * @param  
+	 * @return Response
+	 */
+	//ini buat get row by parentcategory status
+	// public function getBy{parentcategory}()
+	public function getByParentCategory($parent_category)
+	{
+		$respond = array();
+		// $attribute = Attribute::where('','=', '')->get();
+		$category = Category::where('parent_category','=', $parent_category)->get();
+		if (count($category) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$category);
+		}
+		return Response::json($respond);
+	}
+	
 	/**
 	 * Update all value of the specified category in database.
 	 *
@@ -129,16 +261,17 @@ class CategoriesController extends \BaseController {
 	}
 
 	/**
-	 * Update {name} value of the specified category in database.
+	 * Update {deleted} value of the specified category in database.
 	 *
 	 * @param  int  $id
 	 * @return Response
-	 */
-	/*
-	public function update{name}($id)
+	 */	
+	 // -----> update deleted search by name
+	public function updateDeleted($id, $new_deleted)
 	{
 		$respond = array();
 		$category = Category::find($id);
+		// $category = Category::where('name','=',$name)->first();
 		if ($category == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -146,7 +279,7 @@ class CategoriesController extends \BaseController {
 		else
 		{
 			//edit value
-			//$category-> = ;
+			$category->deleted = $new_deleted;
 			try {
 				$category->save();
 				$respond = array('code'=>'204','status' => 'No Content');
@@ -157,8 +290,70 @@ class CategoriesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-	*/
 	
+	/**
+	 * Update {name} value of the specified attribute in database.
+	 *
+	 * @param  
+	 * @return Response
+	 */	
+	// -----> update name search by name
+	// public function update{deleted}()
+	public function updateName($id, $new_name)
+	{
+		$respond = array();
+		$category = Category::find($id);
+		// $category = category::where('name','=', $name)->first();
+		if ($category == null)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			//edit value
+			$category->name = $new_name;
+			try {
+				$category->save();
+				$respond = array('code'=>'204','status' => 'No Content');
+			} catch (Exception $e) {
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
+			
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Update {name} value of the specified attribute in database.
+	 *
+	 * @param  
+	 * @return Response
+	 */	
+	// -----> update name search by name
+	// public function update{deleted}()
+	public function updateParentCategory($id, $new_parent_category)
+	{
+		$respond = array();
+		$category = Category::find($id);
+		// $category = category::where('name','=', $name)->first();
+		if ($category == null)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			//edit value
+			$category->parent_category = $new_parent_category;
+			try {
+				$category->save();
+				$respond = array('code'=>'204','status' => 'No Content');
+			} catch (Exception $e) {
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
+			
+		}
+		return Response::json($respond);
+	}
 	
 	/**
 	 * Remove the specified category from database.
@@ -192,19 +387,20 @@ class CategoriesController extends \BaseController {
 	 *
 	 * @param  
 	 * @return Response
-	 */
-	/*
-	public function exist()
+	 */	
+	 /*
+	public function exist($id)
 	{
 		$respond = array();
-		$category = Category::where('','=','')->get();
-		if (count($category) >= 0)
+		$category = Category::find($id);
+		// $category = Category::where('','=','')->get();
+		if ($category == null)
 		{
-			$respond = array('code'=>'200','status' => 'OK');
+			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
-			$respond = array('code'=>'404','status' => 'Not Found');
+			$respond = array('code'=>'200','status' => 'OK');
 		}
 		return Response::json($respond);
 	}

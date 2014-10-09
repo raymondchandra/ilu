@@ -347,3 +347,8 @@ hr {
   overflow: scroll;
   max-height: 300px;
 }
+
+/* line 335, brauch_style.scss */
+.f_table_suggestion tr td {
+  cursor: pointer !important;
+}

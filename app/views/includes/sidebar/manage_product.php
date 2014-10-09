@@ -1,4 +1,4 @@
-<div class="g-lg-2">
+<div class="col-lg-2">
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h3 class="panel-title">Product Information</h3>

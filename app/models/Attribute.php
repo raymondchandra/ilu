@@ -5,10 +5,12 @@ class Attribute extends \Eloquent {
 	// Add your validation rules here
 	public static $rules = [
 		// 'title' => 'required'
+		'name' => 'required|unique:attributes',
+		'deleted' => 'required|integer'
 	];
 
 	// Don't forget to fill this array
-	protected $fillable = [];
+	protected $fillable = ['name', 'deleted'];
 
 	public function price()
     {
@@ -16,3 +18,22 @@ class Attribute extends \Eloquent {
     }
 
 }
+
+/*
+method :
+	insert()
+	getAll()
+	getAllNameAsc()
+	getAllNameDesc()
+	getById()
+	getByName($name)
+	getByNameAsc($name)
+	getByNameDesc($name)
+	getByDeleted($deleted)
+	//getByDeletedAscName($deleted)
+	//getByDeletedDescName($deleted)
+	updateFull($id)
+	updateDeleted($id, $new_deleted)
+	updateName($id, $new_name)
+	delete($id)	
+*/
