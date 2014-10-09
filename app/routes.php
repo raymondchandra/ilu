@@ -129,5 +129,18 @@ Route::group(array('prefix' => 'test'), function()
 	});
 
 
+    // Tax
+    Route::get('/manage_tax', function()
+	{
+		return View::make('pages.admin.tax.manage_tax');
+	});
+
+    // Promosi
+    Route::get('/manage_promosi', function()
+	{
+		return View::make('pages.admin.promosi.manage_promosi');
+	});
+
+
 });
 

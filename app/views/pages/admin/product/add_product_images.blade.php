@@ -2,7 +2,7 @@
 @section('content')		
 				<div class="container-fluid">
 					<div class="row">
-						<div class="g-lg-12">
+						<div class="col-lg-12">
 							<div class="s_title_n_control">
 								<h3 style="float: left;">
 									New Product
@@ -14,7 +14,7 @@
 							
 							@include('includes.sidebar.manage_product')
 							
-							<div class="g-lg-10">
+							<div class="col-lg-10">
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h3 class="panel-title">Images</h3>
@@ -25,11 +25,11 @@
 								
 											<form class="form-horizontal" role="form">
 												<div class="form-group">
-													<label class="g-sm-3 control-label">Price in IDR *</label>
-													<div class="g-sm-6">
+													<label class="col-sm-3 control-label">Price in IDR *</label>
+													<div class="col-sm-6">
 														<input type="text" class="form-control">				
 													</div>
-													<div class="g-sm-3">
+													<div class="col-sm-3">
 														<span class="btn btn-danger">
 															Maaf form harus diisi
 														</span>
