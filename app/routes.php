@@ -134,10 +134,6 @@ Route::group(array('prefix' => 'test'), function()
 	{
 		return View::make('pages.admin.newsletter.manage_newsletter');
 	});
-    Route::get('/add_new_newsletter', function()
-	{
-		return View::make('pages.admin.newsletter.add_new_newsletter');
-	});
 
 
     // Tax
@@ -150,6 +146,12 @@ Route::group(array('prefix' => 'test'), function()
     Route::get('/manage_promosi', function()
 	{
 		return View::make('pages.admin.promosi.manage_promosi');
+	});
+
+    // Promosi
+    Route::get('/manage_transaction', function()
+	{
+		return View::make('pages.admin.transaction.manage_transaction');
 	});
 
 
