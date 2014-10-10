@@ -1,17 +1,14 @@
 <?php
 
 class CategoriesController extends \BaseController {
-
-	/**
-	 * Insert a newly created category in database.
-	 *
-	 * @return Response
-	 */
+		
 	public function insert()
 	{
+		$input = json_decode(Input::all());
+		
 		$respond = array();
 		//validate
-		$validator = Validator::make($data = Input::all(), Category::$rules);
+		$validator = Validator::make($data = $input, Category::$rules);
 
 		if ($validator->fails())
 		{
@@ -27,13 +24,8 @@ class CategoriesController extends \BaseController {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 		}
 		return Response::json($respond);
-	}
-
-	/**
-	 * Display all of the category.
-	 *
-	 * @return Response
-	 */
+	}	
+		
 	public function getAll(){
 		$respond = array();
 		$category = Category::all();
@@ -46,14 +38,9 @@ class CategoriesController extends \BaseController {
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$category);
 		}
 		return Response::json($respond);
-	}
-
-	/**
-	 * Display all of the category.
-	 *
-	 * @return Response
-	 */
-	public function getAllNameAsc(){
+	}	
+		 
+	public function getAllSortedNameAsc(){
 		$respond = array();
 		$category = Category::all()->orderBy('name')->get();
 		if (count($category) == 0)
@@ -65,14 +52,9 @@ class CategoriesController extends \BaseController {
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$category);
 		}
 		return Response::json($respond);
-	}
-	
-	/**
-	 * Display all of the category.
-	 *
-	 * @return Response
-	 */
-	public function getAllNameDesc(){
+	}	
+		
+	public function getAllSortedNameDesc(){
 		$respond = array();
 		$category = Category::all()->orderBy('name', 'desc')->get();
 		if (count($category) == 0)
@@ -85,13 +67,7 @@ class CategoriesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-	
-	/**
-	 * Display the specified category.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+		
 	public function getById($id)
 	{
 		$respond = array();
@@ -106,15 +82,7 @@ class CategoriesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-
-	/**
-	 * Display the specified category by {name}.
-	 *
-	 * @param  
-	 * @return Response
-	 */	
-	 //ini buat get row by name
-	// public function getBy{name}()
+	
 	public function getByName($name)
 	{
 		$respond = array();
@@ -129,16 +97,8 @@ class CategoriesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}	
-
-	/**
-	 * Display the specified category by {name}.
-	 *
-	 * @param  
-	 * @return Response
-	 */	
-	 //ini buat get row by name
-	// public function getBy{name}()
-	public function getByNameAsc($name)
+	
+	public function getByNameSortedNameAsc($name)
 	{
 		$respond = array();
 		$category = Category::where('name', 'LIKE','%'.$name.'%')->orderBy('name')->get();
@@ -152,16 +112,8 @@ class CategoriesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-	
-	/**
-	 * Display the specified category by {name}.
-	 *
-	 * @param  
-	 * @return Response
-	 */	
-	 //ini buat get row by name
-	// public function getBy{name}()
-	public function getByNameDesc($name)
+		
+	public function getByNameSortedNameDesc($name)
 	{
 		$respond = array();
 		$category = Category::where('name', 'LIKE','%'.$name.'%')->orderBy('name', 'desc')->get();
@@ -176,42 +128,9 @@ class CategoriesController extends \BaseController {
 		return Response::json($respond);
 	}
 	
-	/**
-	 * Display the specified attribute by {deleted}.
-	 *
-	 * @param  
-	 * @return Response
-	 */
-	//ini buat get row by deleted status
-	// public function getBy{deleted}()
-	public function getByDeleted($deleted)
-	{
-		$respond = array();
-		// $attribute = Attribute::where('','=', '')->get();
-		$category = Category::where('deleted','=', $deleted)->get();
-		if (count($category) == 0)
-		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		else
-		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$category);
-		}
-		return Response::json($respond);
-	}
-	
-	/**
-	 * Display the specified attribute by {deleted}.
-	 *
-	 * @param  
-	 * @return Response
-	 */
-	//ini buat get row by parentcategory status
-	// public function getBy{parentcategory}()
 	public function getByParentCategory($parent_category)
 	{
-		$respond = array();
-		// $attribute = Attribute::where('','=', '')->get();
+		$respond = array();		
 		$category = Category::where('parent_category','=', $parent_category)->get();
 		if (count($category) == 0)
 		{
@@ -224,12 +143,51 @@ class CategoriesController extends \BaseController {
 		return Response::json($respond);
 	}
 	
-	/**
-	 * Update all value of the specified category in database.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+	public function getByParentCategorySortedNameAsc($parent_category)
+	{
+		$respond = array();		
+		$category = Category::where('parent_category','=', $parent_category)->orderBy('name')->get();
+		if (count($category) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$category);
+		}
+		return Response::json($respond);
+	}
+	
+	public function getByParentCategorySortedNameDesc($parent_category)
+	{
+		$respond = array();		
+		$category = Category::where('parent_category','=', $parent_category)->orderBy('name', 'desc')->get();
+		if (count($category) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$category);
+		}
+		return Response::json($respond);
+	}			
+		
+	public function getByDeleted($deleted)
+	{
+		$respond = array();		
+		$category = Category::where('deleted','=', $deleted)->get();
+		if (count($category) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$category);
+		}
+		return Response::json($respond);
+	}
+	
 	public function updateFull($id)
 	{
 		$respond = array();
@@ -240,8 +198,10 @@ class CategoriesController extends \BaseController {
 		}
 		else
 		{
+			$input = json_decode(Input::all());
+			
 			//validate
-			$validator = Validator::make($data = Input::all(), Category::$rules);
+			$validator = Validator::make($data = $input, Category::$rules);
 
 			if ($validator->fails())
 			{
@@ -258,109 +218,8 @@ class CategoriesController extends \BaseController {
 			
 		}
 		return Response::json($respond);
-	}
-
-	/**
-	 * Update {deleted} value of the specified category in database.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */	
-	 // -----> update deleted search by name
-	public function updateDeleted($id, $new_deleted)
-	{
-		$respond = array();
-		$category = Category::find($id);
-		// $category = Category::where('name','=',$name)->first();
-		if ($category == null)
-		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		else
-		{
-			//edit value
-			$category->deleted = $new_deleted;
-			try {
-				$category->save();
-				$respond = array('code'=>'204','status' => 'No Content');
-			} catch (Exception $e) {
-				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
-			}
-			
-		}
-		return Response::json($respond);
-	}
-	
-	/**
-	 * Update {name} value of the specified attribute in database.
-	 *
-	 * @param  
-	 * @return Response
-	 */	
-	// -----> update name search by name
-	// public function update{deleted}()
-	public function updateName($id, $new_name)
-	{
-		$respond = array();
-		$category = Category::find($id);
-		// $category = category::where('name','=', $name)->first();
-		if ($category == null)
-		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		else
-		{
-			//edit value
-			$category->name = $new_name;
-			try {
-				$category->save();
-				$respond = array('code'=>'204','status' => 'No Content');
-			} catch (Exception $e) {
-				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
-			}
-			
-		}
-		return Response::json($respond);
-	}
-	
-	/**
-	 * Update {name} value of the specified attribute in database.
-	 *
-	 * @param  
-	 * @return Response
-	 */	
-	// -----> update name search by name
-	// public function update{deleted}()
-	public function updateParentCategory($id, $new_parent_category)
-	{
-		$respond = array();
-		$category = Category::find($id);
-		// $category = category::where('name','=', $name)->first();
-		if ($category == null)
-		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		else
-		{
-			//edit value
-			$category->parent_category = $new_parent_category;
-			try {
-				$category->save();
-				$respond = array('code'=>'204','status' => 'No Content');
-			} catch (Exception $e) {
-				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
-			}
-			
-		}
-		return Response::json($respond);
-	}
-	
-	/**
-	 * Remove the specified category from database.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+	}		
+		
 	public function delete($id)
 	{
 		$respond = array();
@@ -377,23 +236,14 @@ class CategoriesController extends \BaseController {
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 			}
-			
 		}
 		return Response::json($respond);
-	}
-
-	/**
-	 * Check if row exist in database.
-	 *
-	 * @param  
-	 * @return Response
-	 */	
-	 /*
+	}	
+		 
 	public function exist($id)
 	{
 		$respond = array();
-		$category = Category::find($id);
-		// $category = Category::where('','=','')->get();
+		$category = Category::find($id);	
 		if ($category == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -403,7 +253,6 @@ class CategoriesController extends \BaseController {
 			$respond = array('code'=>'200','status' => 'OK');
 		}
 		return Response::json($respond);
-	}
-	*/
+	}	
 
 }

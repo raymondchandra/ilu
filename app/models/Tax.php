@@ -13,26 +13,3 @@ class Tax extends \Eloquent {
 	protected $fillable = ['amount', 'deleted'];
 
 }
-
-/*
-method :
-	insert()
-	getAll()
-	getAllAmountAsc()
-	getAllAmountDesc()
-	getById($id)
-	getByAmountLessThanEqual($limit)
-	getByAmountLessThanEqualAsc($limit)
-	getByAmountLessThanEqualDesc($limit)
-	getByAmountMoreThanEqual($limit)
-	getByAmountMoreThanEqualAsc($limit)
-	getByAmountMoreThanEqualDesc($limit)
-	getByAmountBetweenEqual($lower_limit, $upper_limit)	
-	getByAmountBetweenEqualAsc($lower_limit, $upper_limit)	
-	getByAmountBetweenEqualDesc($lower_limit, $upper_limit)	
-	getByDeleted($deleted)
-	updateFull($id)
-	updateDeleted($id, $new_deleted)
-	updateAmount($id, $new_amount)
-	delete($id)	
-*/
