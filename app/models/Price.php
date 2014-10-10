@@ -8,7 +8,13 @@ class Price extends \Eloquent {
 	];
 
 	// Don't forget to fill this array
-	protected $fillable = [];
+	protected $fillable = [
+        'attr_id',
+        'attr_value',
+        'product_id',
+        'amount',
+        'tax_id'
+    ];
 
 	public function product()
     {

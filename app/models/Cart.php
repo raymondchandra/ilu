@@ -8,7 +8,11 @@ class Cart extends \Eloquent {
 	];
 
 	// Don't forget to fill this array
-	protected $fillable = [];
+	protected $fillable = [
+		'account_id',
+		'price_id',
+		'quantity',
+	];
 
 	 public function account()
     {

@@ -44,7 +44,7 @@ class Account extends \Eloquent implements UserInterface, RemindableInterface
 	];
 
 	// Don't forget to fill this array
-	protected $fillable = [];
+	protected $fillable = ['username','password','active','role','profile_id'];
 
 	public function profile()
     {

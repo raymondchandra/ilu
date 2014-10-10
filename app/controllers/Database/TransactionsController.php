@@ -4,15 +4,16 @@ class TransactionsController extends \BaseController {
 
 	/**
 	 * Insert a newly created transaction in database.
-	 *
+	 * invoice = TahunTanggalBulanID(4digit diambil dari count transaksi hari itu)
+	 *paid = 
 	 * @return Response
 	 */
-	public function insert()
+	public function createTransaction()
 	{
 		$respond = array();
 		//validate
 		$validator = Validator::make($data = Input::all(), Transaction::$rules);
-
+		
 		if ($validator->fails())
 		{
 			$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
@@ -21,7 +22,8 @@ class TransactionsController extends \BaseController {
 
 		//save
 		try {
-			Transaction::create($data);
+			//Transaction::create($data);
+			di sini loh
 			$idCreate  = $data->id;
 			$respond = array('code'=>'201','status' => 'Created','messages'=>$idCreate);
 		} catch (Exception $e) {
@@ -44,6 +46,13 @@ class TransactionsController extends \BaseController {
 		}
 		else
 		{
+			foreach($transaction as $key)
+			{
+				$accId = $key->account_id;
+				$profId = Account::where('id','=',$accId)->first()->profile_id;
+				$profName = Profile::where('id','=',$profId)->first()->full_name;
+				$key->full_name = $profName;
+			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
 		}
 		return Response::json($respond);
@@ -419,4 +428,6 @@ class TransactionsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	
+	
 }

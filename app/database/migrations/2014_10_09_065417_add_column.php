@@ -16,6 +16,7 @@ class AddColumn extends Migration {
 		{
 		    $table->string('name');
 
+		    $table->dateTime('start_date');
 		});
 
 		Schema::table('vouchers', function($table)

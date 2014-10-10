@@ -8,7 +8,12 @@ class Voucher extends \Eloquent {
 	];
 
 	// Don't forget to fill this array
-	protected $fillable = [];
+	protected $fillable = [
+		'type',
+		'amount',
+		'account_id',
+		'code'
+	];
 	
 	public function transaction()
 	{
