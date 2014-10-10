@@ -12,7 +12,15 @@ class Transaction extends \Eloquent {
 	];
 
 	// Don't forget to fill this array
-	protected $fillable = ['invoice', 'account_id', 'total_price', 'status', 'paid', 'shipment_id'];
+	protected $fillable = [
+        'invoice',
+        'account_id' ,
+        'total_price',
+        'voucher_id',
+        'status',
+        'paid',
+        'shipment_id'
+    ];
 
 	public function account()
     {

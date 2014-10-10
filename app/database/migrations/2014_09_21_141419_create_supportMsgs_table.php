@@ -17,7 +17,7 @@ class CreateSupportMsgsTable extends Migration {
 			$table->increments('id');
 			$table->integer('ticket_id')->unsigned();
 			$table->integer('account_id')->unsigned();
-			$table->string('text');
+			$table->longText('text');
 			$table->timestamps();
 		});
 	}

@@ -16,7 +16,7 @@ class CreateInformationTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('title');
-			$table->string('content');
+			$table->longText('content');
 			$table->integer('edited_by')->unsigned();
 			$table->timestamps();
 		});

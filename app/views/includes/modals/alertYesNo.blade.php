@@ -7,7 +7,7 @@
 		<h4 class="modal-title" id="myModalLabel">Alert!</h4>
 	  </div>
 	  <div class="modal-body"  style="text-align: center;">
-			Apakah Anda yakin ingin menghapus kategori ini?
+			Apakah Anda yakin ingin menghapus ini?
 	  </div>
 	  <div class="modal-footer" style="text-align: center;">
 		<button type="button" class="btn btn-danger" data-dismiss="modal">Ya</button>

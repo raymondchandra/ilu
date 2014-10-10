@@ -8,7 +8,11 @@ class Phone extends \Eloquent {
 	];
 
 	// Don't forget to fill this array
-	protected $fillable = [];
+	protected $fillable = [
+		'profile_id',
+		'type',
+		'number'
+	];
 
 	public function profile()
     {
