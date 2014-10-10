@@ -2,16 +2,13 @@
 
 class PricesController extends \BaseController {
 
-	/**
-	 * Insert a newly created price in database.
-	 *
-	 * @return Response
-	 */
 	public function insert()
 	{
+		$input = json_decode(Input::all());
+		
 		$respond = array();
 		//validate
-		$validator = Validator::make($data = Input::all(), Price::$rules);
+		$validator = Validator::make($data = $input, Price::$rules);
 
 		if ($validator->fails())
 		{
@@ -28,12 +25,7 @@ class PricesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-
-	/**
-	 * Display all of the price.
-	 *
-	 * @return Response
-	 */
+	
 	public function getAll(){
 		$respond = array();
 		$price = Price::all();
@@ -47,13 +39,7 @@ class PricesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-
-	/**
-	 * Display the specified price.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+	
 	public function getById($id)
 	{
 		$respond = array();
@@ -68,18 +54,56 @@ class PricesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-
-	/**
-	 * Display the specified price by {name}.
-	 *
-	 * @param  
-	 * @return Response
-	 */
-	/*
-	public function getBy{name}()
+	
+	public function getByAttrId($attr_id)
 	{
 		$respond = array();
-		$price = Price::where('','=','')->get();
+		$price = Price::where('attr_id','=',$attr_id)->get();
+		if (count($price) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$price);
+		}
+		return Response::json($respond);
+	}	
+	
+	public function getByAttrValue($attr_value)
+	{
+		$respond = array();
+		$price = Price::where('attr_value','LIKE','%'.$attr_value.'%')->get();
+		if (count($price) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$price);
+		}
+		return Response::json($respond);
+	}	
+	
+	public function getByProductId($product_id)
+	{
+		$respond = array();
+		$price = Price::where('product_id','=',$product_id)->get();
+		if (count($price) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$price);
+		}
+		return Response::json($respond);
+	}	
+	
+	public function getByAmountLessThanEquals($amount)
+	{
+		$respond = array();
+		$price = Price::where('amount','<=',$amount)->get();
 		if (count($price) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -90,14 +114,22 @@ class PricesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-	*/
-
-	/**
-	 * Update all value of the specified price in database.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+	
+	public function getByAmountMoreThanEquals($amount)
+	{
+		$respond = array();
+		$price = Price::where('amount','>=',$amount)->get();
+		if (count($price) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$price);
+		}
+		return Response::json($respond);
+	}
+	
 	public function updateFull($id)
 	{
 		$respond = array();
@@ -108,8 +140,10 @@ class PricesController extends \BaseController {
 		}
 		else
 		{
+			$input = json_decode(Input::all());
+
 			//validate
-			$validator = Validator::make($data = Input::all(), Price::$rules);
+			$validator = Validator::make($data = $input, Price::$rules);
 
 			if ($validator->fails())
 			{
@@ -127,45 +161,7 @@ class PricesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-
-	/**
-	 * Update {name} value of the specified price in database.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	/*
-	public function update{name}($id)
-	{
-		$respond = array();
-		$price = Price::find($id);
-		if ($price == null)
-		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		else
-		{
-			//edit value
-			//$price-> = ;
-			try {
-				$price->save();
-				$respond = array('code'=>'204','status' => 'No Content');
-			} catch (Exception $e) {
-				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
-			}
-			
-		}
-		return Response::json($respond);
-	}
-	*/
 	
-	
-	/**
-	 * Remove the specified price from database.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function delete($id)
 	{
 		$respond = array();
@@ -186,25 +182,18 @@ class PricesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-
-	/**
-	 * Check if row exist in database.
-	 *
-	 * @param  
-	 * @return Response
-	 */
-	/*
-	public function exist()
+	
+	public function exist($id)
 	{
 		$respond = array();
-		$price = Price::where('','=','')->get();
-		if (count($price) >= 0)
+		$price = Price::find($id);
+		if ($price == null)
 		{
-			$respond = array('code'=>'200','status' => 'OK');
+			$respond = array('code'=>'404','status' => 'Not Found');			
 		}
 		else
 		{
-			$respond = array('code'=>'404','status' => 'Not Found');
+			$respond = array('code'=>'200','status' => 'OK');
 		}
 		return Response::json($respond);
 	}
