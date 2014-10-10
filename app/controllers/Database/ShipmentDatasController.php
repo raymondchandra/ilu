@@ -5,6 +5,8 @@ class ShipmentDatasController extends \BaseController {
 	/**
 	 * Insert a newly created shipmentdata in database.
 	 *
+	 *deleted 1
+	 *not deleted 0
 	 * @return Response
 	 */
 	public function insert()
@@ -21,8 +23,14 @@ class ShipmentDatasController extends \BaseController {
 
 		//save
 		try {
-			Shipmentdata::create($data);
-			$idCreate  = $data->id;
+			//Shipmentdata::create($data);
+			$shipment = new ShipmentData();
+			$shipment->courier = Input::get('courier');
+			$shipment->destination = Input::get('destination');
+			$shipment->price = Input::get('price');
+			$shipemnt->deleted = '0';
+			$shipment->save();
+			$idCreate  = $shipment->id;
 			
 			$respond = array('code'=>'201','status' => 'Created','messages'=> $idCreate);
 		} catch (Exception $e) {
