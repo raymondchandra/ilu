@@ -4,15 +4,16 @@ class TransactionsController extends \BaseController {
 
 	/**
 	 * Insert a newly created transaction in database.
-	 *
+	 * invoice = TahunTanggalBulanID(4digit diambil dari count transaksi hari itu)
+	 *paid = 
 	 * @return Response
 	 */
-	public function insert()
+	public function createTransaction()
 	{
 		$respond = array();
 		//validate
 		$validator = Validator::make($data = Input::all(), Transaction::$rules);
-
+		
 		if ($validator->fails())
 		{
 			$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
@@ -21,8 +22,10 @@ class TransactionsController extends \BaseController {
 
 		//save
 		try {
-			Transaction::create($data);
-			$respond = array('code'=>'201','status' => 'Created');
+			//Transaction::create($data);
+			di sini loh
+			$idCreate  = $data->id;
+			$respond = array('code'=>'201','status' => 'Created','messages'=>$idCreate);
 		} catch (Exception $e) {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 		}
@@ -43,6 +46,13 @@ class TransactionsController extends \BaseController {
 		}
 		else
 		{
+			foreach($transaction as $key)
+			{
+				$accId = $key->account_id;
+				$profId = Account::where('id','=',$accId)->first()->profile_id;
+				$profName = Profile::where('id','=',$profId)->first()->full_name;
+				$key->full_name = $profName;
+			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
 		}
 		return Response::json($respond);
@@ -58,6 +68,7 @@ class TransactionsController extends \BaseController {
 	{
 		$respond = array();
 		$transaction = Transaction::find($id);
+		
 		if (count($transaction) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -213,14 +224,10 @@ class TransactionsController extends \BaseController {
 	/**
 	 * Update status (pending, on progress, sent)
 	 *
-	 * @param  int  $status, $id
-	 * status :
-	 * 0-> pending
-	 * 1-> on progress
-	 * 2-> sent
+	 * @param  int  $id, $status
 	 * @return Response
 	 */
-	public function updateStatus($status, $id)
+	public function updateStatus($id, $status)
 	{
 		$respond = array();
 		$transaction = Transaction::find($id);
@@ -230,17 +237,10 @@ class TransactionsController extends \BaseController {
 		}
 		else
 		{
-			//validate
-			$validator = Validator::make($data = Input::all(), Transaction::$rules);
-
-			if ($validator->fails())
-			{
-				$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
-				return Response::json($respond);
-			}
-			//save
+			//edit value
+			$transaction ->status = $status;
 			try {
-				$transaction->update($data);
+				$transaction->save();
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
@@ -253,13 +253,13 @@ class TransactionsController extends \BaseController {
 	/**
 	 * Update paid (paid, not paid)
 	 *
-	 * @param  int  $paid, $id
+	 * @param  int  $id, $paid 
 	 * status :
 	 * 0-> not paid
 	 * 1-> paid
 	 * @return Response
 	 */
-	public function updateStatus($status, $id)
+	public function updatePaid($id, $paid)
 	{
 		$respond = array();
 		$transaction = Transaction::find($id);
@@ -269,17 +269,10 @@ class TransactionsController extends \BaseController {
 		}
 		else
 		{
-			//validate
-			$validator = Validator::make($data = Input::all(), Transaction::$rules);
-
-			if ($validator->fails())
-			{
-				$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
-				return Response::json($respond);
-			}
-			//save
+			//edit value
+			$transaction ->paid = $paid;
 			try {
-				$transaction->update($data);
+				$transaction->save();
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
@@ -288,4 +281,153 @@ class TransactionsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	
+	/**
+	 * Display the specified transaction by account_id
+	 *
+	 * @param  int  $account_id
+	 * @return Response
+	 */
+	public function getByAccountId($account_id)
+	{
+		$respond = array();
+		$transaction = Transaction::where('account_id','=',$account_id)->get();
+		if (count($transaction) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Display the specified transaction by invoice
+	 *
+	 * @param  int  $invoice
+	 * @return Response
+	 */
+	public function getByInvoice($invoice)
+	{
+		$respond = array();
+		$transaction = Transaction::where('invoice','=',$invoice)->get();
+		if (count($transaction) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Display the specified transaction by voucher id
+	 *
+	 * @param  int  $voucher_id
+	 * @return Response
+	 */
+	public function getByVoucherId($voucher_id)
+	{
+		$respond = array();
+		$transaction = Transaction::where('voucher_id','=',$voucher_id)->get();
+		if (count($transaction) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Display the specified transaction by status
+	 *
+	 * @param  $status
+	 * @return Response
+	 */
+	public function getByStatus($status)
+	{
+		$respond = array();
+		$transaction = Transaction::where('status','=',$status)->get();
+		if (count($transaction) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Display the specified transaction by paid
+	 *
+	 * @param  int  $paid
+	 * @return Response
+	 */
+	public function getByPaid($paid)
+	{
+		$respond = array();
+		$transaction = Transaction::where('paid','=',$paid)->get();
+		if (count($transaction) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Display the specified transaction by shipment id
+	 *
+	 * @param  int  $shipment_id
+	 * @return Response
+	 */
+	public function getByShipmentId($shipment_id)
+	{
+		$respond = array();
+		$transaction = Transaction::where('shipment_id','=',$shipment_id)->get();
+		if (count($transaction) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Display the specified transaction by total_price
+	 *
+	 * @param  int  $total_price
+	 * @return Response
+	 */
+	public function getByTotalPrize($total_price)
+	{
+		$respond = array();
+		$transaction = Transaction::where('total_price','=',$total_price)->get();
+		if (count($transaction) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
+		}
+		return Response::json($respond);
+	}
+	
+	
 }

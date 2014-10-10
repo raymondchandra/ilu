@@ -38,7 +38,7 @@ class ShipmentDatasController extends \BaseController {
 	 */
 	public function getAll(){
 		$respond = array();
-		$shipmentdata = Shipmentdata::all();
+		$shipmentdata = Shipmentdata::where('deleted','=','0');
 		if (count($shipmentdata) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -222,7 +222,7 @@ class ShipmentDatasController extends \BaseController {
 	 public function getByDestination($destination)
 	{
 		$respond = array();
-		$shipmentdata = Shipmentdata::where('destination','=',$destination)->get();
+		$shipmentdata = Shipmentdata::where('destination','=',$destination)->where('deleted','=','0')->get();
 		if (count($shipmentdata) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -243,7 +243,7 @@ class ShipmentDatasController extends \BaseController {
 	 public function getByCourier($courier)
 	{
 		$respond = array();
-		$shipmentdata = Shipmentdata::where('courier','=',$courier)->get();
+		$shipmentdata = Shipmentdata::where('courier','=',$courier)->where('deleted','=','0')->get();
 		if (count($shipmentdata) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -264,7 +264,7 @@ class ShipmentDatasController extends \BaseController {
 	 public function getByDestinationAndCourier($destination, $courier)
 	{
 		$respond = array();
-		$shipmentdata = Shipmentdata::where('destination','=',$destination)->where('courier','=',$courier)->get();
+		$shipmentdata = Shipmentdata::where('destination','=',$destination)->where('courier','=',$courier)->where('deleted','=','0')->get();
 		if (count($shipmentdata) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -308,7 +308,8 @@ class ShipmentDatasController extends \BaseController {
 	
 	/**
 	 * Remove spesific courier from database.
-	 *
+	 *deleted 1
+	 *not deleted 0
 	 * @param  $courier
 	 * @return Response
 	 */
@@ -323,7 +324,7 @@ class ShipmentDatasController extends \BaseController {
 		else
 		{
 			try {
-				$shipmentdata->delete();
+				$shipmentdata->deleted ="1";
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
@@ -335,7 +336,8 @@ class ShipmentDatasController extends \BaseController {
 	
 	/**
 	 * Remove spesific destination from database.
-	 *
+	 *deleted 1
+	 *not deleted 0
 	 * @param   $destination
 	 * @return Response
 	 */
@@ -350,7 +352,7 @@ class ShipmentDatasController extends \BaseController {
 		else
 		{
 			try {
-				$shipmentdata->delete();
+				$shipmentdata->deleted ="1";
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);

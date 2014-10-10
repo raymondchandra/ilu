@@ -1,5 +1,10 @@
 <?php
-
+Route::get('/tes', function()
+{
+	$acc = new AccountsController();
+	
+	$acc->getHistory(5);
+});
 Route::group(['before' => 'check_token'], function()
 {
 	//account
@@ -123,9 +128,26 @@ Route::group(array('prefix' => 'test'), function()
 	});
 
     // Newsletter
+    Route::get('/manage_newsletter', function()
+	{
+		return View::make('pages.admin.newsletter.manage_newsletter');
+	});
     Route::get('/add_new_newsletter', function()
 	{
 		return View::make('pages.admin.newsletter.add_new_newsletter');
+	});
+
+
+    // Tax
+    Route::get('/manage_tax', function()
+	{
+		return View::make('pages.admin.tax.manage_tax');
+	});
+
+    // Promosi
+    Route::get('/manage_promosi', function()
+	{
+		return View::make('pages.admin.promosi.manage_promosi');
 	});
 
 

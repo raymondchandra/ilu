@@ -37,7 +37,7 @@ class ShipmentsController extends \BaseController {
 	 */
 	public function getAll(){
 		$respond = array();
-		$shipment = Shipment::all();
+		$shipment = Shipment::Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id');
 		if (count($shipment) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -58,7 +58,7 @@ class ShipmentsController extends \BaseController {
 	public function getById($id)
 	{
 		$respond = array();
-		$shipment = Shipment::find($id);
+		$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->where('shipmentData_id', '=', $id);
 		if (count($shipment) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -221,13 +221,14 @@ class ShipmentsController extends \BaseController {
 	{
 		$respond = array();
 		$shipment = Shipment::where('number','=',$number)->first();
+		$shipments = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->where('shipmentData_id', '=', $shipment->shipmentData_id);
 		if (count($shipment) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipment);
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipments);
 		}
 		return Response::json($respond);
 	}
@@ -239,7 +240,7 @@ class ShipmentsController extends \BaseController {
 	 * @return Response
 	 */
 	
-	public function update{name}($id,$number)
+	public function updateResiNumber($id,$number)
 	{
 		$respond = array();
 		$shipment = Shipment::find($id);

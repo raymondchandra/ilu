@@ -8,7 +8,7 @@ class Profile extends \Eloquent {
 	];
 
 	// Don't forget to fill this array
-	protected $fillable = [];
+	protected $fillable = ['member_id','full_name','name_in_profile','no_ktp','company_name','company_address','dob','email'];
 
 	public function account()
     {

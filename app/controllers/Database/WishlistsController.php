@@ -209,5 +209,31 @@ class WishlistsController extends \BaseController {
 		return Response::json($respond);
 	}
 	*/
-
+	
+	/**
+	 * Get wishlist by account_id
+	 *
+	 * @param  $id string
+	 * @return Response
+	 */
+	public function getWishListByAccountId($id)
+	{
+		$respond = array();
+		$wishlist = Wishlist::where('account_id','=',$id)->get();
+		if (count($wishlist) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			try {
+				$wishlist->delete();
+				$respond = array('code'=>'204','status' => 'No Content');
+			} catch (Exception $e) {
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
+			
+		}
+		return Response::json($respond);
+	}
 }

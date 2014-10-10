@@ -2,7 +2,7 @@
 @section('content')	
 				<div class="container-fluid">
 					<div class="row ">
-						<div class="g-lg-12">
+						<div class="col-lg-12">
 							<div class="s_title_n_control">
 								<h3 style="float: left;">
 									Login
@@ -13,7 +13,7 @@
 							<hr></hr>
 							<div class="s_tbl s_set_height_window">
 								<div class="s_cl">
-									<div class="g-lg-6 g-lg-push-3">
+									<div class="col-lg-6 col-lg-push-3">
 									
 										<p class="bg-danger" style="padding-top: 10px; padding-bottom: 10px; margin-bottom: 20px;">Maaf username/password anda salah!</p>
 										
@@ -24,15 +24,15 @@
 											<div class="panel-body">
 												<form class="form-horizontal" role="form">
 													<div class="form-group">
-														<label for="inputEmail3" class="g-sm-3 control-label">Username/Email</label>
-														<div class="g-sm-6">
+														<label for="inputEmail3" class="col-sm-3 control-label">Username/Email</label>
+														<div class="col-sm-6">
 															<input type="text" class="form-control" placeholder="Username/Email">	
 														</div>
 													</div>
 												  
 													<div class="form-group">
-														<label for="inputPassword3" class="g-sm-3 control-label">Password</label>
-														<div class="g-sm-6">
+														<label for="inputPassword3" class="col-sm-3 control-label">Password</label>
+														<div class="col-sm-6">
 															<input type="password" class="form-control" placeholder="Password">	
 														</div>
 													</div>
