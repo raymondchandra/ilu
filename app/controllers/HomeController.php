@@ -19,5 +19,21 @@ class HomeController extends BaseController {
 	{
 		return View::make('hello');
 	}
+	
+	public function wrapper(){
+		$json = Input::get('json_data');
+		
+		$decode = json_decode($json);
+		
+		$status = $decode->{'status'};
+		
+		$text = $decode->{'text'};
+		
+		return $this->login($status,$text);
+	}
+	
+	public function login($status,$message){
+		return $status." dan ".$message;
+	}
 
 }

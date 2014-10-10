@@ -5,6 +5,8 @@ Route::get('/tes', function()
 	
 	$acc->getHistory(5);
 });
+Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
+
 Route::group(['before' => 'check_token'], function()
 {
 	//account
