@@ -1,5 +1,15 @@
 <?php
+
 Route::get('/tes', 'ProductsController@getTopTenNewProduct');
+
+Route::get('/tes2', function()
+{
+	$acc = new AccountsController();
+	
+	$acc->getHistory(5);
+});
+Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
+
 
 Route::group(['before' => 'check_token'], function()
 {
@@ -128,10 +138,6 @@ Route::group(array('prefix' => 'test'), function()
 	{
 		return View::make('pages.admin.newsletter.manage_newsletter');
 	});
-    Route::get('/add_new_newsletter', function()
-	{
-		return View::make('pages.admin.newsletter.add_new_newsletter');
-	});
 
 
     // Tax
@@ -144,6 +150,12 @@ Route::group(array('prefix' => 'test'), function()
     Route::get('/manage_promosi', function()
 	{
 		return View::make('pages.admin.promosi.manage_promosi');
+	});
+
+    // Promosi
+    Route::get('/manage_transaction', function()
+	{
+		return View::make('pages.admin.transaction.manage_transaction');
 	});
 
 

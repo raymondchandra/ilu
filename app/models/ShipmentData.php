@@ -9,8 +9,7 @@ class ShipmentData extends \Eloquent {
 		// 'title' => 'required'
 		'courier' => 'required',
 		'destination' => 'required',
-		'price' => 'required',
-		'deleted'=>'required|integer'];
+		'price' => 'required'];
 
 	
 	// Don't forget to fill this array

@@ -329,8 +329,8 @@ class AccountsController extends \BaseController {
 		$json = LogsController::getLogByKey("abc",$id);
 		$json_message = json_decode($json->getContent());
 		$messages = $json_message->{'messages'};
-		//$res nanti isi nya search, belanja apa aja...
-		$res['search'] = $messages;
+		$transa
+		//$res nanti isi nya search, belanja apa aja, wishlist....
 		
 
 	}

@@ -39,7 +39,7 @@
 												  
 													<div class="form-group">
 														<div class=" g-sm-3 g-sm-push-3">
-															<button type="submit" class="btn btn-warning">Login</button>
+															<button type="button" class="btn btn-warning flogin">Login</button>
 														</div>
 													</div>
 												</form>
@@ -51,4 +51,30 @@
 						</div>
 					</div>
 				</div>
+			
+<script>
+	
+	$('body').on('click','.flogin',function(){
+		$data = {
+			'status' : '202',
+			'text' : "Hello World!"
+		}
+		
+		var json_data = JSON.stringify($data);
+		
+		$.ajax({
+			url: '../test_login',
+			type: 'POST',
+			data: {
+				'json_data':json_data
+			},
+			success: function (res) {
+				alert(res)
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+						alert(errorThrown);
+			}
+		},'json');	
+	});
+</script>
 			@stop

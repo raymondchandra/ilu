@@ -6,9 +6,8 @@
 			
 				<div class="s_title_n_control">
 					<h3 style="float: left;">
-						Manage Taxes
+						Manage Transaction
 					</h3>
-					<button class="btn btn-success" style="float: right; margin-top: 20px;"  data-toggle="modal" data-target=".pop_up_add_tax">+ Add New Tax</button>
 				</div>
 				<span class="clearfix"></span>
 				<hr></hr>
@@ -27,13 +26,37 @@
 						<thead class="table-bordered">
 							<tr>
 								<th class="table-bordered">
-									<a href="javascript:void(0)">Nama</a>
+									<a href="javascript:void(0)">Invoice #</a>
 									<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
 								<th class="table-bordered">
-									<a href="javascript:void(0)">Nilai</a>
+									<a href="javascript:void(0)">Account ID</a>
+									<a href="javascript:void(0)">
+									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+									</a>
+								</th>
+								<th class="table-bordered">
+									<a href="javascript:void(0)">Full Name</a>
+									<a href="javascript:void(0)">
+									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+									</a>
+								</th>
+								<th class="table-bordered">
+									<a href="javascript:void(0)">Total Price</a>
+									<a href="javascript:void(0)">
+									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+									</a>
+								</th>
+								<th class="table-bordered">
+									<a href="javascript:void(0)">Status</a>
+									<a href="javascript:void(0)">
+									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+									</a>
+								</th>
+								<th class="table-bordered">
+									<a href="javascript:void(0)">Paid</a>
 									<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
@@ -46,6 +69,10 @@
 							<tr>
 								<td><input type="text" class="form-control input-sm"></td>
 								<td><input type="text" class="form-control input-sm"></td>
+								<td><input type="text" class="form-control input-sm"></td>
+								<td><input type="text" class="form-control input-sm"></td>
+								<td><input type="text" class="form-control input-sm"></td>
+								<td><input type="text" class="form-control input-sm"></td>
 								
 								<td width=""><a class="btn btn-primary btn-xs">Filter</a></td>
 							</tr>
@@ -56,13 +83,17 @@
 							  ?>
 							<tr> 
 								
-								<td>Something</td>
-								<td>10%</td>
+								<td>34534</td>
+								<td>13453534</td>
+								<td>Muhsadbjaksb Mahashd</td>
+								<td>IDR 90.000.000</td>
+								<td>Pending</td>
+								<td>False</td>
 								
 								<td>
-									<button class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_tax">Edit</button>
+									<button class="btn btn-info btn-xs" data-toggle="modal" data-target=".pop_up_view_transaction">View</button>
 									<!-- Button trigger modal class ".alertYesNo" -->
-									<button class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</button>
+									<!-- <button class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</button> -->
 								</td>
 							</tr> 
 							  <?php
@@ -78,7 +109,6 @@
 	</div>
 	
 	@include('includes.modals.alertYesNo')
-	@include('pages.admin.tax.pop_up_add_tax')
-	@include('pages.admin.tax.pop_up_edit_tax')
+	@include('pages.admin.transaction.pop_up_view_transaction')
 
 @stop

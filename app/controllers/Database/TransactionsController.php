@@ -1,18 +1,22 @@
 <?php
-
+use Carbon\Carbon;
 class TransactionsController extends \BaseController {
 
 	/**
 	 * Insert a newly created transaction in database.
-	 * invoice = TahunTanggalBulanID(4digit diambil dari count transaksi hari itu)
-	 *paid = 
+	 * invoice = TahunTanggalBulanID(4digit diambil dari count transaksi *hari itu)
+	 * paid
+	 * 0-> not paid
+	 * 1-> paid
+	 * status
+	 * pending, on progress, on shipment, complete
 	 * @return Response
 	 */
 	public function createTransaction()
 	{
 		$respond = array();
 		//validate
-		$validator = Validator::make($data = Input::all(), Transaction::$rules);
+		$validator = Validator::make($data = json_decode(Input::all()), Transaction::$rules);
 		
 		if ($validator->fails())
 		{
@@ -23,9 +27,55 @@ class TransactionsController extends \BaseController {
 		//save
 		try {
 			//Transaction::create($data);
-			di sini loh
-			$idCreate  = $data->id;
-			$respond = array('code'=>'201','status' => 'Created','messages'=>$idCreate);
+			
+			//bikin no invoice
+			$format1 = '%s';
+			$format2 = '%1$04d';
+			$tahun = date('Y');
+			$bulan = date('m');
+			$hari = date('d');
+			$list_transaksi = Transaction::where('created_at','=',Carbon::now());
+			$nomor_transaksi = count($list_peserta);
+			$tahun_transaksi =  sprintf($format1,$tahun);
+			$bulan_transaksi = sprintf($format1, $bulan);
+			$hari_transaksi = sprintf($format1, $hari);
+			$nomor_trans =  sprintf($format2,$nomor_transaksi);
+			$invoice = $tahun_transaksi.$hari_transaksi.$bulan_transaksi.$nomor_trans;
+			
+			//open cart
+			$arrCart = Input::get('cart_id');
+			$accId = Cart::where('id','=',$arrCart[0])->first()->account_id;
+			
+			//masukin transaksi
+			$trans = new Transaction();
+			
+			$trans->invoice = $invoice;
+			$trans->account_id = $accId;
+			$trans->total_price = Input::get('total_price');
+			$trans->voucher_id = Input::get('voucher_id');
+			$trans->status = 'pending';
+			$trans->paid = '0';
+			$trans->shipment_id = Input::get('shipment_id');
+			$trans->save();
+			$idCreate  = $trans->id;
+			
+			//masukin order
+			foreach($arrCart as $key)
+			{
+				$cart = Cart::where('id','=',$key)->first();
+				$priceId = $cart->price_id;
+				$qty = $cart->quantity;
+				
+				$order = new Order();
+			
+				$order->price_id = $priceId;
+				$order->quantity = $qty;
+				$order->transaction_id = $idCreate;
+				$order->save();
+			}
+			
+			
+			$respond = array('code'=>'201','status' => 'Created','messages'=>$invoice);
 		} catch (Exception $e) {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 		}
@@ -429,5 +479,105 @@ class TransactionsController extends \BaseController {
 		return Response::json($respond);
 	}
 	
+	/**
+	 * Display detail transaction for admin panel
+	 *
+	 * @param    $id transaksi
+	 * @return Response
+	 */
+	public function getDetail($id)
+	{
+		$respond = array();
+		$transaction = Transaction::where('id','=',$id)->get();
+		if (count($transaction) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			foreach($transaction as $key)
+			{
+				$accId = $key->account_id;
+				$profId = Account::where('id','=',$accId)->first()->profile_id;
+				$prof = Profile::where('id','=',$profId)->first();
+				$key->profile = $prof;
+			}
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
+		}
+		return Response::json($respond);
+	}
 	
+	/**
+	 * Display all of the transaction sorting by attribute Ascending
+	 * param sortby
+	 * sort by:
+	 * invoice
+	 * account_id
+	 * total_price
+	 * voucher_id
+	 * status
+	 * paid
+	 * shipment_id
+	 * full_name
+	 * @return Response
+	 */
+	public function getAllSortByAsc($sortBy)
+	{
+		$respond = array();
+		$transaction = Transaction::all();
+		if (count($transaction) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			foreach($transaction as $key)
+			{
+				$accId = $key->account_id;
+				$profId = Account::where('id','=',$accId)->first()->profile_id;
+				$profName = Profile::where('id','=',$profId)->first()->full_name;
+				$key->full_name = $profName;
+				$transaction->orderBy($sortBy);
+			}
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Display all of the transaction sorting by attribute Descending
+	 * param sortby
+	 * sort by:
+	 * invoice
+	 * account_id
+	 * total_price
+	 * voucher_id
+	 * status
+	 * paid
+	 * shipment_id
+	 * full_name
+	 * @return Response
+	 */
+	public function getAllSortByDesc($sortBy)
+	{
+		$respond = array();
+		$transaction = Transaction::all();
+		if (count($transaction) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			foreach($transaction as $key)
+			{
+				$accId = $key->account_id;
+				$profId = Account::where('id','=',$accId)->first()->profile_id;
+				$profName = Profile::where('id','=',$profId)->first()->full_name;
+				$key->full_name = $profName;
+				$transaction->orderBy($sortBy,'desc');
+			}
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
+		}
+		return Response::json($respond);
+	}
 }
