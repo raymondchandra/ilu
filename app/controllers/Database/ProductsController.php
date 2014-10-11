@@ -922,6 +922,33 @@ class ProductsController extends \BaseController {
 		return Response::json($respond);
 	}
 	
+	public function getTopTenNewProduct()
+	{
+		$respond = array();
+		$product = Product::orderBy('created_at')->get();						
+		$count = 0;
+		$length = count($product);
+		$result = array();
+		
+		if($length < 10)
+		{			
+			while($count < $length)
+			{
+				$result[] = $product[$count];
+				$count++;
+			}
+		}
+		else
+		{
+			while($count < 10)
+			{
+				$result[] = $product[$count];
+				$count++;
+			}
+		}					
+		return Response::json($result);
+	}
+	
 	public function getByDeleted($deleted)
 	{
 		$respond = array();		
