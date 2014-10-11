@@ -2,9 +2,26 @@
 
 class AttributesController extends \BaseController {
 
-	public function insert()
+	public function w_insert()
 	{
-		$input = json_decode(Input::all());
+		$json = Input::get('json_data');
+		$decode = json_decode($json);
+		
+		$name = $decode->{'name'};
+		$deleted = $decode->{'deleted'};
+		
+		// $name = null;
+		// $deleted = 0;
+		
+		$input = array(
+					'name' => $name,
+					'deleted' => $deleted);
+		
+		return $this->insert($input);
+	}	
+	public function insert($input)
+	{
+		// $input = json_decode(Input::all());
 		
 		$respond = array();
 		//validate
@@ -24,7 +41,8 @@ class AttributesController extends \BaseController {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 		}
 		return Response::json($respond);
-	}
+	}	
+	
 	
 	public function getAll(){
 		$respond = array();

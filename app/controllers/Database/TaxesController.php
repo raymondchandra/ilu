@@ -2,9 +2,23 @@
 
 class TaxesController extends \BaseController {
 
-	public function insert()
+	public function w_insert()
 	{
-		$input = json_decode(Input::all());
+		$json = Input::get('json_data');
+		$decode = json_decode($json);
+		
+		$amount = $decode->{'amount'};
+		$deleted = $decode->{'deleted'};
+		
+		$input = array{
+					'amount' => $amount,
+					'deleted' => $deleted};
+					
+		return $this->insert($input);
+	}
+	public function insert($input)
+	{
+		// $input = json_decode(Input::all());
 		
 		$respond = array();
 		//validate

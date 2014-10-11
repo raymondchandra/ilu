@@ -2,9 +2,25 @@
 
 class CategoriesController extends \BaseController {
 		
-	public function insert()
+	public function w_insert()
 	{
-		$input = json_decode(Input::all());
+		$json = Input::get('json_data');
+		$decode = json_decode($json);
+		
+		$name = $decode->{'name'};
+		$parent_category = $decode->{'parent_category'};
+		$deleted = $decode->{'deleted'};
+		
+		$input = array(
+					'name' => $name,
+					'parent_category' => $parent_category,
+					'deleted' => $deleted);
+					
+		return $this->insert($input);
+	}
+	public function insert($input)
+	{
+		// $input = json_decode(Input::all());
 		
 		$respond = array();
 		//validate
@@ -42,7 +58,7 @@ class CategoriesController extends \BaseController {
 		 
 	public function getAllSortedNameAsc(){
 		$respond = array();
-		$category = Category::all()->orderBy('name')->get();
+		$category = Category::orderBy('name')->get();
 		if (count($category) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -56,7 +72,7 @@ class CategoriesController extends \BaseController {
 		
 	public function getAllSortedNameDesc(){
 		$respond = array();
-		$category = Category::all()->orderBy('name', 'desc')->get();
+		$category = Category::orderBy('name', 'desc')->get();
 		if (count($category) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');

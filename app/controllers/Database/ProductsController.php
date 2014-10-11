@@ -2,9 +2,31 @@
 
 class ProductsController extends \BaseController {
 	
-	public function insert()
+	public function w_insert()
 	{
-		$input = json_decode(Input::all());
+		$json = Input::get('json_data');
+		$decode = json_decode($json);
+		
+		$product_no = $decode->{'product_no'};
+		$name = $decode->{'name'};
+		$description = $decode->{'description'};
+		$category_id = $decode->{'category_id'};
+		$promotion_id = $decode->{'promotion_id'};
+		$deleted = $decode->{'deleted'};
+		
+		$input = array(
+					'product_no' => $product_no,
+					'name' => $name,
+					'description' => $description,
+					'category_id' => $category_id,
+					'promotion_id' => $promotion_id,
+					'deleted' => $deleted);
+		
+		return $this->insert($input);
+	}
+	public function insert($input)
+	{
+		// $input = json_decode(Input::all());
 		
 		$respond = array();
 		//validate
@@ -73,7 +95,7 @@ class ProductsController extends \BaseController {
 	public function getAllSortedProductNoAsc()
 	{
 		$respond = array();
-		$product = Product::all()->orderBy('product_no')->get();
+		$product = Product::orderBy('product_no')->get();
 		if (count($product) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -117,7 +139,7 @@ class ProductsController extends \BaseController {
 	public function getAllSortedProductNoDesc()
 	{
 		$respond = array();
-		$product = Product::all()->orderBy('product_no', 'desc')->get();
+		$product = Product::orderBy('product_no', 'desc')->get();
 		if (count($product) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -161,7 +183,7 @@ class ProductsController extends \BaseController {
 	public function getAllSortedNameAsc()
 	{
 		$respond = array();
-		$product = Product::all()->orderBy('name')->get();
+		$product = Product::orderBy('name')->get();
 		if (count($product) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -205,7 +227,7 @@ class ProductsController extends \BaseController {
 	public function getAllSortedNameDesc()
 	{
 		$respond = array();
-		$product = Product::all()->orderBy('name', 'desc')->get();
+		$product = Product::orderBy('name', 'desc')->get();
 		if (count($product) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -925,28 +947,88 @@ class ProductsController extends \BaseController {
 	public function getTopTenNewProduct()
 	{
 		$respond = array();
-		$product = Product::orderBy('created_at')->get();						
+		$product = Product::orderBy('created_at', 'desc')->get();						
 		$count = 0;
 		$length = count($product);
 		$result = array();
-		
-		if($length < 10)
-		{			
-			while($count < $length)
-			{
-				$result[] = $product[$count];
-				$count++;
-			}
+		if(count($product) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
-			while($count < 10)
-			{
-				$result[] = $product[$count];
-				$count++;
+			if($length < 10)
+			{			
+				while($count < $length)
+				{														
+					$cat_id = $product[$count]->category_id;
+					$cat_name = Category::where('id','=',$cat_id)->first()->name;
+					$promo_id = $product[$count]->promotion_id;
+					$promo_amount = Promotion::where('id','=',$promo_id)->first()->amount;
+					$promo_expired = Promotion::where('id','=',$promo_id)->first()->expired;				
+					//add category name, promotion amount, promotion expired
+					$product[$count]->category_name = $cat_name;
+					$product[$count]->promotion_amount = $promo_amount;
+					$product[$count]->promotion_expired = $promo_expired;							
+					
+					$prices = Price::where('product_id','=',$product[$count]->id)->get();
+						
+						foreach($prices as $key_prices)
+						{
+							$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+							$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
+							//add attribute name
+							$key_prices->attr_name = $attr_name;										
+							$key_prices->price_with_tax = ($key_prices->amount + ($key_prices->amount * $tax_amount / 100));
+							
+							$key_prices->price_with_tax_promotion = ($key_prices->price_with_tax - $product[$count]->promotion_amount);
+						}
+					
+					//add prices by attribute
+					$product[$count]->prices = $prices;
+					
+					$result[] = $product[$count];
+					$count++;
+				}
 			}
-		}					
-		return Response::json($result);
+			else
+			{
+				while($count < 10)
+				{
+					$cat_id = $product[$count]->category_id;
+					$cat_name = Category::where('id','=',$cat_id)->first()->name;
+					$promo_id = $product[$count]->promotion_id;
+					$promo_amount = Promotion::where('id','=',$promo_id)->first()->amount;
+					$promo_expired = Promotion::where('id','=',$promo_id)->first()->expired;				
+					//add category name, promotion amount, promotion expired
+					$product[$count]->category_name = $cat_name;
+					$product[$count]->promotion_amount = $promo_amount;
+					$product[$count]->promotion_expired = $promo_expired;							
+					
+					$prices = Price::where('product_id','=',$product[$count]->id)->get();
+						
+						foreach($prices as $key_prices)
+						{
+							$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+							$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
+							//add attribute name
+							$key_prices->attr_name = $attr_name;										
+							$key_prices->price_with_tax = ($key_prices->amount + ($key_prices->amount * $tax_amount / 100));
+							
+							$key_prices->price_with_tax_promotion = ($key_prices->price_with_tax - $product[$count]->promotion_amount);
+						}
+					
+					//add prices by attribute
+					$product[$count]->prices = $prices;
+					
+					$result[] = $product[$count];
+					$count++;
+				}
+			}
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$result);
+		}
+							
+		return Response::json($respond);
 	}
 	
 	public function getByDeleted($deleted)

@@ -2,9 +2,27 @@
 
 class ReviewsController extends \BaseController {
 	
-	public function insert()
+	public function w_insert()
 	{
-		$input = json_decode(Input::all());
+		$json = Input::get('json_data');
+		$decode = json_decode($json);
+		
+		$product_id = $decode->{'product_id'};
+		$text = $decode->{'text'}:
+		$rating = $decode->{'rating'};
+		$approved = $decode->{'approved'};
+		
+		$input = array(
+					'product_id' => $product_id,
+					'text' => $text,
+					'rating' => $rating,
+					'approved' => $approved);
+					
+		return $this->insert($input);
+	}
+	public function insert($input)
+	{
+		// $input = json_decode(Input::all());
 		
 		$respond = array();
 		//validate
@@ -70,7 +88,7 @@ class ReviewsController extends \BaseController {
 		return Response::json($respond);
 	}	
 	
-	public function getByProductIdSortedRatingAsc($product_id)
+	public function getByProductIdSortedRatingAsc($product_id)	
 	{
 		$respond = array();
 		$review = Review::where('product_id','=',$product_id)->orderBy('rating')->get();
@@ -119,7 +137,7 @@ class ReviewsController extends \BaseController {
 	{
 		$respond = array();
 		$review = Review::find($id);
-		if ($address == null)
+		if ($review == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
@@ -128,7 +146,7 @@ class ReviewsController extends \BaseController {
 			//edit value
 			$review->approved = $new_approved;
 			try {
-				$address->save();
+				$review->save();
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
@@ -153,8 +171,7 @@ class ReviewsController extends \BaseController {
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
-			}
-			
+			}			
 		}
 		return Response::json($respond);
 	}

@@ -2,7 +2,27 @@
 
 class PromotionsController extends \BaseController {
 	
-	public function insert()
+	public function w_insert()
+	{
+		$json = Input::get('json_data');
+		$decode = json_decode($json);
+		
+		$name = $decode->{'name'};
+		$amount = $decode->{'amount'};
+		$started = $decode->{'started'};
+		$expired = $decode->{'expired'};
+		$active = $decode->{'active'};
+		
+		$input = array(
+					'name' => $name,
+					'amount' => $amount,
+					'started' => $started,
+					'expired' => $expired,
+					'active' => $active);
+		
+		return $this->insert($input);
+	}
+	public function insert($input)
 	{
 		$input = json_decode(Input::all());
 		
@@ -44,7 +64,7 @@ class PromotionsController extends \BaseController {
 	public function getAllSortedNameAsc()
 	{
 		$respond = array();
-		$promotion = Promotion::all()->orderBy('name')->get();
+		$promotion = Promotion::orderBy('name')->get();
 		if (count($promotion) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -59,7 +79,7 @@ class PromotionsController extends \BaseController {
 	public function getAllSortedNameDesc()
 	{
 		$respond = array();
-		$promotion = Promotion::all()->orderBy('name', 'desc')->get();
+		$promotion = Promotion::orderBy('name', 'desc')->get();
 		if (count($promotion) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -74,7 +94,7 @@ class PromotionsController extends \BaseController {
 	public function getAllSortedAmountAsc()
 	{
 		$respond = array();
-		$promotion = Promotion::all()->orderBy('amount')->get();
+		$promotion = Promotion::orderBy('amount')->get();
 		if (count($promotion) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -88,7 +108,7 @@ class PromotionsController extends \BaseController {
 		
 	public function getAllSortedAmountDesc(){
 		$respond = array();
-		$promotion = Promotion::all()->orderBy('amount', 'desc')->get();
+		$promotion = Promotion::orderBy('amount', 'desc')->get();
 		if (count($promotion) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -102,7 +122,7 @@ class PromotionsController extends \BaseController {
 	
 	public function getAllSortedStartedAsc(){
 		$respond = array();
-		$promotion = Promotion::all()->orderBy('started')->get();
+		$promotion = Promotion::orderBy('started')->get();
 		if (count($promotion) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -116,7 +136,7 @@ class PromotionsController extends \BaseController {
 	
 	public function getAllSortedStartedDesc(){
 		$respond = array();
-		$promotion = Promotion::all()->orderBy('started', 'desc')->get();
+		$promotion = Promotion::orderBy('started', 'desc')->get();
 		if (count($promotion) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -130,7 +150,7 @@ class PromotionsController extends \BaseController {
 	
 	public function getAllSortedExpiredAsc(){
 		$respond = array();
-		$promotion = Promotion::all()->orderBy('expired')->get();
+		$promotion = Promotion::orderBy('expired')->get();
 		if (count($promotion) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -144,7 +164,7 @@ class PromotionsController extends \BaseController {
 		
 	public function getAllSortedExpiredDesc(){
 		$respond = array();
-		$promotion = Promotion::all()->orderBy('expired', 'desc')->get();
+		$promotion = Promotion::orderBy('expired', 'desc')->get();
 		if (count($promotion) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
