@@ -6,7 +6,7 @@
 			
 				<div class="s_title_n_control">
 					<h3 style="float: left;">
-						Manage Transaction
+						Manage Customer 
 					</h3>
 				</div>
 				<span class="clearfix"></span>
