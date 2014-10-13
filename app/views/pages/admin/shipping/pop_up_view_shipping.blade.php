@@ -1,4 +1,4 @@
-<div class="modal fade pop_up_view_transaction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade pop_up_view_shipping" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -11,31 +11,31 @@
 						<div class="col-sm-5">
 
 							<div class="form-group" id="nama_promosi">
-								<label class="col-sm-4 control-label">Invoice #</label>
-								<div class="col-sm-8">
+								<label class="col-sm-3 control-label">Invoice #</label>
+								<div class="col-sm-9">
 									<p class="form-control-static">98767954</p>
 								</div>
 							</div>
 
 
 							<div class="form-group">
-								<label class="col-sm-4 control-label">Total Price</label>
-								<div class="col-sm-8">
+								<label class="col-sm-3 control-label">Total Price</label>
+								<div class="col-sm-9">
 									<p class="form-control-static">IDR 90.987.000</p>
 
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-4 control-label">Voucher ID</label>
-								<div class="col-sm-8">
+								<label for="inputPassword3" class="col-sm-3 control-label">Voucher ID</label>
+								<div class="col-sm-9">
 									<p class="form-control-static">-</p>
 
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-4 control-label">Status</label>
+								<label for="inputPassword3" class="col-sm-3 control-label">Status</label>
 								<div class="col-sm-5">
 									<p id="transaction_status" class="form-control-static">Pending</p>
 									<select id="transaction_status_list" class="form-control hidden">
@@ -45,7 +45,7 @@
 										<option val="complete">Complete</option>
 									</select>
 								</div>
-								<div class="col-sm-3">
+								<div class="col-sm-4">
 									<button type="button" class="btn btn-warning" id="transaction_status_editor">Edit</button>
 									<button type="button" class="btn btn-success hidden" id="transaction_status_setter">Set</button>
 									<script>
@@ -70,7 +70,7 @@
 
 							
 							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-4 control-label">Paid</label>
+								<label for="inputPassword3" class="col-sm-3 control-label">Paid</label>
 								<div class="col-sm-5">
 									<p id="transaction_paid" class="form-control-static">False</p>
 									<select id="transaction_paid_list" class="form-control hidden">
@@ -78,7 +78,7 @@
 										<option val="false">False</option>
 									</select>
 								</div>
-								<div class="col-sm-3">
+								<div class="col-sm-4">
 									<button type="button" class="btn btn-warning" id="transaction_paid_editor">Edit</button>
 									<button type="button" class="btn btn-success hidden" id="transaction_paid_setter">Set</button>
 									<script>
@@ -102,22 +102,22 @@
 							</div>
 
 							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-4 control-label">Shipment ID</label>
-								<div class="col-sm-8">
+								<label for="inputPassword3" class="col-sm-3 control-label">Shipment ID</label>
+								<div class="col-sm-9">
 									<p class="form-5control-static">4657TYU76</p>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-4 control-label">Kurir</label>
-								<div class="col-sm-8">
+								<label for="inputPassword3" class="col-sm-3 control-label">Nama Ekspedisi</label>
+								<div class="col-sm-9">
 									<p class="form-control-static">JNE Epic</p>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-4 control-label">Destinasi</label>
-								<div class="col-sm-8">
+								<label for="inputPassword3" class="col-sm-3 control-label">Destinasi</label>
+								<div class="col-sm-9">
 									<p class="form-control-static">Jl. Cibeunying Hegar Epic II No. 2, Bandung</p>
 								</div>
 							</div>

@@ -155,10 +155,16 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.promosi.manage_promosi');
 	});
 
-    // Promosi
+    // Transaction
     Route::get('/manage_transaction', function()
 	{
 		return View::make('pages.admin.transaction.manage_transaction');
+	});
+
+    // Shipping
+    Route::get('/manage_shipping', function()
+	{
+		return View::make('pages.admin.shipping.manage_shipping');
 	});
 
 
