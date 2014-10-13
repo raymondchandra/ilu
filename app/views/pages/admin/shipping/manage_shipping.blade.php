@@ -109,6 +109,6 @@
 	</div>
 	
 	@include('includes.modals.alertYesNo')
-	@include('pages.admin.transaction.pop_up_view_transaction')
+	@include('pages.admin.shipping.pop_up_view_shipping')
 
 @stop
