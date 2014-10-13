@@ -68,10 +68,10 @@
 							  ?>
 							<tr> 
 								
-								<td>34534</td>
-								<td>13453534</td>
-								<td>Muhsadbjaksb Mahashd</td>
-								<td>IDR 90.000.000</td>
+								<td>2765675</td>
+								<td>Muhhajkasdjkas Opay</td>
+								<td>Opay</td>
+								<td>opay@on.com</td>
 								
 								<td>
 									<button class="btn btn-info btn-xs" data-toggle="modal" data-target=".pop_up_view_wishlist">View Wishlist</button>
