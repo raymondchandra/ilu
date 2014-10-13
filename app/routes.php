@@ -167,6 +167,12 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.shipping.manage_shipping');
 	});
 
+    // Shipping
+    Route::get('/manage_customer', function()
+	{
+		return View::make('pages.admin.customer.manage_customer');
+	});
+
 
 });
 
