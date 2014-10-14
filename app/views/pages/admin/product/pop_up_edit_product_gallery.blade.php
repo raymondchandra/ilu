@@ -21,7 +21,7 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label">Product Galery</label>
 								<div class="col-sm-5">
-									<button type="button" class="btn btn-primary f_add_product"><span class="glyphicon glyphicon-plus"></span>Add Photo</button>
+									<button type="button" class="btn btn-primary f_edit_photo"><span class="glyphicon glyphicon-plus"></span>Add Photo</button>
 								</div>
 							</div>
 
@@ -32,21 +32,21 @@
 							
 							<table class="table">
 								
-								<tbody id="product_promo_list">
+								<tbody id="product_photo_edit">
 									<tr>
 										<td><img src="" width="150" height="150" class="pull-right"/></td>
 										<td><input type="file"></td>
-										<td><button type="button" class="btn btn-danger f_remove_product"><span class="glyphicon glyphicon-remove"></span></button></td>
+										<td><button type="button" class="btn btn-danger f_remove_edit_photo"><span class="glyphicon glyphicon-remove"></span></button></td>
 									</tr>
 									<tr>
 										<td><img src="" width="150" height="150" class="pull-right"/></td>
 										<td><input type="file"></td>
-										<td><button type="button" class="btn btn-danger f_remove_product"><span class="glyphicon glyphicon-remove"></span></button></td>
+										<td><button type="button" class="btn btn-danger f_remove_edit_photo"><span class="glyphicon glyphicon-remove"></span></button></td>
 									</tr>
 									<tr>
 										<td><img src="" width="150" height="150" class="pull-right"/></td>
 										<td><input type="file"></td>
-										<td><button type="button" class="btn btn-danger f_remove_product"><span class="glyphicon glyphicon-remove"></span></button></td>
+										<td><button type="button" class="btn btn-danger f_remove_edit_photo"><span class="glyphicon glyphicon-remove"></span></button></td>
 									</tr>
 								</tbody>
 							</table>
@@ -56,20 +56,20 @@
 					/*
 					Script untuk add baris produk
 					*/
-					$( '.f_add_product' ).on( "click", function() {
+					$( '.f_edit_photo' ).on( "click", function() {
 						var text =' <tr>';
 						text +='		<td><img src="" width="150" height="150" class="pull-right"/></td>';
 						text +='		<td><input type="file"></td>';
-						text +='		<td><button type="button" class="btn btn-danger f_remove_product"><span class="glyphicon glyphicon-remove"></span></button></td>';
+						text +='		<td><button type="button" class="btn btn-danger f_remove_edit_photo"><span class="glyphicon glyphicon-remove"></span></button></td>';
 						text +='	</tr>';
-						$('#product_promo_list').prepend(text);
+						$('#product_photo_edit').prepend(text);
 						
 					});
 
 					/*
 					Script untuk remove baris produk
 					*/
-					$( 'body' ).on( "click",'.f_remove_product', function() {
+					$( 'body' ).on( "click",'.f_remove_edit_photo', function() {
 						$(this).parent().parent().hide(300, function(){ 
 							$(this).remove(); 
 						});
