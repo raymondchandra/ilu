@@ -100,10 +100,6 @@ Route::group(array('prefix' => 'test'), function()
 	{
 		return View::make('pages.admin.order.manage_order');
 	});
-	Route::get('/view_order', function()
-	{
-		return View::make('pages.admin.order.view_order');
-	});
 	
     // manage category
 	Route::get('/manage_category', function()
