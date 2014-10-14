@@ -1,4 +1,4 @@
-<div class="modal fade pop_up_view_transaction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade pop_up_view_order" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -74,8 +74,8 @@
 								<div class="col-sm-5">
 									<p id="transaction_paid" class="form-control-static">False</p>
 									<select id="transaction_paid_list" class="form-control hidden">
-										<option val="1">Paid</option>
-										<option val="0">Unpaid</option>
+										<option val="true">True</option>
+										<option val="false">False</option>
 									</select>
 								</div>
 								<div class="col-sm-3">
@@ -118,7 +118,7 @@
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Destinasi</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">Bandung, Jawa Barat</p>
+									<p class="form-control-static">Jl. Cibeunying Hegar Epic II No. 2, Bandung</p>
 								</div>
 							</div>
 						</div>
