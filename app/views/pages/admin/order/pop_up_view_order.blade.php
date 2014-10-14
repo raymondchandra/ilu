@@ -8,123 +8,109 @@
 			<form class="form-horizontal" role="form">
 				<div class="modal-body">
 					<div class="row">
-						<div class="col-sm-5">
+						<div class="col-sm-12">
 
 							<div class="form-group" id="nama_promosi">
+								<label class="col-sm-4 control-label">Order No.</label>
+								<div class="col-sm-8">
+									<p class="form-control-static">0000000</p>
+								</div>
+							</div>
+
+
+							<div class="form-group">
 								<label class="col-sm-4 control-label">Transaction No.</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">98767954</p>
-								</div>
-							</div>
-
-
-							<div class="form-group">
-								<label class="col-sm-4 control-label">Total Price</label>
-								<div class="col-sm-8">
-									<p class="form-control-static">IDR 90.987.000</p>
+									<p class="form-control-static">00045600</p>
 
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-4 control-label">Voucher ID</label>
+								<label for="inputPassword3" class="col-sm-4 control-label">Purchased On</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">-</p>
+									<p class="form-control-static">Sep 28, 2014 11:54:09 PM</p>
+								</div>
+							</div>
 
+							<div class="form-group">
+								<label for="inputPassword3" class="col-sm-4 control-label">Bill to Name</label>
+								<div class="col-sm-8">
+									<p class="form-control-static">Nama Pembeli</p>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="inputPassword3" class="col-sm-4 control-label">Ship to Name </label>
+								<div class="col-sm-8">
+									<p class="form-control-static">Nama Penerima</p>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="inputPassword3" class="col-sm-4 control-label">Product Name</label>
+								<div class="col-sm-8">
+									<p class="form-control-static">Tas Epic</p>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="inputPassword3" class="col-sm-4 control-label">Qty</label>
+								<div class="col-sm-8">
+									<p class="form-control-static">3</p>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="inputPassword3" class="col-sm-4 control-label">Harga Satuan</label>
+								<div class="col-sm-8">
+									<p class="form-control-static">IDR 300.000</p>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="inputPassword3" class="col-sm-4 control-label">Harga Total </label>
+								<div class="col-sm-8">
+									<p class="form-control-static">IDR 900.000</p>
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Status</label>
 								<div class="col-sm-5">
-									<p id="transaction_status" class="form-control-static">Pending</p>
-									<select id="transaction_status_list" class="form-control hidden">
+									<p id="order_status" class="form-control-static">Pending</p>
+									<select id="order_status_list" class="form-control hidden">
 										<option val="pending">Pending</option>
-										<option val="onprocess">Onprocess</option>
-										<option val="onship">Onship</option>
 										<option val="complete">Complete</option>
 									</select>
 								</div>
 								<div class="col-sm-3">
-									<button type="button" class="btn btn-warning" id="transaction_status_editor">Edit</button>
-									<button type="button" class="btn btn-success hidden" id="transaction_status_setter">Set</button>
+									<button type="button" class="btn btn-warning" id="order_status_editor">Edit</button>
+									<button type="button" class="btn btn-success hidden" id="order_status_setter">Set</button>
 									<script>
-									$( 'body' ).on( "click",'#transaction_status_editor', function() {
-										$('#transaction_status_list').removeClass('hidden');
-										$('#transaction_status_setter').removeClass('hidden');
-										$('#transaction_status').addClass('hidden');
-										$('#transaction_status_editor').addClass('hidden');
+									$( 'body' ).on( "click",'#order_status_editor', function() {
+										$('#order_status_list').removeClass('hidden');
+										$('#order_status_setter').removeClass('hidden');
+										$('#order_status').addClass('hidden');
+										$('#order_status_editor').addClass('hidden');
 									});
 
-									$( 'body' ).on( "click",'#transaction_status_setter', function() {
-										var selectedStatus = $('#transaction_status_list').find(":selected").text();
-										$('#transaction_status_list').addClass('hidden');
-										$('#transaction_status_setter').addClass('hidden');
-										$('#transaction_status').removeClass('hidden');
-										$('#transaction_status_editor').removeClass('hidden');
-										$('#transaction_status').text(selectedStatus);
+									$( 'body' ).on( "click",'#order_status_setter', function() {
+										var selectedStatus = $('#order_status_list').find(":selected").text();
+										$('#order_status_list').addClass('hidden');
+										$('#order_status_setter').addClass('hidden');
+										$('#order_status').removeClass('hidden');
+										$('#order_status_editor').removeClass('hidden');
+										$('#order_status').text(selectedStatus);
 									});
 									</script>
 								</div>
 							</div>
 
-							
-							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-4 control-label">Paid</label>
-								<div class="col-sm-5">
-									<p id="transaction_paid" class="form-control-static">False</p>
-									<select id="transaction_paid_list" class="form-control hidden">
-										<option val="true">True</option>
-										<option val="false">False</option>
-									</select>
-								</div>
-								<div class="col-sm-3">
-									<button type="button" class="btn btn-warning" id="transaction_paid_editor">Edit</button>
-									<button type="button" class="btn btn-success hidden" id="transaction_paid_setter">Set</button>
-									<script>
-									$( 'body' ).on( "click",'#transaction_paid_editor', function() {
-										$('#transaction_paid_list').removeClass('hidden');
-										$('#transaction_paid_setter').removeClass('hidden');
-										$('#transaction_paid').addClass('hidden');
-										$('#transaction_paid_editor').addClass('hidden');
-									});
-
-									$( 'body' ).on( "click",'#transaction_paid_setter', function() {
-										var selectedStatus = $('#transaction_paid_list').find(":selected").text();
-										$('#transaction_paid_list').addClass('hidden');
-										$('#transaction_paid_setter').addClass('hidden');
-										$('#transaction_paid').removeClass('hidden');
-										$('#transaction_paid_editor').removeClass('hidden');
-										$('#transaction_paid').text(selectedStatus);
-									});
-									</script>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-4 control-label">Shipment ID</label>
-								<div class="col-sm-8">
-									<p class="form-5control-static">4657TYU76</p>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-4 control-label">Kurir</label>
-								<div class="col-sm-8">
-									<p class="form-control-static">JNE Epic</p>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-4 control-label">Destinasi</label>
-								<div class="col-sm-8">
-									<p class="form-control-static">Jl. Cibeunying Hegar Epic II No. 2, Bandung</p>
-								</div>
-							</div>
 						</div>
 
 
-
+						<!--
 						<div class="col-sm-7">
 							<div class="panel panel-default">
 								<div class="panel-heading">Informasi Pelanggan</div>
@@ -202,7 +188,7 @@
 								</div>
 							</div>
 							
-						</div>
+						</div> -->
 					</div>
 
 
