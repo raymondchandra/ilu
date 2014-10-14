@@ -136,6 +136,12 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.product.add_product_images');
 	});
 
+    // Manage Attribute
+    Route::get('/manage_attribute', function()
+	{
+		return View::make('pages.admin.attribute.manage_attribute');
+	});
+
     // Newsletter
     Route::get('/manage_newsletter', function()
 	{
