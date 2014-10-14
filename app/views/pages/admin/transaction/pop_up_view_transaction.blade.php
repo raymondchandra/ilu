@@ -104,7 +104,7 @@
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Shipment ID</label>
 								<div class="col-sm-8">
-									<p class="form-5control-static">4657TYU76</p>
+									<p class="form-control-static">4657TYU76</p>
 								</div>
 							</div>
 
