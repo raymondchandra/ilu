@@ -167,13 +167,13 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.shipping.manage_shipping');
 	});
 
-    // Shipping
+    // Shipping Agent
     Route::get('/manage_shipping_agent', function()
 	{
 		return View::make('pages.admin.shipping.manage_shipping_agent');
 	});
 
-    // Shipping
+    // Customer
     Route::get('/manage_customer', function()
 	{
 		return View::make('pages.admin.customer.manage_customer');
