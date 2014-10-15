@@ -240,7 +240,7 @@ class GalleriesController extends \BaseController {
 			
 			$gallery = new Gallery();
 			$gallery->type = 'slideshow';
-			
+			$gallery->product_id = null;
 			try{
 				$gallery->save();
 			} catch (Exception $e) {

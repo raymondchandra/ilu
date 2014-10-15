@@ -42,6 +42,8 @@ Route::group(['before' => 'check_token'], function()
 		Route::get('/information/{id}', ['as' => 'get.information.detail' , 'uses' => 'InformationController@getById']);
 	//contact
 		Route::get('/contact', ['as' => 'get.contact.list' , 'uses' => '']);
+	//seo
+		Route::get('/seo', ['as' => 'get.seo' , 'uses' => 'SeosController@getAll']);
 });
 
 Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
@@ -84,6 +86,10 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 {
     //transaction
 
+	//information
+		Route::post('/information', ['as' => 'add.information' , 'uses' => 'InformationController@insert']);
+    	Route::put('/information/{id}', ['as' => 'edit.information' , 'uses' => 'InformationController@updateFull']);
+    	Route::delete('/information/{id}', ['as' => 'delete.information' , 'uses' => 'InformationController@delete']);
     //newsletter
     	Route::get('/newsletter', ['as' => 'get.newsletter.list' , 'uses' => 'TemplatesController@getAll']);
     	Route::get('/newsletter/{id}', ['as' => 'get.newsletter.detail' , 'uses' => 'TemplatesController@getById']);
@@ -91,11 +97,15 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
     	Route::post('/newsletter', ['as' => 'add.newsletter' , 'uses' => 'TemplatesController@insert']);
     	Route::put('/newsletter/{id}', ['as' => 'edit.newsletter' , 'uses' => 'TemplatesController@updateFull']);
     	Route::post('/sendnewsletter', ['as' => 'send.newsletter' , 'uses' => 'TemplatesController@sendNewsletter']);
+    	Route::delete('/newsletter/{id}', ['as' => 'delete.newsletter' , 'uses' => 'TemplatesController@delete']);
     //slideshow
     	Route::post('/postSlideShow', ['as' => 'add.slideshow' , 'uses' => 'GalleryController@upload_slideshow']);
     	Route::post('/editSlideShow', ['as' => 'edit.slideshow' , 'uses' => 'GalleryController@update_slideshow']);
-    	Route::delete('/slideshow', ['as' => 'delete.slideshow' , 'uses' => 'GalleryController@delete']);
-    	
+    	Route::delete('/slideshow/{id}', ['as' => 'delete.slideshow' , 'uses' => 'GalleryController@delete']);
+    //seo
+    	Route::post('/seo', ['as' => 'add.seo' , 'uses' => 'SeosController@insert']);
+    	Route::put('/seo/{id}', ['as' => 'edit.seo' , 'uses' => 'SeosController@updateFull']);
+    	Route::delete('/seo/{id}', ['as' => 'delete.seo' , 'uses' => 'SeosController@delete']);
 
 
 
