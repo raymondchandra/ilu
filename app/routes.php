@@ -31,7 +31,7 @@ Route::group(['before' => 'check_token'], function()
 	//category
 		Route::get('/category', ['as' => 'get.category.list' , 'uses' => '']);
 	//slideshow
-		Route::get('/slideshow', ['as' => 'get.slideshow.list' , 'uses' => '']);
+		Route::get('/slideshow', ['as' => 'get.slideshow.list' , 'uses' => 'GalleryController@getSlideshow']);
 	//news
 		Route::get('/news', ['as' => 'get.news.list' , 'uses' => '']);
 		Route::get('/news/{:id}', ['as' => 'get.news.detail' , 'uses' => '']);
@@ -91,7 +91,12 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
     	Route::post('/newsletter', ['as' => 'add.newsletter' , 'uses' => 'TemplatesController@insert']);
     	Route::put('/newsletter/{id}', ['as' => 'edit.newsletter' , 'uses' => 'TemplatesController@updateFull']);
     	Route::post('/sendnewsletter', ['as' => 'send.newsletter' , 'uses' => 'TemplatesController@sendNewsletter']);
-    
+    //slideshow
+    	Route::post('/postSlideShow', ['as' => 'add.slideshow' , 'uses' => 'GalleryController@upload_slideshow']);
+    	Route::post('/editSlideShow', ['as' => 'edit.slideshow' , 'uses' => 'GalleryController@update_slideshow']);
+    	Route::delete('/slideshow', ['as' => 'delete.slideshow' , 'uses' => 'GalleryController@delete']);
+    	
+
 
 
 });
