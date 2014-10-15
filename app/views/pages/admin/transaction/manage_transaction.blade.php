@@ -26,7 +26,7 @@
 						<thead class="table-bordered">
 							<tr>
 								<th class="table-bordered">
-									<a href="javascript:void(0)">Invoice #</a>
+									<a href="javascript:void(0)">Transaction No.</a>
 									<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>

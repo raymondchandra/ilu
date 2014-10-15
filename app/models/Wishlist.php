@@ -4,7 +4,7 @@ class Wishlist extends \Eloquent {
 
 	// Add your validation rules here
 	public static $rules = [
-		// 'title' => 'required'
+		'product_id' => 'required'
 	];
 
 	// Don't forget to fill this array

@@ -8,7 +8,6 @@
 					<h3 style="float: left;">
 						Manage Promosi
 					</h3>
-					<button class="btn btn-success" style="float: right; margin-top: 20px;"  data-toggle="modal" data-target=".pop_up_add_promosi">+ Add New Promosi</button>
 				</div>
 				<span class="clearfix"></span>
 				<hr></hr>
@@ -23,6 +22,7 @@
 					  <li><a href="#">5</a></li>
 					  <li><a href="#">&raquo;</a></li>
 					</ul>
+					<button class="btn btn-success" style="float: right; margin-top: 20px;"  data-toggle="modal" data-target=".pop_up_add_promosi">+ Add New Promosi</button>
 					<table class="table table-striped table-hover ">
 						<thead class="table-bordered">
 							<tr>

@@ -210,4 +210,77 @@ class GalleriesController extends \BaseController {
 	}
 	*/
 
+	/* copy dari hfi
+	//update foto slide
+	public function update_foto_gallery()
+	{	
+		if(Input::hasFile('filePhoto'))
+		{
+			
+			$id_img = Input::get('id_photo');
+			$id = Auth::user()->id;
+			
+			$img_upload = Input::file('filePhoto');
+			$file_name = $img_upload->getClientOriginalName();
+			$destination = 'assets/file_upload/slideshow/'.$id_img.'/';
+			
+			$gallery = Gallery::find($id_img);
+			if($gallery != NULL){ 
+				//delete foto lama
+				$pathLama = $gallery -> file_path;
+				File::delete($pathLama);
+			}else{
+				$gallery = new Gallery();
+				$gallery -> type = '1';
+			}
+			
+			$uploadSuccess = $img_upload->move($destination, $file_name);
+			$gallery -> timestamps = false;
+			$gallery -> tanggal_upload = Carbon::now();
+			$gallery -> uploaded_by = $id;
+			$gallery -> file_path = $destination.$file_name;
+			try{
+				$gallery->save();
+				return 'success';
+			} catch (Exception $e) {
+				return $e;
+			}
+		}else
+		{
+			return 'failed';
+		}
+	}
+	
+	public function update_caption()
+	{
+		$caption = Input::get('caption');
+		$id = Auth::user()->id;
+		$id_caption = Input::get('idCaption');
+		$gallery = Gallery::find($id_caption);
+		if($gallery==NULL) return 2; //ga ad gambar
+		$gallery->kapsion = $caption;
+		$gallery->timestamps = false;
+		$gallery -> tanggal_upload = Carbon::now();
+		$gallery -> uploaded_by = $id;
+		try{
+			$gallery->save();
+			return 1; //success
+		}catch(Exception $e){
+			return $e;	
+		}
+	}
+	
+	public function get_slideshow()
+	{
+		$gal = Gallery::where('type','=', '1')->get();
+		if(count($gal) != 0)
+		{
+			return $gal;
+			
+		}else
+		{
+			return "Failed";
+		}
+	}*/
+
 }
