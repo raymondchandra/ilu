@@ -21,7 +21,7 @@ Route::group(['before' => 'check_token'], function()
 		Route::post('/register', ['as' => 'register' , 'uses' => '']);
 		Route::post('/forgotPass', ['as' => 'forgotPass' , 'uses' => '']);
 	//product (+ detail,promo,wishlist,cart)
-		Route::get('/product/{:id}', ['as' => 'get.product' , 'uses' => '']);
+		Route::get('/product/{id}', ['as' => 'get.product' , 'uses' => '']);
 		Route::get('/product/category/{:category_id}', ['as' => 'get.product.category' , 'uses' => '']);
 		Route::get('/product/name/{:name}', ['as' => 'get.product.name' , 'uses' => '']);
 		Route::get('/product/top', ['as' => 'get.product.top' , 'uses' => '']);
@@ -38,8 +38,8 @@ Route::group(['before' => 'check_token'], function()
 	//message
 		Route::post('/message', ['as' => 'send.message' , 'uses' => '']);
 	//information
-		Route::get('/information', ['as' => 'get.information.list' , 'uses' => '']);
-		Route::get('/information/{:id}', ['as' => 'get.information.detail' , 'uses' => '']);
+		Route::get('/information', ['as' => 'get.information.list' , 'uses' => 'InformationController@getAll']);
+		Route::get('/information/{id}', ['as' => 'get.information.detail' , 'uses' => 'InformationController@getById']);
 	//contact
 		Route::get('/contact', ['as' => 'get.contact.list' , 'uses' => '']);
 });
@@ -57,14 +57,15 @@ Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
 		Route::put('/address', ['as' => 'edit.address' , 'uses' => '']);
 		Route::delete('/address/{:id}', ['as' => 'delete.address' , 'uses' => '']);
 	//wishlist
-		Route::post('/wishlist', ['as' => 'add.wishlist' , 'uses' => '']);
-		Route::delete('/wishlist/{:id}', ['as' => 'delete.wishlist' , 'uses' => '']);
+		Route::get('/wishlist', ['as' => 'get.wishlist' , 'uses' => 'WishlistsController@getWishList']);
+		Route::post('/wishlist', ['as' => 'add.wishlist' , 'uses' => 'WishlistsController@insert']);
+		Route::delete('/wishlist/{:product_id}', ['as' => 'delete.wishlist' , 'uses' => 'WishlistsController@delete']);
 	//cart
 		Route::get('/classification', ['as' => 'get.classification' , 'uses' => '']);
 		Route::post('/cart', ['as' => 'add.cart' , 'uses' => '']);
 		Route::put('/cart', ['as' => 'edit.cart.classification' , 'uses' => '']);
 		Route::put('/cart/quantity', ['as' => 'edit.cart.quantity' , 'uses' => '']);
-		Route::delete('/cart/{:id}', ['as' => 'delete.cart' , 'uses' => '']);
+		Route::delete('/cart/{id}', ['as' => 'delete.cart' , 'uses' => '']);
 	//voucher
 		Route::post('/checkVoucher', ['as' => 'check.voucher' , 'uses' => '']);
 	//order
@@ -75,13 +76,23 @@ Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
 		Route::get('/shipment', ['as' => 'get.shipment.list' , 'uses' => '']);
 		Route::post('/payment', ['as' => 'add.payment' , 'uses' => '']);
 	//review
-		Route::get('/review/{:product_id}', ['as' => 'get.review.product' , 'uses' => '']);
+		Route::get('/review/{product_id}', ['as' => 'get.review.product' , 'uses' => '']);
 		Route::post('/review', ['as' => 'add.review' , 'uses' => '']);
 });
 
 Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 {
     //transaction
+
+    //newsletter
+    	Route::get('/newsletter', ['as' => 'get.newsletter.list' , 'uses' => 'TemplatesController@getAll']);
+    	Route::get('/newsletter/{id}', ['as' => 'get.newsletter.detail' , 'uses' => 'TemplatesController@getById']);
+    	Route::get('/newsletter/filter', ['as' => 'get.newsletter.filter' , 'uses' => 'TemplatesController@getByTitleSubject']);
+    	Route::post('/newsletter', ['as' => 'add.newsletter' , 'uses' => 'TemplatesController@insert']);
+    	Route::put('/newsletter/{id}', ['as' => 'edit.newsletter' , 'uses' => 'TemplatesController@updateFull']);
+    	Route::post('/sendnewsletter', ['as' => 'send.newsletter' , 'uses' => 'TemplatesController@sendNewsletter']);
+    
+
 
 });
 
@@ -99,10 +110,6 @@ Route::group(array('prefix' => 'test'), function()
 	Route::get('/manage_order', function()
 	{
 		return View::make('pages.admin.order.manage_order');
-	});
-	Route::get('/view_order', function()
-	{
-		return View::make('pages.admin.order.view_order');
 	});
 	
     // manage category
@@ -136,6 +143,12 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.product.add_product_images');
 	});
 
+    // Manage Attribute
+    Route::get('/manage_attribute', function()
+	{
+		return View::make('pages.admin.attribute.manage_attribute');
+	});
+
     // Newsletter
     Route::get('/manage_newsletter', function()
 	{
@@ -155,10 +168,34 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.promosi.manage_promosi');
 	});
 
-    // Promosi
+    // Transaction
     Route::get('/manage_transaction', function()
 	{
 		return View::make('pages.admin.transaction.manage_transaction');
+	});
+
+    // Shipping
+    Route::get('/manage_shipping', function()
+	{
+		return View::make('pages.admin.shipping.manage_shipping');
+	});
+
+    // Shipping Agent
+    Route::get('/manage_shipping_agent', function()
+	{
+		return View::make('pages.admin.shipping.manage_shipping_agent');
+	});
+
+    // Customer
+    Route::get('/manage_customer', function()
+	{
+		return View::make('pages.admin.customer.manage_customer');
+	});
+
+    // Review
+    Route::get('/manage_review', function()
+	{
+		return View::make('pages.admin.review.manage_review');
 	});
 
 

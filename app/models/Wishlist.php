@@ -6,7 +6,7 @@ class Wishlist extends \Eloquent {
 	public static $rules = [
 		// 'title' => 'required'
 		'account_id' => 'required|integer',
-		'product_id' => 'required|integer'
+		'product_id' => 'required|integer'		
 	];
 
 	// Don't forget to fill this array

@@ -6,7 +6,7 @@
 			
 				<div class="s_title_n_control">
 					<h3 style="float: left;">
-						Manage Taxes
+						Manage Review
 					</h3>
 				</div>
 				<span class="clearfix"></span>
@@ -22,18 +22,35 @@
 					  <li><a href="#">5</a></li>
 					  <li><a href="#">&raquo;</a></li>
 					</ul>
-					<button class="btn btn-success" style="float: right; margin-top: 20px;"  data-toggle="modal" data-target=".pop_up_add_tax">+ Add New Tax</button>
 					<table class="table table-striped table-hover ">
 						<thead class="table-bordered">
 							<tr>
 								<th class="table-bordered">
-									<a href="javascript:void(0)">Nama</a>
+									<a href="javascript:void(0)">Product ID</a>
 									<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
 								<th class="table-bordered">
-									<a href="javascript:void(0)">Nilai</a>
+									<a href="javascript:void(0)">Nama Product</a>
+									<a href="javascript:void(0)">
+									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+									</a>
+								</th>
+								<th class="table-bordered">
+									<a href="javascript:void(0)">Komentar</a>
+									<a href="javascript:void(0)">
+									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+									</a>
+								</th>
+								<th class="table-bordered">
+									<a href="javascript:void(0)">Rating</a>
+									<a href="javascript:void(0)">
+									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+									</a>
+								</th>
+								<th class="table-bordered">
+									<a href="javascript:void(0)">Status</a>
 									<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
@@ -46,6 +63,9 @@
 							<tr>
 								<td><input type="text" class="form-control input-sm"></td>
 								<td><input type="text" class="form-control input-sm"></td>
+								<td><input type="text" class="form-control input-sm"></td>
+								<td><input type="text" class="form-control input-sm"></td>
+								<td><input type="text" class="form-control input-sm"></td>
 								
 								<td width=""><a class="btn btn-primary btn-xs">Filter</a></td>
 							</tr>
@@ -56,13 +76,13 @@
 							  ?>
 							<tr> 
 								
-								<td>Something</td>
-								<td>10%</td>
+								<td>657676546</td>
+								<td>lorem jashyu afuh ashdh jadbahdb  sfgaufguays guayg faygfaugf aysf gaus</td>
+								<td>4.5 / 5</td>
+								<td>Pending</td>
 								
 								<td>
-									<button class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_tax">Edit</button>
-									<!-- Button trigger modal class ".alertYesNo" -->
-									<button class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</button>
+									<button class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_view_review">Edit</button>
 								</td>
 							</tr> 
 							  <?php
@@ -78,7 +98,6 @@
 	</div>
 	
 	@include('includes.modals.alertYesNo')
-	@include('pages.admin.tax.pop_up_add_tax')
-	@include('pages.admin.tax.pop_up_edit_tax')
+	@include('pages.admin.review.pop_up_view_review')
 
 @stop
