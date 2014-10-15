@@ -9,16 +9,17 @@ class SupportMsgsController extends \BaseController {
 	 */
 	public function insert()
 	{
+		$input = json_decode(Input::all());
 		$respond = array();
 		//validate
-		$validator = Validator::make($data = Input::all(), Supportmsg::$rules);
+		$validator = Validator::make($data = $input, Supportmsg::$rules);
 
 		if ($validator->fails())
 		{
 			$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
 			return Response::json($respond);
 		}
-
+		$data['account_id'] = Auth::user()->id;
 		//save
 		try {
 			Supportmsg::create($data);
@@ -70,16 +71,16 @@ class SupportMsgsController extends \BaseController {
 	}
 
 	/**
-	 * Display the specified supportmsg by {name}.
+	 * Display the specified supportmsg by ticket_id.
 	 *
 	 * @param  
 	 * @return Response
 	 */
-	/*
-	public function getBy{name}()
+	
+	public function getByTicket($ticket_id)
 	{
 		$respond = array();
-		$supportmsg = Supportmsg::where('','=','')->get();
+		$supportmsg = Supportmsg::where('ticket_id','=',$ticket_id)->orderBy('created_at')->get();
 		if (count($supportmsg) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -90,7 +91,7 @@ class SupportMsgsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-	*/
+	
 
 	/**
 	 * Update all value of the specified supportmsg in database.

@@ -80,6 +80,9 @@ Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
 	//review
 		Route::get('/review/{product_id}', ['as' => 'get.review.product' , 'uses' => '']);
 		Route::post('/review', ['as' => 'add.review' , 'uses' => '']);
+	//supportMsg
+		Route::get('/supportMsg/{ticket_id}', ['as' => 'get.supportMsg.ticket' , 'uses' => 'SupportMsgsController@getByTicket']);
+		Route::post('/supportMsg', ['as' => 'add.supportMsg' , 'uses' => 'SupportMsgsController@insert']);
 });
 
 Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
@@ -106,7 +109,9 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
     	Route::post('/seo', ['as' => 'add.seo' , 'uses' => 'SeosController@insert']);
     	Route::put('/seo/{id}', ['as' => 'edit.seo' , 'uses' => 'SeosController@updateFull']);
     	Route::delete('/seo/{id}', ['as' => 'delete.seo' , 'uses' => 'SeosController@delete']);
-
+    //supportMsg
+		Route::get('/supportMsg/{ticket_id}', ['as' => 'get.supportMsg.ticket' , 'uses' => 'SupportMsgsController@getByTicket']);
+		Route::post('/supportMsg', ['as' => 'add.supportMsg' , 'uses' => 'SupportMsgsController@insert']);
 
 
 });
