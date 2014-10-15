@@ -21,7 +21,7 @@ Route::group(['before' => 'check_token'], function()
 		Route::post('/register', ['as' => 'register' , 'uses' => '']);
 		Route::post('/forgotPass', ['as' => 'forgotPass' , 'uses' => '']);
 	//product (+ detail,promo,wishlist,cart)
-		Route::get('/product/{:id}', ['as' => 'get.product' , 'uses' => '']);
+		Route::get('/product/{id}', ['as' => 'get.product' , 'uses' => '']);
 		Route::get('/product/category/{:category_id}', ['as' => 'get.product.category' , 'uses' => '']);
 		Route::get('/product/name/{:name}', ['as' => 'get.product.name' , 'uses' => '']);
 		Route::get('/product/top', ['as' => 'get.product.top' , 'uses' => '']);
@@ -39,7 +39,7 @@ Route::group(['before' => 'check_token'], function()
 		Route::post('/message', ['as' => 'send.message' , 'uses' => '']);
 	//information
 		Route::get('/information', ['as' => 'get.information.list' , 'uses' => 'InformationController@getAll']);
-		Route::get('/information/{:id}', ['as' => 'get.information.detail' , 'uses' => 'InformationController@getById']);
+		Route::get('/information/{id}', ['as' => 'get.information.detail' , 'uses' => 'InformationController@getById']);
 	//contact
 		Route::get('/contact', ['as' => 'get.contact.list' , 'uses' => '']);
 });
@@ -65,7 +65,7 @@ Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
 		Route::post('/cart', ['as' => 'add.cart' , 'uses' => '']);
 		Route::put('/cart', ['as' => 'edit.cart.classification' , 'uses' => '']);
 		Route::put('/cart/quantity', ['as' => 'edit.cart.quantity' , 'uses' => '']);
-		Route::delete('/cart/{:id}', ['as' => 'delete.cart' , 'uses' => '']);
+		Route::delete('/cart/{id}', ['as' => 'delete.cart' , 'uses' => '']);
 	//voucher
 		Route::post('/checkVoucher', ['as' => 'check.voucher' , 'uses' => '']);
 	//order
@@ -76,13 +76,23 @@ Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
 		Route::get('/shipment', ['as' => 'get.shipment.list' , 'uses' => '']);
 		Route::post('/payment', ['as' => 'add.payment' , 'uses' => '']);
 	//review
-		Route::get('/review/{:product_id}', ['as' => 'get.review.product' , 'uses' => '']);
+		Route::get('/review/{product_id}', ['as' => 'get.review.product' , 'uses' => '']);
 		Route::post('/review', ['as' => 'add.review' , 'uses' => '']);
 });
 
 Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 {
     //transaction
+
+    //newsletter
+    	Route::get('/newsletter', ['as' => 'get.newsletter.list' , 'uses' => 'TemplatesController@getAll']);
+    	Route::get('/newsletter/{id}', ['as' => 'get.newsletter.detail' , 'uses' => 'TemplatesController@getById']);
+    	Route::get('/newsletter/filter', ['as' => 'get.newsletter.filter' , 'uses' => 'TemplatesController@getByTitleSubject']);
+    	Route::post('/newsletter', ['as' => 'add.newsletter' , 'uses' => 'TemplatesController@insert']);
+    	Route::put('/newsletter/{id}', ['as' => 'edit.newsletter' , 'uses' => 'TemplatesController@updateFull']);
+    	Route::post('/sendnewsletter', ['as' => 'send.newsletter' , 'uses' => 'TemplatesController@sendNewsletter']);
+    
+
 
 });
 
