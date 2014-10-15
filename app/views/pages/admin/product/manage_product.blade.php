@@ -8,7 +8,6 @@
 					<h3 style="float: left;">
 						Manage Product
 					</h3>
-					<a href="add_product_00" class="btn btn-success" style="float: right; margin-top: 20px;">+ Add Product</a>
 				</div>
 				<span class="clearfix"></span>
 				<hr></hr>
@@ -23,66 +22,36 @@
 					  <li><a href="#">5</a></li>
 					  <li><a href="#">&raquo;</a></li>
 					</ul>
+					<button href="" class="btn btn-success" style="float: right; margin-top: 20px;" data-toggle="modal" data-target=".pop_up_add_product">+ Add Product</button>
 					<table class="table table-striped table-hover ">
 						<thead class="table-bordered">
 							<tr>
-								<th class="table-bordered"></th>
 								<th class="table-bordered">
-								ID
+									<a href="javascript:void(0)">ID</a>
 									<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
 								<th class="table-bordered">
-									<a href="javascript:void(0)">Nama</a>
+									<a href="javascript:void(0)">Product ID</a>
 									<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
 								<th class="table-bordered">
-									<a href="javascript:void(0)">Tipe</a>
+									<a href="javascript:void(0)">Name</a>
 									<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
 								<th class="table-bordered">
-									<a href="javascript:void(0)">Attribute Set</a>
+									<a href="javascript:void(0)">Category Name</a>
 									<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
 								<th class="table-bordered">
-									<a href="javascript:void(0)">SKU</a>
-									<a href="javascript:void(0)">
-									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
-									</a>
-								</th>
-								<th class="table-bordered">
-									<a href="javascript:void(0)">Harga</a>
-									<a href="javascript:void(0)">
-									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
-									</a>
-								</th>
-								<th class="table-bordered">
-									<a href="javascript:void(0)">Qty</a>
-									<a href="javascript:void(0)">
-									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
-									</a>
-								</th>
-								<th class="table-bordered">
-									<a href="javascript:void(0)">Visibility</a>
-									<a href="javascript:void(0)">
-									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
-									</a>
-								</th>
-								<th class="table-bordered">
-									<a href="javascript:void(0)">Status</a>
-									<a href="javascript:void(0)">
-									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
-									</a>
-								</th>
-								<th class="table-bordered">
-									<a href="javascript:void(0)">Website</a>
+									<a href="javascript:void(0)">Promotion ID</a>
 									<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
@@ -94,18 +63,12 @@
 						</thead>
 						<thead>
 							<tr>
-								<td></th>
 								<td width="125"><input type="text" class="form-control input-sm"></td>
 								<td><input type="text" class="form-control input-sm"></td>
 								
 								<td><input type="text" class="form-control input-sm"></td>
 								<td><input type="text" class="form-control input-sm"></td>
 								<td><input type="text" class="form-control input-sm"></td>
-								<td><input type="text" class="form-control input-sm"></td>
-								<td><input type="text" class="form-control input-sm"></td>
-								<td><input type="text" class="form-control input-sm"></td>
-								<td><input type="text" class="form-control input-sm"></td>
-								<td width="120"><input type="text" class="form-control input-sm"></td>
 								<td><a class="btn btn-primary btn-xs">Filter</a></td>
 							</tr>
 						</thead>
@@ -114,19 +77,14 @@
 							for ($i=0; $i<=30; $i++) {
 							  ?>
 							<tr> 
-								<td><input type="checkbox"></td>
 								<td><?php echo($i); ?></td>
 								<td>Barang bagus</td>
-								<td>Pakaian</td>
 								<td>Set atribut pakaian</td>
 								<td>242342</td>
 								<td>300000</td>
-								<td>90</td>
-								<td>catalog</td>
-								<td>enables</td>
-								<td>-</td>
 								<td>
-									<a class="btn btn-warning btn-xs">Edit</a>
+									<a class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_product">Edit Info</a>
+									<a class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_product_gallery">Edit Gallery</a>
 									<!-- Button trigger modal class ".alertYesNo" -->
 									<a class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</a>
 								</td>
@@ -144,5 +102,8 @@
 	</div>
 	
 	@include('includes.modals.alertYesNo')
+	@include('pages.admin.product.pop_up_edit_product_gallery')
+	@include('pages.admin.product.pop_up_edit_product')
+	@include('pages.admin.product.pop_up_add_product')
 	
 @stop

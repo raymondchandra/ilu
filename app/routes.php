@@ -101,10 +101,6 @@ Route::group(array('prefix' => 'test'), function()
 	{
 		return View::make('pages.admin.order.manage_order');
 	});
-	Route::get('/view_order', function()
-	{
-		return View::make('pages.admin.order.view_order');
-	});
 	
     // manage category
 	Route::get('/manage_category', function()
@@ -135,6 +131,12 @@ Route::group(array('prefix' => 'test'), function()
 	Route::get('/add_product_images', function()
 	{
 		return View::make('pages.admin.product.add_product_images');
+	});
+
+    // Manage Attribute
+    Route::get('/manage_attribute', function()
+	{
+		return View::make('pages.admin.attribute.manage_attribute');
 	});
 
     // Newsletter
@@ -168,7 +170,13 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.shipping.manage_shipping');
 	});
 
-    // Shipping
+    // Shipping Agent
+    Route::get('/manage_shipping_agent', function()
+	{
+		return View::make('pages.admin.shipping.manage_shipping_agent');
+	});
+
+    // Customer
     Route::get('/manage_customer', function()
 	{
 		return View::make('pages.admin.customer.manage_customer');

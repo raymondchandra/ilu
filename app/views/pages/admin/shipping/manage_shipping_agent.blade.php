@@ -6,10 +6,10 @@
 			
 			<div class="s_title_n_control">
 				<h3 style="float: left;">
-					Manage Shipping
+					Manage Shipping Agent | Dari Kota X
 				</h3>
-				<a href="{{ URL::to('test/manage_shipping') }}" class="btn btn-default" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping</a>
-				<a href="{{ URL::to('test/manage_shipping_agent') }}" class="btn btn-info" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping Agent</a>
+				<a href="{{ URL::to('test/manage_shipping') }}" class="btn btn-info" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping</a>
+				<a href="{{ URL::to('test/manage_shipping_agent') }}" class="btn btn-default" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping Agent</a>
 			</div>
 			<span class="clearfix"></span>
 			<hr></hr>
@@ -24,17 +24,19 @@
 					<li><a href="#">5</a></li>
 					<li><a href="#">&raquo;</a></li>
 				</ul>
+				<button class="btn btn-success" style="float: right; margin-top: 20px;"  data-toggle="modal" data-target=".pop_up_add_shipping_agent">+ Add New Kurir</button>
+
 				<table class="table table-striped table-hover ">
 					<thead class="table-bordered">
 						<tr>
 							<th class="table-bordered">
-								<a href="javascript:void(0)">Shipment ID</a>
+								<a href="javascript:void(0)">ID Kurir</a>
 								<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 								</a>
 							</th>
 							<th class="table-bordered" width="120">
-								<a href="javascript:void(0)">Kurir</a>
+								<a href="javascript:void(0)">Nama Kurir</a>
 								<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 								</a>
@@ -46,19 +48,7 @@
 								</a>
 							</th>
 							<th class="table-bordered">
-								<a href="javascript:void(0)">Nama Penerima</a>
-								<a href="javascript:void(0)">
-									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
-								</a>
-							</th>
-							<th class="table-bordered">
-								<a href="javascript:void(0)">Harga Pengiriman</a>
-								<a href="javascript:void(0)">
-									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
-								</a>
-							</th>
-							<th class="table-bordered">
-								<a href="javascript:void(0)">Status</a>
+								<a href="javascript:void(0)">Price</a>
 								<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 								</a>
@@ -69,8 +59,6 @@
 						</thead>
 						<thead>
 							<tr>
-								<td><input type="text" class="form-control input-sm"></td>
-								<td><input type="text" class="form-control input-sm"></td>
 								<td><input type="text" class="form-control input-sm"></td>
 								<td><input type="text" class="form-control input-sm"></td>
 								<td><input type="text" class="form-control input-sm"></td>
@@ -89,13 +77,11 @@
 									<td>JNE</td>
 									<td>Jl. Bandung Barat Banget No. 99</td>
 									<td>Ashshiddiq Wangsaatmadja</td>
-									<td>IDR 20.000</td>
-									<td>Pending</td>
 
 									<td>
-										<button class="btn btn-info btn-xs" data-toggle="modal" data-target=".pop_up_view_shipping">View</button>
+										<button class="btn btn-info btn-xs" data-toggle="modal" data-target=".pop_up_view_shipping_agent">View</button>
 										<!-- Button trigger modal class ".alertYesNo" -->
-										<!-- <button class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</button> -->
+										<button class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</button>
 									</td>
 								</tr> 
 								<?php
@@ -111,6 +97,7 @@
 	</div>
 	
 	@include('includes.modals.alertYesNo')
-	@include('pages.admin.shipping.pop_up_view_shipping')
+	@include('pages.admin.shipping.pop_up_view_shipping_agent')
+	@include('pages.admin.shipping.pop_up_add_shipping_agent')
 
 	@stop

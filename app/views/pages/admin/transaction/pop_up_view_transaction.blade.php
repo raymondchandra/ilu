@@ -11,7 +11,7 @@
 						<div class="col-sm-5">
 
 							<div class="form-group" id="nama_promosi">
-								<label class="col-sm-4 control-label">Invoice #</label>
+								<label class="col-sm-4 control-label">Transaction No.</label>
 								<div class="col-sm-8">
 									<p class="form-control-static">98767954</p>
 								</div>
@@ -74,8 +74,8 @@
 								<div class="col-sm-5">
 									<p id="transaction_paid" class="form-control-static">False</p>
 									<select id="transaction_paid_list" class="form-control hidden">
-										<option val="true">True</option>
-										<option val="false">False</option>
+										<option val="1">Paid</option>
+										<option val="0">Unpaid</option>
 									</select>
 								</div>
 								<div class="col-sm-3">
@@ -104,7 +104,7 @@
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Shipment ID</label>
 								<div class="col-sm-8">
-									<p class="form-5control-static">4657TYU76</p>
+									<p class="form-control-static">4657TYU76</p>
 								</div>
 							</div>
 
@@ -118,7 +118,7 @@
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Destinasi</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">Jl. Cibeunying Hegar Epic II No. 2, Bandung</p>
+									<p class="form-control-static">Bandung, Jawa Barat</p>
 								</div>
 							</div>
 						</div>

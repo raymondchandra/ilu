@@ -8,7 +8,6 @@
 					<h3 style="float: left;">
 						Manage Category
 					</h3>
-					<a href="add_category" class="btn btn-success" style="float: right; margin-top: 20px;">+ Add Category</a>
 				</div>
 				<span class="clearfix"></span>
 				<hr></hr>
@@ -23,10 +22,10 @@
 					  <li><a href="#">5</a></li>
 					  <li><a href="#">&raquo;</a></li>
 					</ul>
+					<a href="add_category" class="btn btn-success" style="float: right; margin-top: 20px;"  data-toggle="modal" data-target=".pop_up_add_category">+ Add Category</a>
 					<table class="table table-striped table-hover ">
 						<thead class="table-bordered">
 							<tr>
-								<th class="table-bordered"></th>
 								<th class="table-bordered">
 								ID
 									<a href="javascript:void(0)">
@@ -34,7 +33,13 @@
 									</a>
 								</th>
 								<th class="table-bordered">
-									<a href="javascript:void(0)">Nama</a>
+									<a href="javascript:void(0)">Nama Category</a>
+									<a href="javascript:void(0)">
+									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+									</a>
+								</th>
+								<th class="table-bordered">
+									<a href="javascript:void(0)">Parent Category</a>
 									<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
@@ -46,8 +51,8 @@
 						</thead>
 						<thead>
 							<tr>
-								<td width="40"></th>
 								<td width="125"><input type="text" class="form-control input-sm"></td>
+								<td><input type="text" class="form-control input-sm"></td>
 								<td><input type="text" class="form-control input-sm"></td>
 								
 								<td width="120"><a class="btn btn-primary btn-xs">Filter</a></td>
@@ -58,12 +63,12 @@
 							for ($i=0; $i<=30; $i++) {
 							  ?>
 							<tr> 
-								<td><input type="checkbox"></td>
 								<td><?php echo($i); ?></td>
-								<td>Barang bagus</td>
+								<td>Das Kategory</td>
+								<td>Die Zwei Hunde</td>
 								
 								<td>
-									<a class="btn btn-warning btn-xs">Edit</a>
+									<a class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_category">Edit</a>
 									<!-- Button trigger modal class ".alertYesNo" -->
 									<a class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</a>
 								</td>
@@ -81,5 +86,7 @@
 	</div>
 	
 	@include('includes.modals.alertYesNo')
+	@include('pages.admin.category.pop_up_add_category')
+	@include('pages.admin.category.pop_up_edit_category')
 
 @stop
