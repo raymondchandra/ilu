@@ -212,6 +212,12 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.customer.manage_customer');
 	});
 
+    // Review
+    Route::get('/manage_review', function()
+	{
+		return View::make('pages.admin.review.manage_review');
+	});
+
 
 });
 
