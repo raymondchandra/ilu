@@ -1,17 +1,31 @@
 <?php
 
 class GalleriesController extends \BaseController {
-
-	/**
-	 * Insert a newly created gallery in database.
-	 *
-	 * @return Response
-	 */
-	public function insert()
+	
+	public function w_insert()
 	{
+		$json = Input::get('json_data');
+		$decode = json_decode($json);
+		
+		$product_id = $decode->{'product_id'};
+		$photo_path = $decode->{'photo_path'};
+		$type = $decode->{'type'};
+		
+		$input = array(
+					'product_id' => $product_id,
+					'photo_path' => $photo_path,
+					'type' => $type
+		);
+		
+		return $this->insert($input);
+	}	
+	public function insert($input)
+	{
+		// $input = json_decode(Input::all());
+		
 		$respond = array();
 		//validate
-		$validator = Validator::make($data = Input::all(), Gallery::$rules);
+		$validator = Validator::make($data = $input, Gallery::$rules);
 
 		if ($validator->fails())
 		{

@@ -2,14 +2,25 @@
 
 class WishlistsController extends \BaseController {
 
-	/**
-	 * Insert a newly created wishlist in database.
-	 *
-	 * @return Response
-	 */
-	public function insert()
+	public function w_insert()
 	{
-		$input = json_decode(Input::all());
+		$json = Input::get('json_data');
+		$decode = json_decode($json);
+		
+		$account_id = $decode->{'account_id'};
+		$product_id = $decode->{'product_id'};		
+		
+		$input = array(
+					'account_id' => $account_id,
+					'product_id' => $product_id					
+		);
+		
+		return $this->insert($input);
+	}	
+	public function insert($input)
+	{
+		// $input = json_decode(Input::all());
+				
 		$respond = array();
 		//validate
 		$validator = Validator::make($data = $input, Wishlist::$rules);
@@ -30,7 +41,6 @@ class WishlistsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-
 	
 
 	/**
@@ -51,13 +61,7 @@ class WishlistsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-
-	/**
-	 * Display the specified wishlist.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+	
 	public function getById($id)
 	{
 		$respond = array();
@@ -73,12 +77,6 @@ class WishlistsController extends \BaseController {
 		return Response::json($respond);
 	}
 
-	/**
-	 * Display the specified wishlist by {name}.
-	 *
-	 * @param  
-	 * @return Response
-	 */
 	/*
 	public function getBy{name}()
 	{
@@ -95,13 +93,7 @@ class WishlistsController extends \BaseController {
 		return Response::json($respond);
 	}
 	*/
-
-	/**
-	 * Update all value of the specified wishlist in database.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+	
 	public function updateFull($id)
 	{
 		$respond = array();
@@ -131,13 +123,7 @@ class WishlistsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-
-	/**
-	 * Update {name} value of the specified wishlist in database.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+	
 	/*
 	public function update{name}($id)
 	{
@@ -162,6 +148,10 @@ class WishlistsController extends \BaseController {
 		return Response::json($respond);
 	}
 	*/
+<<<<<<< HEAD
+		
+	public function delete($id)
+=======
 	
 	
 	/**
@@ -171,6 +161,7 @@ class WishlistsController extends \BaseController {
 	 * @return Response
 	 */
 	public function delete($product_id)
+>>>>>>> b21b72ce68a9934eea323d68993ea14b055246e2
 	{
 		$respond = array();
 		$wishlist = Wishlist::where('account_id','=',Auth::user()->id)->where('product_id','=',$product_id)->first();
@@ -190,14 +181,7 @@ class WishlistsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-
-	/**
-	 * Check if row exist in database.
-	 *
-	 * @param  
-	 * @return Response
-	 */
-	/*
+	
 	public function exist()
 	{
 		$respond = array();
@@ -211,6 +195,11 @@ class WishlistsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		return Response::json($respond);
+<<<<<<< HEAD
+	}	
+		
+	public function getWishListByAccountId($id)
+=======
 	}
 	*/
 	
@@ -221,6 +210,7 @@ class WishlistsController extends \BaseController {
 	 * @return Response
 	 */
 	public function getWishList()
+>>>>>>> b21b72ce68a9934eea323d68993ea14b055246e2
 	{
 
 		$respond = array();
