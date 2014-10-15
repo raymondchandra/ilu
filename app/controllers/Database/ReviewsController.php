@@ -133,7 +133,7 @@ class ReviewsController extends \BaseController {
 		return Response::json($respond);
 	}		
 	
-	public function updateApprovedById($id, $new_approved)
+	public function updateApproved($id, $new_approved)
 	{
 		$respond = array();
 		$review = Review::find($id);

@@ -5,10 +5,16 @@ class Gallery extends \Eloquent {
 	// Add your validation rules here
 	public static $rules = [
 		// 'title' => 'required'
+		'product_id' => 'required|integer',
+		'photo_path' => 'required',
+		'type' => 'required'
 	];
 
 	// Don't forget to fill this array
-	protected $fillable = [];
+	protected $fillable = [
+		'product_id',
+		'photo_path',
+		'type'];
 
 	public function product()
 	{

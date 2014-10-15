@@ -1,17 +1,31 @@
 <?php
 
 class CartsController extends \BaseController {
-
-	/**
-	 * Insert a newly created cart in database.
-	 *
-	 * @return Response
-	 */
-	public function insert()
+	
+	public function w_insert()
 	{
+		$json = Input::get('json_data');
+		$decode = json_decode($json);
+		
+		$account_id = $decode->{'account_id'};
+		$price_id = $decode->{'price_id'};
+		$quantity = $decode->{'quantity'};
+		
+		$input = array(
+					'account_id' => $account_id,
+					'price_id' => $price_id,
+					'quantity' => $quantity
+		);
+		
+		return $this->insert($input);
+	}		
+	public function insert($input)
+	{
+		// $input = json_decode(Input::all());
+		
 		$respond = array();
 		//validate
-		$validator = Validator::make($data = Input::all(), Cart::$rules);
+		$validator = Validator::make($data = $input, Cart::$rules);
 
 		if ($validator->fails())
 		{
@@ -29,11 +43,6 @@ class CartsController extends \BaseController {
 		return Response::json($respond);
 	}
 
-	/**
-	 * Display all of the cart.
-	 *
-	 * @return Response
-	 */
 	public function getAll(){
 		$respond = array();
 		$cart = Cart::all();
@@ -42,100 +51,133 @@ class CartsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$cart);
-		}
-		return Response::json($respond);
-	}
-
-	/**
-	 * Display the specified cart.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function getById($id)
-	{
-		$respond = array();
-		$cart = Cart::find($id);
-		if (count($cart) == 0)
-		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		else
-		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$cart);
-		}
-		return Response::json($respond);
-	}
-
-	/**
-	 * Display the specified cart by {name}.
-	 *
-	 * @param  
-	 * @return Response
-	 */
-	/*
-	public function getBy{name}()
-	{
-		$respond = array();
-		$cart = Cart::where('','=','')->get();
-		if (count($cart) == 0)
-		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		else
-		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$cart);
-		}
-		return Response::json($respond);
-	}
-	*/
-
-	/**
-	 * Update all value of the specified cart in database.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function updateFull($id)
-	{
-		$respond = array();
-		$cart = Cart::find($id);
-		if ($cart == null)
-		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		else
-		{
-			//validate
-			$validator = Validator::make($data = Input::all(), Cart::$rules);
-
-			if ($validator->fails())
+		{					
+			foreach($cart as $key)
 			{
-				$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
-				return Response::json($respond);
-			}
-			//save
-			try {
-				$cart->update($data);
-				$respond = array('code'=>'204','status' => 'No Content');
-			} catch (Exception $e) {
-				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+				$price = Price::where('id','=',$key->price_id)->first();											
+				
+				$attr_name = Attribute::where('id','=',$price->attr_id)->first()->name;
+				
+				//add attr_name
+				$key->attr_name = $attr_name;
+				
+				//add price
+				$key->price = $price->amount;
+				
+				$tax_amount = Tax::where('id','=',$price->tax_id)->first()->amount;
+				
+				//add price_with_tax
+				$key->price_with_tax = ($price->amount + ($price->amount * $tax_amount / 100));														
+				
+				$product = Product::where('id','=',$price->product_id)->first();
+				
+				//add product_no
+				$key->product_no = $product->product_no;
+				
+				//add product_name
+				$key->product_name = $product->name;
+				
+				//add product_description
+				$key->product_description = $product->description;
+				
+				if($product->promotion_id == null)
+				{
+					//add price_with_tax_promotion ----> no promotion
+					$key->price_with_tax_promotion = $key->price_with_tax;
+				}
+				else
+				{
+					$promotion = Promotion::where('id','=',$product->promotion_id)->first();
+					//add price_with_tax_promotion ----> with promotion
+					$key->price_with_tax_promotion = $key->price_with_tax - $promotion->amount;
+				}												
+				
+				$main_photo = Gallery::where('product_id','=',$product->id)->where('type','=','main_photo')->first();						
+				$other_photos = Gallery::where('product_id','=',$product->id)->where('type','=','other_photos')->get();
+				
+				//add main_photo
+				$key->main_photo = $main_photo->photo_path;
+				
+				//add other_photos
+				$key->other_photos = $other_photos->photo_path;
 			}
 			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$cart);
+		}
+		return Response::json($respond);
+	}
+	
+	// return array cart : 
+			// id, account_id, price_id, quantity, 
+			// attr_name, price, price_with_tax, 
+			// product_no, product_name, product_description, price_with_tax_promotion,
+			// main_photo, other_photos
+	public function getByAccountId($account_id)
+	{
+		$respond = array();
+		$cart = Cart::where('account_id','=',$account_id)->get();
+		if (count($cart) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{								
+			foreach($cart as $key)
+			{
+				$price = Price::where('id','=',$key->price_id)->first();											
+				
+				$attr_name = Attribute::where('id','=',$price->attr_id)->first()->name;
+				
+				//add attr_name
+				$key->attr_name = $attr_name;
+				
+				//add price
+				$key->price = $price->amount;
+				
+				$tax_amount = Tax::where('id','=',$price->tax_id)->first()->amount;
+				
+				//add price_with_tax
+				$key->price_with_tax = ($price->amount + ($price->amount * $tax_amount / 100));														
+				
+				$product = Product::where('id','=',$price->product_id)->first();
+				
+				//add product_no
+				$key->product_no = $product->product_no;
+				
+				//add product_name
+				$key->product_name = $product->name;
+				
+				//add product_description
+				$key->product_description = $product->description;
+				
+				if($product->promotion_id == null)
+				{
+					//add price_with_tax_promotion ----> no promotion
+					$key->price_with_tax_promotion = $key->price_with_tax;
+				}
+				else
+				{
+					$promotion = Promotion::where('id','=',$product->promotion_id)->first();
+					//add price_with_tax_promotion ----> with promotion
+					$key->price_with_tax_promotion = $key->price_with_tax - $promotion->amount;
+				}												
+				
+				$main_photo = Gallery::where('product_id','=',$product->id)->where('type','=','main_photo')->first();						
+				$other_photos = Gallery::where('product_id','=',$product->id)->where('type','=','other_photos')->get();
+				
+				//add main_photo
+				$key->main_photo = $main_photo->photo_path;
+				
+				//add other_photos
+				$key->other_photos = $other_photos->photo_path;
+			}
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$cart);
 		}
 		return Response::json($respond);
 	}
 
-	/**
-	 * Update {name} value of the specified cart in database.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	/*
-	public function update{name}($id)
+	public function updatePriceId($id, $new_price_id)
 	{
 		$respond = array();
 		$cart = Cart::find($id);
@@ -146,7 +188,7 @@ class CartsController extends \BaseController {
 		else
 		{
 			//edit value
-			//$cart-> = ;
+			$cart->price_id = $new_price_id;
 			try {
 				$cart->save();
 				$respond = array('code'=>'204','status' => 'No Content');
@@ -157,15 +199,30 @@ class CartsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-	*/
 	
+	public function updateQuantity($id, $new_quantity)
+	{
+		$respond = array();
+		$cart = Cart::find($id);
+		if ($cart == null)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			//edit value
+			$cart->quantity = $new_quantity;
+			try {
+				$cart->save();
+				$respond = array('code'=>'204','status' => 'No Content');
+			} catch (Exception $e) {
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
+			
+		}
+		return Response::json($respond);
+	}
 	
-	/**
-	 * Remove the specified cart from database.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function delete($id)
 	{
 		$respond = array();
@@ -186,19 +243,12 @@ class CartsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-
-	/**
-	 * Check if row exist in database.
-	 *
-	 * @param  
-	 * @return Response
-	 */
-	/*
-	public function exist()
+	
+	public function exist($id)
 	{
 		$respond = array();
-		$cart = Cart::where('','=','')->get();
-		if (count($cart) >= 0)
+		$cart = Cart::find($id);
+		if ($cart == null)
 		{
 			$respond = array('code'=>'200','status' => 'OK');
 		}
@@ -207,7 +257,6 @@ class CartsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		return Response::json($respond);
-	}
-	*/
+	}	
 
 }
