@@ -69,6 +69,7 @@ class TemplatesController extends \BaseController {
 		return Response::json($respond);
 	}
 
+
 	/**
 	 * Display the specified template by {name}.
 	 *
@@ -128,6 +129,12 @@ class TemplatesController extends \BaseController {
 		return Response::json($respond);
 	}
 
+	public function changeCurrent($type)
+	{
+
+
+	}
+	
 	/**
 	 * Update {name} value of the specified template in database.
 	 *

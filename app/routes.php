@@ -38,8 +38,8 @@ Route::group(['before' => 'check_token'], function()
 	//message
 		Route::post('/message', ['as' => 'send.message' , 'uses' => '']);
 	//information
-		Route::get('/information', ['as' => 'get.information.list' , 'uses' => '']);
-		Route::get('/information/{:id}', ['as' => 'get.information.detail' , 'uses' => '']);
+		Route::get('/information', ['as' => 'get.information.list' , 'uses' => 'InformationController@getAll']);
+		Route::get('/information/{:id}', ['as' => 'get.information.detail' , 'uses' => 'InformationController@getById']);
 	//contact
 		Route::get('/contact', ['as' => 'get.contact.list' , 'uses' => '']);
 });
@@ -57,8 +57,9 @@ Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
 		Route::put('/address', ['as' => 'edit.address' , 'uses' => '']);
 		Route::delete('/address/{:id}', ['as' => 'delete.address' , 'uses' => '']);
 	//wishlist
-		Route::post('/wishlist', ['as' => 'add.wishlist' , 'uses' => '']);
-		Route::delete('/wishlist/{:id}', ['as' => 'delete.wishlist' , 'uses' => '']);
+		Route::get('/wishlist', ['as' => 'get.wishlist' , 'uses' => 'WishlistsController@getWishList']);
+		Route::post('/wishlist', ['as' => 'add.wishlist' , 'uses' => 'WishlistsController@insert']);
+		Route::delete('/wishlist/{:product_id}', ['as' => 'delete.wishlist' , 'uses' => 'WishlistsController@delete']);
 	//cart
 		Route::get('/classification', ['as' => 'get.classification' , 'uses' => '']);
 		Route::post('/cart', ['as' => 'add.cart' , 'uses' => '']);
