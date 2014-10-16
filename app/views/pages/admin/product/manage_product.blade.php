@@ -73,6 +73,7 @@
 							</tr>
 						</thead>
 						<tbody>
+						
 							<?php 
 							for ($i=0; $i<=30; $i++) {
 							  ?>
@@ -92,6 +93,7 @@
 							  <?php
 							} 
 							?>
+							
 							
 						</tbody>
 					</table>

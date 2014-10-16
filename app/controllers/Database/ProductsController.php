@@ -2,6 +2,14 @@
 
 class ProductsController extends \BaseController {
 	
+	public function view_main_product(){
+		$product_json = $this->getAll();
+		$product = json_decode($product_json->getContent())->{'messages'};
+		echo $product;
+		//return View::make('pages.admin.product.manage_product');
+	}
+	
+	
 	public function w_insert()
 	{
 		$json = Input::get('json_data');
@@ -123,7 +131,7 @@ class ProductsController extends \BaseController {
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
 		}
-		return Response::json($respond);		
+		return Response::json($respond);	
 	}
 		
 	// asumsi : 
