@@ -13,10 +13,10 @@ class TransactionTableSeeder extends Seeder {
 		{
 			$status = '';
 			$rand = $faker->numberBetween(1,4);
-			if(rand == 1) $status = 'pending';
-			else if(rand == 2) $status = 'onProcess';
-			else if(rand == 3) $status = 'onShipping';
-			else if(rand == 4) $status = 'completed';
+			if($rand == 1) $status = 'pending';
+			else if($rand == 2) $status = 'onProcess';
+			else if($rand == 3) $status = 'onShipping';
+			else if($rand == 4) $status = 'completed';
 			Transaction::create([
 				
 			'invoice' => $faker->randomNumber(7),
