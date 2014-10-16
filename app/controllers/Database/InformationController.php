@@ -9,7 +9,6 @@ class InformationController extends \BaseController {
 	 */
 	public function insert()
 	{
-
 		$input = json_decode(Input::all());
 		$respond = array();
 		//validate
