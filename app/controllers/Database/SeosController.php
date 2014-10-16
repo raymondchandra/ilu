@@ -9,9 +9,10 @@ class SeosController extends \BaseController {
 	 */
 	public function insert()
 	{
+		$input = json_decode(Input::all());
 		$respond = array();
 		//validate
-		$validator = Validator::make($data = Input::all(), Seo::$rules);
+		$validator = Validator::make($data = $input, Seo::$rules);
 
 		if ($validator->fails())
 		{
@@ -100,6 +101,7 @@ class SeosController extends \BaseController {
 	 */
 	public function updateFull($id)
 	{
+		$input = json_decode(Input::all());
 		$respond = array();
 		$seo = Seo::find($id);
 		if ($seo == null)
@@ -109,7 +111,7 @@ class SeosController extends \BaseController {
 		else
 		{
 			//validate
-			$validator = Validator::make($data = Input::all(), Seo::$rules);
+			$validator = Validator::make($data = $input, Seo::$rules);
 
 			if ($validator->fails())
 			{

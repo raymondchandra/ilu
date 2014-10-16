@@ -7,21 +7,17 @@ class AttributesController extends \BaseController {
 		$json = Input::get('json_data');
 		$decode = json_decode($json);
 		
-		$name = $decode->{'name'};
-		$deleted = $decode->{'deleted'};
-		
-		// $name = null;
-		// $deleted = 0;
+		$name = $decode->{'name'};		
 		
 		$input = array(
 					'name' => $name,
-					'deleted' => $deleted);
+					'deleted' => 0);
 		
 		return $this->insert($input);
 	}	
 	public function insert($input)
 	{
-		// $input = json_decode(Input::all());
+		// $input = json_decode(Input::all());				
 		
 		$respond = array();
 		//validate
@@ -33,17 +29,20 @@ class AttributesController extends \BaseController {
 			return Response::json($respond);
 		}
 
-		//save
+		//handle duplicate name attribute already in models validator			
 		try {
-			Attribute::create($data);
+			Attribute::create([				
+					'name' => $input['name'],
+					'deleted' => $input['deleted']
+				]);					
 			$respond = array('code'=>'201','status' => 'Created');
 		} catch (Exception $e) {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
-		}
+		}		
+				
 		return Response::json($respond);
 	}	
-	
-	
+		
 	public function getAll(){
 		$respond = array();
 		$attribute = Attribute::all();
@@ -88,6 +87,36 @@ class AttributesController extends \BaseController {
 		return Response::json($respond);
 	}			
 	
+	public function getByNameSortedNameAsc($name)
+	{
+		$respond = array();		
+		$attribute = Attribute::where('name', 'LIKE','%'.$name.'%')->orderBy('name')->get();
+		if (count($attribute) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
+		}
+		return Response::json($respond);
+	}
+	
+	public function getByNameSortedNameDesc($name)
+	{
+		$respond = array();		
+		$attribute = Attribute::where('name', 'LIKE','%'.$name.'%')->orderBy('name', 'desc')->get();
+		if (count($attribute) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
+		}
+		return Response::json($respond);
+	}
+	
 	public function getByDeleted($deleted)
 	{
 		$respond = array();		
@@ -103,36 +132,27 @@ class AttributesController extends \BaseController {
 		return Response::json($respond);
 	}
 			 
-	public function updateFull($id)
+	public function updateName($id, $new_name)
 	{
 		$respond = array();
 		$attribute = Attribute::find($id);
-		if ($attribute == null)
+		if($attribute == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
-			$input = json_decode(Input::all());
-			
-			//validate
-			$validator = Validator::make($data = $input, Attribute::$rules);
-
-			if ($validator->fails())
-			{
-				$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
-				return Response::json($respond);
-			}
-			//save
+			//edit value
+			$attribute->name = $new_name;
 			try {
-				$attribute->update($data);
+				$attribute->save();
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
-			}			
+			}
 		}
 		return Response::json($respond);
-	}
+	}	
 	
 	public function delete($id)
 	{

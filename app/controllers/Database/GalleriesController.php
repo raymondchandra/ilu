@@ -1,17 +1,31 @@
 <?php
 
 class GalleriesController extends \BaseController {
-
-	/**
-	 * Insert a newly created gallery in database.
-	 *
-	 * @return Response
-	 */
-	public function insert()
+	
+	public function w_insert()
 	{
+		$json = Input::get('json_data');
+		$decode = json_decode($json);
+		
+		$product_id = $decode->{'product_id'};
+		$photo_path = $decode->{'photo_path'};
+		$type = $decode->{'type'};
+		
+		$input = array(
+					'product_id' => $product_id,
+					'photo_path' => $photo_path,
+					'type' => $type
+		);
+		
+		return $this->insert($input);
+	}	
+	public function insert($input)
+	{
+		// $input = json_decode(Input::all());
+		
 		$respond = array();
 		//validate
-		$validator = Validator::make($data = Input::all(), Gallery::$rules);
+		$validator = Validator::make($data = $input, Gallery::$rules);
 
 		if ($validator->fails())
 		{
@@ -70,16 +84,28 @@ class GalleriesController extends \BaseController {
 	}
 
 	/**
-	 * Display the specified gallery by {name}.
+	 * Display the slideshow gallery.
 	 *
 	 * @param  
 	 * @return Response
 	 */
-	/*
-	public function getBy{name}()
+	
+	public function get_slideshow($type)
+	{
+		return $this->getByType('slideshow');
+	}
+
+	/**
+	 * Display the specified gallery by type.
+	 *
+	 * @param  
+	 * @return Response
+	 */
+	
+	public function getByType($type)
 	{
 		$respond = array();
-		$gallery = Gallery::where('','=','')->get();
+		$gallery = Gallery::where('type','=',$type)->get();
 		if (count($gallery) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -90,7 +116,8 @@ class GalleriesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-	*/
+	
+
 
 	/**
 	 * Update all value of the specified gallery in database.
@@ -177,7 +204,11 @@ class GalleriesController extends \BaseController {
 		else
 		{
 			try {
+				$pathLama = $gallery -> photo_path;
 				$gallery->delete();
+				
+				File::delete($pathLama);
+
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
@@ -209,5 +240,87 @@ class GalleriesController extends \BaseController {
 		return Response::json($respond);
 	}
 	*/
+	public function upload_slideshow()
+	{
+		$respond = array();
+		
+		if(Input::hasFile('photo'))
+		{
+			$input = json_decode(Input::all());
+			
+			$img_upload = Input::file('photo');
+			$file_name = $img_upload->getClientOriginalName();
+			
+			
+			$gallery = new Gallery();
+			$gallery->type = 'slideshow';
+			$gallery->product_id = null;
+			try{
+				$gallery->save();
+			} catch (Exception $e) {
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+				return Response::json($respond);
+			}
+			$destination = 'assets/file_upload/slideshow/'.$gallery->id.'/';
+			$uploadSuccess = $img_upload->move($destination, $file_name);
+			$gallery -> photo_path = $destination.$file_name;
+			
+			try{
+				$gallery->save();
+				$respond = array('code'=>'201','status' => 'Created');
+			} catch (Exception $e) {
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
+		}else
+		{
+			$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
+			
+		}
+		return Response::json($respond);
+	}
+
+	//update foto slide
+	public function update_slideshow()
+	{	
+		$respond = array();
+		
+		if(Input::hasFile('photo'))
+		{
+			$input = json_decode(Input::all());
+			$id_img = $input['id'];
+			
+			$img_upload = Input::file('filePhoto');
+			$file_name = $img_upload->getClientOriginalName();
+			
+			
+			$gallery = Gallery::find($id_img);
+			if($gallery != NULL){ 
+				//delete foto lama
+				$pathLama = $gallery -> photo_path;
+				File::delete($pathLama);
+
+				$destination = 'assets/file_upload/slideshow/'.$id_img.'/';
+
+				$uploadSuccess = $img_upload->move($destination, $file_name);
+				$gallery -> photo_path = $destination.$file_name;
+				try{
+					$gallery->save();
+					
+					$respond = array('code'=>'201','status' => 'Created');
+				} catch (Exception $e) {
+					$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+				}
+			}else{
+				$respond = array('code'=>'404','status' => 'Not Found');
+			}
+			
+		}else
+		{
+			$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
+			
+		}
+		return Response::json($respond);
+	}
+	
 
 }

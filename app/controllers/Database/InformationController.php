@@ -9,9 +9,10 @@ class InformationController extends \BaseController {
 	 */
 	public function insert()
 	{
+		$input = json_decode(Input::all());
 		$respond = array();
 		//validate
-		$validator = Validator::make($data = Input::all(), Information::$rules);
+		$validator = Validator::make($data = $input, Information::$rules);
 
 		if ($validator->fails())
 		{
@@ -19,6 +20,7 @@ class InformationController extends \BaseController {
 			return Response::json($respond);
 		}
 
+		$data['edited_by'] = Auth::user()->id;
 		//save
 		try {
 			Information::create($data);
@@ -108,16 +110,20 @@ class InformationController extends \BaseController {
 		}
 		else
 		{
+			$input = json_decode(Input::all());
+
 			//validate
-			$validator = Validator::make($data = Input::all(), Information::$rules);
+			$validator = Validator::make($data = $input, Information::$rules);
 
 			if ($validator->fails())
 			{
 				$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
 				return Response::json($respond);
 			}
+			$data['edited_by'] = Auth::user()->id;
 			//save
 			try {
+				
 				$information->update($data);
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
