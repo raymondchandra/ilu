@@ -4,9 +4,16 @@ class ProductsController extends \BaseController {
 	
 	public function view_main_product(){
 		$product_json = $this->getAll();
-		$product = json_decode($product_json->getContent())->{'messages'};
-		echo $product;
-		//return View::make('pages.admin.product.manage_product');
+		$paginator = json_decode($product_json->getContent())->{'messages'};
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+			$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);
+		
+		//return $products;
+		return View::make('pages.admin.product.manage_product',compact('datas'));
 	}
 	
 	
