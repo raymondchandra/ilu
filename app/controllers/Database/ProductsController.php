@@ -15,30 +15,42 @@ class ProductsController extends \BaseController {
 		$json = Input::get('json_data');
 		$decode = json_decode($json);
 		
-		// $product_no = $decode->{'product_no'};
+		$product_no = $decode->{'product_no'};
 		$name = $decode->{'name'};
 		$description = $decode->{'description'};
 		$category_id = $decode->{'category_id'};
-		$promotion_id = $decode->{'promotion_id'};
+		$promotion_id = $decode->{'promotion_id'};				
 		// $deleted = $decode->{'deleted'};
 		
-		$input = array(
-					// 'product_no' => $product_no,
+		//galleries
+		$main_photo = $decode->{'main_photo'};
+		$other_photos = $decode->{'other_photos'};	//array
+		
+		$input_product = array(
+					'product_no' => $product_no,
 					'name' => $name,
 					'description' => $description,
 					'category_id' => $category_id,
 					'promotion_id' => $promotion_id,
 					'deleted' => 0);
+		$input_gallery = array(
+					'main_photo' => $main_photo,
+					'other_photos' => $other_photos);
 		
-		return $this->insert($input);
+		return $this->insert($input_product, $input_gallery);
 	}
-	public function insert($input)
+	// asumsi : 
+		// bisa tambah product langsung tanpa harus ada foto
+		// kalo main_photo atau other_photos kosong maka dapetnya ""
+	// input_product : product_no, name, description, category_id, promotion_id, deleted,
+	// input_gallery : main_photo, other_photos(array)
+	public function insert($input_product, $input_gallery)
 	{
 		// $input = json_decode(Input::all());
 		
 		$respond = array();
 		//validate
-		$validator = Validator::make($data = $input, Product::$rules);
+		$validator = Validator::make($data = $input_product, Product::$rules); 								
 
 		if ($validator->fails())
 		{
@@ -47,15 +59,38 @@ class ProductsController extends \BaseController {
 		}
 		
 		//save
-		try {
-			Product::create([
-						'product_no' => '',
-						'name' => $input['name'],
-						'description' => $input['description'],
-						'category_id' => $input['category_id'],
-						'promotion_id' => $input['promotion_id'],
-						'deleted' => 0
-					]);
+		try {			
+			$product = new Product();
+			$product->product_no = $input_product['product_no'];
+			$product->name = $input_product['name'];
+			$product->description = $input_product['description'];
+			$product->category_id = $input_product['category_id'];
+			$product->promotion_id = $input_product['promotion_id'];
+			$product->deleted = $input_product['deleted'];
+			$product->save();
+			
+			//add photo
+			$main_photo = $input_gallery['main_photo'];
+			$other_photos = $input_gallery['other_photos'];
+			if($main_photo != "")
+			{
+				$new_main_photo = new Gallery();
+				$new_main_photo->product_id = $product->id;
+				$new_main_photo->photo_path = $main_photo;
+				$new_main_photo->type = "main_photo";
+				$new_main_photo->save();
+			}
+			if($other_photos != "")
+			{
+				foreach($other_photos as $key)				
+				{
+					$new_other_photos = new Gallery();
+					$new_other_photos->product_id = $product->id;
+					$new_other_photos->photo_path = $key;
+					$new_other_photos->type = "other_photos";
+					$new_other_photos->save();
+				}
+			}			
 			$respond = array('code'=>'201','status' => 'Created');
 		} catch (Exception $e) {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
@@ -123,10 +158,24 @@ class ProductsController extends \BaseController {
 				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
 				
 				//add main_photo
-				$key->main_photo = $main_photo->photo_path;
-				
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
 				//add other_photo
-				$key->other_photos = $other_photos->photo_path;
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
 			}			
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
@@ -208,10 +257,24 @@ class ProductsController extends \BaseController {
 				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
 				
 				//add main_photo
-				$key->main_photo = $main_photo->photo_path;
-				
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
 				//add other_photo
-				$key->other_photos = $other_photos->photo_path;
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
 			}			
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
@@ -292,10 +355,24 @@ class ProductsController extends \BaseController {
 				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
 				
 				//add main_photo
-				$key->main_photo = $main_photo->photo_path;
-				
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
 				//add other_photo
-				$key->other_photos = $other_photos->photo_path;
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
 			}			
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
@@ -376,10 +453,24 @@ class ProductsController extends \BaseController {
 				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
 				
 				//add main_photo
-				$key->main_photo = $main_photo->photo_path;
-				
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
 				//add other_photo
-				$key->other_photos = $other_photos->photo_path;
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
 			}			
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
@@ -460,10 +551,24 @@ class ProductsController extends \BaseController {
 				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
 				
 				//add main_photo
-				$key->main_photo = $main_photo->photo_path;
-				
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
 				//add other_photo
-				$key->other_photos = $other_photos->photo_path;
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
 			}			
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
@@ -544,10 +649,24 @@ class ProductsController extends \BaseController {
 				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
 				
 				//add main_photo
-				$key->main_photo = $main_photo->photo_path;
-				
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
 				//add other_photo
-				$key->other_photos = $other_photos->photo_path;
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
 			}			
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
@@ -628,10 +747,24 @@ class ProductsController extends \BaseController {
 				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
 				
 				//add main_photo
-				$key->main_photo = $main_photo->photo_path;
-				
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
 				//add other_photo
-				$key->other_photos = $other_photos->photo_path;
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
 			}			
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
@@ -712,10 +845,24 @@ class ProductsController extends \BaseController {
 				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
 				
 				//add main_photo
-				$key->main_photo = $main_photo->photo_path;
-				
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
 				//add other_photo
-				$key->other_photos = $other_photos->photo_path;
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
 			}			
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
@@ -793,10 +940,24 @@ class ProductsController extends \BaseController {
 				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
 				
 				//add main_photo
-				$key->main_photo = $main_photo->photo_path;
-				
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
 				//add other_photo
-				$key->other_photos = $other_photos->photo_path;
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
 			}
 
 			// sorting
@@ -877,10 +1038,24 @@ class ProductsController extends \BaseController {
 				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
 				
 				//add main_photo
-				$key->main_photo = $main_photo->photo_path;
-				
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
 				//add other_photo
-				$key->other_photos = $other_photos->photo_path;
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
 			}
 
 			// sorting
@@ -964,10 +1139,24 @@ class ProductsController extends \BaseController {
 				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
 				
 				//add main_photo
-				$key->main_photo = $main_photo->photo_path;
-				
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
 				//add other_photo
-				$key->other_photos = $other_photos->photo_path;
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
 			}			
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
@@ -1048,10 +1237,24 @@ class ProductsController extends \BaseController {
 				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
 				
 				//add main_photo
-				$key->main_photo = $main_photo->photo_path;
-				
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
 				//add other_photo
-				$key->other_photos = $other_photos->photo_path;
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
 			}			
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
@@ -2315,6 +2518,7 @@ class ProductsController extends \BaseController {
 	}
 	*/
 	
+	/*
 	public function getReviewProductById($id) 
 	{
 		$respond = array();
@@ -2334,6 +2538,7 @@ class ProductsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	*/
 	
 	public function getTopTenNewProduct()
 	{
@@ -2395,10 +2600,24 @@ class ProductsController extends \BaseController {
 					$other_photos = Gallery::where('product_id','=',$product[$count]->id)->where('type','=','other_photos')->get();
 					
 					//add main_photo
-					$product[$count]->main_photo = $main_photo->photo_path;
-					
+					if(count($main_photo) == 0)
+					{
+						$product[$count]->main_photo = "";
+					}
+					else
+					{					
+						$product[$count]->main_photo = $main_photo->photo_path;
+					}
+									
 					//add other_photo
-					$product[$count]->other_photos = $other_photos->photo_path;					
+					if(count($other_photos) == 0)
+					{
+						$product[$count]->other_photos = "";
+					}
+					else
+					{
+						$product[$count]->other_photos = $other_photos->photo_path;
+					}				
 					
 					$result[] = $product[$count];
 					$count++;
@@ -2451,10 +2670,24 @@ class ProductsController extends \BaseController {
 					$other_photos = Gallery::where('product_id','=',$product[$count]->id)->where('type','=','other_photos')->get();
 					
 					//add main_photo
-					$product[$count]->main_photo = $main_photo->photo_path;
-					
+					if(count($main_photo) == 0)
+					{
+						$product[$count]->main_photo = "";
+					}
+					else
+					{					
+						$product[$count]->main_photo = $main_photo->photo_path;
+					}
+									
 					//add other_photo
-					$product[$count]->other_photos = $other_photos->photo_path;
+					if(count($other_photos) == 0)
+					{
+						$product[$count]->other_photos = "";
+					}
+					else
+					{
+						$product[$count]->other_photos = $other_photos->photo_path;
+					}
 					
 					$result[] = $product[$count];
 					$count++;
@@ -2521,10 +2754,24 @@ class ProductsController extends \BaseController {
 				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
 				
 				//add main_photo
-				$key->main_photo = $main_photo->photo_path;
-				
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
 				//add other_photo
-				$key->other_photos = $other_photos->photo_path;
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
 			}		
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
