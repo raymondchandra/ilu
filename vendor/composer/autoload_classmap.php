@@ -1282,6 +1282,7 @@ return array(
     'Psr\\Log\\LoggerInterface' => $vendorDir . '/psr/log/Psr/Log/LoggerInterface.php',
     'Psr\\Log\\LoggerTrait' => $vendorDir . '/psr/log/Psr/Log/LoggerTrait.php',
     'Psr\\Log\\NullLogger' => $vendorDir . '/psr/log/Psr/Log/NullLogger.php',
+    'RemakeOrder' => $baseDir . '/app/database/migrations/2014_10_16_095944_remake_order.php',
     'RemakeShipment' => $baseDir . '/app/database/migrations/2014_10_16_063705_remake_shipment.php',
     'RemakeTemplate' => $baseDir . '/app/database/migrations/2014_10_15_054059_remake_template.php',
     'Review' => $baseDir . '/app/models/Review.php',
