@@ -1,8 +1,9 @@
 <?php
 
 Route::get('/tes', 'AttributesController@w_insert');
+
 Route::get('/tesview', function (){
-	return View::make('pages.admin.promosi.manage_promosi');
+	return View::make('pages.admin.product.manage_product');
 });
 
 Route::get('/tes2', function()

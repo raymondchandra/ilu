@@ -8,13 +8,12 @@ class CategoriesController extends \BaseController {
 		$decode = json_decode($json);
 		
 		$name = $decode->{'name'};
-		$parent_category = $decode->{'parent_category'};
-		$deleted = $decode->{'deleted'};
+		$parent_category = $decode->{'parent_category'};		
 		
 		$input = array(
 					'name' => $name,
 					'parent_category' => $parent_category,
-					'deleted' => $deleted);
+					'deleted' => 0);
 					
 		return $this->insert($input);
 	}
@@ -32,13 +31,27 @@ class CategoriesController extends \BaseController {
 			return Response::json($respond);
 		}
 
-		//save
-		try {
-			Category::create($data);
-			$respond = array('code'=>'201','status' => 'Created');
-		} catch (Exception $e) {
-			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+		//handle dulicate name category
+		$checkName = Category::where('name','=',$input['name'])->get();
+		if(count($checkName) == 0)
+		{
+			//save
+			try {
+				Category::create([
+						'name' => $input['name'],
+						'parent_category' => $input['parent_category'],
+						'deleted' => $input['deleted']
+					]);
+				$respond = array('code'=>'201','status' => 'Created');
+			} catch (Exception $e) {
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
 		}
+		else
+		{	
+			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => 'Duplicate name category');
+		}
+				
 		return Response::json($respond);
 	}	
 		

@@ -11,36 +11,78 @@ class ProductsController extends \BaseController {
 		$name = $decode->{'name'};
 		$description = $decode->{'description'};
 		$category_id = $decode->{'category_id'};
-		$promotion_id = $decode->{'promotion_id'};
-		$deleted = $decode->{'deleted'};
+		$promotion_id = $decode->{'promotion_id'};				
+		// $deleted = $decode->{'deleted'};
 		
-		$input = array(
+		//galleries
+		$main_photo = $decode->{'main_photo'};
+		$other_photos = $decode->{'other_photos'};	//array
+		
+		$input_product = array(
 					'product_no' => $product_no,
 					'name' => $name,
 					'description' => $description,
 					'category_id' => $category_id,
 					'promotion_id' => $promotion_id,
-					'deleted' => $deleted);
+					'deleted' => 0);
+		$input_gallery = array(
+					'main_photo' => $main_photo,
+					'other_photos' => $other_photos);
 		
-		return $this->insert($input);
+		return $this->insert($input_product, $input_gallery);
 	}
-	public function insert($input)
+	// asumsi : 
+		// bisa tambah product langsung tanpa harus ada foto
+		// kalo main_photo atau other_photos kosong maka dapetnya ""
+	// input_product : product_no, name, description, category_id, promotion_id, deleted,
+	// input_gallery : main_photo, other_photos(array)
+	public function insert($input_product, $input_gallery)
 	{
 		// $input = json_decode(Input::all());
 		
 		$respond = array();
 		//validate
-		$validator = Validator::make($data = $input, Product::$rules);
+		$validator = Validator::make($data = $input_product, Product::$rules); 								
 
 		if ($validator->fails())
 		{
 			$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
 			return Response::json($respond);
 		}
-
+		
 		//save
-		try {
-			Product::create($data);
+		try {			
+			$product = new Product();
+			$product->product_no = $input_product['product_no'];
+			$product->name = $input_product['name'];
+			$product->description = $input_product['description'];
+			$product->category_id = $input_product['category_id'];
+			$product->promotion_id = $input_product['promotion_id'];
+			$product->deleted = $input_product['deleted'];
+			$product->save();
+			
+			//add photo
+			$main_photo = $input_gallery['main_photo'];
+			$other_photos = $input_gallery['other_photos'];
+			if($main_photo != "")
+			{
+				$new_main_photo = new Gallery();
+				$new_main_photo->product_id = $product->id;
+				$new_main_photo->photo_path = $main_photo;
+				$new_main_photo->type = "main_photo";
+				$new_main_photo->save();
+			}
+			if($other_photos != "")
+			{
+				foreach($other_photos as $key)				
+				{
+					$new_other_photos = new Gallery();
+					$new_other_photos->product_id = $product->id;
+					$new_other_photos->photo_path = $key;
+					$new_other_photos->type = "other_photos";
+					$new_other_photos->save();
+				}
+			}			
 			$respond = array('code'=>'201','status' => 'Created');
 		} catch (Exception $e) {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
@@ -108,10 +150,24 @@ class ProductsController extends \BaseController {
 				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
 				
 				//add main_photo
-				$key->main_photo = $main_photo->photo_path;
-				
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
 				//add other_photo
-				$key->other_photos = $other_photos->photo_path;
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
 			}			
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
@@ -119,6 +175,1086 @@ class ProductsController extends \BaseController {
 		return Response::json($respond);		
 	}
 		
+	// asumsi : 
+		// kalo field input integer ada yang kosong maka -1
+		// kalo field input string ada yang kosong maka dapetnya ""
+	// input : id, product_no, name, category_name, promotion_id
+	public function searchProduct($input)
+	{			
+		$respond = array();
+		$product = Product::where('product_no', 'LIKE', '%'.$input['product_no'].'%')
+							->where('name', 'LIKE', '%'.$input['name'].'%')->get();						
+		if($input['category_name'] != "")
+		{
+			$category = Category::where('name', 'LIKE', '%'.$input['category_name'].'%')->get();
+			$product = $product->join('categories', 'products.category_id', '=', 'categories.id')->get();
+		}		
+		if($input['promotion_id'] != -1)
+		{
+			$product = $product->where('promotion_id', '=', $input['promotion_id'])->get();
+		}		
+		if($input['id'] != -1)
+		{
+			$product = $product->where('id', '=', $input['id'])->get();
+		}
+		
+		if (count($product) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{					
+			foreach($product as $key)		
+			{				
+				$cat_name = Category::where('id','=',$key->category_id)->first()->name;								
+				
+				//add category_name
+				$key->category_name = $cat_name;
+				
+				if($key->promotion_id == null)
+				{
+					//no promotion
+					$promo_amount = 0;
+					$promo_expired = 0;						
+				}	
+				else
+				{
+					//promotion
+					$promo_amount = Promotion::where('id','=',$key->promotion_id)->first()->amount;
+					$promo_expired = Promotion::where('id','=',$key->promotion_id)->first()->expired;					
+				}						
+
+				//add promotion_amount, promotion_expired
+				$key->promotion_amount = $promo_amount;
+				$key->promotion_expired = $promo_expired;
+				
+				$prices = Price::where('product_id','=',$key->id)->get();
+					
+					foreach($prices as $key_prices)
+					{
+						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
+						//add attribute name
+						$key_prices->attr_name = $attr_name;										
+						//add price with tax
+						$key_prices->price_with_tax = ($key_prices->amount + ($key_prices->amount * $tax_amount / 100));
+						//add price with tax and promotion
+						$key_prices->price_with_tax_promotion = ($key_prices->price_with_tax - $promo_amount);
+					}
+				
+				//add prices by attribute
+				$key->prices = $prices;
+				
+				$main_photo = Gallery::where('product_id','=',$key->id)->where('type','=','main_photo')->first();						
+				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
+				
+				//add main_photo
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
+				//add other_photo
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
+			}			
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
+		}
+		return Response::json($respond);	
+	}	
+	
+	public function searchProductSortedIdAsc($input)
+	{			
+		$respond = array();
+		$product = Product::where('product_no', 'LIKE', '%'.$input['product_no'].'%')
+							->where('name', 'LIKE', '%'.$input['name'].'%')->get();						
+		if($input['category_name'] != "")
+		{
+			$category = Category::where('name', 'LIKE', '%'.$input['category_name'].'%')->get();
+			$product = $product->join('categories', 'products.category_id', '=', 'categories.id')->get();
+		}		
+		if($input['promotion_id'] != -1)
+		{
+			$product = $product->where('promotion_id', '=', $input['promotion_id'])->get();
+		}		
+		if($input['id'] != -1)
+		{
+			$product = $product->where('id', '=', $input['id'])->get();
+		}
+		
+		//sorting
+		$product = $product->orderBy('id')->get();
+		
+		if (count($product) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{					
+			foreach($product as $key)		
+			{				
+				$cat_name = Category::where('id','=',$key->category_id)->first()->name;								
+				
+				//add category_name
+				$key->category_name = $cat_name;
+				
+				if($key->promotion_id == null)
+				{
+					//no promotion
+					$promo_amount = 0;
+					$promo_expired = 0;						
+				}	
+				else
+				{
+					//promotion
+					$promo_amount = Promotion::where('id','=',$key->promotion_id)->first()->amount;
+					$promo_expired = Promotion::where('id','=',$key->promotion_id)->first()->expired;					
+				}						
+
+				//add promotion_amount, promotion_expired
+				$key->promotion_amount = $promo_amount;
+				$key->promotion_expired = $promo_expired;
+				
+				$prices = Price::where('product_id','=',$key->id)->get();
+					
+					foreach($prices as $key_prices)
+					{
+						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
+						//add attribute name
+						$key_prices->attr_name = $attr_name;										
+						//add price with tax
+						$key_prices->price_with_tax = ($key_prices->amount + ($key_prices->amount * $tax_amount / 100));
+						//add price with tax and promotion
+						$key_prices->price_with_tax_promotion = ($key_prices->price_with_tax - $promo_amount);
+					}
+				
+				//add prices by attribute
+				$key->prices = $prices;
+				
+				$main_photo = Gallery::where('product_id','=',$key->id)->where('type','=','main_photo')->first();						
+				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
+				
+				//add main_photo
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
+				//add other_photo
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
+			}			
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
+		}
+		return Response::json($respond);	
+	}
+	
+	public function searchProductSortedIdDesc($input)
+	{			
+		$respond = array();
+		$product = Product::where('product_no', 'LIKE', '%'.$input['product_no'].'%')
+							->where('name', 'LIKE', '%'.$input['name'].'%')->get();						
+		if($input['category_name'] != "")
+		{
+			$category = Category::where('name', 'LIKE', '%'.$input['category_name'].'%')->get();
+			$product = $product->join('categories', 'products.category_id', '=', 'categories.id')->get();
+		}		
+		if($input['promotion_id'] != -1)
+		{
+			$product = $product->where('promotion_id', '=', $input['promotion_id'])->get();
+		}		
+		if($input['id'] != -1)
+		{
+			$product = $product->where('id', '=', $input['id'])->get();
+		}
+		
+		//sorting
+		$product = $product->orderBy('id', 'desc')->get();
+		
+		if (count($product) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{					
+			foreach($product as $key)		
+			{				
+				$cat_name = Category::where('id','=',$key->category_id)->first()->name;								
+				
+				//add category_name
+				$key->category_name = $cat_name;
+				
+				if($key->promotion_id == null)
+				{
+					//no promotion
+					$promo_amount = 0;
+					$promo_expired = 0;						
+				}	
+				else
+				{
+					//promotion
+					$promo_amount = Promotion::where('id','=',$key->promotion_id)->first()->amount;
+					$promo_expired = Promotion::where('id','=',$key->promotion_id)->first()->expired;					
+				}						
+
+				//add promotion_amount, promotion_expired
+				$key->promotion_amount = $promo_amount;
+				$key->promotion_expired = $promo_expired;
+				
+				$prices = Price::where('product_id','=',$key->id)->get();
+					
+					foreach($prices as $key_prices)
+					{
+						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
+						//add attribute name
+						$key_prices->attr_name = $attr_name;										
+						//add price with tax
+						$key_prices->price_with_tax = ($key_prices->amount + ($key_prices->amount * $tax_amount / 100));
+						//add price with tax and promotion
+						$key_prices->price_with_tax_promotion = ($key_prices->price_with_tax - $promo_amount);
+					}
+				
+				//add prices by attribute
+				$key->prices = $prices;
+				
+				$main_photo = Gallery::where('product_id','=',$key->id)->where('type','=','main_photo')->first();						
+				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
+				
+				//add main_photo
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
+				//add other_photo
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
+			}			
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
+		}
+		return Response::json($respond);	
+	}
+	
+	public function searchProductSortedProductNoAsc($input)
+	{			
+		$respond = array();
+		$product = Product::where('product_no', 'LIKE', '%'.$input['product_no'].'%')
+							->where('name', 'LIKE', '%'.$input['name'].'%')->get();						
+		if($input['category_name'] != "")
+		{
+			$category = Category::where('name', 'LIKE', '%'.$input['category_name'].'%')->get();
+			$product = $product->join('categories', 'products.category_id', '=', 'categories.id')->get();
+		}		
+		if($input['promotion_id'] != -1)
+		{
+			$product = $product->where('promotion_id', '=', $input['promotion_id'])->get();
+		}		
+		if($input['id'] != -1)
+		{
+			$product = $product->where('id', '=', $input['id'])->get();
+		}
+		
+		//sorting
+		$product = $product->orderBy('product_no')->get();
+		
+		if (count($product) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{					
+			foreach($product as $key)		
+			{				
+				$cat_name = Category::where('id','=',$key->category_id)->first()->name;								
+				
+				//add category_name
+				$key->category_name = $cat_name;
+				
+				if($key->promotion_id == null)
+				{
+					//no promotion
+					$promo_amount = 0;
+					$promo_expired = 0;						
+				}	
+				else
+				{
+					//promotion
+					$promo_amount = Promotion::where('id','=',$key->promotion_id)->first()->amount;
+					$promo_expired = Promotion::where('id','=',$key->promotion_id)->first()->expired;					
+				}						
+
+				//add promotion_amount, promotion_expired
+				$key->promotion_amount = $promo_amount;
+				$key->promotion_expired = $promo_expired;
+				
+				$prices = Price::where('product_id','=',$key->id)->get();
+					
+					foreach($prices as $key_prices)
+					{
+						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
+						//add attribute name
+						$key_prices->attr_name = $attr_name;										
+						//add price with tax
+						$key_prices->price_with_tax = ($key_prices->amount + ($key_prices->amount * $tax_amount / 100));
+						//add price with tax and promotion
+						$key_prices->price_with_tax_promotion = ($key_prices->price_with_tax - $promo_amount);
+					}
+				
+				//add prices by attribute
+				$key->prices = $prices;
+				
+				$main_photo = Gallery::where('product_id','=',$key->id)->where('type','=','main_photo')->first();						
+				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
+				
+				//add main_photo
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
+				//add other_photo
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
+			}			
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
+		}
+		return Response::json($respond);	
+	}
+	
+	public function searchProductSortedProductNoDesc($input)
+	{			
+		$respond = array();
+		$product = Product::where('product_no', 'LIKE', '%'.$input['product_no'].'%')
+							->where('name', 'LIKE', '%'.$input['name'].'%')->get();						
+		if($input['category_name'] != "")
+		{
+			$category = Category::where('name', 'LIKE', '%'.$input['category_name'].'%')->get();
+			$product = $product->join('categories', 'products.category_id', '=', 'categories.id')->get();
+		}		
+		if($input['promotion_id'] != -1)
+		{
+			$product = $product->where('promotion_id', '=', $input['promotion_id'])->get();
+		}		
+		if($input['id'] != -1)
+		{
+			$product = $product->where('id', '=', $input['id'])->get();
+		}
+		
+		//sorting
+		$product = $product->orderBy('product_no', 'desc')->get();
+		
+		if (count($product) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{					
+			foreach($product as $key)		
+			{				
+				$cat_name = Category::where('id','=',$key->category_id)->first()->name;								
+				
+				//add category_name
+				$key->category_name = $cat_name;
+				
+				if($key->promotion_id == null)
+				{
+					//no promotion
+					$promo_amount = 0;
+					$promo_expired = 0;						
+				}	
+				else
+				{
+					//promotion
+					$promo_amount = Promotion::where('id','=',$key->promotion_id)->first()->amount;
+					$promo_expired = Promotion::where('id','=',$key->promotion_id)->first()->expired;					
+				}						
+
+				//add promotion_amount, promotion_expired
+				$key->promotion_amount = $promo_amount;
+				$key->promotion_expired = $promo_expired;
+				
+				$prices = Price::where('product_id','=',$key->id)->get();
+					
+					foreach($prices as $key_prices)
+					{
+						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
+						//add attribute name
+						$key_prices->attr_name = $attr_name;										
+						//add price with tax
+						$key_prices->price_with_tax = ($key_prices->amount + ($key_prices->amount * $tax_amount / 100));
+						//add price with tax and promotion
+						$key_prices->price_with_tax_promotion = ($key_prices->price_with_tax - $promo_amount);
+					}
+				
+				//add prices by attribute
+				$key->prices = $prices;
+				
+				$main_photo = Gallery::where('product_id','=',$key->id)->where('type','=','main_photo')->first();						
+				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
+				
+				//add main_photo
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
+				//add other_photo
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
+			}			
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
+		}
+		return Response::json($respond);	
+	}
+	
+	public function searchProductSortedNameAsc($input)
+	{			
+		$respond = array();
+		$product = Product::where('product_no', 'LIKE', '%'.$input['product_no'].'%')
+							->where('name', 'LIKE', '%'.$input['name'].'%')->get();						
+		if($input['category_name'] != "")
+		{
+			$category = Category::where('name', 'LIKE', '%'.$input['category_name'].'%')->get();
+			$product = $product->join('categories', 'products.category_id', '=', 'categories.id')->get();
+		}		
+		if($input['promotion_id'] != -1)
+		{
+			$product = $product->where('promotion_id', '=', $input['promotion_id'])->get();
+		}		
+		if($input['id'] != -1)
+		{
+			$product = $product->where('id', '=', $input['id'])->get();
+		}
+		
+		//sorting
+		$product = $product->orderBy('name')->get();
+		
+		if (count($product) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{					
+			foreach($product as $key)		
+			{				
+				$cat_name = Category::where('id','=',$key->category_id)->first()->name;								
+				
+				//add category_name
+				$key->category_name = $cat_name;
+				
+				if($key->promotion_id == null)
+				{
+					//no promotion
+					$promo_amount = 0;
+					$promo_expired = 0;						
+				}	
+				else
+				{
+					//promotion
+					$promo_amount = Promotion::where('id','=',$key->promotion_id)->first()->amount;
+					$promo_expired = Promotion::where('id','=',$key->promotion_id)->first()->expired;					
+				}						
+
+				//add promotion_amount, promotion_expired
+				$key->promotion_amount = $promo_amount;
+				$key->promotion_expired = $promo_expired;
+				
+				$prices = Price::where('product_id','=',$key->id)->get();
+					
+					foreach($prices as $key_prices)
+					{
+						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
+						//add attribute name
+						$key_prices->attr_name = $attr_name;										
+						//add price with tax
+						$key_prices->price_with_tax = ($key_prices->amount + ($key_prices->amount * $tax_amount / 100));
+						//add price with tax and promotion
+						$key_prices->price_with_tax_promotion = ($key_prices->price_with_tax - $promo_amount);
+					}
+				
+				//add prices by attribute
+				$key->prices = $prices;
+				
+				$main_photo = Gallery::where('product_id','=',$key->id)->where('type','=','main_photo')->first();						
+				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
+				
+				//add main_photo
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
+				//add other_photo
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
+			}			
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
+		}
+		return Response::json($respond);	
+	}
+	
+	public function searchProductSortedNameDesc($input)
+	{			
+		$respond = array();
+		$product = Product::where('product_no', 'LIKE', '%'.$input['product_no'].'%')
+							->where('name', 'LIKE', '%'.$input['name'].'%')->get();						
+		if($input['category_name'] != "")
+		{
+			$category = Category::where('name', 'LIKE', '%'.$input['category_name'].'%')->get();
+			$product = $product->join('categories', 'products.category_id', '=', 'categories.id')->get();
+		}		
+		if($input['promotion_id'] != -1)
+		{
+			$product = $product->where('promotion_id', '=', $input['promotion_id'])->get();
+		}		
+		if($input['id'] != -1)
+		{
+			$product = $product->where('id', '=', $input['id'])->get();
+		}
+		
+		//sorting
+		$product = $product->orderBy('name', 'desc')->get();
+		
+		if (count($product) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{					
+			foreach($product as $key)		
+			{				
+				$cat_name = Category::where('id','=',$key->category_id)->first()->name;								
+				
+				//add category_name
+				$key->category_name = $cat_name;
+				
+				if($key->promotion_id == null)
+				{
+					//no promotion
+					$promo_amount = 0;
+					$promo_expired = 0;						
+				}	
+				else
+				{
+					//promotion
+					$promo_amount = Promotion::where('id','=',$key->promotion_id)->first()->amount;
+					$promo_expired = Promotion::where('id','=',$key->promotion_id)->first()->expired;					
+				}						
+
+				//add promotion_amount, promotion_expired
+				$key->promotion_amount = $promo_amount;
+				$key->promotion_expired = $promo_expired;
+				
+				$prices = Price::where('product_id','=',$key->id)->get();
+					
+					foreach($prices as $key_prices)
+					{
+						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
+						//add attribute name
+						$key_prices->attr_name = $attr_name;										
+						//add price with tax
+						$key_prices->price_with_tax = ($key_prices->amount + ($key_prices->amount * $tax_amount / 100));
+						//add price with tax and promotion
+						$key_prices->price_with_tax_promotion = ($key_prices->price_with_tax - $promo_amount);
+					}
+				
+				//add prices by attribute
+				$key->prices = $prices;
+				
+				$main_photo = Gallery::where('product_id','=',$key->id)->where('type','=','main_photo')->first();						
+				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
+				
+				//add main_photo
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
+				//add other_photo
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
+			}			
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
+		}
+		return Response::json($respond);	
+	}
+	
+	public function searchProductSortedCategoryNameAsc($input)
+	{			
+		$respond = array();
+		$product = Product::where('product_no', 'LIKE', '%'.$input['product_no'].'%')
+							->where('name', 'LIKE', '%'.$input['name'].'%')->get();						
+		if($input['category_name'] != "")
+		{
+			$category = Category::where('name', 'LIKE', '%'.$input['category_name'].'%')->get();
+			$product = $product->join('categories', 'products.category_id', '=', 'categories.id')->get();
+		}		
+		if($input['promotion_id'] != -1)
+		{
+			$product = $product->where('promotion_id', '=', $input['promotion_id'])->get();
+		}		
+		if($input['id'] != -1)
+		{
+			$product = $product->where('id', '=', $input['id'])->get();
+		}	
+		
+		if (count($product) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{					
+			foreach($product as $key)		
+			{				
+				$cat_name = Category::where('id','=',$key->category_id)->first()->name;								
+				
+				//add category_name
+				$key->category_name = $cat_name;
+				
+				if($key->promotion_id == null)
+				{
+					//no promotion
+					$promo_amount = 0;
+					$promo_expired = 0;						
+				}	
+				else
+				{
+					//promotion
+					$promo_amount = Promotion::where('id','=',$key->promotion_id)->first()->amount;
+					$promo_expired = Promotion::where('id','=',$key->promotion_id)->first()->expired;					
+				}						
+
+				//add promotion_amount, promotion_expired
+				$key->promotion_amount = $promo_amount;
+				$key->promotion_expired = $promo_expired;
+				
+				$prices = Price::where('product_id','=',$key->id)->get();
+					
+					foreach($prices as $key_prices)
+					{
+						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
+						//add attribute name
+						$key_prices->attr_name = $attr_name;										
+						//add price with tax
+						$key_prices->price_with_tax = ($key_prices->amount + ($key_prices->amount * $tax_amount / 100));
+						//add price with tax and promotion
+						$key_prices->price_with_tax_promotion = ($key_prices->price_with_tax - $promo_amount);
+					}
+				
+				//add prices by attribute
+				$key->prices = $prices;
+				
+				$main_photo = Gallery::where('product_id','=',$key->id)->where('type','=','main_photo')->first();						
+				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
+				
+				//add main_photo
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
+				//add other_photo
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
+			}
+
+			// sorting
+			$product = $product->orderBy('category_name')->get();
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
+		}
+		return Response::json($respond);	
+	}
+	
+	public function searchProductSortedCategoryNameDesc($input)
+	{			
+		$respond = array();
+		$product = Product::where('product_no', 'LIKE', '%'.$input['product_no'].'%')
+							->where('name', 'LIKE', '%'.$input['name'].'%')->get();						
+		if($input['category_name'] != "")
+		{
+			$category = Category::where('name', 'LIKE', '%'.$input['category_name'].'%')->get();
+			$product = $product->join('categories', 'products.category_id', '=', 'categories.id')->get();
+		}		
+		if($input['promotion_id'] != -1)
+		{
+			$product = $product->where('promotion_id', '=', $input['promotion_id'])->get();
+		}		
+		if($input['id'] != -1)
+		{
+			$product = $product->where('id', '=', $input['id'])->get();
+		}	
+		
+		if (count($product) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{					
+			foreach($product as $key)		
+			{				
+				$cat_name = Category::where('id','=',$key->category_id)->first()->name;								
+				
+				//add category_name
+				$key->category_name = $cat_name;
+				
+				if($key->promotion_id == null)
+				{
+					//no promotion
+					$promo_amount = 0;
+					$promo_expired = 0;						
+				}	
+				else
+				{
+					//promotion
+					$promo_amount = Promotion::where('id','=',$key->promotion_id)->first()->amount;
+					$promo_expired = Promotion::where('id','=',$key->promotion_id)->first()->expired;					
+				}						
+
+				//add promotion_amount, promotion_expired
+				$key->promotion_amount = $promo_amount;
+				$key->promotion_expired = $promo_expired;
+				
+				$prices = Price::where('product_id','=',$key->id)->get();
+					
+					foreach($prices as $key_prices)
+					{
+						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
+						//add attribute name
+						$key_prices->attr_name = $attr_name;										
+						//add price with tax
+						$key_prices->price_with_tax = ($key_prices->amount + ($key_prices->amount * $tax_amount / 100));
+						//add price with tax and promotion
+						$key_prices->price_with_tax_promotion = ($key_prices->price_with_tax - $promo_amount);
+					}
+				
+				//add prices by attribute
+				$key->prices = $prices;
+				
+				$main_photo = Gallery::where('product_id','=',$key->id)->where('type','=','main_photo')->first();						
+				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
+				
+				//add main_photo
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
+				//add other_photo
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
+			}
+
+			// sorting
+			$product = $product->orderBy('category_name', 'desc')->get();
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
+		}
+		return Response::json($respond);	
+	}
+	
+	public function searchProductSortedPromotionIdAsc($input)
+	{			
+		$respond = array();
+		$product = Product::where('product_no', 'LIKE', '%'.$input['product_no'].'%')
+							->where('name', 'LIKE', '%'.$input['name'].'%')->get();						
+		if($input['category_name'] != "")
+		{
+			$category = Category::where('name', 'LIKE', '%'.$input['category_name'].'%')->get();
+			$product = $product->join('categories', 'products.category_id', '=', 'categories.id')->get();
+		}		
+		if($input['promotion_id'] != -1)
+		{
+			$product = $product->where('promotion_id', '=', $input['promotion_id'])->get();
+		}		
+		if($input['id'] != -1)
+		{
+			$product = $product->where('id', '=', $input['id'])->get();
+		}
+		
+		//sorting
+		$product = $product->orderBy('promotion_id')->get();
+		
+		if (count($product) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{					
+			foreach($product as $key)		
+			{				
+				$cat_name = Category::where('id','=',$key->category_id)->first()->name;								
+				
+				//add category_name
+				$key->category_name = $cat_name;
+				
+				if($key->promotion_id == null)
+				{
+					//no promotion
+					$promo_amount = 0;
+					$promo_expired = 0;						
+				}	
+				else
+				{
+					//promotion
+					$promo_amount = Promotion::where('id','=',$key->promotion_id)->first()->amount;
+					$promo_expired = Promotion::where('id','=',$key->promotion_id)->first()->expired;					
+				}						
+
+				//add promotion_amount, promotion_expired
+				$key->promotion_amount = $promo_amount;
+				$key->promotion_expired = $promo_expired;
+				
+				$prices = Price::where('product_id','=',$key->id)->get();
+					
+					foreach($prices as $key_prices)
+					{
+						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
+						//add attribute name
+						$key_prices->attr_name = $attr_name;										
+						//add price with tax
+						$key_prices->price_with_tax = ($key_prices->amount + ($key_prices->amount * $tax_amount / 100));
+						//add price with tax and promotion
+						$key_prices->price_with_tax_promotion = ($key_prices->price_with_tax - $promo_amount);
+					}
+				
+				//add prices by attribute
+				$key->prices = $prices;
+				
+				$main_photo = Gallery::where('product_id','=',$key->id)->where('type','=','main_photo')->first();						
+				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
+				
+				//add main_photo
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
+				//add other_photo
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
+			}			
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
+		}
+		return Response::json($respond);	
+	}
+	
+	public function searchProductSortedPromotionIdDesc($input)
+	{			
+		$respond = array();
+		$product = Product::where('product_no', 'LIKE', '%'.$input['product_no'].'%')
+							->where('name', 'LIKE', '%'.$input['name'].'%')->get();						
+		if($input['category_name'] != "")
+		{
+			$category = Category::where('name', 'LIKE', '%'.$input['category_name'].'%')->get();
+			$product = $product->join('categories', 'products.category_id', '=', 'categories.id')->get();
+		}		
+		if($input['promotion_id'] != -1)
+		{
+			$product = $product->where('promotion_id', '=', $input['promotion_id'])->get();
+		}		
+		if($input['id'] != -1)
+		{
+			$product = $product->where('id', '=', $input['id'])->get();
+		}
+		
+		//sorting
+		$product = $product->orderBy('promotion_id', 'desc')->get();
+		
+		if (count($product) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{					
+			foreach($product as $key)		
+			{				
+				$cat_name = Category::where('id','=',$key->category_id)->first()->name;								
+				
+				//add category_name
+				$key->category_name = $cat_name;
+				
+				if($key->promotion_id == null)
+				{
+					//no promotion
+					$promo_amount = 0;
+					$promo_expired = 0;						
+				}	
+				else
+				{
+					//promotion
+					$promo_amount = Promotion::where('id','=',$key->promotion_id)->first()->amount;
+					$promo_expired = Promotion::where('id','=',$key->promotion_id)->first()->expired;					
+				}						
+
+				//add promotion_amount, promotion_expired
+				$key->promotion_amount = $promo_amount;
+				$key->promotion_expired = $promo_expired;
+				
+				$prices = Price::where('product_id','=',$key->id)->get();
+					
+					foreach($prices as $key_prices)
+					{
+						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
+						//add attribute name
+						$key_prices->attr_name = $attr_name;										
+						//add price with tax
+						$key_prices->price_with_tax = ($key_prices->amount + ($key_prices->amount * $tax_amount / 100));
+						//add price with tax and promotion
+						$key_prices->price_with_tax_promotion = ($key_prices->price_with_tax - $promo_amount);
+					}
+				
+				//add prices by attribute
+				$key->prices = $prices;
+				
+				$main_photo = Gallery::where('product_id','=',$key->id)->where('type','=','main_photo')->first();						
+				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
+				
+				//add main_photo
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
+				//add other_photo
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
+			}			
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
+		}
+		return Response::json($respond);	
+	}
+	
+	/*
 	public function getAllSortedProductNoAsc()
 	{
 		$respond = array();
@@ -1372,7 +2508,9 @@ class ProductsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	*/
 	
+	/*
 	public function getReviewProductById($id) 
 	{
 		$respond = array();
@@ -1392,6 +2530,7 @@ class ProductsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	*/
 	
 	public function getTopTenNewProduct()
 	{
@@ -1453,10 +2592,24 @@ class ProductsController extends \BaseController {
 					$other_photos = Gallery::where('product_id','=',$product[$count]->id)->where('type','=','other_photos')->get();
 					
 					//add main_photo
-					$product[$count]->main_photo = $main_photo->photo_path;
-					
+					if(count($main_photo) == 0)
+					{
+						$product[$count]->main_photo = "";
+					}
+					else
+					{					
+						$product[$count]->main_photo = $main_photo->photo_path;
+					}
+									
 					//add other_photo
-					$product[$count]->other_photos = $other_photos->photo_path;					
+					if(count($other_photos) == 0)
+					{
+						$product[$count]->other_photos = "";
+					}
+					else
+					{
+						$product[$count]->other_photos = $other_photos->photo_path;
+					}				
 					
 					$result[] = $product[$count];
 					$count++;
@@ -1509,10 +2662,24 @@ class ProductsController extends \BaseController {
 					$other_photos = Gallery::where('product_id','=',$product[$count]->id)->where('type','=','other_photos')->get();
 					
 					//add main_photo
-					$product[$count]->main_photo = $main_photo->photo_path;
-					
+					if(count($main_photo) == 0)
+					{
+						$product[$count]->main_photo = "";
+					}
+					else
+					{					
+						$product[$count]->main_photo = $main_photo->photo_path;
+					}
+									
 					//add other_photo
-					$product[$count]->other_photos = $other_photos->photo_path;
+					if(count($other_photos) == 0)
+					{
+						$product[$count]->other_photos = "";
+					}
+					else
+					{
+						$product[$count]->other_photos = $other_photos->photo_path;
+					}
 					
 					$result[] = $product[$count];
 					$count++;
@@ -1579,10 +2746,24 @@ class ProductsController extends \BaseController {
 				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
 				
 				//add main_photo
-				$key->main_photo = $main_photo->photo_path;
-				
+				if(count($main_photo) == 0)
+				{
+					$key->main_photo = "";
+				}
+				else
+				{					
+					$key->main_photo = $main_photo->photo_path;
+				}
+								
 				//add other_photo
-				$key->other_photos = $other_photos->photo_path;
+				if(count($other_photos) == 0)
+				{
+					$key->other_photos = "";
+				}
+				else
+				{
+					$key->other_photos = $other_photos->photo_path;
+				}
 			}		
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
