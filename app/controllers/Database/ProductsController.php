@@ -2,6 +2,25 @@
 
 class ProductsController extends \BaseController {
 	
+	public function view_main_product(){
+		$product_json = $this->getAll();
+		$paginator = json_decode($product_json->getContent())->{'messages'};
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+			$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);
+		
+		//return $products;
+		return View::make('pages.admin.product.manage_product',compact('datas'));
+	}
+	
+	public function view_detail_product($id){
+		
+	}
+	
+	
 	public function w_insert()
 	{
 		$json = Input::get('json_data');
@@ -937,7 +956,7 @@ class ProductsController extends \BaseController {
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
 		}
-		return Response::json($respond);		
+		return Response::json($respond);	
 	}
 	
 	public function getAllSortedPromotionIdDesc()
