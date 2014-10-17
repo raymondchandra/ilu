@@ -83,7 +83,7 @@
 								<td>{{$product->promotion_id}}</td>
 								<td>
 									<input type='hidden' class='id_produk' value='{{$product->id}}'>
-									<a class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_product">Edit Info</a>
+									<a class="btn btn-warning btn-xs detail-product" data-toggle="modal" data-target=".pop_up_edit_product">Edit Info</a>
 									<a class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_product_gallery">Edit Gallery</a>
 									<!-- Button trigger modal class ".alertYesNo" -->
 									<a class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</a>
@@ -103,4 +103,21 @@
 	@include('pages.admin.product.pop_up_edit_product')
 	@include('pages.admin.product.pop_up_add_product')
 	
+	<script>
+		$('body').on('click','.detail-product',function(){
+			$.ajax({
+				type: 'GET',
+				url: '/product/{id}',
+				data: {
+					"updateMisi": $('.editor').val()
+				},
+				success: function(response){
+					alert(response);
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					alert(errorThrown);
+				}
+			},'json');
+		});
+	</script>
 @stop
