@@ -324,15 +324,19 @@ class AccountsController extends \BaseController {
 		return $respond;
 	}
 	
-	public function getHistory($id)
+	public function getProfileByAccountId($accId)
 	{
-		$json = LogsController::getLogByKey("abc",$id);
-		$json_message = json_decode($json->getContent());
-		$messages = $json_message->{'messages'};
-		$transa
-		//$res nanti isi nya search, belanja apa aja, wishlist....
-		
-
+		$profileId = Account::where('id', '=', $accId)->first();
+		if($profileId == null)
+		{
+			$respond = array('code'=>'500','status' => 'Not Found');
+		}
+		else
+		{
+			$profController = new ProfileController();
+			$message = $profController->getById($profileId);
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$message);
+		}
 	}
 
 }

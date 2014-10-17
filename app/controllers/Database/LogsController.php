@@ -243,10 +243,35 @@ class LogsController extends \BaseController {
 	
 	
 	
-	public static function getLogByKey($key, $id)
+	public static function getLogByKey($key)
 	{
 		$log = Logs::where('description','LIKE',$key."%")->get();
-		$respond=array('code' => '200', 'status' => 'OK', 'messages' => $log);
+		if(count($log) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond=array('code' => '200', 'status' => 'OK', 'messages' => $log);
+		}
+		
+		//return json_encode($respond);
+		return Response::json($respond);
+	}
+	
+	public function getTop10ProductLooked()
+	{
+		//SELECT DISTINCT column_name FROM table_name;
+		//SELECT column_name FROM table_name GROUP BY column_name;
+		$log = Logs::select((DB::raw('count(*) as count, description')))->groupBy('description')->orderBy('count')->take(10)->get();
+		if(count($log) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond=array('code' => '200', 'status' => 'OK', 'messages' => $log);
+		}
 		
 		//return json_encode($respond);
 		return Response::json($respond);
