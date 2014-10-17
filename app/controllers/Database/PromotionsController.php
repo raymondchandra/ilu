@@ -9,26 +9,35 @@ class PromotionsController extends \BaseController {
 		
 		$name = $decode->{'name'};
 		$amount = $decode->{'amount'};
+		// $operator = $decode->{'operator'};
 		$started = $decode->{'started'};
 		$expired = $decode->{'expired'};
-		$active = $decode->{'active'};
+		// $active = $decode->{'active'};
 		
-		$input = array(
+		//products
+		$input_products = $decode->{'products'}; //products = array of id product
+		
+		//asumsi active nya pasti 0 dulu ---> belum active
+		$input_promotion = array(
 					'name' => $name,
-					'amount' => $amount,
+					'amount' => $amount,				
 					'started' => $started,
 					'expired' => $expired,
-					'active' => $active);
+					'active' => 0);
 		
-		return $this->insert($input);
+		return $this->insert($input_promotion, $input_products);
 	}
-	public function insert($input)
+	// asumsi : 
+		// bisa tambah product langsung tanpa harus ada foto
+		// kalo main_photo atau other_photos kosong maka dapetnya ""
+	// input : name, amount, started, expired, active, products(array)
+	public function insert($input_promotion, $input_products)
 	{
-		$input = json_decode(Input::all());
+		// $input = json_decode(Input::all());
 		
 		$respond = array();
 		//validate
-		$validator = Validator::make($data = $input, Promotion::$rules);
+		$validator = Validator::make($data = $input_promotion, Promotion::$rules);
 
 		if ($validator->fails())
 		{
@@ -38,7 +47,21 @@ class PromotionsController extends \BaseController {
 
 		//save
 		try {
-			Promotion::create($data);
+			$promotion = new Promotion();
+			$promotion->name = $input_promotion['name'];
+			$promotion->amount = $input_promotion['amount'];
+			$promotion->started = $input_promotion['started'];
+			$promotion->expired = $input_promotion['expired'];
+			$promotion->active = $input_promotion['active'];
+			$promotion->save();
+			
+			$products = $input_products; //array of id products
+			$product_cont = new ProductsController();
+			foreach($products as $key)				
+			{				
+				$product_cont->updatePromotionId($key, $promotion->id);
+			}
+				
 			$respond = array('code'=>'201','status' => 'Created');
 		} catch (Exception $e) {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
@@ -46,6 +69,31 @@ class PromotionsController extends \BaseController {
 		return Response::json($respond);
 	}	
 	
+	public function getAllProducts()
+	{
+		$respond = array();
+		$product_cont = new ProductsController();
+		$json_products = $product_cont->getAll();
+							
+		$decode = json_decode($json_products->getContent());
+		
+		$code = $decode->{'code'};
+		if($code == 404) //not found
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else //
+		{
+			$product = $decode->{'messages'};
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
+		}
+		
+		return Response::json($respond);						
+	}
+	
+	// return array promotion :
+		// id, name, amount, started, expired, active
+		// product yang termasuk ke dalam promosi 
 	public function getAll()
 	{
 		$respond = array();
@@ -55,7 +103,23 @@ class PromotionsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
+		{							
+			foreach($promotion as $key)
+			{
+				$product_cont = new ProductsController();
+				$json_products = $product_cont->getByPromotionId($key->id);
+				$decode = json_decode($json_products->getContent());
+				$code = $decode->{'code'};
+				if($code == 404) //not found
+				{
+					$key->products = "";
+				}
+				else
+				{					
+					$key->products = $decode->{'messages'};
+				}
+			}				
+			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
 		}
 		return Response::json($respond);
@@ -70,7 +134,23 @@ class PromotionsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
+		{							
+			foreach($promotion as $key)
+			{
+				$product_cont = new ProductsController();
+				$json_products = $product_cont->getByPromotionId($key->id);
+				$decode = json_decode($json_products->getContent());
+				$code = $decode->{'code'};
+				if($code == 404) //not found
+				{
+					$key->products = "";
+				}
+				else
+				{					
+					$key->products = $decode->{'messages'};
+				}
+			}				
+			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
 		}
 		return Response::json($respond);
@@ -85,7 +165,23 @@ class PromotionsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
+		{							
+			foreach($promotion as $key)
+			{
+				$product_cont = new ProductsController();
+				$json_products = $product_cont->getByPromotionId($key->id);
+				$decode = json_decode($json_products->getContent());
+				$code = $decode->{'code'};
+				if($code == 404) //not found
+				{
+					$key->products = "";
+				}
+				else
+				{					
+					$key->products = $decode->{'messages'};
+				}
+			}				
+			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
 		}
 		return Response::json($respond);
@@ -100,7 +196,23 @@ class PromotionsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
+		{							
+			foreach($promotion as $key)
+			{
+				$product_cont = new ProductsController();
+				$json_products = $product_cont->getByPromotionId($key->id);
+				$decode = json_decode($json_products->getContent());
+				$code = $decode->{'code'};
+				if($code == 404) //not found
+				{
+					$key->products = "";
+				}
+				else
+				{					
+					$key->products = $decode->{'messages'};
+				}
+			}				
+			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
 		}
 		return Response::json($respond);
@@ -114,12 +226,235 @@ class PromotionsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
+		{							
+			foreach($promotion as $key)
+			{
+				$product_cont = new ProductsController();
+				$json_products = $product_cont->getByPromotionId($key->id);
+				$decode = json_decode($json_products->getContent());
+				$code = $decode->{'code'};
+				if($code == 404) //not found
+				{
+					$key->products = "";
+				}
+				else
+				{					
+					$key->products = $decode->{'messages'};
+				}
+			}				
+			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
 		}
 		return Response::json($respond);
 	}
 	
+	// asumsi : 
+		// kalo field input integer atau float ada yang kosong maka -1
+		// kalo field input string ada yang kosong maka dapetnya ""
+	// input : name, amount
+	public function searchPromotion($input)
+	{
+		$respond = array();
+		$promotion = Promotion::where('name', 'LIKE', '%'.$input['name'].'%')->get();		
+		
+		if($input['amount'] != -1)
+		{
+			$promotion = $promotion->where('amount', '=', $input['amount'])->get();
+		}
+		
+		if(count($promotion) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			foreach($promotion as $key)
+			{
+				$product_cont = new ProductsController();
+				$json_products = $product_cont->getByPromotionId($key->id);
+				$decode = json_decode($json_products->getContent());
+				$code = $decode->{'code'};
+				if($code == 404) //not found
+				{
+					$key->products = "";
+				}
+				else
+				{					
+					$key->products = $decode->{'messages'};
+				}
+			}				
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
+		}
+		
+		return Response::json($respond);
+	}
+	
+	public function searchPromotionSortedNameAsc($input)
+	{
+		$respond = array();
+		$promotion = Promotion::where('name', 'LIKE', '%'.$input['name'].'%')->get();		
+		
+		if($input['amount'] != -1)
+		{
+			$promotion = $promotion->where('amount', '=', $input['amount'])->get();
+		}
+		
+		if(count($promotion) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			foreach($promotion as $key)
+			{
+				$product_cont = new ProductsController();
+				$json_products = $product_cont->getByPromotionId($key->id);
+				$decode = json_decode($json_products->getContent());
+				$code = $decode->{'code'};
+				if($code == 404) //not found
+				{
+					$key->products = "";
+				}
+				else
+				{					
+					$key->products = $decode->{'messages'};
+				}
+			}	
+
+			//sorting
+			$promotion = $promotion->orderBy('name')->get();
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
+		}
+		
+		return Response::json($respond);
+	}
+	
+	public function searchPromotionSortedNameDesc($input)
+	{
+		$respond = array();
+		$promotion = Promotion::where('name', 'LIKE', '%'.$input['name'].'%')->get();		
+		
+		if($input['amount'] != -1)
+		{
+			$promotion = $promotion->where('amount', '=', $input['amount'])->get();
+		}
+		
+		if(count($promotion) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			foreach($promotion as $key)
+			{
+				$product_cont = new ProductsController();
+				$json_products = $product_cont->getByPromotionId($key->id);
+				$decode = json_decode($json_products->getContent());
+				$code = $decode->{'code'};
+				if($code == 404) //not found
+				{
+					$key->products = "";
+				}
+				else
+				{					
+					$key->products = $decode->{'messages'};
+				}
+			}				
+			
+			//sorting
+			$promotion = $promotion->orderBy('name', 'desc')->get();
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
+		}
+		
+		return Response::json($respond);
+	}
+	
+	public function searchPromotionSortedAmountAsc($input)
+	{
+		$respond = array();
+		$promotion = Promotion::where('name', 'LIKE', '%'.$input['name'].'%')->get();		
+		
+		if($input['amount'] != -1)
+		{
+			$promotion = $promotion->where('amount', '=', $input['amount'])->get();
+		}
+		
+		if(count($promotion) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			foreach($promotion as $key)
+			{
+				$product_cont = new ProductsController();
+				$json_products = $product_cont->getByPromotionId($key->id);
+				$decode = json_decode($json_products->getContent());
+				$code = $decode->{'code'};
+				if($code == 404) //not found
+				{
+					$key->products = "";
+				}
+				else
+				{					
+					$key->products = $decode->{'messages'};
+				}
+			}		
+
+			//sorting
+			$promotion = $promotion->orderBy('amount')->get();
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
+		}
+		
+		return Response::json($respond);
+	}
+	
+	public function searchPromotionSortedAmountDesc($input)
+	{
+		$respond = array();
+		$promotion = Promotion::where('name', 'LIKE', '%'.$input['name'].'%')->get();		
+		
+		if($input['amount'] != -1)
+		{
+			$promotion = $promotion->where('amount', '=', $input['amount'])->get();
+		}
+		
+		if(count($promotion) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			foreach($promotion as $key)
+			{
+				$product_cont = new ProductsController();
+				$json_products = $product_cont->getByPromotionId($key->id);
+				$decode = json_decode($json_products->getContent());
+				$code = $decode->{'code'};
+				if($code == 404) //not found
+				{
+					$key->products = "";
+				}
+				else
+				{					
+					$key->products = $decode->{'messages'};
+				}
+			}	
+
+			//sorting
+			$promotion = $promotion->orderBy('amount', 'desc')->get();
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
+		}
+		
+		return Response::json($respond);
+	}
+	
+	/*
 	public function getAllSortedStartedAsc(){
 		$respond = array();
 		$promotion = Promotion::orderBy('started')->get();
@@ -175,7 +510,8 @@ class PromotionsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-		
+	*/
+	
 	public function getById($id)
 	{
 		$respond = array();
@@ -186,11 +522,28 @@ class PromotionsController extends \BaseController {
 		}
 		else
 		{
+			foreach($promotion as $key)
+			{
+				$product_cont = new ProductsController();
+				$json_products = $product_cont->getByPromotionId($key->id);
+				$decode = json_decode($json_products->getContent());
+				$code = $decode->{'code'};
+				if($code == 404) //not found
+				{
+					$key->products = "";
+				}
+				else
+				{					
+					$key->products = $decode->{'messages'};
+				}
+			}	
+			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
 		}
 		return Response::json($respond);
 	}
 	
+	/*
 	public function getByName($name)		
 	{
 		$respond = array();
@@ -205,6 +558,7 @@ class PromotionsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+
 	
 	public function getByActive($active)
 	{
@@ -220,8 +574,9 @@ class PromotionsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-		
-	public function updateFull($id)
+	*/	
+	
+	public function updateFull($id, $input_promotion, $input_products)
 	{
 		$respond = array();
 		$promotion = Promotion::find($id);
@@ -231,24 +586,62 @@ class PromotionsController extends \BaseController {
 		}
 		else
 		{
-			$input = json_decode(Input::all());
+			// $input = json_decode(Input::all());
 		
 			//validate
-			$validator = Validator::make($data = $input, Promotion::$rules);
+			$validator = Validator::make($data = $input_promotion, Promotion::$rules);
 
 			if ($validator->fails())
 			{
 				$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
 				return Response::json($respond);
 			}
+			
+			//edit value
+			$promotion->name = $input_promotion['name'];
+			$promotion->amount = $input_promotion['amount'];
+			$promotion->started = $input_promotion['started'];
+			$promotion->expired = $input_promotion['expired'];
+			$promotion->active = $input_promotion['active'];
+
+			//edit products yang berpromosi
+			$products = $input_products;
+			$product_cont = new ProductsController();
+			foreach($products as $key)
+			{
+				$product_cont->updatePromotionId($key, $promotion->id);
+			}
+			
 			//save
 			try {
-				$promotion->update($data);
+				$promotion->save();				
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 			}
 			
+		}
+		return Response::json($respond);
+	}	
+	
+	public function updateActive($id, $new_active)
+	{
+		$respond = array();
+		$promotion = Promotion::find($id);
+		if($promotion == null)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			//edit value
+			$promotion->active = $new_active;
+			try {
+				$promotion->save();
+				$respond = array('code'=>'204','status' => 'No Content');
+			} catch (Exception $e) {
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
 		}
 		return Response::json($respond);
 	}
