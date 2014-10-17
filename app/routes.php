@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/tes', 'PromotionsController@getAllProducts');
+// Route::get('/tes', 'ProductsController@updateProductNo');
 
 Route::get('/tesview', function (){
 	return View::make('pages.admin.review.manage_review');
