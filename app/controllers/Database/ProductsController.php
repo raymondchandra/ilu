@@ -3214,7 +3214,7 @@ class ProductsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-	*/
+	*/		
 	
 	public function getById($id)
 	{
@@ -3226,70 +3226,67 @@ class ProductsController extends \BaseController {
 		}
 		else
 		{
-			foreach($product as $key)		
-			{				
-				$cat_name = Category::where('id','=',$key->category_id)->first()->name;								
-				
-				//add category_name
-				$key->category_name = $cat_name;
-				
-				if($key->promotion_id == null)
-				{
-					//no promotion
-					$promo_amount = 0;
-					$promo_expired = 0;						
-				}	
-				else
-				{
-					//promotion
-					$promo_amount = Promotion::where('id','=',$key->promotion_id)->first()->amount;
-					$promo_expired = Promotion::where('id','=',$key->promotion_id)->first()->expired;					
-				}						
+			$cat_name = Category::where('id','=',$product->category_id)->first()->name;								
+							
+			//add category_name
+			$product->category_name = $cat_name;
+			
+			if($product->promotion_id == null)
+			{
+				//no promotion
+				$promo_amount = 0;
+				$promo_expired = 0;						
+			}	
+			else
+			{
+				//promotion
+				$promo_amount = Promotion::where('id','=',$product->promotion_id)->first()->amount;
+				$promo_expired = Promotion::where('id','=',$product->promotion_id)->first()->expired;					
+			}						
 
-				//add promotion_amount, promotion_expired
-				$key->promotion_amount = $promo_amount;
-				$key->promotion_expired = $promo_expired;
+			//add promotion_amount, promotion_expired
+			$product->promotion_amount = $promo_amount;
+			$product->promotion_expired = $promo_expired;
+			
+			$prices = Price::where('product_id','=',$product->id)->get();
 				
-				$prices = Price::where('product_id','=',$key->id)->get();
-					
-					foreach($prices as $key_prices)
-					{
-						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
-						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
-						//add attribute name
-						$key_prices->attr_name = $attr_name;										
-						//add price with tax
-						$key_prices->price_with_tax = ($key_prices->amount + ($key_prices->amount * $tax_amount / 100));
-						//add price with tax and promotion
-						$key_prices->price_with_tax_promotion = ($key_prices->price_with_tax - $promo_amount);
-					}
-				
-				//add prices by attribute
-				$key->prices = $prices;
-				
-				$main_photo = Gallery::where('product_id','=',$key->id)->where('type','=','main_photo')->first();						
-				$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
-				
-				//add main_photo
-				if(count($main_photo) == 0)
+				foreach($prices as $key_prices)
 				{
-					$key->main_photo = "";
+					$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+					$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
+					//add attribute name
+					$key_prices->attr_name = $attr_name;										
+					//add price with tax
+					$key_prices->price_with_tax = ($key_prices->amount + ($key_prices->amount * $tax_amount / 100));
+					//add price with tax and promotion
+					$key_prices->price_with_tax_promotion = ($key_prices->price_with_tax - $promo_amount);
 				}
-				else
-				{					
-					$key->main_photo = $main_photo->photo_path;
-				}
-								
-				//add other_photo
-				if(count($other_photos) == 0)
-				{
-					$key->other_photos = "";
-				}
-				else
-				{
-					$key->other_photos = $other_photos->photo_path;
-				}
+			
+			//add prices by attribute
+			$product->prices = $prices;
+			
+			$main_photo = Gallery::where('product_id','=',$product->id)->where('type','=','main_photo')->first();						
+			$other_photos = Gallery::where('product_id','=',$product->id)->where('type','=','other_photos')->get();
+			
+			//add main_photo
+			if(count($main_photo) == 0)
+			{
+				$product->main_photo = "";
 			}
+			else
+			{					
+				$product->main_photo = $main_photo->photo_path;
+			}
+							
+			//add other_photo
+			if(count($other_photos) == 0)
+			{
+				$product->other_photos = "";
+			}
+			else
+			{
+				$product->other_photos = $other_photos->photo_path;
+			}			
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
 		}
@@ -3707,7 +3704,7 @@ class ProductsController extends \BaseController {
 		else
 		{
 			//edit value
-			$product->product_no = $new_product_no;
+			$product->product_no = $new_product_no;			
 			try {
 				$product->save();
 				$respond = array('code'=>'204','status' => 'No Content');
@@ -3868,6 +3865,6 @@ class ProductsController extends \BaseController {
 			$respond = array('code'=>'200','status' => 'OK');
 		}
 		return Response::json($respond);
-	}	
+	}
 
 }
