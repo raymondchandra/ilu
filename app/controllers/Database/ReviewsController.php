@@ -1,7 +1,7 @@
 <?php
 
 class ReviewsController extends \BaseController {
-	
+		
 	public function w_insert()
 	{
 		$json = Input::get('json_data');
@@ -10,13 +10,13 @@ class ReviewsController extends \BaseController {
 		$product_id = $decode->{'product_id'};
 		$text = $decode->{'text'}:
 		$rating = $decode->{'rating'};
-		$approved = $decode->{'approved'};
+		// $approved = $decode->{'approved'};
 		
 		$input = array(
 					'product_id' => $product_id,
 					'text' => $text,
 					'rating' => $rating,
-					'approved' => $approved);
+					'approved' => 0);
 					
 		return $this->insert($input);
 	}
@@ -42,8 +42,10 @@ class ReviewsController extends \BaseController {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 		}
 		return Response::json($respond);
-	}
+	}	
 	
+	// return : id, product_id, text, rating, approved,
+				// product_no, product_name
 	public function getAll(){
 		$respond = array();
 		$review = Review::all();
@@ -53,6 +55,50 @@ class ReviewsController extends \BaseController {
 		}
 		else
 		{
+			foreach($review as $key)
+			{
+				$product = Product::find($key->product_id);
+				if(count($product) == 0)
+				{
+					$key->product_no = "";
+					$key->product_name = "";
+				}
+				else
+				{
+					$key->product_no = $product->product_no;
+					$key->product_name = $product->name;
+				}
+			}						
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
+		}
+		return Response::json($respond);
+	}
+	
+	public function getAllSortedProductNoAsc(){
+		$respond = array();
+		$review = Review::all();
+		if (count($review) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			foreach($review as $key)
+			{
+				$product = Product::find($key->product_id);
+				if(count($product) == 0)
+				{
+					$key->product_no = "";
+					$key->product_name = "";
+				}
+				else
+				{
+					$key->product_no = $product->product_no;
+					$key->product_name = $product->name;
+				}
+			}						
+			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
 		}
 		return Response::json($respond);
@@ -73,6 +119,7 @@ class ReviewsController extends \BaseController {
 		return Response::json($respond);
 	}
 	
+	/*
 	public function getByProductId($product_id)
 	{
 		$respond = array();
@@ -131,7 +178,8 @@ class ReviewsController extends \BaseController {
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
 		}
 		return Response::json($respond);
-	}		
+	}	
+	*/	
 	
 	public function updateApproved($id, $new_approved)
 	{

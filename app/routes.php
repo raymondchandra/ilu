@@ -1,9 +1,9 @@
 <?php
 
-Route::get('/tes', 'AttributesController@w_insert');
+Route::get('/tes', 'PromotionsController@getAllProducts');
 
 Route::get('/tesview', function (){
-	return View::make('pages.admin.product.manage_product');
+	return View::make('pages.admin.review.manage_review');
 });
 
 Route::get('/tes2', function()
@@ -90,6 +90,8 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 {
 	//product
 		Route::get('/product', ['as' => 'product' , 'uses' => 'ProductsController@view_main_product']);
+		Route::get('/product/{id}', ['as' => 'product_detail' , 'uses' => 'ProductsController@view_detail_product']);
+		
 	
     //transaction
 
