@@ -1032,6 +1032,6 @@ class ProductsController extends \BaseController {
 			$respond = array('code'=>'200','status' => 'OK');
 		}
 		return Response::json($respond);
-	}	
+	}
 
 }

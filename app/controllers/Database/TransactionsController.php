@@ -87,7 +87,8 @@ class TransactionsController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function getAll(){
+	public function getAll()
+	{
 		$respond = array();
 		$transaction = Transaction::all();
 		if (count($transaction) == 0)
