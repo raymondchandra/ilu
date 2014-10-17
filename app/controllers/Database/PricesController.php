@@ -2,9 +2,29 @@
 
 class PricesController extends \BaseController {
 
-	public function insert()
+	public function w_insert()
 	{
-		$input = json_decode(Input::all());
+		$json = Input::get('json_data');
+		$decode = json_decode($json);
+		
+		$attr_id = $decode->{'attr_id'};
+		$attr_value $decode->{'attr_value'};
+		$product_id = $decode->{'product_id'};
+		$amount = $decode->{'amount'};
+		$tax_id = $decode->{'tax_id'};
+		
+		$input = array(
+					'attr_id' => $attr_id,
+					'attr_value' => $attr_value,
+					'product_id' => $product_id,
+					'amount' => $amount,
+					'tax_id' => $tax_id);			
+					
+		return $this->insert($input);
+	}
+	public function insert($input)
+	{
+		// $input = json_decode(Input::all());
 		
 		$respond = array();
 		//validate

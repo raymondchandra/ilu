@@ -8,7 +8,7 @@ class Price extends \Eloquent {
 		'attr_id' => 'required|integer',
 		'attr_value' => 'required',
 		'product_id' => 'required|integer',
-		'amount' => 'required|regex:/^\d*(\.\d{2})?$/',
+		'amount' => 'required|regex:/^\d*(\.\d{2})?$/',	
 		'tax_id' => 'required|integer'
 	];
 

@@ -2,9 +2,23 @@
 
 class AttributesController extends \BaseController {
 
-	public function insert()
+	public function w_insert()
 	{
-		$input = json_decode(Input::all());
+		$json = Input::get('json_data');
+		$decode = json_decode($json);
+		
+		$name = $decode->{'name'};		
+		
+		$input = array(
+					'name' => $name,
+					'deleted' => 0);
+		
+		return $this->insert($input);
+	}		
+	// input : name, deleted	
+	public function insert($input)
+	{
+		// $input = json_decode(Input::all());				
 		
 		$respond = array();
 		//validate
@@ -15,17 +29,20 @@ class AttributesController extends \BaseController {
 			$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
 			return Response::json($respond);
 		}
-
-		//save
+		
 		try {
-			Attribute::create($data);
+			Attribute::create([				
+					'name' => $input['name'],
+					'deleted' => $input['deleted']
+				]);					
 			$respond = array('code'=>'201','status' => 'Created');
 		} catch (Exception $e) {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
-		}
+		}		
+				
 		return Response::json($respond);
-	}
-	
+	}	
+		
 	public function getAll(){
 		$respond = array();
 		$attribute = Attribute::all();
@@ -38,7 +55,174 @@ class AttributesController extends \BaseController {
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
 		}
 		return Response::json($respond);
-	}	
+	}
+
+	public function getAllSortedIdAsc(){
+		$respond = array();
+		$attribute = Attribute::orderBy('id')->get();
+		if (count($attribute) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
+		}
+		return Response::json($respond);
+	}
+
+	public function getAllSortedIdDesc(){
+		$respond = array();
+		$attribute = Attribute::orderBy('id', 'desc')->get();
+		if (count($attribute) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
+		}
+		return Response::json($respond);
+	}
+	
+	public function getAllSortedNameAsc(){
+		$respond = array();
+		$attribute = Attribute::orderBy('name')->get();
+		if (count($attribute) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
+		}
+		return Response::json($respond);
+	}
+	
+	public function getAllSortedNameDesc(){
+		$respond = array();
+		$attribute = Attribute::orderBy('name', 'desc')->get();
+		if (count($attribute) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
+		}
+		return Response::json($respond);
+	}
+	
+	// asumsi :
+		// kalo field input integer ada yang kosong maka -1
+		// kalo field input string ada yang kosong maka dapetnya ""
+	// input : id, name
+	public function searchAttribute($input)
+	{
+		$respond = array();
+		$attribute = Attribute::where('name', 'LIKE', '%'.$input['name'].'%')->get();
+		if($input['id'] != -1)
+		{
+			$attribute = $attribute->where('id', '=', $input['id'])->get();
+		}
+		
+		if(count($attribute) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
+		}
+	}
+	
+	public function searchAttributeSortedIdAsc($input)
+	{
+		$respond = array();
+		$attribute = Attribute::where('name', 'LIKE', '%'.$input['name'].'%')->get();
+		if($input['id'] != -1)
+		{
+			$attribute = $attribute->where('id', '=', $input['id'])->get();
+		}
+		
+		// sorting
+		$attribute = $attribute->orderBy('id')->get();		
+		
+		if(count($attribute) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
+		}
+	}
+	
+	public function searchAttributeSortedIdDesc($input)
+	{
+		$respond = array();
+		$attribute = Attribute::where('name', 'LIKE', '%'.$input['name'].'%')->get();
+		if($input['id'] != -1)
+		{
+			$attribute = $attribute->where('id', '=', $input['id'])->get();
+		}
+		
+		// sorting
+		$attribute = $attribute->orderBy('id', 'desc')->get();
+		
+		if(count($attribute) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
+		}
+	}
+	
+	public function searchAttributeSortedNameAsc($input)
+	{
+		$respond = array();
+		$attribute = Attribute::where('name', 'LIKE', '%'.$input['name'].'%')->get();
+		if($input['id'] != -1)
+		{
+			$attribute = $attribute->where('id', '=', $input['id'])->get();
+		}
+		
+		// sorting
+		$attribute = $attribute->orderBy('name')->get();
+		
+		if(count($attribute) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
+		}
+	}
+	
+	public function searchAttributeSortedNameDesc($input)
+	{
+		$respond = array();
+		$attribute = Attribute::where('name', 'LIKE', '%'.$input['name'].'%')->get();
+		if($input['id'] != -1)
+		{
+			$attribute = $attribute->where('id', '=', $input['id'])->get();
+		}
+		
+		// sorting
+		$attribute = $attribute->orderBy('name', 'desc')->get();
+		
+		if(count($attribute) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
+		}
+	}
 	
 	public function getById($id)
 	{
@@ -54,22 +238,7 @@ class AttributesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-	
-	public function getByName($name)
-	{
-		$respond = array();		
-		$attribute = Attribute::where('name', 'LIKE','%'.$name.'%')->get();
-		if (count($attribute) == 0)
-		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		else
-		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
-		}
-		return Response::json($respond);
-	}			
-	
+			
 	public function getByDeleted($deleted)
 	{
 		$respond = array();		
@@ -85,33 +254,46 @@ class AttributesController extends \BaseController {
 		return Response::json($respond);
 	}
 			 
-	public function updateFull($id)
+	public function updateName($id, $new_name)
 	{
 		$respond = array();
 		$attribute = Attribute::find($id);
-		if ($attribute == null)
+		if($attribute == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
-			$input = json_decode(Input::all());
-			
-			//validate
-			$validator = Validator::make($data = $input, Attribute::$rules);
-
-			if ($validator->fails())
-			{
-				$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
-				return Response::json($respond);
-			}
-			//save
+			//edit value
+			$attribute->name = $new_name;
 			try {
-				$attribute->update($data);
+				$attribute->save();
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
-			}			
+			}
+		}
+		return Response::json($respond);
+	}	
+	
+	public function updateDeleted($id, $new_deleted)
+	{
+		$respond = array();
+		$attribute = Attribute::find($id);
+		if($attribute == null)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			//edit value
+			$attribute->deleted = $new_deleted;
+			try {
+				$attribute->save();
+				$respond = array('code'=>'204','status' => 'No Content');
+			} catch (Exception $e) {
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
 		}
 		return Response::json($respond);
 	}

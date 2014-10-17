@@ -1,10 +1,28 @@
 <?php
 
 class ReviewsController extends \BaseController {
-	
-	public function insert()
+		
+	public function w_insert()
 	{
-		$input = json_decode(Input::all());
+		$json = Input::get('json_data');
+		$decode = json_decode($json);
+		
+		$product_id = $decode->{'product_id'};
+		$text = $decode->{'text'}:
+		$rating = $decode->{'rating'};
+		// $approved = $decode->{'approved'};
+		
+		$input = array(
+					'product_id' => $product_id,
+					'text' => $text,
+					'rating' => $rating,
+					'approved' => 0);
+					
+		return $this->insert($input);
+	}
+	public function insert($input)
+	{
+		// $input = json_decode(Input::all());
 		
 		$respond = array();
 		//validate
@@ -24,8 +42,10 @@ class ReviewsController extends \BaseController {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 		}
 		return Response::json($respond);
-	}
+	}	
 	
+	// return : id, product_id, text, rating, approved,
+				// product_no, product_name
 	public function getAll(){
 		$respond = array();
 		$review = Review::all();
@@ -35,6 +55,50 @@ class ReviewsController extends \BaseController {
 		}
 		else
 		{
+			foreach($review as $key)
+			{
+				$product = Product::find($key->product_id);
+				if(count($product) == 0)
+				{
+					$key->product_no = "";
+					$key->product_name = "";
+				}
+				else
+				{
+					$key->product_no = $product->product_no;
+					$key->product_name = $product->name;
+				}
+			}						
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
+		}
+		return Response::json($respond);
+	}
+	
+	public function getAllSortedProductNoAsc(){
+		$respond = array();
+		$review = Review::all();
+		if (count($review) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			foreach($review as $key)
+			{
+				$product = Product::find($key->product_id);
+				if(count($product) == 0)
+				{
+					$key->product_no = "";
+					$key->product_name = "";
+				}
+				else
+				{
+					$key->product_no = $product->product_no;
+					$key->product_name = $product->name;
+				}
+			}						
+			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
 		}
 		return Response::json($respond);
@@ -55,6 +119,7 @@ class ReviewsController extends \BaseController {
 		return Response::json($respond);
 	}
 	
+	/*
 	public function getByProductId($product_id)
 	{
 		$respond = array();
@@ -70,7 +135,7 @@ class ReviewsController extends \BaseController {
 		return Response::json($respond);
 	}	
 	
-	public function getByProductIdSortedRatingAsc($product_id)
+	public function getByProductIdSortedRatingAsc($product_id)	
 	{
 		$respond = array();
 		$review = Review::where('product_id','=',$product_id)->orderBy('rating')->get();
@@ -113,13 +178,14 @@ class ReviewsController extends \BaseController {
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
 		}
 		return Response::json($respond);
-	}		
+	}	
+	*/	
 	
-	public function updateApprovedById($id, $new_approved)
+	public function updateApproved($id, $new_approved)
 	{
 		$respond = array();
 		$review = Review::find($id);
-		if ($address == null)
+		if ($review == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
@@ -128,7 +194,7 @@ class ReviewsController extends \BaseController {
 			//edit value
 			$review->approved = $new_approved;
 			try {
-				$address->save();
+				$review->save();
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
@@ -153,8 +219,7 @@ class ReviewsController extends \BaseController {
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
-			}
-			
+			}			
 		}
 		return Response::json($respond);
 	}

@@ -581,4 +581,33 @@ class TransactionsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	
+	/**
+	 * Display top ten product
+	 * param 
+	 * @return Response
+	 */
+	public function getTopTenProduct()
+	{
+		$respond = array();
+		$transaction = Transaction::all();
+		$ttp = array();
+		if (count($transaction) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			foreach($transaction as $key)
+			{
+				$ttp = array($key->id);
+			}
+			foreach($ttp as $key2)
+			{
+				
+			}
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
+		}
+		return Response::json($respond);
+	}
 }

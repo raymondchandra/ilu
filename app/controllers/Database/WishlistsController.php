@@ -2,16 +2,28 @@
 
 class WishlistsController extends \BaseController {
 
-	/**
-	 * Insert a newly created wishlist in database.
-	 *
-	 * @return Response
-	 */
-	public function insert()
+	public function w_insert()
 	{
+		$json = Input::get('json_data');
+		$decode = json_decode($json);
+		
+		$account_id = $decode->{'account_id'};
+		$product_id = $decode->{'product_id'};		
+		
+		$input = array(
+					'account_id' => $account_id,
+					'product_id' => $product_id					
+		);
+		
+		return $this->insert($input);
+	}	
+	public function insert($input)
+	{
+		// $input = json_decode(Input::all());
+				
 		$respond = array();
 		//validate
-		$validator = Validator::make($data = Input::all(), Wishlist::$rules);
+		$validator = Validator::make($data = $input, Wishlist::$rules);
 
 		if ($validator->fails())
 		{
@@ -19,6 +31,7 @@ class WishlistsController extends \BaseController {
 			return Response::json($respond);
 		}
 
+		$data['account_id'] = Auth::user()->id;
 		//save
 		try {
 			Wishlist::create($data);
@@ -28,6 +41,7 @@ class WishlistsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	
 
 	/**
 	 * Display all of the wishlist.
@@ -47,13 +61,7 @@ class WishlistsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-
-	/**
-	 * Display the specified wishlist.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+	
 	public function getById($id)
 	{
 		$respond = array();
@@ -69,12 +77,6 @@ class WishlistsController extends \BaseController {
 		return Response::json($respond);
 	}
 
-	/**
-	 * Display the specified wishlist by {name}.
-	 *
-	 * @param  
-	 * @return Response
-	 */
 	/*
 	public function getBy{name}()
 	{
@@ -91,13 +93,7 @@ class WishlistsController extends \BaseController {
 		return Response::json($respond);
 	}
 	*/
-
-	/**
-	 * Update all value of the specified wishlist in database.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+	
 	public function updateFull($id)
 	{
 		$respond = array();
@@ -127,13 +123,7 @@ class WishlistsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-
-	/**
-	 * Update {name} value of the specified wishlist in database.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+	
 	/*
 	public function update{name}($id)
 	{
@@ -158,6 +148,10 @@ class WishlistsController extends \BaseController {
 		return Response::json($respond);
 	}
 	*/
+<<<<<<< HEAD
+		
+	public function delete($id)
+=======
 	
 	
 	/**
@@ -166,10 +160,11 @@ class WishlistsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function delete($id)
+	public function delete($product_id)
+>>>>>>> b21b72ce68a9934eea323d68993ea14b055246e2
 	{
 		$respond = array();
-		$wishlist = Wishlist::find($id);
+		$wishlist = Wishlist::where('account_id','=',Auth::user()->id)->where('product_id','=',$product_id)->first();
 		if ($wishlist == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -186,14 +181,7 @@ class WishlistsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-
-	/**
-	 * Check if row exist in database.
-	 *
-	 * @param  
-	 * @return Response
-	 */
-	/*
+	
 	public function exist()
 	{
 		$respond = array();
@@ -207,6 +195,11 @@ class WishlistsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		return Response::json($respond);
+<<<<<<< HEAD
+	}	
+		
+	public function getWishListByAccountId($id)
+=======
 	}
 	*/
 	
@@ -216,23 +209,20 @@ class WishlistsController extends \BaseController {
 	 * @param  $id string
 	 * @return Response
 	 */
-	public function getWishListByAccountId($id)
+	public function getWishList()
+>>>>>>> b21b72ce68a9934eea323d68993ea14b055246e2
 	{
+
 		$respond = array();
-		$wishlist = Wishlist::where('account_id','=',$id)->get();
+		$wishlist = Auth::user()->wishlist;
 		if (count($wishlist) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
-			try {
-				$wishlist->delete();
-				$respond = array('code'=>'204','status' => 'No Content');
-			} catch (Exception $e) {
-				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
-			}
-			
+			//get id barang
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$wishlist);
 		}
 		return Response::json($respond);
 	}

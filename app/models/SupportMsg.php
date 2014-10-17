@@ -5,7 +5,9 @@ class SupportMsg extends \Eloquent {
 	protected $table = 'supportmsgs';
 	// Add your validation rules here
 	public static $rules = [
-		// 'title' => 'required'
+		 'ticket_id' => 'required',
+		'account_id' => 'required',
+		'text' => 'required'
 	];
 
 	// Don't forget to fill this array

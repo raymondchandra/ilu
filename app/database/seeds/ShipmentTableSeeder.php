@@ -14,7 +14,8 @@ class ShipmentTableSeeder extends Seeder {
 			Shipment::create([
 				
 				'shipmentData_id' => $faker->numberBetween(1,10),
-				'number' => $faker->randomNumber(7)
+				'number' => $faker->randomNumber(7),
+				'address_id' => $faker->numberBetween(1,10)
 			]);
 		}
 	}
