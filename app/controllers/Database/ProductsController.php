@@ -16,6 +16,10 @@ class ProductsController extends \BaseController {
 		return View::make('pages.admin.product.manage_product',compact('datas'));
 	}
 	
+	public function view_detail_product($id){
+		
+	}
+	
 	
 	public function w_insert()
 	{

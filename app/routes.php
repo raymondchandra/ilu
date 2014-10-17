@@ -90,6 +90,8 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 {
 	//product
 		Route::get('/product', ['as' => 'product' , 'uses' => 'ProductsController@view_main_product']);
+		Route::get('/product/{id}', ['as' => 'product_detail' , 'uses' => 'ProductsController@view_detail_product']);
+		
 	
     //transaction
 
