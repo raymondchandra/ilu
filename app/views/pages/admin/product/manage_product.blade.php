@@ -105,14 +105,23 @@
 	
 	<script>
 		$('body').on('click','.detail-product',function(){
+			$id = $(this).siblings('.id_produk').val();
 			$.ajax({
 				type: 'GET',
-				url: '/product/{id}',
-				data: {
-					"updateMisi": $('.editor').val()
-				},
+				url: "{{URL('admin/product')}}/"+$id,
 				success: function(response){
-					alert(response);
+					result = JSON.parse(response);
+					if(result.code==200){
+						$message = result.messages;
+						$('.no_product').text($message.product_no);
+						$('.product_name').text($message.name);
+						$('#product_description').text($message.description);
+						$('#product_category').text($message.category_name);
+						
+						if($message.promotion_id != ""){
+							$('#promotion_id').text($message.promotion_id);
+						}
+					}
 				},
 				error: function(jqXHR, textStatus, errorThrown){
 					alert(errorThrown);
