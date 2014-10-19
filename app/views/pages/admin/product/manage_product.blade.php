@@ -83,7 +83,7 @@
 								<td>{{$product->promotion_id}}</td>
 								<td>
 									<input type='hidden' class='id_produk' value='{{$product->id}}'>
-									<a class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_product">Edit Info</a>
+									<a class="btn btn-warning btn-xs detail-product" data-toggle="modal" data-target=".pop_up_edit_product">Edit Info</a>
 									<a class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_product_gallery">Edit Gallery</a>
 									<!-- Button trigger modal class ".alertYesNo" -->
 									<a class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</a>
@@ -103,4 +103,30 @@
 	@include('pages.admin.product.pop_up_edit_product')
 	@include('pages.admin.product.pop_up_add_product')
 	
+	<script>
+		$('body').on('click','.detail-product',function(){
+			$id = $(this).siblings('.id_produk').val();
+			$.ajax({
+				type: 'GET',
+				url: "{{URL('admin/product')}}/"+$id,
+				success: function(response){
+					result = JSON.parse(response);
+					if(result.code==200){
+						$message = result.messages;
+						$('.no_product').text($message.product_no);
+						$('.product_name').text($message.name);
+						$('#product_description').text($message.description);
+						$('#product_category').text($message.category_name);
+						
+						if($message.promotion_id != ""){
+							$('#promotion_id').text($message.promotion_id);
+						}
+					}
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					alert(errorThrown);
+				}
+			},'json');
+		});
+	</script>
 @stop

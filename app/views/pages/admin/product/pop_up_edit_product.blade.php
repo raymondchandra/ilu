@@ -20,7 +20,7 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label">Product No.</label>
 								<div class="col-sm-5">
-									<p id="product_no" class="form-control-static">00045383945</p>
+									<p id="product_no" class="form-control-static no_product">00045383945</p>
 									<input id="product_no_input" class="form-control hidden"/>
 								</div>
 								<div class="col-sm-3">
@@ -50,7 +50,7 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label">Name</label>
 								<div class="col-sm-5">
-									<p id="product_name" class="form-control-static">fsddsf</p>
+									<p id="product_name" class="form-control-static product_name">fsddsf</p>
 									<input id="product_name_input" class="form-control hidden"/>
 								</div>
 								<div class="col-sm-3">

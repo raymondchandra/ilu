@@ -17,7 +17,8 @@ class ProductsController extends \BaseController {
 	}
 	
 	public function view_detail_product($id){
-		
+		$json = json_decode($this->getById($id)->getContent());
+		return json_encode($json);
 	}
 	
 	
