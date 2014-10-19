@@ -1,9 +1,9 @@
 <?php
 
-// Route::get('/tes', 'ProductsController@updateProductNo');
+Route::get('/tes', 'CategoriesController@test');
 
 Route::get('/tesview', function (){
-	return View::make('pages.admin.review.manage_review');
+	return View::make('pages.admin.tax.manage_tax');
 });
 
 Route::get('/tes2', function()

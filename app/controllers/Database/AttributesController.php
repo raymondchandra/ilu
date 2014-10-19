@@ -119,13 +119,15 @@ class AttributesController extends \BaseController {
 	// input : id, name
 	public function searchAttribute($input)
 	{
-		$respond = array();
-		$attribute = Attribute::where('name', 'LIKE', '%'.$input['name'].'%')->get();
+		$respond = array();		
+		$attribute = Attribute::where('name', 'LIKE', '%'.$input['name'].'%');				
+		
 		if($input['id'] != -1)
 		{
-			$attribute = $attribute->where('id', '=', $input['id'])->get();
+			$attribute = $attribute->where('id', '=', $input['id']);
 		}
 		
+		$attribute = $attribute->get();
 		if(count($attribute) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -138,88 +140,92 @@ class AttributesController extends \BaseController {
 	
 	public function searchAttributeSortedIdAsc($input)
 	{
-		$respond = array();
-		$attribute = Attribute::where('name', 'LIKE', '%'.$input['name'].'%')->get();
+		$respond = array();		
+		$attribute = Attribute::where('name', 'LIKE', '%'.$input['name'].'%');				
+		
 		if($input['id'] != -1)
 		{
-			$attribute = $attribute->where('id', '=', $input['id'])->get();
+			$attribute = $attribute->where('id', '=', $input['id']);
 		}
 		
-		// sorting
-		$attribute = $attribute->orderBy('id')->get();		
-		
-		if(count($attribute) == 0)
+		$arr_attribute = $attribute->get();		
+		if(count($arr_attribute) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
+			//sorting
+			$attribute = $attribute->orderBy('id')->get();
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
 		}
 	}
 	
 	public function searchAttributeSortedIdDesc($input)
 	{
-		$respond = array();
-		$attribute = Attribute::where('name', 'LIKE', '%'.$input['name'].'%')->get();
+		$respond = array();		
+		$attribute = Attribute::where('name', 'LIKE', '%'.$input['name'].'%');				
+		
 		if($input['id'] != -1)
 		{
-			$attribute = $attribute->where('id', '=', $input['id'])->get();
+			$attribute = $attribute->where('id', '=', $input['id']);
 		}
 		
-		// sorting
-		$attribute = $attribute->orderBy('id', 'desc')->get();
-		
-		if(count($attribute) == 0)
+		$arr_attribute = $attribute->get();		
+		if(count($arr_attribute) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
+			//sorting
+			$attribute = $attribute->orderBy('id', 'desc')->get();
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
 		}
 	}
 	
 	public function searchAttributeSortedNameAsc($input)
 	{
-		$respond = array();
-		$attribute = Attribute::where('name', 'LIKE', '%'.$input['name'].'%')->get();
+		$respond = array();		
+		$attribute = Attribute::where('name', 'LIKE', '%'.$input['name'].'%');				
+		
 		if($input['id'] != -1)
 		{
-			$attribute = $attribute->where('id', '=', $input['id'])->get();
+			$attribute = $attribute->where('id', '=', $input['id']);
 		}
 		
-		// sorting
-		$attribute = $attribute->orderBy('name')->get();
-		
-		if(count($attribute) == 0)
+		$arr_attribute = $attribute->get();		
+		if(count($arr_attribute) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
+			//sorting
+			$attribute = $attribute->orderBy('name')->get();
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
 		}
 	}
 	
 	public function searchAttributeSortedNameDesc($input)
 	{
-		$respond = array();
-		$attribute = Attribute::where('name', 'LIKE', '%'.$input['name'].'%')->get();
+		$respond = array();		
+		$attribute = Attribute::where('name', 'LIKE', '%'.$input['name'].'%');				
+		
 		if($input['id'] != -1)
 		{
-			$attribute = $attribute->where('id', '=', $input['id'])->get();
+			$attribute = $attribute->where('id', '=', $input['id']);
 		}
 		
-		// sorting
-		$attribute = $attribute->orderBy('name', 'desc')->get();
-		
-		if(count($attribute) == 0)
+		$arr_attribute = $attribute->get();		
+		if(count($arr_attribute) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
+			//sorting
+			$attribute = $attribute->orderBy('name', 'desc')->get();
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
 		}
 	}
