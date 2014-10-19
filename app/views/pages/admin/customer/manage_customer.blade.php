@@ -63,29 +63,28 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php 
-							for ($i=0; $i<=30; $i++) {
-							  ?>
+							@foreach($profiles as $profile)
 							<tr> 
 								
-								<td>2765675</td>
-								<td>Muhhajkasdjkas Opay</td>
-								<td>Opay</td>
-								<td>opay@on.com</td>
+								<td id="member_id_{{$profile->acc_id}}">{{$profile->member_id}}</td>
+								<td id="full_name_{{$profile->acc_id}}">{{$profile->full_name}}</td>
+								<td id="profile_name_{{$profile->acc_id}}">{{$profile->name_in_profile}}</td>
+								<td id="email_{{$profile->acc_id}}">{{$profile->email}}</td>
 								
 								<td>
-									<button class="btn btn-info btn-xs" data-toggle="modal" data-target=".pop_up_view_wishlist">View Wishlist</button>
-									<button class="btn btn-info btn-xs" data-toggle="modal" data-target=".pop_up_view_search">View History Search</button>
-									<button class="btn btn-info btn-xs" data-toggle="modal" data-target=".pop_up_view_belanja">View History Belanja</button>
-									<button class="btn btn-info btn-xs" data-toggle="modal" data-target=".pop_up_view_customer">View Profile</button>
+									<input type="hidden" value="{{$profile->acc_id}}">
+									<button class="btn btn-info btn-xs wishlistbutton" data-toggle="modal" data-target=".pop_up_view_wishlist">View Wishlist</button>
+									<input type="hidden" value="{{$profile->acc_id}}">
+									<button class="btn btn-info btn-xs searchbutton" data-toggle="modal" data-target=".pop_up_view_search">View History Search</button>
+									<input type="hidden" value="{{$profile->acc_id}}">
+									<button class="btn btn-info btn-xs belanjabutton" data-toggle="modal" data-target=".pop_up_view_belanja">View History Belanja</button>
+									<input type="hidden" value="{{$profile->acc_id}}">
+									<button class="btn btn-info btn-xs profilebutton" data-toggle="modal" data-target=".pop_up_view_customer">View Profile</button>
 									<!-- Button trigger modal class ".alertYesNo" -->
 									<!-- <button class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</button> -->
 								</td>
 							</tr> 
-							  <?php
-							} 
-							?>
-							
+							@endforeach		
 						</tbody>
 					</table>
 				</div>
@@ -99,5 +98,58 @@
 	@include('pages.admin.customer.pop_up_view_wishlist')
 	@include('pages.admin.customer.pop_up_view_search')
 	@include('pages.admin.customer.pop_up_view_belanja')
+	
+	<script>
+		$('body').on('click','.wishlistbutton',function(){
+			$acc_id = $(this).prev().val();
+			$nama = $('#full_name_'+$acc_id).html();
+			$('.modal-title').html("Wishlist dari " + $nama);
+			$('#wishlistcontent').empty();
+			$.ajax({
+					type: 'GET',
+					url: '{{URL::route('david.getWishlist')}}',
+					data: {	
+						"acc_id": $acc_id
+					},
+					success: function(response){
+						if(response['code'] == '404')
+						{
+							alert("asd");
+							$('#wishlistcontent').append("<td>wishlist tidak ditemukan</td>");
+						}
+						else
+						{
+							alert("def");
+							$.each(response, function( i, resp ) {
+								$data = "<tr><td>";
+								$data = $data + "243TYF876</td><td>";
+								$data = $data + "The Epic Bag</td><td>";
+								$data = $data + "31 January 2014</td><td></tr>";
+								$('#wishlistcontent').append("<td>asd</td>");
+							});
+						}
+					},error: function(xhr, textStatus, errorThrown){
+						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+						alert("responseText: "+xhr.responseText);
+					}
+				},'json');
+		});
+		//------end of script buat wishlist
+		$('body').on('click','.searchbutton',function(){
+			$acc_id = $(this).prev().val();
+			alert($acc_id);
+		});
+		//------end of script buat search
+		$('body').on('click','.belanjabutton',function(){
+			$acc_id = $(this).prev().val();
+			alert($acc_id);
+		});
+		//------end of script buat belanja
+		$('body').on('click','.profilebutton',function(){
+			$acc_id = $(this).prev().val();
+			alert($acc_id);
+		});
+		//------end of script buat profile
+	</script>
 
 @stop

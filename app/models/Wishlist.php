@@ -1,7 +1,8 @@
 <?php
 
 class Wishlist extends \Eloquent {
-
+	public $productName;
+	
 	// Add your validation rules here
 	public static $rules = [
 		// 'title' => 'required'

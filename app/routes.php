@@ -8,9 +8,19 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-	$acc = new AccountsController();
+	$profileController = new ProfilesController();
+		$profilesJson = $profileController->getAll();
+		
+		$json = json_decode($profilesJson->getContent());
 	
-	$acc->getHistory(5);
+		$profiles = $json->{'messages'};
+		
+		foreach($profiles as $prof)
+		{
+			$prof->acc_id = Profile::find($prof->id)->account->id;
+		}
+		
+		return $profiles;
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -217,6 +227,10 @@ Route::group(array('prefix' => 'test'), function()
 	{
 		return View::make('pages.admin.customer.manage_customer');
 	});
+	
+	Route::get('/manage_customer_david', ['uses' => 'CustomerManagementController@view_cust_mgmt']);
+	
+	Route::get('/get_wishlist', ['as'=>'david.getWishlist','uses' => 'WishlistsController@getWishListByAccountId']);
 
     // Review
     Route::get('/manage_review', function()
