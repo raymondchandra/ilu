@@ -205,6 +205,7 @@ class WishlistsController extends \BaseController {
 			foreach($wishlist as $wish)
 			{
 				$wish->productName = Wishlist::find($wish->id)->product->name;
+				$wish->productNumber = Wishlist::find($wish->id)->product->product_no;
 			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$wishlist);
 		}

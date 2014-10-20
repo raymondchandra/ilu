@@ -17,21 +17,8 @@
 							</th>
 						</tr>
 					</thead>
-					<tbody>
-						<?php 
-						for ($i=0; $i<=27; $i++) {
-						?>
-						<tr>
-							<td>
-								The Epic Bag Edan Pisan
-							</td>
-							<td>
-								31 January 2014
-							</td>
-						</tr>
-						<?php
-						}
-						?>
+					<tbody id="searchHistorycontent">
+						
 					</tbody>
 				</table>
 			</div>

@@ -2,6 +2,7 @@
 
 class Wishlist extends \Eloquent {
 	public $productName;
+	public $productNumber;
 	
 	// Add your validation rules here
 	public static $rules = [

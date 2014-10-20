@@ -8,19 +8,19 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-	$profileController = new ProfilesController();
-		$profilesJson = $profileController->getAll();
+	$acc_id = 1;
 		
-		$json = json_decode($profilesJson->getContent());
-	
-		$profiles = $json->{'messages'};
-		
-		foreach($profiles as $prof)
-		{
-			$prof->acc_id = Profile::find($prof->id)->account->id;
-		}
-		
-		return $profiles;
+	$respond = array();
+	$logs = Logs::where('account_id','=',$acc_id)->where('description', 'LIKE', 'search%')->get();
+	if (count($logs) == 0)
+	{
+		$respond = array('code'=>'404','status' => 'Not Found');
+	}
+	else
+	{
+		$respond = array('code'=>'200','status' => 'OK','messages'=>$logs);
+	}
+	return Response::json($respond);
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -231,7 +231,12 @@ Route::group(array('prefix' => 'test'), function()
 	Route::get('/manage_customer_david', ['uses' => 'CustomerManagementController@view_cust_mgmt']);
 	
 	Route::get('/get_wishlist', ['as'=>'david.getWishlist','uses' => 'WishlistsController@getWishListByAccountId']);
+	
+	Route::get('/get_search_history', ['as'=>'david.getSearchHistory','uses' => 'LogsController@getSearchLogByAccountId']);
 
+	Route::get('/get_trans_history', ['as'=>'david.getTransHistory','uses' => 'TransactionsController@getByAccountId']);
+	
+	Route::get('/get_profile_detail', ['as'=>'david.getProfDet','uses' => 'ProfilesController@myGetById']);
     // Review
     Route::get('/manage_review', function()
 	{
