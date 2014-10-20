@@ -243,6 +243,12 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.review.manage_review');
 	});
 
+    // Report
+    Route::get('/manage_report', function()
+	{
+		return View::make('pages.admin.report.manage_report');
+	});
+
 
 });
 
