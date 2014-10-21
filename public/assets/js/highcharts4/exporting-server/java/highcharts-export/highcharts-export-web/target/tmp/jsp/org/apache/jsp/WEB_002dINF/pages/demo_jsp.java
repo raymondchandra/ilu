@@ -348,7 +348,7 @@ public final class demo_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("    <text x=\"5\" y=\"18\" style=\"font-family:'lucida grande', 'lucida sans unicode', verdana, arial, helvetica, sans-serif;font-size:12px;color:#333333;fill:#333333;\"></text>\n");
       out.write("  </g>\n");
       out.write("  <text x=\"827\" y=\"295\" style=\"font-family:'lucida grande', 'lucida sans unicode', verdana, arial, helvetica, sans-serif;font-size:10px;cursor:pointer;color:#909090;fill:#909090;\" text-anchor=\"end\">\n");
-      out.write("    <tspan x=\"827\">Highcharts.com</tspan>\n");
+      out.write("    <tspan x=\"827\"></tspan>\n");
       out.write("  </text>\n");
       out.write("  <g class=\"highcharts-tracker\">\n");
       out.write("    <g visibility=\"visible\" transform=\"translate(60,40)\" clip-path=\"url(#highcharts-9)\">\n");

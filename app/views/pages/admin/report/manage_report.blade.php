@@ -175,16 +175,16 @@
 						<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 					</a>
 				</th>
-				<th class="table-bordered">
+				<!-- <th class="table-bordered">
 
-				</th>
+				</th> -->
 			</thead>
 			<thead>
 				<tr>
 					<td><input type="text" class="form-control input-sm"></td>
 					<td><input type="text" class="form-control input-sm"></td>
 
-					<td width=""><a class="btn btn-primary btn-xs">Filter</a></td>
+					<!-- <td width=""><a class="btn btn-primary btn-xs">Filter</a></td> -->
 				</tr>
 			</thead>
 			<tbody>
@@ -196,11 +196,9 @@
 						<td>20 Oktober 2014</td>
 						<td>IDR 90.000.000</td>
 
-						<td>
+						<!-- <td>
 							<button class="btn btn-info btn-xs" data-toggle="modal" data-target=".pop_up_view_report">View</button>
-							<!-- Button trigger modal class ".alertYesNo" -->
-							<!--<button class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</button>-->
-						</td>
+						</td> -->
 					</tr> 
 					<?php
 				} 
