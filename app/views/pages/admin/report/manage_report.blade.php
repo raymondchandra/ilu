@@ -8,6 +8,7 @@
 				<h3 style="float: left;">
 					Manage Report
 				</h3>
+				<a data-toggle="modal" data-target=".pop_up_view_report_range" href="javascript:void(0);" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Range</a>
 				<a href="javascript:void(0);" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Day</a>
 				<a href="javascript:void(0);" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Week</a>
 				<a href="javascript:void(0);" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Month</a>
@@ -197,7 +198,7 @@
 						<td>IDR 90.000.000</td>
 
 						<!-- <td>
-							<button class="btn btn-info btn-xs" data-toggle="modal" data-target=".pop_up_view_report">View</button>
+							<button class="btn btn-info btn-xs" data-toggle="modal" data-target=".pop_up_view_report_day">View</button>
 						</td> -->
 					</tr> 
 					<?php
@@ -213,7 +214,6 @@
 </div>
 
 @include('includes.modals.alertYesNo')
-@include('pages.admin.report.pop_up_view_report')
-{{-- @include('pages.admin.shipping.pop_up_add_shipping_agent') --}}
+@include('pages.admin.report.pop_up_view_report_day')
 
 @stop
