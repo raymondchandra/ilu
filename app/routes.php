@@ -141,6 +141,12 @@ Route::group(array('prefix' => 'test'), function()
 	{
 		return View::make('pages.admin.login');
 	});
+
+    // dashboard
+	Route::get('/dashboard', function()
+	{
+		return View::make('pages.admin.dashboard');
+	});
 	
     // manage order
 	Route::get('/manage_order', function()
@@ -247,6 +253,12 @@ Route::group(array('prefix' => 'test'), function()
     Route::get('/manage_report', function()
 	{
 		return View::make('pages.admin.report.manage_report');
+	});
+
+    // CMS
+    Route::get('/manage_cms', function()
+	{
+		return View::make('pages.admin.cms.manage_cms');
 	});
 
 
