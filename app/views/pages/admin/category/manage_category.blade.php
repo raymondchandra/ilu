@@ -13,7 +13,8 @@
 				<hr></hr>
 				
 				<div>
-					<ul class="pagination">
+					{{$datas->links()}}
+					<!--<ul class="pagination">
 					  <li><a href="#">&laquo;</a></li>
 					  <li><a href="#">1</a></li>
 					  <li><a href="#">2</a></li>
@@ -21,8 +22,8 @@
 					  <li><a href="#">4</a></li>
 					  <li><a href="#">5</a></li>
 					  <li><a href="#">&raquo;</a></li>
-					</ul>
-					<a href="add_category" class="btn btn-success" style="float: right; margin-top: 20px;"  data-toggle="modal" data-target=".pop_up_add_category">+ Add Category</a>
+					</ul>-->
+					<button class="btn btn-success" style="float: right; margin-top: 20px;"  data-toggle="modal" data-target=".pop_up_add_category">+ Add Category</button>
 					<table class="table table-striped table-hover ">
 						<thead class="table-bordered">
 							<tr>
@@ -58,25 +59,20 @@
 								<td width="120"><a class="btn btn-primary btn-xs">Filter</a></td>
 							</tr>
 						</thead>
-						<tbody>
-							<?php 
-							for ($i=0; $i<=30; $i++) {
-							  ?>
-							<tr> 
-								<td><?php echo($i); ?></td>
-								<td>Das Kategory</td>
-								<td>Die Zwei Hunde</td>
-								
-								<td>
-									<a class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_category">Edit</a>
-									<!-- Button trigger modal class ".alertYesNo" -->
-									<a class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</a>
-								</td>
-							</tr> 
-							  <?php
-							} 
-							?>
-							
+						<tbody>			
+							@foreach($datas as $category)
+								<tr> 
+									<td>{{$category->id}}</td>
+									<td>{{$category->name}}</td>
+									<td>{{$category->parent_name}}</td>								
+									<td>
+										<input type='hidden' class='id_category' value='{{$category->id}}'>
+										<a class="btn btn-warning btn-xs detail-category" data-toggle="modal" data-target=".pop_up_edit_category">Edit</a>
+										<!-- Button trigger modal class ".alertYesNo" -->
+										<a class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</a>
+									</td>
+								</tr> 
+							@endforeach
 						</tbody>
 					</table>
 				</div>
@@ -89,4 +85,24 @@
 	@include('pages.admin.category.pop_up_add_category')
 	@include('pages.admin.category.pop_up_edit_category')
 
+	<script>
+		$('body').on('click', '.detail-category',function(){
+			$id = $(this).siblings('.id_category').val();			
+			$.ajax({
+				type: 'GET',
+				url: "{{URL('admin/category')}}/"+$id,
+				success: function(response){
+					result = JSON.parse(response);
+					if(result.code==200){
+						$message = result.messages;						
+						$('#edit_name_input').val($message.name);
+						$('#edit_parent_category_input').val($message.parent_category);
+					}
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					alert(errorThrown);
+				}
+			},'json');
+		});
+	</script>
 @stop

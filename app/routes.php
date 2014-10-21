@@ -1,9 +1,9 @@
 <?php
 
-Route::get('/tes', 'CategoriesController@test');
+Route::get('/tes', 'CategoriesController@getListCategory');
 
 Route::get('/tesview', function (){
-	return View::make('pages.admin.tax.manage_tax');
+	return View::make('pages.admin.product.manage_product');
 });
 
 Route::get('/tes2', function()
@@ -88,7 +88,34 @@ Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
 
 Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 {
-	//product
+	//attribute
+		Route::get('/attribute', ['as' => 'attribute', 'uses' => 'AttributesController@view_main_attribute']);
+		Route::get('/attribute/{id}', ['as' => 'attribute_detail', 'uses' => 'AttributesController@view_detail_attribute']);
+		Route::get('/searchAttribute', ['as' => 'searchAttribute', 'uses' => 'AttributesController@view_search_attribute']);		
+		Route::post('/attribute/editName', ['as' => 'attribute.editName', 'uses' => 'AttributesController@editName']);
+		Route::post('/attribute/addAttribute', ['as' => 'attribute.addAttribute', 'uses' => 'AttributesController@addAttribute']);
+		// Route::delete();
+	
+	//category 
+		Route::get('/category', ['as' => 'category', 'uses' => 'CategoriesController@view_main_category']);
+		Route::get('/category/{id}', ['as' => 'category_detail', 'uses' => 'CategoriesController@view_detail_category']);
+		// Route::get('/category/searchCategory', ['as' => 'category.searchCategory', 'uses' => 'CategoriesController@view_search_category']);
+		Route::post('/category/editFull', ['as' => 'category.editFull', 'uses' => 'CategoriesController@editFull']);
+		Route::post('/category/addCategory', ['as' => 'category.addCategory', 'uses' => 'CategoriesController@addCategory']);
+	
+	//tax
+		Route::get('/tax', ['as' => 'tax', 'uses' => 'TaxesController@view_main_tax']);
+		Route::get('/tax/{id}', ['as' => 'tax_detail', 'uses' => 'TaxesController@view_detail_tax']);
+		// Route::get('/category/searchCategory', ['as' => 'category.searchCategory', 'uses' => 'CategoriesController@view_search_category']);
+		Route::post('/tax/editFull', ['as' => 'tax.editFull', 'uses' => 'TaxesController@editFull']);
+		Route::post('/tax/addTax', ['as' => 'tax.addTax', 'uses' => 'TaxesController@addTax']);
+		
+	//review
+		Route::get('/review', ['as' => 'review', 'uses' => 'ReviewsController@view_main_review']);
+		Route::get('/review/{id}', ['as' => 'review_detail', 'uses' => 'ReviewsController@view_detail_review']);
+		Route::post('/review/editApproved', ['as' => 'review.editApproved', 'uses' => 'ReviewsController@editApproved']);
+	
+	//product 
 		Route::get('/product', ['as' => 'product' , 'uses' => 'ProductsController@view_main_product']);
 		Route::get('/product/{id}', ['as' => 'product_detail' , 'uses' => 'ProductsController@view_detail_product']);
 		
@@ -139,14 +166,14 @@ Route::group(array('prefix' => 'test'), function()
 	});
 	
     // manage category
-	Route::get('/manage_category', function()
-	{
-		return View::make('pages.admin.category.manage_category');
-	});
-	Route::get('/add_category', function()
-	{
-		return View::make('pages.admin.category.add_category');
-	});
+	// Route::get('/manage_category', function()
+	// {
+		// return View::make('pages.admin.category.manage_category');
+	// });
+	// Route::get('/add_category', function()
+	// {
+		// return View::make('pages.admin.category.add_category');
+	// });
 
     // manage product
 	Route::get('/manage_product', function()
@@ -170,10 +197,10 @@ Route::group(array('prefix' => 'test'), function()
 	});
 
     // Manage Attribute
-    Route::get('/manage_attribute', function()
-	{
-		return View::make('pages.admin.attribute.manage_attribute');
-	});
+    // Route::get('/manage_attribute', function()
+	// {
+		// return View::make('pages.admin.attribute.manage_attribute');
+	// });
 
     // Newsletter
     Route::get('/manage_newsletter', function()

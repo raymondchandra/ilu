@@ -13,7 +13,7 @@ class Promotion extends \Eloquent {
 	];
 
 	// Don't forget to fill this array
-	protected $fillable = ['name', 'amount', 'expired', 'active'];
+	protected $fillable = ['name', 'amount', 'started', 'expired', 'active'];
 	
 	public function product()
 	{

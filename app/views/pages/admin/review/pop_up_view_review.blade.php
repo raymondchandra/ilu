@@ -11,37 +11,37 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Product ID</label>
 						<div class="col-sm-6">
-							<p type="text" class="form-control-static">8764656y5</p>				
+							<p id="detail_product_no" type="text" class="form-control-static">8764656y5</p>				
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Name Product</label>
 						<div class="col-sm-6">
-							<p type="text" class="form-control-static">Tas Epic Banget</p>				
+							<p id="detail_product_name" type="text" class="form-control-static">Tas Epic Banget</p>				
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Komentar</label>
 						<div class="col-sm-6">
-							<p type="text" class="form-control-static">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nequ</p>				
+							<p id="detail_text" type="text" class="form-control-static">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nequ</p>				
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Rating</label>
 						<div class="col-sm-6">
-							<p type="text" class="form-control-static">4.5 / 5</p>				
+							<p id="detail_rating" type="text" class="form-control-static">4.5 / 5</p>				
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="inputPassword3" class="col-sm-3 control-label">Status</label>
-						<div class="col-sm-6">
-							<p id="review_status" class="form-control-static">Pending</p>
+						<div class="col-sm-6">														
+							<p id="review_status" class="form-control-static"></p>							
 							<select id="review_status_list" class="form-control hidden">
-								<option val="pending">Pending</option>
-								<option val="onship">Approved</option>
+								<option value="0">Pending</option>
+								<option value="1">Approved</option>
 							</select>
 						</div>
 						<div class="col-sm-3">
@@ -57,6 +57,36 @@
 
 							$( 'body' ).on( "click",'#review_status_setter', function() {
 								var selectedStatus = $('#review_status_list').find(":selected").text();
+								$new_approved = $('#review_status_list').val();
+								$data = {
+									'id' : $id,
+									'new_approved' : $new_approved
+								};
+								var json_data = JSON.stringify($data);
+								$.ajax({																	
+									type: 'POST',
+									url: "{{URL('admin/review/editApproved')}}",
+									data: {
+											'json_data' : json_data
+									},
+									success: function(response){
+										// alert(response);
+										result = JSON.parse(response);
+										if(result.code==204){													
+											alert(result.status);
+											location.reload();
+										}
+										else
+										{
+											alert(result.status);
+											alert(result.messages);
+										}
+									},
+									error: function(jqXHR, textStatus, errorThrown){
+										alert(errorThrown);
+									}
+								},'json');
+								
 								$('#review_status_list').addClass('hidden');
 								$('#review_status_setter').addClass('hidden');
 								$('#review_status').removeClass('hidden');
