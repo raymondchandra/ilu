@@ -112,6 +112,7 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
     	Route::post('/editSlideShow', ['as' => 'edit.slideshow' , 'uses' => 'GalleryController@update_slideshow']);
     	Route::delete('/slideshow/{id}', ['as' => 'delete.slideshow' , 'uses' => 'GalleryController@delete']);
     //seo
+		Route::get('/seo', ['as' => 'get.seo' , 'uses' => 'SeosController@getAll']);
     	Route::post('/seo', ['as' => 'add.seo' , 'uses' => 'SeosController@insert']);
     	Route::put('/seo/{id}', ['as' => 'edit.seo' , 'uses' => 'SeosController@updateFull']);
     	Route::delete('/seo/{id}', ['as' => 'delete.seo' , 'uses' => 'SeosController@delete']);
