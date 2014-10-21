@@ -5,6 +5,7 @@ class Tax extends \Eloquent {
 	// Add your validation rules here
 	public static $rules = [
 		// 'title' => 'required'
+		'name' => 'required',
 		'amount' => 'required|regex:/^\d*(\.\d{2})?$/',
 		'deleted' => 'required|integer'
 	];

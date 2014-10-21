@@ -93,6 +93,7 @@ return array(
     'Crypt_Rijndael' => $vendorDir . '/phpseclib/phpseclib/phpseclib/Crypt/Rijndael.php',
     'Crypt_TripleDES' => $vendorDir . '/phpseclib/phpseclib/phpseclib/Crypt/TripleDES.php',
     'Crypt_Twofish' => $vendorDir . '/phpseclib/phpseclib/phpseclib/Crypt/Twofish.php',
+    'CustomerManagementController' => $baseDir . '/app/controllers/Page/CustomerManagementController.php',
     'DatabaseSeeder' => $baseDir . '/app/database/seeds/DatabaseSeeder.php',
     'Faker\\Calculator\\Luhn' => $vendorDir . '/fzaninotto/faker/src/Faker/Calculator/Luhn.php',
     'Faker\\DefaultGenerator' => $vendorDir . '/fzaninotto/faker/src/Faker/DefaultGenerator.php',

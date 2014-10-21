@@ -50,25 +50,19 @@
 								<td width=""><a class="btn btn-primary btn-xs">Filter</a></td>
 							</tr>
 						</thead>
-						<tbody>
-							<?php 
-							for ($i=0; $i<=30; $i++) {
-							  ?>
-							<tr> 
-								
-								<td>Something</td>
-								<td>10%</td>
-								
-								<td>
-									<button class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_tax">Edit</button>
-									<!-- Button trigger modal class ".alertYesNo" -->
-									<button class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</button>
-								</td>
-							</tr> 
-							  <?php
-							} 
-							?>
-							
+						<tbody>	
+							@foreach($datas as $tax)
+								<tr> 								
+									<td>{{$tax->name}}</td>
+									<td>{{$tax->amount}}</td>									
+									<td>
+										<input type='hidden' class='id_tax' value='{{$tax->id}}'>
+										<button class="btn btn-warning btn-xs detail-tax" data-toggle="modal" data-target=".pop_up_edit_tax">Edit</button>
+										<!-- Button trigger modal class ".alertYesNo" -->
+										<button class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</button>
+									</td>
+								</tr> 
+							@endforeach
 						</tbody>
 					</table>
 				</div>
@@ -81,4 +75,26 @@
 	@include('pages.admin.tax.pop_up_add_tax')
 	@include('pages.admin.tax.pop_up_edit_tax')
 
+	<script>
+		$('body').on('click', '.detail-tax',function(){
+			$id = $(this).siblings('.id_tax').val();
+			$.ajax({
+				type: 'GET',
+				url: "{{URL('admin/tax')}}/"+$id,
+				success: function(response){
+					result = JSON.parse(response);
+					if(result.code==200){
+						$message = result.messages;
+						$('#edit_name_input').val($message.name);
+						$('#edit_amount_input').val($message.amount);
+					}
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					alert(errorThrown);
+				}
+			},'json');
+		});
+		
+		
+	</script>
 @stop

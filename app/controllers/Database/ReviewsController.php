@@ -2,24 +2,57 @@
 
 class ReviewsController extends \BaseController {
 		
-	public function w_insert()
+	public function view_main_review()
 	{
-		$json = Input::get('json_data');
-		$decode = json_decode($json);
+		$review_json = $this->getAll();		
+		$paginator = json_decode($review_json->getContent())->{'messages'};		
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+			$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);		
+					
+		return View::make('pages.admin.review.manage_review', compact('datas'));		
+	}
+
+	public function view_detail_review($id)
+	{
+		$json = json_decode($this->getById($id)->getContent());
+		return json_encode($json);
+	}
+	
+	// public function w_insert()
+	// {
+		// $json = Input::get('json_data');
+		// $decode = json_decode($json);
 		
-		$product_id = $decode->{'product_id'};
-		$text = $decode->{'text'}:
-		$rating = $decode->{'rating'};
+		// $product_id = $decode->{'product_id'};
+		// $text = $decode->{'text'}:
+		// $rating = $decode->{'rating'};
 		// $approved = $decode->{'approved'};
 		
-		$input = array(
-					'product_id' => $product_id,
-					'text' => $text,
-					'rating' => $rating,
-					'approved' => 0);
+		// $input = array(
+					// 'product_id' => $product_id,
+					// 'text' => $text,
+					// 'rating' => $rating,
+					// 'approved' => 0);
 					
-		return $this->insert($input);
+		// return $this->insert($input);
+	// }
+	
+	public function editApproved()
+	{
+		$json_data = Input::get('json_data');
+		$json = json_decode($json_data);
+		
+		$id = $json->{'id'};
+		$approved = $json->{'new_approved'};				
+				
+		$json = json_decode($this->updateApproved($id, $approved)->getContent());
+		return json_encode($json);
 	}
+	
 	public function insert($input)
 	{
 		// $input = json_decode(Input::all());
@@ -44,6 +77,19 @@ class ReviewsController extends \BaseController {
 		return Response::json($respond);
 	}	
 	
+	//reverse array
+	public function reverse($arr)
+	{
+		$lastIdx = count($arr)-1;
+		$reserve = array();
+		while($lastIdx >= 0)
+		{
+			$reverse[] = $arr[$lastIdx];
+			$lastIdx--;
+		}
+		return $reverse;
+	}
+	
 	// return : id, product_id, text, rating, approved,
 				// product_no, product_name-->name
 	public function getAll(){
@@ -54,14 +100,14 @@ class ReviewsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
-			$review = $review->join('products', $review->product_id, '=', 'products.id')->get();
-			
-			//product_no
-				//->product_no
-				
-			//product_name
-				//->name								
+		{			
+			foreach($review as $key)
+			{
+				$product = Product::find($key->product_id);
+				//add product_no, product_name
+				$key->product_no = $product->product_no;
+				$key->product_name = $product->name;
+			}		
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
 		}
@@ -76,17 +122,24 @@ class ReviewsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
-			$review = $review->join('products', $review->product_id, '=', 'products.id')->get();
-			
-			//product_no
-				//->product_no
-				
-			//product_name
-				//->name							
-			
+		{			
+			foreach($review as $key)
+			{
+				$product = Product::find($key->product_id);
+				//add product_no, product_name
+				$key->product_no = $product->product_no;
+				$key->product_name = $product->name;
+			}	
+
 			//sorting
-			$review = $review->orderBy('product_no')->get();
+			$review = array_values(
+						array_sort(
+							$review, function($value)
+							{
+								return $value['product_no'];
+							}
+						)
+					);	
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
 		}
@@ -101,17 +154,26 @@ class ReviewsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
-			$review = $review->join('products', $review->product_id, '=', 'products.id')->get();
-			
-			//product_no
-				//->product_no
-				
-			//product_name
-				//->name		
+		{			
+			foreach($review as $key)
+			{
+				$product = Product::find($key->product_id);
+				//add product_no, product_name
+				$key->product_no = $product->product_no;
+				$key->product_name = $product->name;
+			}	
 
 			//sorting
-			$review = $review->orderBy('product_no', 'desc')->get();
+			$review = array_values(
+						array_sort(
+							$review, function($value)
+							{
+								return $value['product_no'];
+							}
+						)
+					);	
+			//reverse
+			$review = $this->reverse($review);
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
 		}
@@ -126,17 +188,24 @@ class ReviewsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
-			$review = $review->join('products', $review->product_id, '=', 'products.id')->get();
-			
-			//product_no
-				//->product_no
-				
-			//product_name
-				//->name							
-			
+		{			
+			foreach($review as $key)
+			{
+				$product = Product::find($key->product_id);
+				//add product_no, product_name
+				$key->product_no = $product->product_no;
+				$key->product_name = $product->name;
+			}	
+
 			//sorting
-			$review = $review->orderBy('name')->get();
+			$review = array_values(
+						array_sort(
+							$review, function($value)
+							{
+								return $value['product_name'];
+							}
+						)
+					);	
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
 		}
@@ -151,17 +220,26 @@ class ReviewsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
-			$review = $review->join('products', $review->product_id, '=', 'products.id')->get();
-			
-			//product_no
-				//->product_no
-				
-			//product_name
-				//->name							
-			
+		{			
+			foreach($review as $key)
+			{
+				$product = Product::find($key->product_id);
+				//add product_no, product_name
+				$key->product_no = $product->product_no;
+				$key->product_name = $product->name;
+			}	
+
 			//sorting
-			$review = $review->orderBy('name', 'desc')->get();
+			$review = array_values(
+						array_sort(
+							$review, function($value)
+							{
+								return $value['product_name'];
+							}
+						)
+					);	
+			//reverse
+			$review = $this->reverse($review);
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
 		}
@@ -176,14 +254,14 @@ class ReviewsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
-			$review = $review->join('products', $review->product_id, '=', 'products.id')->get();
-			
-			//product_no
-				//->product_no
-				
-			//product_name
-				//->name							
+		{			
+			foreach($review as $key)
+			{
+				$product = Product::find($key->product_id);
+				//add product_no, product_name
+				$key->product_no = $product->product_no;
+				$key->product_name = $product->name;
+			}		
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
 		}
@@ -198,14 +276,14 @@ class ReviewsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
-			$review = $review->join('products', $review->product_id, '=', 'products.id')->get();
-			
-			//product_no
-				//->product_no
-				
-			//product_name
-				//->name							
+		{			
+			foreach($review as $key)
+			{
+				$product = Product::find($key->product_id);
+				//add product_no, product_name
+				$key->product_no = $product->product_no;
+				$key->product_name = $product->name;
+			}		
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
 		}
@@ -220,14 +298,14 @@ class ReviewsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
-			$review = $review->join('products', $review->product_id, '=', 'products.id')->get();
-			
-			//product_no
-				//->product_no
-				
-			//product_name
-				//->name							
+		{			
+			foreach($review as $key)
+			{
+				$product = Product::find($key->product_id);
+				//add product_no, product_name
+				$key->product_no = $product->product_no;
+				$key->product_name = $product->name;
+			}		
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
 		}
@@ -242,14 +320,14 @@ class ReviewsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
-			$review = $review->join('products', $review->product_id, '=', 'products.id')->get();
-			
-			//product_no
-				//->product_no
-				
-			//product_name
-				//->name							
+		{			
+			foreach($review as $key)
+			{
+				$product = Product::find($key->product_id);
+				//add product_no, product_name
+				$key->product_no = $product->product_no;
+				$key->product_name = $product->name;
+			}		
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
 		}
@@ -264,14 +342,14 @@ class ReviewsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
-			$review = $review->join('products', $review->product_id, '=', 'products.id')->get();
-			
-			//product_no
-				//->product_no
-				
-			//product_name
-				//->name								
+		{			
+			foreach($review as $key)
+			{
+				$product = Product::find($key->product_id);
+				//add product_no, product_name
+				$key->product_no = $product->product_no;
+				$key->product_name = $product->name;
+			}		
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
 		}
@@ -286,14 +364,14 @@ class ReviewsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
-			$review = $review->join('products', $review->product_id, '=', 'products.id')->get();
-			
-			//product_no
-				//->product_no
-				
-			//product_name
-				//->name							
+		{			
+			foreach($review as $key)
+			{
+				$product = Product::find($key->product_id);
+				//add product_no, product_name
+				$key->product_no = $product->product_no;
+				$key->product_name = $product->name;
+			}		
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
 		}
@@ -303,27 +381,924 @@ class ReviewsController extends \BaseController {
 	// asumsi : 
 		// kalo field input integer ada yang kosong maka -1
 		// kalo field input string ada yang kosong maka dapetnya ""
-	// input = product_no, product_name, text, rating, active
+	// input = product_no, product_name, text, rating, approved
 	public function searchReview($input)
 	{
 		$respond = array();
-		$review = Review::where('text', 'LIKE', '%'.$input['text'].'%')->get();
+		$review = Review::where('text', 'LIKE', '%'.$input['text'].'%');
 		
-		//get product_no, product_name
-		if (count($review) == 0)
+		if($input['rating'] != -1)
 		{
-			//do nothing
+			$review = $review->where('rating', '=', $input['rating']);
+		}
+		
+		if($input['approved'] != -1)
+		{
+			$review = $review->where('approved', '=', $input['approved']);
+		}
+		
+		$review = $review->get();
+				
+		//add product_no, product_name	
+		foreach($review as $key)
+		{
+			$product = Product::find($key->product_id);
+			//add product_no, product_name
+			$key->product_no = $product->product_no;
+			$key->product_name = $product->name;
+		}
+	
+		$result_product_no = array();
+		//search by product_no		
+		if($input['product_no'] != "")
+		{					
+			foreach($review as $key)
+			{
+				$pos = strpos($key->product_no, $input['product_no']);
+				if($pos !== false)
+				{
+					$result_product_no[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_product_no = $review;
+		}
+		
+		$result_final = array();	//search product_name
+		//search by product_name		
+		if($input['product_name'] != "")
+		{					
+			foreach($result_product_no as $key)
+			{
+				$pos = strpos($key->product_name, $input['product_name']);
+				if($pos !== false)
+				{
+					$result_final[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_final = $result_product_no;
+		}
+				
+		if (count($result_final) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
-			$review = $review->join('products', $review->product_id, '=', 'products.id')->get();
-			
-			//product_no
-				//->product_no
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$result_final);			
+		}	
+		
+		return Response::json($respond);
+	}
+	
+	public function searchReviewSortedProductNoAsc($input)
+	{
+		$respond = array();
+		$review = Review::where('text', 'LIKE', '%'.$input['text'].'%');
+		
+		if($input['rating'] != -1)
+		{
+			$review = $review->where('rating', '=', $input['rating']);
+		}
+		
+		if($input['approved'] != -1)
+		{
+			$review = $review->where('approved', '=', $input['approved']);
+		}
+		
+		$review = $review->get();
 				
-			//product_name
-				//->name	
-		}				
+		//add product_no, product_name	
+		foreach($review as $key)
+		{
+			$product = Product::find($key->product_id);
+			//add product_no, product_name
+			$key->product_no = $product->product_no;
+			$key->product_name = $product->name;
+		}
+	
+		$result_product_no = array();
+		//search by product_no		
+		if($input['product_no'] != "")
+		{					
+			foreach($review as $key)
+			{
+				$pos = strpos($key->product_no, $input['product_no']);
+				if($pos !== false)
+				{
+					$result_product_no[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_product_no = $review;
+		}
+		
+		$result_final = array();	//search product_name
+		//search by product_name		
+		if($input['product_name'] != "")
+		{					
+			foreach($result_product_no as $key)
+			{
+				$pos = strpos($key->product_name, $input['product_name']);
+				if($pos !== false)
+				{
+					$result_final[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_final = $result_product_no;
+		}
+				
+		if (count($result_final) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{	
+			//sorting
+			$result_final = array_values(
+						array_sort(
+							$result_final, function($value)
+							{
+								return $value['product_no'];
+							}
+						)
+					);	
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$result_final);			
+		}	
+		
+		return Response::json($respond);
+	}
+	
+	public function searchReviewSortedProductNoDesc($input)
+	{
+		$respond = array();
+		$review = Review::where('text', 'LIKE', '%'.$input['text'].'%');
+		
+		if($input['rating'] != -1)
+		{
+			$review = $review->where('rating', '=', $input['rating']);
+		}
+		
+		if($input['approved'] != -1)
+		{
+			$review = $review->where('approved', '=', $input['approved']);
+		}
+		
+		$review = $review->get();
+				
+		//add product_no, product_name	
+		foreach($review as $key)
+		{
+			$product = Product::find($key->product_id);
+			//add product_no, product_name
+			$key->product_no = $product->product_no;
+			$key->product_name = $product->name;
+		}
+	
+		$result_product_no = array();
+		//search by product_no		
+		if($input['product_no'] != "")
+		{					
+			foreach($review as $key)
+			{
+				$pos = strpos($key->product_no, $input['product_no']);
+				if($pos !== false)
+				{
+					$result_product_no[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_product_no = $review;
+		}
+		
+		$result_final = array();	//search product_name
+		//search by product_name		
+		if($input['product_name'] != "")
+		{					
+			foreach($result_product_no as $key)
+			{
+				$pos = strpos($key->product_name, $input['product_name']);
+				if($pos !== false)
+				{
+					$result_final[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_final = $result_product_no;
+		}
+				
+		if (count($result_final) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			//sorting
+			$result_final = array_values(
+						array_sort(
+							$result_final, function($value)
+							{
+								return $value['product_no'];
+							}
+						)
+					);						
+			//reverse
+			$result_final = $this->reverse($result_final);
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$result_final);			
+		}	
+		
+		return Response::json($respond);
+	}
+	
+	public function searchReviewSortedProductNameAsc($input)
+	{
+		$respond = array();
+		$review = Review::where('text', 'LIKE', '%'.$input['text'].'%');
+		
+		if($input['rating'] != -1)
+		{
+			$review = $review->where('rating', '=', $input['rating']);
+		}
+		
+		if($input['approved'] != -1)
+		{
+			$review = $review->where('approved', '=', $input['approved']);
+		}
+		
+		$review = $review->get();
+				
+		//add product_no, product_name	
+		foreach($review as $key)
+		{
+			$product = Product::find($key->product_id);
+			//add product_no, product_name
+			$key->product_no = $product->product_no;
+			$key->product_name = $product->name;
+		}
+	
+		$result_product_no = array();
+		//search by product_no		
+		if($input['product_no'] != "")
+		{					
+			foreach($review as $key)
+			{
+				$pos = strpos($key->product_no, $input['product_no']);
+				if($pos !== false)
+				{
+					$result_product_no[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_product_no = $review;
+		}
+		
+		$result_final = array();	//search product_name
+		//search by product_name		
+		if($input['product_name'] != "")
+		{					
+			foreach($result_product_no as $key)
+			{
+				$pos = strpos($key->product_name, $input['product_name']);
+				if($pos !== false)
+				{
+					$result_final[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_final = $result_product_no;
+		}
+				
+		if (count($result_final) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{	
+			//sorting
+			$result_final = array_values(
+						array_sort(
+							$result_final, function($value)
+							{
+								return $value['product_name'];
+							}
+						)
+					);	
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$result_final);			
+		}	
+		
+		return Response::json($respond);
+	}
+	
+	public function searchReviewSortedProductNameDesc($input)
+	{
+		$respond = array();
+		$review = Review::where('text', 'LIKE', '%'.$input['text'].'%');
+		
+		if($input['rating'] != -1)
+		{
+			$review = $review->where('rating', '=', $input['rating']);
+		}
+		
+		if($input['approved'] != -1)
+		{
+			$review = $review->where('approved', '=', $input['approved']);
+		}
+		
+		$review = $review->get();
+				
+		//add product_no, product_name	
+		foreach($review as $key)
+		{
+			$product = Product::find($key->product_id);
+			//add product_no, product_name
+			$key->product_no = $product->product_no;
+			$key->product_name = $product->name;
+		}
+	
+		$result_product_no = array();
+		//search by product_no		
+		if($input['product_no'] != "")
+		{					
+			foreach($review as $key)
+			{
+				$pos = strpos($key->product_no, $input['product_no']);
+				if($pos !== false)
+				{
+					$result_product_no[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_product_no = $review;
+		}
+		
+		$result_final = array();	//search product_name
+		//search by product_name		
+		if($input['product_name'] != "")
+		{					
+			foreach($result_product_no as $key)
+			{
+				$pos = strpos($key->product_name, $input['product_name']);
+				if($pos !== false)
+				{
+					$result_final[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_final = $result_product_no;
+		}
+				
+		if (count($result_final) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{	
+			//sorting
+			$result_final = array_values(
+						array_sort(
+							$result_final, function($value)
+							{
+								return $value['product_name'];
+							}
+						)
+					);	
+			//reverse
+			$result_final = $this->reverse($result_final);
+					
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$result_final);			
+		}	
+		
+		return Response::json($respond);
+	}
+	
+	public function searchReviewSortedTextAsc($input)
+	{
+		$respond = array();
+		$review = Review::where('text', 'LIKE', '%'.$input['text'].'%');
+		
+		if($input['rating'] != -1)
+		{
+			$review = $review->where('rating', '=', $input['rating']);
+		}
+		
+		if($input['approved'] != -1)
+		{
+			$review = $review->where('approved', '=', $input['approved']);
+		}
+		
+		$review = $review->get();
+				
+		//add product_no, product_name	
+		foreach($review as $key)
+		{
+			$product = Product::find($key->product_id);
+			//add product_no, product_name
+			$key->product_no = $product->product_no;
+			$key->product_name = $product->name;
+		}
+	
+		$result_product_no = array();
+		//search by product_no		
+		if($input['product_no'] != "")
+		{					
+			foreach($review as $key)
+			{
+				$pos = strpos($key->product_no, $input['product_no']);
+				if($pos !== false)
+				{
+					$result_product_no[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_product_no = $review;
+		}
+		
+		$result_final = array();	//search product_name
+		//search by product_name		
+		if($input['product_name'] != "")
+		{					
+			foreach($result_product_no as $key)
+			{
+				$pos = strpos($key->product_name, $input['product_name']);
+				if($pos !== false)
+				{
+					$result_final[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_final = $result_product_no;
+		}
+				
+		if (count($result_final) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{	
+			//sorting
+			$result_final = array_values(
+						array_sort(
+							$result_final, function($value)
+							{
+								return $value['text'];
+							}
+						)
+					);	
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$result_final);			
+		}	
+		
+		return Response::json($respond);
+	}
+	
+	public function searchReviewSortedTextDesc($input)
+	{
+		$respond = array();
+		$review = Review::where('text', 'LIKE', '%'.$input['text'].'%');
+		
+		if($input['rating'] != -1)
+		{
+			$review = $review->where('rating', '=', $input['rating']);
+		}
+		
+		if($input['approved'] != -1)
+		{
+			$review = $review->where('approved', '=', $input['approved']);
+		}
+		
+		$review = $review->get();
+				
+		//add product_no, product_name	
+		foreach($review as $key)
+		{
+			$product = Product::find($key->product_id);
+			//add product_no, product_name
+			$key->product_no = $product->product_no;
+			$key->product_name = $product->name;
+		}
+	
+		$result_product_no = array();
+		//search by product_no		
+		if($input['product_no'] != "")
+		{					
+			foreach($review as $key)
+			{
+				$pos = strpos($key->product_no, $input['product_no']);
+				if($pos !== false)
+				{
+					$result_product_no[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_product_no = $review;
+		}
+		
+		$result_final = array();	//search product_name
+		//search by product_name		
+		if($input['product_name'] != "")
+		{					
+			foreach($result_product_no as $key)
+			{
+				$pos = strpos($key->product_name, $input['product_name']);
+				if($pos !== false)
+				{
+					$result_final[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_final = $result_product_no;
+		}
+				
+		if (count($result_final) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{	
+			//sorting
+			$result_final = array_values(
+						array_sort(
+							$result_final, function($value)
+							{
+								return $value['text'];
+							}
+						)
+					);	
+			//reverse
+			$result_final = $this->reverse($result_final);
+					
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$result_final);			
+		}	
+		
+		return Response::json($respond);
+	}
+	
+	public function searchReviewSortedRatingAsc($input)
+	{
+		$respond = array();
+		$review = Review::where('text', 'LIKE', '%'.$input['text'].'%');
+		
+		if($input['rating'] != -1)
+		{
+			$review = $review->where('rating', '=', $input['rating']);
+		}
+		
+		if($input['approved'] != -1)
+		{
+			$review = $review->where('approved', '=', $input['approved']);
+		}
+		
+		$review = $review->get();
+				
+		//add product_no, product_name	
+		foreach($review as $key)
+		{
+			$product = Product::find($key->product_id);
+			//add product_no, product_name
+			$key->product_no = $product->product_no;
+			$key->product_name = $product->name;
+		}
+	
+		$result_product_no = array();
+		//search by product_no		
+		if($input['product_no'] != "")
+		{					
+			foreach($review as $key)
+			{
+				$pos = strpos($key->product_no, $input['product_no']);
+				if($pos !== false)
+				{
+					$result_product_no[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_product_no = $review;
+		}
+		
+		$result_final = array();	//search product_name
+		//search by product_name		
+		if($input['product_name'] != "")
+		{					
+			foreach($result_product_no as $key)
+			{
+				$pos = strpos($key->product_name, $input['product_name']);
+				if($pos !== false)
+				{
+					$result_final[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_final = $result_product_no;
+		}
+				
+		if (count($result_final) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{	
+			//sorting
+			$result_final = array_values(
+						array_sort(
+							$result_final, function($value)
+							{
+								return $value['rating'];
+							}
+						)
+					);	
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$result_final);			
+		}	
+		
+		return Response::json($respond);
+	}
+	
+	public function searchReviewSortedRatingDesc($input)
+	{
+		$respond = array();
+		$review = Review::where('text', 'LIKE', '%'.$input['text'].'%');
+		
+		if($input['rating'] != -1)
+		{
+			$review = $review->where('rating', '=', $input['rating']);
+		}
+		
+		if($input['approved'] != -1)
+		{
+			$review = $review->where('approved', '=', $input['approved']);
+		}
+		
+		$review = $review->get();
+				
+		//add product_no, product_name	
+		foreach($review as $key)
+		{
+			$product = Product::find($key->product_id);
+			//add product_no, product_name
+			$key->product_no = $product->product_no;
+			$key->product_name = $product->name;
+		}
+	
+		$result_product_no = array();
+		//search by product_no		
+		if($input['product_no'] != "")
+		{					
+			foreach($review as $key)
+			{
+				$pos = strpos($key->product_no, $input['product_no']);
+				if($pos !== false)
+				{
+					$result_product_no[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_product_no = $review;
+		}
+		
+		$result_final = array();	//search product_name
+		//search by product_name		
+		if($input['product_name'] != "")
+		{					
+			foreach($result_product_no as $key)
+			{
+				$pos = strpos($key->product_name, $input['product_name']);
+				if($pos !== false)
+				{
+					$result_final[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_final = $result_product_no;
+		}
+				
+		if (count($result_final) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{	
+			//sorting
+			$result_final = array_values(
+						array_sort(
+							$result_final, function($value)
+							{
+								return $value['rating'];
+							}
+						)
+					);
+			//reverse
+			$result_final = $this->reverse($result_final);
+					
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$result_final);			
+		}	
+		
+		return Response::json($respond);
+	}
+	
+	public function searchReviewSortedApprovedAsc($input)
+	{
+		$respond = array();
+		$review = Review::where('text', 'LIKE', '%'.$input['text'].'%');
+		
+		if($input['rating'] != -1)
+		{
+			$review = $review->where('rating', '=', $input['rating']);
+		}
+		
+		if($input['approved'] != -1)
+		{
+			$review = $review->where('approved', '=', $input['approved']);
+		}
+		
+		$review = $review->get();
+				
+		//add product_no, product_name	
+		foreach($review as $key)
+		{
+			$product = Product::find($key->product_id);
+			//add product_no, product_name
+			$key->product_no = $product->product_no;
+			$key->product_name = $product->name;
+		}
+	
+		$result_product_no = array();
+		//search by product_no		
+		if($input['product_no'] != "")
+		{					
+			foreach($review as $key)
+			{
+				$pos = strpos($key->product_no, $input['product_no']);
+				if($pos !== false)
+				{
+					$result_product_no[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_product_no = $review;
+		}
+		
+		$result_final = array();	//search product_name
+		//search by product_name		
+		if($input['product_name'] != "")
+		{					
+			foreach($result_product_no as $key)
+			{
+				$pos = strpos($key->product_name, $input['product_name']);
+				if($pos !== false)
+				{
+					$result_final[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_final = $result_product_no;
+		}
+				
+		if (count($result_final) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{	
+			//sorting
+			$result_final = array_values(
+						array_sort(
+							$result_final, function($value)
+							{
+								return $value['approved'];
+							}
+						)
+					);	
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$result_final);			
+		}	
+		
+		return Response::json($respond);
+	}
+	
+	public function searchReviewSortedApprovedDesc($input)
+	{
+		$respond = array();
+		$review = Review::where('text', 'LIKE', '%'.$input['text'].'%');
+		
+		if($input['rating'] != -1)
+		{
+			$review = $review->where('rating', '=', $input['rating']);
+		}
+		
+		if($input['approved'] != -1)
+		{
+			$review = $review->where('approved', '=', $input['approved']);
+		}
+		
+		$review = $review->get();
+				
+		//add product_no, product_name	
+		foreach($review as $key)
+		{
+			$product = Product::find($key->product_id);
+			//add product_no, product_name
+			$key->product_no = $product->product_no;
+			$key->product_name = $product->name;
+		}
+	
+		$result_product_no = array();
+		//search by product_no		
+		if($input['product_no'] != "")
+		{					
+			foreach($review as $key)
+			{
+				$pos = strpos($key->product_no, $input['product_no']);
+				if($pos !== false)
+				{
+					$result_product_no[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_product_no = $review;
+		}
+		
+		$result_final = array();	//search product_name
+		//search by product_name		
+		if($input['product_name'] != "")
+		{					
+			foreach($result_product_no as $key)
+			{
+				$pos = strpos($key->product_name, $input['product_name']);
+				if($pos !== false)
+				{
+					$result_final[] = $key;
+				}
+			}
+		}		
+		else
+		{
+			$result_final = $result_product_no;
+		}
+				
+		if (count($result_final) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{	
+			//sorting
+			$result_final = array_values(
+						array_sort(
+							$result_final, function($value)
+							{
+								return $value['approved'];
+							}
+						)
+					);	
+			//reverse
+			$result_final = $this->reverse($result_final);
+					
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$result_final);			
+		}	
+		
+		return Response::json($respond);
 	}
 	
 	public function getById($id)
@@ -335,28 +1310,64 @@ class ReviewsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
+		{			
+			$product = Product::find($review->product_id);
+			//add product_no, product_name
+			$review->product_no = $product->product_no;
+			$review->product_name = $product->name;
+		
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
 		}
 		return Response::json($respond);
 	}
 	
-	/*
-	public function getByProductId($product_id)
+	public function getByProductId($product_id)	//id product, BUKAN PRODUCT_NO !!
 	{
 		$respond = array();
-		$review = Review::where('product_id','=',$product_id)->get();
+		$review = Review::where('product_id', '=', $product_id)->get();
 		if (count($review) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
+		{			
+			foreach($review as $key)
+			{
+				$product = Product::find($key->product_id);
+				//add product_no, product_name
+				$key->product_no = $product->product_no;
+				$key->product_name = $product->name;
+			}		
+		
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
+		}
+		return Response::json($respond);
+	}
+	
+	public function getByApproved($approved)
+	{			
+		$respond = array();
+		$review = Review::where('approved', '=', $approved)->get();
+		if (count($review) == 0)
 		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{			
+			foreach($review as $key)
+			{
+				$product = Product::find($key->product_id);
+				//add product_no, product_name
+				$key->product_no = $product->product_no;
+				$key->product_name = $product->name;
+			}		
+		
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
 		}
 		return Response::json($respond);
 	}	
 	
+	/*	
 	public function getByProductIdSortedRatingAsc($product_id)	
 	{
 		$respond = array();

@@ -11,14 +11,15 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Nama Category</label>
 						<div class="col-sm-6">
-							<input type="text" class="form-control" placeholder="Nama Category">			
+							<input id="new_name_input" type="text" class="form-control" placeholder="Nama Category">			
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="inputPassword3" class="col-sm-3 control-label">Choose Parent</label>
 						<div class="col-sm-6">
-							<select class="form-control">
+							{{Form::select('parent_category', $list_category, '', array('id'=>'new_parent_category_input'))}}
+							<!--<select class="form-control">
 								<option value="">Category</option>
 								<option value="">Category</option>
 								<option value="">Category</option>
@@ -28,17 +29,54 @@
 								<option value="">Category</option>
 								<option value="">Category</option>
 								<option value="">Category</option>
-							</select>	
+							</select>	-->
 						</div>
-					</div>
-					
+					</div>					
 
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-success" data-dismiss="modal">Ya</button>
+					<button id="add_category" type="button" class="btn btn-success" data-dismiss="modal">Ya</button>
 					<button type="button" class="btn btn-primary" data-dismiss="modal">Tidak</button>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
+
+<script>
+	$('body').on('click', '#add_category', function(){		
+		$name = $('#new_name_input').val();
+		alert($name);
+		$parent_category = $('#new_parent_category_input').val();
+		alert($parent_category);
+		$deleted = 0;
+		$data = {
+			'name' : $name,
+			'parent_category' : $parent_category,
+			'deleted' : $deleted
+		};
+		var json_data = JSON.stringify($data);
+		$.ajax({
+			type: 'POST',
+			url: "{{URL('admin/category/addCategory')}}",
+			data: {
+				'json_data' : json_data
+			},
+			success: function(response){				
+				result = JSON.parse(response);
+				if(result.code==201){
+					alert(result.status);
+					location.reload();
+				}
+				else
+				{
+					alert(result.status);
+					alert(result.messages);
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+				alert(errorThrown);
+			}
+		},'json');
+	});		
+</script>

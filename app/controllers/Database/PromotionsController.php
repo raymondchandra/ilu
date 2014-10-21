@@ -82,7 +82,7 @@ class PromotionsController extends \BaseController {
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
-		else //
+		else //found
 		{
 			$product = $decode->{'messages'};
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
@@ -255,12 +255,14 @@ class PromotionsController extends \BaseController {
 	public function searchPromotion($input)
 	{
 		$respond = array();
-		$promotion = Promotion::where('name', 'LIKE', '%'.$input['name'].'%')->get();		
+		$promotion = Promotion::where('name', 'LIKE', '%'.$input['name'].'%');		
 		
 		if($input['amount'] != -1)
 		{
-			$promotion = $promotion->where('amount', '=', $input['amount'])->get();
+			$promotion = $promotion->where('amount', '=', $input['amount']);
 		}
+		
+		$promotion = $promotion->get();
 		
 		if(count($promotion) == 0)
 		{
@@ -293,12 +295,15 @@ class PromotionsController extends \BaseController {
 	public function searchPromotionSortedNameAsc($input)
 	{
 		$respond = array();
-		$promotion = Promotion::where('name', 'LIKE', '%'.$input['name'].'%')->get();		
+		$promotion = Promotion::where('name', 'LIKE', '%'.$input['name'].'%');		
 		
 		if($input['amount'] != -1)
 		{
-			$promotion = $promotion->where('amount', '=', $input['amount'])->get();
+			$promotion = $promotion->where('amount', '=', $input['amount']);
 		}
+		
+		//sorting
+		$promotion = $promotion->orderBy('name')->get();
 		
 		if(count($promotion) == 0)
 		{
@@ -320,10 +325,7 @@ class PromotionsController extends \BaseController {
 				{					
 					$key->products = $decode->{'messages'};
 				}
-			}	
-
-			//sorting
-			$promotion = $promotion->orderBy('name')->get();
+			}										
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
 		}
@@ -334,12 +336,15 @@ class PromotionsController extends \BaseController {
 	public function searchPromotionSortedNameDesc($input)
 	{
 		$respond = array();
-		$promotion = Promotion::where('name', 'LIKE', '%'.$input['name'].'%')->get();		
+		$promotion = Promotion::where('name', 'LIKE', '%'.$input['name'].'%');		
 		
 		if($input['amount'] != -1)
 		{
-			$promotion = $promotion->where('amount', '=', $input['amount'])->get();
+			$promotion = $promotion->where('amount', '=', $input['amount']);
 		}
+		
+		//sorting
+		$promotion = $promotion->orderBy('name', 'desc')->get();
 		
 		if(count($promotion) == 0)
 		{
@@ -361,10 +366,7 @@ class PromotionsController extends \BaseController {
 				{					
 					$key->products = $decode->{'messages'};
 				}
-			}				
-			
-			//sorting
-			$promotion = $promotion->orderBy('name', 'desc')->get();
+			}										
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
 		}
@@ -375,12 +377,15 @@ class PromotionsController extends \BaseController {
 	public function searchPromotionSortedAmountAsc($input)
 	{
 		$respond = array();
-		$promotion = Promotion::where('name', 'LIKE', '%'.$input['name'].'%')->get();		
+		$promotion = Promotion::where('name', 'LIKE', '%'.$input['name'].'%');		
 		
 		if($input['amount'] != -1)
 		{
-			$promotion = $promotion->where('amount', '=', $input['amount'])->get();
+			$promotion = $promotion->where('amount', '=', $input['amount']);
 		}
+		
+		//sorting
+		$promotion = $promotion->orderBy('amount')->get();
 		
 		if(count($promotion) == 0)
 		{
@@ -402,10 +407,7 @@ class PromotionsController extends \BaseController {
 				{					
 					$key->products = $decode->{'messages'};
 				}
-			}		
-
-			//sorting
-			$promotion = $promotion->orderBy('amount')->get();
+			}										
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
 		}
@@ -416,12 +418,15 @@ class PromotionsController extends \BaseController {
 	public function searchPromotionSortedAmountDesc($input)
 	{
 		$respond = array();
-		$promotion = Promotion::where('name', 'LIKE', '%'.$input['name'].'%')->get();		
+		$promotion = Promotion::where('name', 'LIKE', '%'.$input['name'].'%');		
 		
 		if($input['amount'] != -1)
 		{
-			$promotion = $promotion->where('amount', '=', $input['amount'])->get();
+			$promotion = $promotion->where('amount', '=', $input['amount']);
 		}
+		
+		//sorting
+		$promotion = $promotion->orderBy('amount', 'desc')->get();
 		
 		if(count($promotion) == 0)
 		{
@@ -443,16 +448,14 @@ class PromotionsController extends \BaseController {
 				{					
 					$key->products = $decode->{'messages'};
 				}
-			}	
-
-			//sorting
-			$promotion = $promotion->orderBy('amount', 'desc')->get();
+			}										
 			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
 		}
 		
 		return Response::json($respond);
 	}
+	
 	
 	/*
 	public function getAllSortedStartedAsc(){
@@ -521,6 +524,51 @@ class PromotionsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
+		{		
+			$product_cont = new ProductsController();
+			$json_products = $product_cont->getByPromotionId($promotion->id);
+			$decode = json_decode($json_products->getContent());
+			$code = $decode->{'code'};
+			if($code == 404) //not found
+			{
+				$promotion->products = "";
+			}
+			else
+			{					
+				$promotion->products = $decode->{'messages'};
+			}
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
+		}
+		return Response::json($respond);
+	}
+	
+	/*
+	public function getByName($name)		
+	{
+		$respond = array();
+		$promotion = Promotion::where('name', 'LIKE','%'.$name.'%')->get();
+		if (count($promotion) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
+		}
+		return Response::json($respond);
+	}
+	*/
+	
+	public function getByActive($active)
+	{
+		$respond = array();
+		$promotion = Promotion::where('active','=',$active)->get();
+		if (count($promotion) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
 		{
 			foreach($promotion as $key)
 			{
@@ -543,38 +591,6 @@ class PromotionsController extends \BaseController {
 		return Response::json($respond);
 	}
 	
-	/*
-	public function getByName($name)		
-	{
-		$respond = array();
-		$promotion = Promotion::where('name', 'LIKE','%'.$name.'%')->get();
-		if (count($promotion) == 0)
-		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		else
-		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
-		}
-		return Response::json($respond);
-	}
-
-	
-	public function getByActive($active)
-	{
-		$respond = array();
-		$promotion = Promotion::where('active','=',$active)->get();
-		if (count($promotion) == 0)
-		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		else
-		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
-		}
-		return Response::json($respond);
-	}
-	*/	
 	
 	public function updateFull($id, $input_promotion, $input_products)
 	{
@@ -602,19 +618,18 @@ class PromotionsController extends \BaseController {
 			$promotion->amount = $input_promotion['amount'];
 			$promotion->started = $input_promotion['started'];
 			$promotion->expired = $input_promotion['expired'];
-			$promotion->active = $input_promotion['active'];
+			$promotion->active = $input_promotion['active'];		
 
-			//edit products yang berpromosi
-			$products = $input_products;
-			$product_cont = new ProductsController();
-			foreach($products as $key)
-			{
-				$product_cont->updatePromotionId($key, $promotion->id);
-			}
-			
 			//save
 			try {
 				$promotion->save();				
+				//edit products yang berpromosi
+				$products = $input_products;
+				$product_cont = new ProductsController();
+				foreach($products as $key)
+				{
+					$product_cont->updatePromotionId($key, $promotion->id);
+				}
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);

@@ -3,7 +3,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title" id="myModalLabel">Wishlist of Muhaskdhas Opay</h4>
+				<h4 class="modal-title" id="myModalLabel"></h4>
 			</div>
 			<div class="modal-body">
 				<table class="table">
@@ -20,24 +20,8 @@
 							</th>
 						</tr>
 					</thead>
-					<tbody>
-						<?php 
-						for ($i=0; $i<=27; $i++) {
-						?>
-						<tr>
-							<td>
-								243TYF876
-							</td>
-							<td>
-								The Epic Bag
-							</td>
-							<td>
-								31 January 2014
-							</td>
-						</tr>
-						<?php
-						}
-						?>
+					<tbody id="wishlistcontent">
+						
 					</tbody>
 				</table>
 			</div>
