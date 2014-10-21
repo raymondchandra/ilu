@@ -43,19 +43,31 @@
 								<option value="0">Pending</option>
 								<option value="1">Approved</option>
 							</select>
+						<div class="col-sm-6">
+							<p id="review_status" class="form-control-static">Pending</p>
+							<!--<select id="review_status_list" class="form-control hidden">
+								<option val="pending">Pending</option>
+								<option val="onship">Approved</option>
+							</select>-->
 						</div>
 						<div class="col-sm-3">
-							<button type="button" class="btn btn-warning" id="review_status_editor">Edit</button>
+							<button type="button" class="btn btn-warning" id="review_status_editor">Change</button>
 							<button type="button" class="btn btn-success hidden" id="review_status_setter">Set</button>
 							<script>
 							$( 'body' ).on( "click",'#review_status_editor', function() {
-								$('#review_status_list').removeClass('hidden');
-								$('#review_status_setter').removeClass('hidden');
-								$('#review_status').addClass('hidden');
-								$('#review_status_editor').addClass('hidden');
+								if($('#review_status').text() == "Pending"){
+									$('#review_status').text("Approved");
+								}else{
+									$('#review_status').text("Pending");
+								}
+								//$('#review_status_list').removeClass('hidden');
+								//$('#review_status_setter').removeClass('hidden');
+								//$('#review_status').addClass('hidden');
+								//$('#review_status_editor').addClass('hidden');
+
 							});
 
-							$( 'body' ).on( "click",'#review_status_setter', function() {
+						/*	$( 'body' ).on( "click",'#review_status_setter', function() {
 								var selectedStatus = $('#review_status_list').find(":selected").text();
 								$new_approved = $('#review_status_list').val();
 								$data = {
@@ -92,19 +104,19 @@
 								$('#review_status').removeClass('hidden');
 								$('#review_status_editor').removeClass('hidden');
 								$('#review_status').text(selectedStatus);
-							});
+							});*/
 							</script>
 						</div>
 					</div>
 
 
-					
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-success" data-dismiss="modal">Simpan</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+						</div>
+					</form>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-success" data-dismiss="modal">Ya</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">Tidak</button>
-				</div>
-			</form>
+			</div>
 		</div>
-	</div>
-</div>

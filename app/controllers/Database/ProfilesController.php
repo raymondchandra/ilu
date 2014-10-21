@@ -186,6 +186,22 @@ class ProfilesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	
+	public function myGetById()
+	{
+		$id = Input::get('id');
+		$respond = array();
+		$profile = Profile::find($id);
+		if (count($profile) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$profile);
+		}
+		return Response::json($respond);
+	}
 
 	/**
 	 * Check if row exist in database.

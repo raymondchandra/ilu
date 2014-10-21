@@ -147,12 +147,7 @@ class WishlistsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-	*/
-<<<<<<< HEAD
-		
-	public function delete($id)
-=======
-	
+	*/	
 	
 	/**
 	 * Remove the specified wishlist from database.
@@ -161,7 +156,6 @@ class WishlistsController extends \BaseController {
 	 * @return Response
 	 */
 	public function delete($product_id)
->>>>>>> b21b72ce68a9934eea323d68993ea14b055246e2
 	{
 		$respond = array();
 		$wishlist = Wishlist::where('account_id','=',Auth::user()->id)->where('product_id','=',$product_id)->first();
@@ -195,13 +189,29 @@ class WishlistsController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		return Response::json($respond);
-<<<<<<< HEAD
 	}	
 		
-	public function getWishListByAccountId($id)
-=======
+	public function getWishListByAccountId()
+	{
+		$id = Input::get('acc_id');
+		$respond = array();
+		$wishlist = Wishlist::where('account_id','=',$id)->get();
+		if (count($wishlist) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			foreach($wishlist as $wish)
+			{
+				$wish->productName = Wishlist::find($wish->id)->product->name;
+				$wish->productNumber = Wishlist::find($wish->id)->product->product_no;
+			}
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$wishlist);
+		}
+		return Response::json($respond);
 	}
-	*/
+	
 	
 	/**
 	 * Get wishlist by account_id
@@ -210,7 +220,6 @@ class WishlistsController extends \BaseController {
 	 * @return Response
 	 */
 	public function getWishList()
->>>>>>> b21b72ce68a9934eea323d68993ea14b055246e2
 	{
 
 		$respond = array();

@@ -259,6 +259,23 @@ class LogsController extends \BaseController {
 		return Response::json($respond);
 	}
 	
+	public function getSearchLogByAccountId()
+	{
+		$acc_id = Input::get('acc_id');
+		
+		$respond = array();
+		$logs = Logs::where('account_id','=',$acc_id)->where('description', 'LIKE', 'search%')->get();
+		if (count($logs) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$logs);
+		}
+		return Response::json($respond);
+	}
+	
 	public function getTop10ProductLooked()
 	{
 		//SELECT DISTINCT column_name FROM table_name;

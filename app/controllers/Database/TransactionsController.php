@@ -339,8 +339,9 @@ class TransactionsController extends \BaseController {
 	 * @param  int  $account_id
 	 * @return Response
 	 */
-	public function getByAccountId($account_id)
+	public function getByAccountId()
 	{
+		$account_id = Input::get('acc_id');
 		$respond = array();
 		$transaction = Transaction::where('account_id','=',$account_id)->get();
 		if (count($transaction) == 0)
