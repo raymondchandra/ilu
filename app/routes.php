@@ -8,31 +8,8 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-	$id = 1;
-	$respond = array();
-	$wishlist = Wishlist::where('account_id','=',$id)->get();
-	if (count($wishlist) == 0)
-	{
-		$respond = array('code'=>'404','status' => 'Not Found');
-	}
-	else
-	{
-		foreach($wishlist as $wish)
-		{
-			$product = Wishlist::find($wish->id)->product;
-			$wish->productName = $product->name;
-			echo Wishlist::find($wish->id)->product->name;;
-			$wish->productNumber = $product->product_no;
-			echo $wish->productNumber;
-		}
-		
-		foreach($wishlist as $wish)
-		{
-			echo $wish;
-		}
-		$respond = array('code'=>'200','status' => 'OK','messages'=>$wishlist);
-	}
-	return Response::json($respond);
+	$profile = Profile::orderBy('full_name', 'desc')->get();
+	return $profile;
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 

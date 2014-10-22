@@ -47,6 +47,21 @@ class ProfilesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	
+	public function getSortedAll($by, $type)
+	{
+		$respond = array();
+		$profile = Profile::orderBy($by, $type)->get();
+		if (count($profile) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$profile);
+		}
+		return Response::json($respond);
+	}
 
 	/**
 	 * Display the specified profile.

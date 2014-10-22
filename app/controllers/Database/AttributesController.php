@@ -9,7 +9,7 @@ class AttributesController extends \BaseController {
 		$perPage = 5;   
 		$page = Input::get('page', 1);
 		if ($page > count($paginator) or $page < 1) { $page = 1; }
-			$offset = ($page * $perPage) - $perPage;
+		$offset = ($page * $perPage) - $perPage;
 		$articles = array_slice($paginator,$offset,$perPage);
 		$datas = Paginator::make($articles, count($paginator), $perPage);
 		
