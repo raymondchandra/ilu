@@ -37,7 +37,7 @@ class ShipmentsController extends \BaseController {
 	 */
 	public function getAll(){
 		$respond = array();
-		$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id');
+		$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->get();
 		if (count($shipment) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
