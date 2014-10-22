@@ -8,17 +8,29 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-	$acc_id = 1;
-		
+	$id = 1;
 	$respond = array();
-	$logs = Logs::where('account_id','=',$acc_id)->where('description', 'LIKE', 'search%')->get();
-	if (count($logs) == 0)
+	$wishlist = Wishlist::where('account_id','=',$id)->get();
+	if (count($wishlist) == 0)
 	{
 		$respond = array('code'=>'404','status' => 'Not Found');
 	}
 	else
 	{
-		$respond = array('code'=>'200','status' => 'OK','messages'=>$logs);
+		foreach($wishlist as $wish)
+		{
+			$product = Wishlist::find($wish->id)->product;
+			$wish->productName = $product->name;
+			echo Wishlist::find($wish->id)->product->name;;
+			$wish->productNumber = $product->product_no;
+			echo $wish->productNumber;
+		}
+		
+		foreach($wishlist as $wish)
+		{
+			echo $wish;
+		}
+		$respond = array('code'=>'200','status' => 'OK','messages'=>$wishlist);
 	}
 	return Response::json($respond);
 });

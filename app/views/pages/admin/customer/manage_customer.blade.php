@@ -137,7 +137,6 @@
 			$acc_id = $(this).prev().val();
 			$nama = $('#full_name_'+$acc_id).html();
 			$('.modal-title').html("Search history dari " + $nama);
-			alert($acc_id + " " + $nama);
 			
 			$('#searchHistorycontent').empty();
 			$.ajax({
@@ -149,7 +148,6 @@
 					success: function(response){
 						if(response['code'] == '404')
 						{
-							alert(response['code']);
 							$('#searchHistorycontent').append("<td>search history tidak ditemukan</td>");
 						}
 						else
