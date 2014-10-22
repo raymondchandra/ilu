@@ -114,8 +114,10 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		Route::get('/supportMsg/{ticket_id}', ['as' => 'get.supportMsg.ticket' , 'uses' => 'SupportMsgsController@getByTicket']);
 		Route::post('/supportMsg', ['as' => 'add.supportMsg' , 'uses' => 'SupportMsgsController@insert']);
 
-
 });
+
+//Tes Jeje
+	Route::get('/tesJeje/{date1}/{date2}', ['as' => 'tes.jeje', 'uses' => 'TransactionsController@getRangeReport'] );
 
 /* routing sementara buat coba html + css + jquery */
 Route::group(array('prefix' => 'test'), function()
@@ -219,6 +221,6 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.review.manage_review');
 	});
 
-
+	
 });
 

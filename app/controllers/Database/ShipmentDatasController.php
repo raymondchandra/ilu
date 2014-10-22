@@ -28,7 +28,7 @@ class ShipmentDatasController extends \BaseController {
 			$shipment->courier = Input::get('courier');
 			$shipment->destination = Input::get('destination');
 			$shipment->price = Input::get('price');
-			$shipemnt->deleted = '0';
+			$shipment->deleted = '0';
 			$shipment->save();
 			$idCreate  = $shipment->id;
 			
