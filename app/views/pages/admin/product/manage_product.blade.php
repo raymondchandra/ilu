@@ -13,7 +13,8 @@
 				<hr></hr>
 				
 				<div>
-					<ul class="pagination">
+					{{$datas->links()}}
+					<!--<ul class="pagination">
 					  <li><a href="#">&laquo;</a></li>
 					  <li><a href="#">1</a></li>
 					  <li><a href="#">2</a></li>
@@ -21,7 +22,7 @@
 					  <li><a href="#">4</a></li>
 					  <li><a href="#">5</a></li>
 					  <li><a href="#">&raquo;</a></li>
-					</ul>
+					</ul>-->
 					<button href="" class="btn btn-success" style="float: right; margin-top: 20px;" data-toggle="modal" data-target=".pop_up_add_product">+ Add Product</button>
 					<table class="table table-striped table-hover ">
 						<thead class="table-bordered">
@@ -73,26 +74,22 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php 
-							for ($i=0; $i<=30; $i++) {
-							  ?>
+						@foreach($datas as $product)
 							<tr> 
-								<td><?php echo($i); ?></td>
-								<td>Barang bagus</td>
-								<td>Set atribut pakaian</td>
-								<td>242342</td>
-								<td>300000</td>
+								<td>1</td>
+								<td>{{$product->product_no}}</td>
+								<td>{{$product->name}}</td>
+								<td>{{$product->category_name}}</td>
+								<td>{{$product->promotion_id}}</td>
 								<td>
-									<a class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_product">Edit Info</a>
+									<input type='hidden' class='id_produk' value='{{$product->id}}'>
+									<a class="btn btn-warning btn-xs detail-product" data-toggle="modal" data-target=".pop_up_edit_product">Edit Info</a>
 									<a class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_product_gallery">Edit Gallery</a>
 									<!-- Button trigger modal class ".alertYesNo" -->
 									<a class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</a>
 								</td>
 							</tr> 
-							  <?php
-							} 
-							?>
-							
+						@endforeach
 						</tbody>
 					</table>
 				</div>
@@ -106,4 +103,30 @@
 	@include('pages.admin.product.pop_up_edit_product')
 	@include('pages.admin.product.pop_up_add_product')
 	
+	<script>
+		$('body').on('click','.detail-product',function(){
+			$id = $(this).siblings('.id_produk').val();
+			$.ajax({
+				type: 'GET',
+				url: "{{URL('admin/product')}}/"+$id,
+				success: function(response){
+					result = JSON.parse(response);
+					if(result.code==200){
+						$message = result.messages;
+						$('.no_product').text($message.product_no);
+						$('.product_name').text($message.name);
+						$('#product_description').text($message.description);
+						$('#product_category').text($message.category_name);
+						
+						if($message.promotion_id != ""){
+							$('#promotion_id').text($message.promotion_id);
+						}
+					}
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					alert(errorThrown);
+				}
+			},'json');
+		});
+	</script>
 @stop

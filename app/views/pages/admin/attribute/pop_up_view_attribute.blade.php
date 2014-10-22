@@ -21,7 +21,7 @@
 									<button type="button" class="btn btn-warning" id="nama_attribute_editor">Edit</button>
 									<button type="button" class="btn btn-success hidden" id="nama_attribute_setter">Set</button>
 									<script>
-									$( 'body' ).on( "click",'#nama_attribute_editor', function() {
+									$( 'body' ).on( "click",'#nama_attribute_editor', function() {																				
 										$('#nama_attribute_input').val($('#nama_attribute').text());
 										$('#nama_attribute_input').removeClass('hidden');
 										$('#nama_attribute_setter').removeClass('hidden');
@@ -30,7 +30,37 @@
 									});
 
 									$( 'body' ).on( "click",'#nama_attribute_setter', function() {
-									//	var selectedStatus = $('#nama_attribute_input').text($('#nama_attribute').text());
+										var selectedStatus = $('#nama_attribute_input').text($('#nama_attribute').text());
+										$new_name = $('#nama_attribute_input').val();										
+										$data = {
+											'id' : $id,
+											'new_name' : $new_name
+										};
+										var json_data = JSON.stringify($data);
+										$.ajax({																	
+											type: 'POST',
+											url: "{{URL('admin/attribute/editName')}}",
+											data: {
+													'json_data' : json_data
+											},
+											success: function(response){
+												// alert(response);
+												result = JSON.parse(response);
+												if(result.code==204){													
+													alert(result.status);
+													location.reload();
+												}
+												else
+												{
+													alert(result.status);
+													alert(result.messages);
+												}
+											},
+											error: function(jqXHR, textStatus, errorThrown){
+												alert(errorThrown);
+											}
+										},'json');
+											
 										$('#nama_attribute_input').addClass('hidden');
 										$('#nama_attribute_setter').addClass('hidden');
 										$('#nama_attribute').removeClass('hidden');

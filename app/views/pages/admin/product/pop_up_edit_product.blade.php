@@ -19,15 +19,38 @@
 
 							<div class="form-group">
 								<label class="col-sm-4 control-label">Product No.</label>
-								<div class="col-sm-8">
-									<p class="form-control-static">00045600</p>
+								<div class="col-sm-5">
+									<p id="product_no" class="form-control-static no_product">00045383945</p>
+									<input id="product_no_input" class="form-control hidden"/>
+								</div>
+								<div class="col-sm-3">
+									<button type="button" class="btn btn-warning" id="product_no_editor">Edit</button>
+									<button type="button" class="btn btn-success hidden" id="product_no_setter">Set</button>
+									<script>
+									$( 'body' ).on( "click",'#product_no_editor', function() {
+										$('#product_no_input').val($('#product_no').text());
+										$('#product_no_input').removeClass('hidden');
+										$('#product_no_setter').removeClass('hidden');
+										$('#product_no').addClass('hidden');
+										$('#product_no_editor').addClass('hidden');
+									});
+
+									$( 'body' ).on( "click",'#product_no_setter', function() {
+										var selectedStatus = $('#product_no_input').val();
+										$('#product_no_input').addClass('hidden');
+										$('#product_no_setter').addClass('hidden');
+										$('#product_no').removeClass('hidden');
+										$('#product_no_editor').removeClass('hidden');
+										$('#product_no').text(selectedStatus);
+									});
+									</script>
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label class="col-sm-4 control-label">Name</label>
 								<div class="col-sm-5">
-									<p id="product_name" class="form-control-static">fsddsf</p>
+									<p id="product_name" class="form-control-static product_name">fsddsf</p>
 									<input id="product_name_input" class="form-control hidden"/>
 								</div>
 								<div class="col-sm-3">

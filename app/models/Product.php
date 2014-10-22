@@ -5,7 +5,7 @@ class Product extends \Eloquent {
 	// Add your validation rules here
 	public static $rules = [
 		// 'title' => 'required'
-		'product_no' => 'required|unique:products',
+		'product_no' => 'required|unique:products,product_no',
 		'name' => 'required',
 		'description' => 'required',
 		'category_id' => 'required|integer',

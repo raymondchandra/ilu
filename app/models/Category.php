@@ -5,7 +5,7 @@ class Category extends \Eloquent {
 	// Add your validation rules here
 	public static $rules = [
 		// 'title' => 'required'
-		'name' => 'required|unique:categories',
+		'name' => 'required|unique:categories,name',
 		'parent_category' => 'integer',
 		'deleted' => 'required|integer'
 	];

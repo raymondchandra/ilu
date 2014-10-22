@@ -94,7 +94,8 @@ class TransactionsController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function getAll(){
+	public function getAll()
+	{
 		$respond = array();
 		$transaction = Transaction::all();
 		if (count($transaction) == 0)
@@ -345,8 +346,9 @@ class TransactionsController extends \BaseController {
 	 * @param  int  $account_id
 	 * @return Response
 	 */
-	public function getByAccountId($account_id)
+	public function getByAccountId()
 	{
+		$account_id = Input::get('acc_id');
 		$respond = array();
 		$transaction = Transaction::where('account_id','=',$account_id)->get();
 		if (count($transaction) == 0)

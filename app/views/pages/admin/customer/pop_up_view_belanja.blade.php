@@ -20,24 +20,8 @@
 							</th>
 						</tr>
 					</thead>
-					<tbody>
-						<?php 
-						for ($i=0; $i<=27; $i++) {
-						?>
-						<tr>
-							<td>
-								765675YTYU678
-							</td>
-							<td>
-								IDR 900.000
-							</td>
-							<td>
-								31 January 2014
-							</td>
-						</tr>
-						<?php
-						}
-						?>
+					<tbody id="belanjaHistoryContent">
+						
 					</tbody>
 				</table>
 

@@ -16,7 +16,7 @@ class CreateShipmentsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('shipmentData_id')->unsigned();
-			$table->string('number');
+			$table->string('number')->nullable();
 			$table->timestamps();
 		});
 	}

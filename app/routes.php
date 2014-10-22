@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/tes', 'AttributesController@w_insert');
+Route::get('/tes', 'CategoriesController@getListCategory');
 
 Route::get('/tesview', function (){
 	return View::make('pages.admin.product.manage_product');
@@ -8,9 +8,80 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-	$acc = new AccountsController();
-	
-	$acc->getHistory(5);
+		$memberId = '13';
+		$fullName = '-';
+		$profileName = '-';
+		$email = '-';
+		
+		$isFirst = false;
+		
+		if($memberId != '-')
+		{
+			if($isFirst == false)
+			{
+				$profiles = Profile::where('member_id', 'LIKE', '%'.$memberId.'%');
+				$isFirst = true;
+			}
+		}
+		
+		if($fullName != '-')
+		{
+			if($isFirst == false)
+			{
+				$profiles = Profile::where('full_name', 'LIKE', '%'.$fullName.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$profiles = $profiles->where('full_name', 'LIKE', '%'.$fullName.'%');
+			}
+		}
+		
+		if($profileName != '-')
+		{
+			if($isFirst == false)
+			{
+				$profiles = Profile::where('name_in_profile', 'LIKE', '%'.$profileName.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$profiles = $profiles->where('name_in_profile', 'LIKE', '%'.$profileName.'%');
+			}
+		}
+		
+		if($email != '-')
+		{
+			if($isFirst == false)
+			{
+				$profiles = Profile::where('email', 'LIKE', '%'.$email.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$profiles = $profiles->where('email', 'LIKE', '%'.$email.'%');
+			}
+		}
+		
+		if($isFirst == false)
+		{
+			$profiles = Profile::all();
+			$isFirst = true;
+		}
+		else
+		{
+			$profiles = $profiles->get();
+		}
+		
+		if (count($profiles) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$profiles);
+		}
+		return Response::json($respond);
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -88,6 +159,38 @@ Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
 
 Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 {
+	//attribute
+		Route::get('/attribute', ['as' => 'attribute', 'uses' => 'AttributesController@view_main_attribute']);
+		Route::get('/attribute/{id}', ['as' => 'attribute_detail', 'uses' => 'AttributesController@view_detail_attribute']);
+		Route::get('/searchAttribute', ['as' => 'searchAttribute', 'uses' => 'AttributesController@view_search_attribute']);		
+		Route::post('/attribute/editName', ['as' => 'attribute.editName', 'uses' => 'AttributesController@editName']);
+		Route::post('/attribute/addAttribute', ['as' => 'attribute.addAttribute', 'uses' => 'AttributesController@addAttribute']);
+		// Route::delete();
+	
+	//category 
+		Route::get('/category', ['as' => 'category', 'uses' => 'CategoriesController@view_main_category']);
+		Route::get('/category/{id}', ['as' => 'category_detail', 'uses' => 'CategoriesController@view_detail_category']);
+		// Route::get('/category/searchCategory', ['as' => 'category.searchCategory', 'uses' => 'CategoriesController@view_search_category']);
+		Route::post('/category/editFull', ['as' => 'category.editFull', 'uses' => 'CategoriesController@editFull']);
+		Route::post('/category/addCategory', ['as' => 'category.addCategory', 'uses' => 'CategoriesController@addCategory']);
+	
+	//tax
+		Route::get('/tax', ['as' => 'tax', 'uses' => 'TaxesController@view_main_tax']);
+		Route::get('/tax/{id}', ['as' => 'tax_detail', 'uses' => 'TaxesController@view_detail_tax']);
+		// Route::get('/category/searchCategory', ['as' => 'category.searchCategory', 'uses' => 'CategoriesController@view_search_category']);
+		Route::post('/tax/editFull', ['as' => 'tax.editFull', 'uses' => 'TaxesController@editFull']);
+		Route::post('/tax/addTax', ['as' => 'tax.addTax', 'uses' => 'TaxesController@addTax']);
+		
+	//review
+		Route::get('/review', ['as' => 'review', 'uses' => 'ReviewsController@view_main_review']);
+		Route::get('/review/{id}', ['as' => 'review_detail', 'uses' => 'ReviewsController@view_detail_review']);
+		Route::post('/review/editApproved', ['as' => 'review.editApproved', 'uses' => 'ReviewsController@editApproved']);
+	
+	//product 
+		Route::get('/product', ['as' => 'product' , 'uses' => 'ProductsController@view_main_product']);
+		Route::get('/product/{id}', ['as' => 'product_detail' , 'uses' => 'ProductsController@view_detail_product']);
+		
+	
     //transaction
 
 	//information
@@ -107,6 +210,7 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
     	Route::post('/editSlideShow', ['as' => 'edit.slideshow' , 'uses' => 'GalleryController@update_slideshow']);
     	Route::delete('/slideshow/{id}', ['as' => 'delete.slideshow' , 'uses' => 'GalleryController@delete']);
     //seo
+		Route::get('/seo', ['as' => 'get.seo' , 'uses' => 'SeosController@getAll']);
     	Route::post('/seo', ['as' => 'add.seo' , 'uses' => 'SeosController@insert']);
     	Route::put('/seo/{id}', ['as' => 'edit.seo' , 'uses' => 'SeosController@updateFull']);
     	Route::delete('/seo/{id}', ['as' => 'delete.seo' , 'uses' => 'SeosController@delete']);
@@ -114,10 +218,8 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		Route::get('/supportMsg/{ticket_id}', ['as' => 'get.supportMsg.ticket' , 'uses' => 'SupportMsgsController@getByTicket']);
 		Route::post('/supportMsg', ['as' => 'add.supportMsg' , 'uses' => 'SupportMsgsController@insert']);
 
-});
 
-//Tes Jeje
-	Route::get('/tesJeje/{date1}/{date2}', ['as' => 'tes.jeje', 'uses' => 'TransactionsController@getRangeReport'] );
+});
 
 /* routing sementara buat coba html + css + jquery */
 Route::group(array('prefix' => 'test'), function()
@@ -128,6 +230,12 @@ Route::group(array('prefix' => 'test'), function()
 	{
 		return View::make('pages.admin.login');
 	});
+
+    // dashboard
+	Route::get('/dashboard', function()
+	{
+		return View::make('pages.admin.dashboard');
+	});
 	
     // manage order
 	Route::get('/manage_order', function()
@@ -136,14 +244,14 @@ Route::group(array('prefix' => 'test'), function()
 	});
 	
     // manage category
-	Route::get('/manage_category', function()
-	{
-		return View::make('pages.admin.category.manage_category');
-	});
-	Route::get('/add_category', function()
-	{
-		return View::make('pages.admin.category.add_category');
-	});
+	// Route::get('/manage_category', function()
+	// {
+		// return View::make('pages.admin.category.manage_category');
+	// });
+	// Route::get('/add_category', function()
+	// {
+		// return View::make('pages.admin.category.add_category');
+	// });
 
     // manage product
 	Route::get('/manage_product', function()
@@ -167,10 +275,10 @@ Route::group(array('prefix' => 'test'), function()
 	});
 
     // Manage Attribute
-    Route::get('/manage_attribute', function()
-	{
-		return View::make('pages.admin.attribute.manage_attribute');
-	});
+    // Route::get('/manage_attribute', function()
+	// {
+		// return View::make('pages.admin.attribute.manage_attribute');
+	// });
 
     // Newsletter
     Route::get('/manage_newsletter', function()
@@ -214,13 +322,36 @@ Route::group(array('prefix' => 'test'), function()
 	{
 		return View::make('pages.admin.customer.manage_customer');
 	});
+	
+	Route::get('/manage_customer_david', ['as'=>'david.viewCustomerManagement','uses' => 'CustomerManagementController@view_cust_mgmt']);
+	
+	Route::get('/get_wishlist', ['as'=>'david.getWishlist','uses' => 'WishlistsController@getWishListByAccountId']);
+	
+	Route::get('/get_search_history', ['as'=>'david.getSearchHistory','uses' => 'LogsController@getSearchLogByAccountId']);
 
+	Route::get('/get_trans_history', ['as'=>'david.getTransHistory','uses' => 'TransactionsController@getByAccountId']);
+	
+	Route::get('/get_profile_detail', ['as'=>'david.getProfDet','uses' => 'ProfilesController@myGetById']);
+	
+	Route::get('/filter_cust_mgmt', ['as'=>'david.getFilteredCustomer','uses' => 'ProfilesController@myGetById']);
     // Review
     Route::get('/manage_review', function()
 	{
 		return View::make('pages.admin.review.manage_review');
 	});
 
-	
+    // Report
+    Route::get('/manage_report', function()
+	{
+		return View::make('pages.admin.report.manage_report');
+	});
+
+    // CMS
+    Route::get('/manage_cms', function()
+	{
+		return View::make('pages.admin.cms.manage_cms');
+	});
+
+
 });
 

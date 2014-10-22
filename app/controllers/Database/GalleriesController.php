@@ -61,13 +61,7 @@ class GalleriesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-
-	/**
-	 * Display the specified gallery.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+		
 	public function getById($id)
 	{
 		$respond = array();
@@ -83,6 +77,21 @@ class GalleriesController extends \BaseController {
 		return Response::json($respond);
 	}
 
+	public function getByProductId($product_id)
+	{
+		$respond = array();
+		$gallery = Gallery::where('product_id', '=', $product_id)->get();
+		if (count($gallery) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$gallery);
+		}
+		return Response::json($respond);
+	}
+	
 	/**
 	 * Display the slideshow gallery.
 	 *
@@ -115,9 +124,7 @@ class GalleriesController extends \BaseController {
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$gallery);
 		}
 		return Response::json($respond);
-	}
-	
-
+	}	
 
 	/**
 	 * Update all value of the specified gallery in database.
@@ -154,13 +161,6 @@ class GalleriesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-
-	/**
-	 * Update {name} value of the specified gallery in database.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	/*
 	public function update{name}($id)
 	{
@@ -184,7 +184,7 @@ class GalleriesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-	*/
+*/	
 	
 	
 	/**

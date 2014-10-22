@@ -1,7 +1,7 @@
 <?php
 
 class Profile extends \Eloquent {
-
+	public $acc_id;
 	// Add your validation rules here
 	public static $rules = [
 		// 'title' => 'required'
