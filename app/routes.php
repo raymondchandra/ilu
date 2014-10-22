@@ -8,9 +8,10 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->get();
 
-echo $shipment;
+		$shipmentdata = Shipmentdata::find('1');
+
+echo $shipmentdata;
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -265,6 +266,10 @@ Route::group(array('prefix' => 'test'), function()
 	Route::get('/filter_cust_mgmt', ['as'=>'david.getFilteredCustomer','uses' => 'ProfilesController@myGetById']);
 	
 	Route::get('/manage_shipping_jeffry', ['uses' => 'ShippingManagementController@view_shipping_mgmt']);
+	
+	Route::get('/manage_shipping_agent_jeffry', ['uses' => 'ShippingAgentManagementController@view_shipping_agent_mgmt']);
+	
+	Route::get('/get_detail_shipment_agent', ['as'=>'jeffry.getDetailShipAgent','uses' => 'ShipmentDatasController@getById']);
 	
     // Review
     Route::get('/manage_review', function()

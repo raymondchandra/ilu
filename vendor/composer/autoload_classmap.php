@@ -1298,6 +1298,7 @@ return array(
     'ShipmentDatasController' => $baseDir . '/app/controllers/Database/ShipmentDatasController.php',
     'ShipmentTableSeeder' => $baseDir . '/app/database/seeds/ShipmentTableSeeder.php',
     'ShipmentsController' => $baseDir . '/app/controllers/Database/ShipmentsController.php',
+    'ShippingAgentManagementController' => $baseDir . '/app/controllers/Page/ShippingAgentManagementController.php',
     'ShippingManagementController' => $baseDir . '/app/controllers/Page/ShippingManagementController.php',
     'Stack\\Builder' => $vendorDir . '/stack/builder/src/Stack/Builder.php',
     'Stack\\StackedHttpKernel' => $vendorDir . '/stack/builder/src/Stack/StackedHttpKernel.php',

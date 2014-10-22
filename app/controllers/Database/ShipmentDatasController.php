@@ -46,7 +46,7 @@ class ShipmentDatasController extends \BaseController {
 	 */
 	public function getAll(){
 		$respond = array();
-		$shipmentdata = Shipmentdata::where('deleted','=','0');
+		$shipmentdata = Shipmentdata::where('deleted','=','0')->get();
 		if (count($shipmentdata) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -64,8 +64,9 @@ class ShipmentDatasController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function getById($id)
+	public function getById()
 	{
+		$id = Input::get('id');
 		$respond = array();
 		$shipmentdata = Shipmentdata::find($id);
 		if (count($shipmentdata) == 0)
