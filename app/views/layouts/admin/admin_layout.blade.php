@@ -10,8 +10,11 @@
 		<div class="s_top_header">
 			<div class="container-fluid">
 				<div class="row">
-					<div class="col-lg-12">
-						<h2>Ilu Panel</h2>
+					<div class="col-lg-4">
+						<img src="" height="50" width="50" style="float: left; margin-right:20px; margin-top: 10px;"/><h2>Ilu Panel</h2>
+					</div>
+					<div class="col-lg-8" style="line-height: 69px; text-align: right;">
+						log in as admin | <a href="#">log out</a>
 					</div>
 				</div>
 			</div>

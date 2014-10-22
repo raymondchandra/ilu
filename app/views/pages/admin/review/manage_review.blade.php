@@ -13,7 +13,8 @@
 				<hr></hr>
 				
 				<div>
-					<ul class="pagination">
+					{{$datas->links()}}
+					<!--<ul class="pagination">
 					  <li><a href="#">&laquo;</a></li>
 					  <li><a href="#">1</a></li>
 					  <li><a href="#">2</a></li>
@@ -21,7 +22,7 @@
 					  <li><a href="#">4</a></li>
 					  <li><a href="#">5</a></li>
 					  <li><a href="#">&raquo;</a></li>
-					</ul>
+					</ul>-->
 					<table class="table table-striped table-hover ">
 						<thead class="table-bordered">
 							<tr>
@@ -70,25 +71,20 @@
 								<td width=""><a class="btn btn-primary btn-xs">Filter</a></td>
 							</tr>
 						</thead>
-						<tbody>
-							<?php 
-							for ($i=0; $i<=30; $i++) {
-							  ?>
-							<tr> 
-								
-								<td>657676546</td>
-								<td>lorem jashyu afuh ashdh jadbahdb  sfgaufguays guayg faygfaugf aysf gaus</td>
-								<td>4.5 / 5</td>
-								<td>Pending</td>
-								
-								<td>
-									<button class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_view_review">Edit</button>
-								</td>
-							</tr> 
-							  <?php
-							} 
-							?>
-							
+						<tbody>	
+							@foreach($datas as $review)
+								<tr> 								
+									<td>{{$review->product_no}}</td>
+									<td>{{$review->product_name}}</td>
+									<td>{{$review->text}}</td>
+									<td>{{$review->rating}}</td>
+									<td>{{$review->approved}}</td>									
+									<td>
+										<input type='hidden' class='id_review' value='{{$review->id}}'>
+										<button class="detail-review btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_view_review">Edit</button>
+									</td>
+								</tr> 							
+							@endforeach
 						</tbody>
 					</table>
 				</div>
@@ -100,4 +96,33 @@
 	@include('includes.modals.alertYesNo')
 	@include('pages.admin.review.pop_up_view_review')
 
+	<script>
+		$('body').on('click', '.detail-review',function(){
+			$id = $(this).siblings('.id_review').val();			
+			$.ajax({
+				type: 'GET',
+				url: "{{URL('admin/review')}}/"+$id,
+				success: function(response){
+					result = JSON.parse(response);
+					if(result.code==200){
+						$message = result.messages;						
+						$('#detail_product_no').text($message.product_no);
+						$('#detail_product_name').text($message.product_name);
+						$('#detail_text').text($message.text);
+						$('#detail_rating').text($message.rating);
+						if($message.approved == 1){
+							$('#review_status').text("Approved");
+						}else{
+							$('#review_status').text("Pending");
+						}						
+						$('#review_status_list').val($message.approved);
+					}
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					alert(errorThrown);
+				}
+			},'json');
+		});
+	</script>
+	
 @stop

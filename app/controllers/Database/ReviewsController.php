@@ -2,24 +2,57 @@
 
 class ReviewsController extends \BaseController {
 		
-	public function w_insert()
+	public function view_main_review()
 	{
-		$json = Input::get('json_data');
-		$decode = json_decode($json);
+		$review_json = $this->getAll();		
+		$paginator = json_decode($review_json->getContent())->{'messages'};		
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+			$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);		
+					
+		return View::make('pages.admin.review.manage_review', compact('datas'));		
+	}
+
+	public function view_detail_review($id)
+	{
+		$json = json_decode($this->getById($id)->getContent());
+		return json_encode($json);
+	}
+	
+	// public function w_insert()
+	// {
+		// $json = Input::get('json_data');
+		// $decode = json_decode($json);
 		
-		$product_id = $decode->{'product_id'};
-		$text = $decode->{'text'}:
-		$rating = $decode->{'rating'};
+		// $product_id = $decode->{'product_id'};
+		// $text = $decode->{'text'}:
+		// $rating = $decode->{'rating'};
 		// $approved = $decode->{'approved'};
 		
-		$input = array(
-					'product_id' => $product_id,
-					'text' => $text,
-					'rating' => $rating,
-					'approved' => 0);
+		// $input = array(
+					// 'product_id' => $product_id,
+					// 'text' => $text,
+					// 'rating' => $rating,
+					// 'approved' => 0);
 					
-		return $this->insert($input);
+		// return $this->insert($input);
+	// }
+	
+	public function editApproved()
+	{
+		$json_data = Input::get('json_data');
+		$json = json_decode($json_data);
+		
+		$id = $json->{'id'};
+		$approved = $json->{'new_approved'};				
+				
+		$json = json_decode($this->updateApproved($id, $approved)->getContent());
+		return json_encode($json);
 	}
+	
 	public function insert($input)
 	{
 		// $input = json_decode(Input::all());

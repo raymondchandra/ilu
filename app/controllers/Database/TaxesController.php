@@ -2,21 +2,84 @@
 
 class TaxesController extends \BaseController {
 
-	public function w_insert()
+	public function view_main_tax()
 	{
-		$json = Input::get('json_data');
-		$decode = json_decode($json);
-				
-		$name = $decode->{'name'};		
-		$amount = $decode->{'amount'};		
+		$tax_json = $this->getAll();
+		$paginator = json_decode($tax_json->getContent())->{'messages'};
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+		$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);		
+		
+		return View::make('pages.admin.tax.manage_tax',compact('datas'));				
+	}
+
+	public function view_detail_tax($id)
+	{
+		$json = json_decode($this->getById($id)->getContent());
+		return json_encode($json);
+	}
+	
+	// public function view_search_tax()
+	// {
+	// }
+	
+	public function addTax()
+	{
+		$json_data = Input::get('json_data');
+		$json = json_decode($json_data);
+		
+		$name = $json->{'name'};
+		$amount = $json->{'amount'};
+		$deleted = $json->{'deleted'};			
 		
 		$input = array(
-					'name' => $name,
-					'amount' => $amount,
-					'deleted' => 0);
-					
-		return $this->insert($input);
+				'name' => $name,
+				'amount' => $amount,
+				'deleted' => $deleted
+		);
+				
+		$json = json_decode($this->insert($input)->getContent());
+		return json_encode($json);
 	}
+	
+	// input : name, amount
+	// public function updateFull($id, $input)
+	public function editFull()
+	{
+		$json_data = Input::get('json_data');
+		$json = json_decode($json_data);
+		
+		$id = $json->{'id'};
+		$name = $json->{'name'};
+		$amount = $json->{'amount'};	
+
+		$input = array(
+			'name' => $name,
+			'amount' => $amount
+		);
+				
+		$json = json_decode($this->updateFull($id, $input)->getContent());
+		return json_encode($json);
+	}
+
+	// public function w_insert()
+	// {
+		// $json = Input::get('json_data');
+		// $decode = json_decode($json);
+				
+		// $name = $decode->{'name'};		
+		// $amount = $decode->{'amount'};		
+		
+		// $input = array(
+					// 'name' => $name,
+					// 'amount' => $amount,
+					// 'deleted' => 0);
+					
+		// return $this->insert($input);
+	// }
 	//input : name, amount, deleted
 	public function insert($input)
 	{
@@ -247,6 +310,10 @@ class TaxesController extends \BaseController {
 			
 			//save
 			try {
+				// $tax->name = $input['name'];
+				// $tax->amount = $input['amount'];
+				// $tax->deleted = $input['deleted'];
+				// $tax->save();
 				$tax->update($data);
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {

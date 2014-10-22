@@ -5,7 +5,7 @@ class Attribute extends \Eloquent {
 	// Add your validation rules here
 	public static $rules = [
 		// 'title' => 'required'
-		'name' => 'required|unique:attributes',
+		'name' => 'required|unique:attributes,name',
 		'deleted' => 'required|integer'
 	];
 

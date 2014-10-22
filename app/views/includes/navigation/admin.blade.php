@@ -60,10 +60,10 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
-			<li><a href="#">Dashboard</a></li>
+			<li><a href="#"><span class="glyphicon glyphicon-home" style="color:#fff; margin-right:10px;"></span>Dashboard</a></li>
 			
 			<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Catalogue<span class="caret"></span></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book" style="color:#fff; margin-right:10px;"></span>Catalogue<span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
 					<li><a href="#">Manage Category</a></li>
 					<li><a href="#">Manage Product</a></li>
@@ -77,7 +77,7 @@
 			</li>
 			
 			<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Newsletter<span class="caret"></span></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-volume-up" style="color:#fff; margin-right:10px;"></span>Newsletter<span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
 					<li><a href="#">Add New Newsletter</a></li>
 					

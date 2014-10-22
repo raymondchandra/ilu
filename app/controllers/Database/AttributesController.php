@@ -2,19 +2,113 @@
 
 class AttributesController extends \BaseController {
 
-	public function w_insert()
+	public function view_main_attribute()
 	{
-		$json = Input::get('json_data');
-		$decode = json_decode($json);
+		$attribute_json = $this->getAll();
+		$paginator = json_decode($attribute_json->getContent())->{'messages'};
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+			$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);
 		
-		$name = $decode->{'name'};		
+		return View::make('pages.admin.attribute.manage_attribute',compact('datas'));
+	}
+	
+	public function view_detail_attribute($id)
+	{
+		$json = json_decode($this->getById($id)->getContent());
+		return json_encode($json);
+	}	
+	
+	public function view_search_attribute()
+	{				
+		$json_data = Input::get('json_data');
+		$json = json_decode($json_data);
+				
+		$id = $json->{'id'};		
+		$name = $json->{'name'};
+		
+		if($id == ""){
+			$id = -1;
+		}
 		
 		$input = array(
-					'name' => $name,
-					'deleted' => 0);
+				'id' => $id,
+				'name' => $name
+		);
 		
-		return $this->insert($input);
+		$attribute_json = $this->searchAttribute($input);		
+		$decode = json_decode($attribute_json->getContent());
+		if($decode->code==404)
+		{
+			//not found
+			$datas = null;
+		}
+		else
+		{		
+			$temp = json_decode($attribute_json->getContent())->{'messages'};					
+			$result = array();
+			foreach($temp as $key)						
+			{
+				$result[] = $key;
+			}
+			$datas = $result;
+			// $perPage = 5;   
+			// $page = Input::get('page', 1);
+			// if ($page > count($paginator) or $page < 1) { $page = 1; }
+				// $offset = ($page * $perPage) - $perPage;
+			// $articles = array_slice($paginator,$offset,$perPage);
+			// $datas = Paginator::make($articles, count($paginator), $perPage);
+		}
+				
+		// return View::make('pages.admin.attribute.manage_attribute',compact('datas'));			
+		return $datas;
 	}		
+	
+	public function addAttribute()
+	{
+		$json_data = Input::get('json_data');
+		$json = json_decode($json_data);
+		
+		$name = $json->{'name'};
+		$deleted = $json->{'deleted'};
+		
+		$input = array(
+				'name' => $name,
+				'deleted' => $deleted
+		);
+		
+		$json = json_decode($this->insert($input)->getContent());
+		return json_encode($json);
+	}
+		
+	public function editName()
+	{		
+		$json_data = Input::get('json_data');		
+		$json = json_decode($json_data);
+		
+		$id = $json->{'id'};
+		$new_name = $json->{'new_name'};
+		
+		$json = json_decode($this->updateName($id, $new_name)->getContent());
+		return json_encode($json);
+	}
+	
+	// public function w_insert()
+	// {
+		// $json = Input::get('json_data');
+		// $decode = json_decode($json);
+		
+		// $name = $decode->{'name'};		
+		
+		// $input = array(
+					// 'name' => $name,
+					// 'deleted' => 0);
+		
+		// return $this->insert($input);
+	// }		
 	// input : name, deleted	
 	public function insert($input)
 	{
@@ -136,6 +230,7 @@ class AttributesController extends \BaseController {
 		{
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
 		}
+		return Response::json($respond);
 	}
 	
 	public function searchAttributeSortedIdAsc($input)
@@ -159,6 +254,7 @@ class AttributesController extends \BaseController {
 			$attribute = $attribute->orderBy('id')->get();
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
 		}
+		return Response::json($respond);
 	}
 	
 	public function searchAttributeSortedIdDesc($input)
@@ -182,6 +278,7 @@ class AttributesController extends \BaseController {
 			$attribute = $attribute->orderBy('id', 'desc')->get();
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
 		}
+		return Response::json($respond);
 	}
 	
 	public function searchAttributeSortedNameAsc($input)
@@ -205,6 +302,7 @@ class AttributesController extends \BaseController {
 			$attribute = $attribute->orderBy('name')->get();
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
 		}
+		return Response::json($respond);
 	}
 	
 	public function searchAttributeSortedNameDesc($input)
@@ -228,6 +326,7 @@ class AttributesController extends \BaseController {
 			$attribute = $attribute->orderBy('name', 'desc')->get();
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
 		}
+		return Response::json($respond);
 	}
 	
 	public function getById($id)

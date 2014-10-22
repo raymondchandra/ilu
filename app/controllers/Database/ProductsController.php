@@ -2975,6 +2975,108 @@ class ProductsController extends \BaseController {
 		return Response::json($respond);
 	}
 
+	/*
+	public function updateFull($id, $input_product, $input_gallery)
+	{
+		$respond = array();
+		$product = Product::find($id);
+		if($product == null)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+		
+			//validate
+			$validator = Validator::make($data = $input_product, Product::$rules); 								
+
+			if ($validator->fails())
+			{
+				$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
+				return Response::json($respond);
+			}
+					
+			//save
+			try {							
+				$product->product_no = $input_product['product_no'];
+				$product->name = $input_product['name'];
+				$product->description = $input_product['description'];
+				$product->category_id = $input_product['category_id'];
+				$product->promotion_id = $input_product['promotion_id'];
+				$product->deleted = $input_product['deleted'];
+				$product->save();						
+				
+				$main_photo = $input_gallery['main_photo']; //file
+				$other_photos = $input_gallery['other_photos']; //array of file
+				if($main_photo != "")
+				{
+					$file = Input::file($main_photo);				
+					$destinationPath = "assets/file_upload/gallery/";
+					$fileName = $file->getClientOriginalName();
+					
+					$gallery_cont = new GalleryController();
+					$new_main_photo = 
+					$new_main_photo->product_id = $product->id;				
+					$new_main_photo->type = "main_photo";
+					$new_main_photo->save();
+					
+					$new_main_photo_id = $new_main_photo->id;
+					$destinationPath .= $new_main_photo_id;
+					$destinationPath .= "/";
+					if(!file_exists($destinationPath))
+					{
+						File::makeDirectory($destinationPath, $mode = 0777, true, true);
+						$uploadSuccess = $file->move($destinationPath, $fileName);
+						$new_main_photo->photo_path = $destinationPath.$fileName;
+						$new_main_photo->save();
+					}
+					else
+					{
+						$uploadSuccess = $file->move($destinationPath, $fileName);
+						$new_main_photo->photo_path = $destinationPath.$fileName;
+						$new_main_photo->save();
+					}
+				}
+				if($other_photos != "")
+				{
+					foreach($other_photos as $key)				
+					{
+						$file = Input::file($key);
+						$destinationPath = "assets/file_upload/gallery/";
+						$fileName = $file->getClientOriginalName();
+						
+						$new_other_photos = new Gallery();
+						$new_other_photos->product_id = $product->id;					
+						$new_other_photos->type = "other_photos";
+						$new_other_photos->save();
+						
+						$new_other_photos_id = $new_other_photos->id;
+						$destinationPath .= $new_other_photos_id;
+						$destinationPath .= "/";
+						if(!file_exists($destinationPath))
+						{
+							File::makeDirectory($destinationPath, $mode = 0777, true, true);
+							$uploadSuccess = $file->move($destinationPath, $fileName);
+							$new_other_photos->photo_path = $destinationPath.$fileName;
+							$new_other_photos->save();
+						}
+						else
+						{
+							$uploadSuccess = $file->move($destinationPath, $fileName);
+							$new_other_photos->photo_path = $destinationPath.$fileName;
+							$new_other_photos->save();
+						}
+					}
+				}			
+				$respond = array('code'=>'204','status' => 'No Content');
+			} catch (Exception $e) {
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
+		}
+		return Response::json($respond);
+	}
+	*/
+	
 	public function updatePromotionId($id, $new_promotion_id)
 	{
 		$respond = array();
