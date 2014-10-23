@@ -6,62 +6,213 @@
 			
 				<div class="s_title_n_control">
 					<h3 style="float: left;">
-						CMS
+						Welcome To Dashboard
 					</h3>
 				</div>
 				<span class="clearfix"></span>
 				<hr></hr>
 				
 				<div>
-					<ul class="pagination">
-					  <li><a href="#">&laquo;</a></li>
-					  <li><a href="#">1</a></li>
-					  <li><a href="#">2</a></li>
-					  <li><a href="#">3</a></li>
-					  <li><a href="#">4</a></li>
-					  <li><a href="#">5</a></li>
-					  <li><a href="#">&raquo;</a></li>
-					</ul>
-					<button class="btn btn-success" style="float: right; margin-top: 20px;"  data-toggle="modal" data-target=".pop_up_add_tax">+ Add New Tax</button>
-					<table class="table table-striped table-hover ">
-						<thead class="table-bordered">
-							<tr>
-								<th class="table-bordered">
-									<a href="javascript:void(0)">Name</a>
-									<a href="javascript:void(0)">
-									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
-									</a>
-								</th>
-								<th class="table-bordered">
-									
-								</th>
-						</thead>
-						<thead>
-							<tr>
-								<td><input type="text" class="form-control input-sm"></td>
-								
-								<td width=""><a class="btn btn-primary btn-xs">Filter</a></td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Header Title</td>
-								
-								<td>
-									<button class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_company_info">Edit</button>
-									<!-- Button trigger modal class ".alertYesNo" -->
-								</td>
-							</tr> 
-							<tr>
-								<td>SEO</td>
-								
-								<td>
-									<button class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_seo">Edit</button>
-									<!-- Button trigger modal class ".alertYesNo" -->
-								</td>
-							</tr> 
-						</tbody>
-					</table>
+					<div class="col-lg-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">Penjualan Bulan Ini</h3>
+							</div>
+							<div class="panel-body">
+							 <style type="text/css">
+							${demo.css}
+							</style>
+							<script type="text/javascript">
+							$(function () {
+
+						    // Get the CSV and create the chart
+						    $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=analytics.csv&callback=?', function (csv) {
+
+						    	$('#container').highcharts({
+
+						    		data: {
+						    			csv: csv
+						    		},
+
+						    		title: {
+						    			text: 'Kurva Penjualan'
+						    		},
+
+						    		subtitle: {
+						    			text: ''
+						    		},
+
+						    		xAxis: {
+						                tickInterval: 7 * 24 * 3600 * 1000, // one week
+						                tickWidth: 0,
+						                gridLineWidth: 1,
+						                labels: {
+						                	align: 'left',
+						                	x: 3,
+						                	y: -3
+						                }
+						            },
+
+						            yAxis: [{ // left y axis
+						            	title: {
+						            		text: null
+						            	},
+						            	labels: {
+						            		align: 'left',
+						            		x: 3,
+						            		y: 16,
+						            		format: '{value:.,0f}'
+						            	},
+						            	showFirstLabel: false
+						            }, { // right y axis
+						            	linkedTo: 0,
+						            	gridLineWidth: 0,
+						            	opposite: true,
+						            	title: {
+						            		text: null
+						            	},
+						            	labels: {
+						            		align: 'right',
+						            		x: -3,
+						            		y: 16,
+						            		format: '{value:.,0f}'
+						            	},
+						            	showFirstLabel: false
+						            }],
+
+						            legend: {
+						            	align: 'left',
+						            	verticalAlign: 'top',
+						            	y: 20,
+						            	floating: true,
+						            	borderWidth: 0
+						            },
+
+						            tooltip: {
+						            	shared: true,
+						            	crosshairs: true
+						            },
+
+						            plotOptions: {
+						            	series: {
+						            		cursor: 'pointer',
+						            		point: {
+						            			events: {
+						            				click: function (e) {
+						            					hs.htmlExpand(null, {
+						            						pageOrigin: {
+						            							x: e.pageX,
+						            							y: e.pageY
+						            						},
+						            						headingText: this.series.name,
+						            						maincontentText: Highcharts.dateFormat('%A, %b %e, %Y', this.x) + ':<br/> ' +
+						            						this.y + ' visits',
+						            						width: 200
+						            					});
+						            				}
+						            			}
+						            		},
+						            		marker: {
+						            			lineWidth: 1
+						            		}
+						            	}
+						            },
+
+						            series: [{
+						            	name: 'All visits',
+						            	lineWidth: 4,
+						            	marker: {
+						            		radius: 4
+						            	}
+						            }, {
+						            	name: 'New visitors'
+						            }]
+						        });
+							});
+
+							});
+
+
+							</script>
+
+							<script src="{{ asset('assets/js/highcharts4/js/highcharts.js') }}"></script>
+							<script src="{{ asset('assets/js/highcharts4/js/modules/data.js') }}"></script>
+							<script src="{{ asset('assets/js/highcharts4/js/modules/exporting.js') }}"></script>
+
+							<!-- Additional files for the Highslide popup effect -->
+							<script type="text/javascript" src="http://www.highcharts.com/media/com_demo/highslide-full.min.js"></script>
+							<script type="text/javascript" src="http://www.highcharts.com/media/com_demo/highslide.config.js" charset="utf-8"></script>
+							<link rel="stylesheet" type="text/css" href="http://www.highcharts.com/media/com_demo/highslide.css" />
+
+							<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="panel panel-default">
+						  <div class="panel-heading">
+						    <h3 class="panel-title">Top 10 Products</h3>
+						  </div>
+						  <div class="panel-body">
+						   	<table class="table">
+						   		<thead>
+						   			<tr>
+						   				<th>
+						   					Nama Produk
+						   				</th>
+						   			</tr>
+						   		</thead>
+						   		<tbody>
+						   			<?php
+						   				for($i = 0; $i < 10; $i++){
+				   					?>
+						   			<tr>
+						   				<td>
+						   					Nama Produk
+						   				</td>
+						   			</tr>
+				   					<?php
+						   				}
+						   			?>
+						   		</tbody>
+						   	</table>
+						  </div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="panel panel-default">
+						  <div class="panel-heading">
+						    <h3 class="panel-title">Top 10 Buyers</h3>
+						  </div>
+						  <div class="panel-body">
+						   	<table class="table">
+						   		<thead>
+						   			<tr>
+						   				<th>
+						   					Nama Produk
+						   				</th>
+						   			</tr>
+						   		</thead>
+						   		<tbody>
+						   			<?php
+						   				for($i = 0; $i < 10; $i++){
+				   					?>
+						   			<tr>
+						   				<td>
+						   					Nama Orang
+						   				</td>
+						   			</tr>
+
+				   					<?php
+						   				}
+						   			?>
+						   		</tbody>
+						   	</table>
+						  </div>
+						</div>
+					</div>
+
 				</div>
 				
 			</div>
