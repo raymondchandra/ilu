@@ -15,20 +15,12 @@
 			<hr></hr>
 
 			<div>
-				<ul class="pagination">
-					<li><a href="#">&laquo;</a></li>
-					<li><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
-					<li><a href="#">&raquo;</a></li>
-				</ul>
+				{{$hasil->links()}}
 				<table class="table table-striped table-hover ">
 					<thead class="table-bordered">
 						<tr>
 							<th class="table-bordered">
-								<a href="javascript:void(0)">Shipment ID</a>
+								<a href="javascript:void(0)">Nomor Pengiriman</a>
 								<a href="javascript:void(0)">
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 								</a>
@@ -80,17 +72,14 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php 
-							for ($i=0; $i<=30; $i++) {
-								?>
+							@foreach($hasil as $key)
 								<tr> 
-
-									<td>987JHJ8969</td>
-									<td>JNE</td>
-									<td>Jl. Bandung Barat Banget No. 99</td>
-									<td>Ashshiddiq Wangsaatmadja</td>
-									<td>IDR 20.000</td>
-									<td>Pending</td>
+									<td>{{$key->number}}</td>
+									<td>{{$key->courier}}</td>
+									<td>{{$key->destination}}</td>
+									<td>{{$key->nama}}</td>
+									<td>{{$key->price}}</td>
+									<td>{{$key->status}}</td>
 
 									<td>
 										<button class="btn btn-info btn-xs" data-toggle="modal" data-target=".pop_up_view_shipping">View</button>
@@ -98,10 +87,7 @@
 										<!-- <button class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</button> -->
 									</td>
 								</tr> 
-								<?php
-							} 
-							?>
-							
+							@endforeach
 						</tbody>
 					</table>
 				</div>

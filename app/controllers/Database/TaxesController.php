@@ -16,6 +16,22 @@ class TaxesController extends \BaseController {
 		return View::make('pages.admin.tax.manage_tax',compact('datas'));				
 	}
 
+	// public function view_main_taxNameAsc()
+	// {
+	// }
+	
+	// public function view_main_taxNameDesc()
+	// {
+	// }
+	
+	// public function view_main_taxAmountAsc()
+	// {
+	// }
+	
+	// public function view_main_taxAmountDesc()
+	// {
+	// }
+	
 	public function view_detail_tax($id)
 	{
 		$json = json_decode($this->getById($id)->getContent());
@@ -25,6 +41,43 @@ class TaxesController extends \BaseController {
 	// public function view_search_tax()
 	// {
 	// }
+	
+	public function view_search_tax()
+	{				
+		$json_data = Input::get('json_data');
+		$json = json_decode($json_data);
+						
+		$name = $json->{'name'};
+		$amount = $json->{'amount'};
+		
+		if($amount == ""){
+			$amount = -1;
+		}
+		
+		$input = array(				
+				'name' => $name,
+				'amount' => $amount
+		);
+		
+		$tax_json = $this->searchTax($input);		
+		$decode = json_decode($tax_json->getContent());
+		if($decode->code==404)
+		{
+			//not found
+			$datas = null;
+		}
+		else
+		{		
+			$temp = json_decode($tax_json->getContent())->{'messages'};					
+			$result = array();
+			foreach($temp as $key)						
+			{
+				$result[] = $key;
+			}
+			$datas = $result;			
+		}						
+		return $datas;
+	}		
 	
 	public function addTax()
 	{
@@ -200,6 +253,7 @@ class TaxesController extends \BaseController {
 		{
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$tax);
 		}
+		return Response::json($respond);
 	}
 	
 	public function searchTaxSortedNameAsc($input)
@@ -217,6 +271,7 @@ class TaxesController extends \BaseController {
 		{
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$tax);
 		}
+		return Response::json($respond);
 	}
 	
 	public function searchTaxSortedNameDesc($input)
@@ -234,6 +289,7 @@ class TaxesController extends \BaseController {
 		{
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$tax);
 		}
+		return Response::json($respond);
 	}
 	
 	public function searchTaxSortedAmountAsc($input)
@@ -251,6 +307,7 @@ class TaxesController extends \BaseController {
 		{
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$tax);
 		}
+		return Response::json($respond);
 	}
 	
 	public function searchTaxSortedAmountDesc($input)
@@ -268,6 +325,7 @@ class TaxesController extends \BaseController {
 		{
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$tax);
 		}
+		return Response::json($respond);
 	}
 	
 	public function getById($id)

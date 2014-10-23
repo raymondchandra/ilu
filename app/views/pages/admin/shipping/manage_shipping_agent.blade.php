@@ -15,15 +15,7 @@
 			<hr></hr>
 
 			<div>
-				<ul class="pagination">
-					<li><a href="#">&laquo;</a></li>
-					<li><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
-					<li><a href="#">&raquo;</a></li>
-				</ul>
+				{{$hasil->links()}}
 				<button class="btn btn-success" style="float: right; margin-top: 20px;"  data-toggle="modal" data-target=".pop_up_add_shipping_agent">+ Add New Kurir</button>
 
 				<table class="table table-striped table-hover ">
@@ -68,25 +60,21 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php 
-							for ($i=0; $i<=30; $i++) {
-								?>
+							@foreach($hasil as $key)
 								<tr> 
-
-									<td>987JHJ8969</td>
-									<td>JNE</td>
-									<td>Jl. Bandung Barat Banget No. 99</td>
-									<td>Ashshiddiq Wangsaatmadja</td>
+									<td>{{$key->id}}</td>
+									<td>{{$key->courier}}</td>
+									<td>{{$key->destination}}</td>
+									<td>{{$key->price}}</td>
 
 									<td>
-										<button class="btn btn-info btn-xs" data-toggle="modal" data-target=".pop_up_view_shipping_agent">View</button>
+										<input type="hidden" value="{{$key->id}}">
+										<button class="btn btn-info btn-xs viewShippingAgent" data-toggle="modal" data-target=".pop_up_view_shipping_agent">View</button>
 										<!-- Button trigger modal class ".alertYesNo" -->
 										<button class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</button>
 									</td>
-								</tr> 
-								<?php
-							} 
-							?>
+								</tr>
+							@endforeach
 							
 						</tbody>
 					</table>
@@ -100,4 +88,70 @@
 	@include('pages.admin.shipping.pop_up_view_shipping_agent')
 	@include('pages.admin.shipping.pop_up_add_shipping_agent')
 
+	<script>
+		$('body').on('click','.viewShippingAgent',function(){
+			$acc_id = $(this).prev().val();
+			$.ajax({
+					type: 'GET',
+					url: '{{URL::route('jeffry.getDetailShipAgent')}}',
+					data: {	
+						"id": $acc_id
+					},
+					success: function(response){
+						if(response['code'] == '404')
+						{
+							//$('#wishlistcontent').append("<td>agent tidak ditemukan</td>");
+						}
+						else
+						{
+							$('#idAgent').append(response['messages'].id);
+							$('#namaKurir').append(response['messages'].courier);
+							$('#tujuan').append(response['messages'].destination);
+							$('#dari').append(response['messages'].destination);
+							$('#harga_pengiriman').append(response['messages'].price);
+							
+						}
+					},error: function(xhr, textStatus, errorThrown){
+						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+						alert("responseText: "+xhr.responseText);
+					}
+				},'json');
+		});
+		//create edit price
+		$('body').on('click','.viewShippingAgent',function(){
+			$acc_id = $(this).prev().val();
+			$('#idAgent').html("");
+			$('#namaKurir').html("");
+			$('#tujuan').html("");
+			$('#dari').html("");
+			$('#harga_pengiriman').html("");
+			$.ajax({
+					type: 'GET',
+					url: '{{URL::route('jeffry.getDetailShipAgent')}}',
+					data: {	
+						"id": $acc_id
+					},
+					success: function(response){
+						if(response['code'] == '404')
+						{
+							//$('#wishlistcontent').append("<td>agent tidak ditemukan</td>");
+						}
+						else
+						{
+							
+							$('#idAgent').val(response['messages'].id);
+							$('#namaKurir').val(response['messages'].courier);
+							$('#tujuan').val(response['messages'].destination);
+							$('#dari').val(response['messages'].destination);
+							$('#harga_pengiriman').val(response['messages'].price);
+							
+						}
+					},error: function(xhr, textStatus, errorThrown){
+						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+						alert("responseText: "+xhr.responseText);
+					}
+				},'json');
+		});
+	</script>
+	
 	@stop

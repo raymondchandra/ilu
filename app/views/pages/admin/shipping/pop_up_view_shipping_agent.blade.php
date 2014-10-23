@@ -13,7 +13,7 @@
 							<div class="form-group" id="nama_promosi">
 								<label class="col-sm-4 control-label">ID Kurir</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">987JHJ8969</p>
+									<p class="form-control-static" id="idAgent"></p>
 								</div>
 							</div>
 
@@ -21,28 +21,28 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label">Nama Kurir</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">JNE</p>
+									<p class="form-control-static" id="namaKurir"></p>
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Dari Kota</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">Bandung, Jawa Barat</p>
+									<p class="form-control-static" id="dari"></p>
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Destinasi</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">Merauke, Irian Jaya</p>
+									<p class="form-control-static" id="tujuan"></p>
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Harga Pengiriman</label>
 								<div class="col-sm-5">
-									<p id="harga_pengiriman" class="form-control-static">200.000</p>
+									<p id="harga_pengiriman" class="form-control-static"></p>
 									<input id="harga_pengiriman_input" type="text" class="form-control hidden" value="">	
 								</div>
 								<div class="col-sm-3">
