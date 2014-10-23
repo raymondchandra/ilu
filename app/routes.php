@@ -16,6 +16,7 @@ echo $shipmentdata;
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
 
+
 Route::group(['before' => 'check_token'], function()
 {
 	//account
@@ -145,6 +146,7 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		Route::get('/product', ['as' => 'product' , 'uses' => 'ProductsController@view_main_product']);
 		Route::get('/product/{id}', ['as' => 'product_detail' , 'uses' => 'ProductsController@view_detail_product']);
 		
+		Route::get('/filter', ['as' => 'admin.filter' , 'uses' => 'ProductsController@coba_sort']);
 	
     //transaction
 
