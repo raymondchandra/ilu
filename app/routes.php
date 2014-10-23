@@ -283,6 +283,7 @@ Route::group(array('prefix' => 'test'), function()
 	Route::get('/get_trans_history', ['as'=>'david.getTransHistory','uses' => 'TransactionsController@getByAccountId']);
 	
 	Route::get('/get_profile_detail', ['as'=>'david.getProfDet','uses' => 'ProfilesController@myGetById']);
+   
     // Review
     Route::get('/manage_review', function()
 	{

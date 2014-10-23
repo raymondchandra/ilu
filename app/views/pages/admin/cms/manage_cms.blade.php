@@ -52,6 +52,14 @@
 									<!-- Button trigger modal class ".alertYesNo" -->
 								</td>
 							</tr> 
+							<tr>
+								<td>SEO</td>
+								
+								<td>
+									<button class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_seo">Edit</button>
+									<!-- Button trigger modal class ".alertYesNo" -->
+								</td>
+							</tr> 
 						</tbody>
 					</table>
 				</div>
@@ -62,5 +70,6 @@
 	
 	@include('includes.modals.alertYesNo')	
 	@include('pages.admin.cms.pop_up_edit_company_info')
+	@include('pages.admin.cms.pop_up_edit_seo')
 
 @stop
