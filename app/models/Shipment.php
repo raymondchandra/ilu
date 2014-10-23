@@ -1,7 +1,6 @@
 <?php
 
 class Shipment extends \Eloquent {
-
 	// Add your validation rules here
 	public static $rules = [
 		// 'title' => 'required'
@@ -14,7 +13,7 @@ class Shipment extends \Eloquent {
 	
 	public function transaction()
 	{
-		return $this->hasMany('Transaction');
+		return $this->hasOne('Transaction');
 	}
 
 	public function shipmentData()

@@ -211,4 +211,30 @@ class OrdersController extends \BaseController {
 	}
 	*/
 	
+	/**
+	 * Display top ten product
+	 *
+	 * @return Response
+	 */
+	public function getTopTenProduct(){
+		$respond = array();
+		$topTen = Order::join('prices','orders.price_id','=','prices.id')->select(array('prices.product_id', DB::raw('COUNT(prices.product_id*orders.quantity) as jumlah')))->groupBy('prices.product_id')->orderBy('jumlah','desc')->take(10)->get();
+		if (count($topTen) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			foreach($topTen as $key)
+			{
+				$product = new ProductsController();
+				$productTopTen = $product->getById($key->product_id);// here
+				$key->product = $productTopTen;
+			}
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$topTen);
+		}
+		return Response::json($respond);
+	}
+	
+	
 }

@@ -8,19 +8,10 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-	$acc_id = 1;
-		
-	$respond = array();
-	$logs = Logs::where('account_id','=',$acc_id)->where('description', 'LIKE', 'search%')->get();
-	if (count($logs) == 0)
-	{
-		$respond = array('code'=>'404','status' => 'Not Found');
-	}
-	else
-	{
-		$respond = array('code'=>'200','status' => 'OK','messages'=>$logs);
-	}
-	return Response::json($respond);
+
+		$shipmentdata = Shipmentdata::find('1');
+
+echo $shipmentdata;
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -174,6 +165,7 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
     	Route::post('/editSlideShow', ['as' => 'edit.slideshow' , 'uses' => 'GalleryController@update_slideshow']);
     	Route::delete('/slideshow/{id}', ['as' => 'delete.slideshow' , 'uses' => 'GalleryController@delete']);
     //seo
+		Route::get('/seo', ['as' => 'get.seo' , 'uses' => 'SeosController@getAll']);
     	Route::post('/seo', ['as' => 'add.seo' , 'uses' => 'SeosController@insert']);
     	Route::put('/seo/{id}', ['as' => 'edit.seo' , 'uses' => 'SeosController@updateFull']);
     	Route::delete('/seo/{id}', ['as' => 'delete.seo' , 'uses' => 'SeosController@delete']);
@@ -286,7 +278,7 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.customer.manage_customer');
 	});
 	
-	Route::get('/manage_customer_david', ['uses' => 'CustomerManagementController@view_cust_mgmt']);
+	Route::get('/manage_customer_david', ['as'=>'david.viewCustomerManagement','uses' => 'CustomerManagementController@view_cust_mgmt']);
 	
 	Route::get('/get_wishlist', ['as'=>'david.getWishlist','uses' => 'WishlistsController@getWishListByAccountId']);
 	
@@ -295,6 +287,15 @@ Route::group(array('prefix' => 'test'), function()
 	Route::get('/get_trans_history', ['as'=>'david.getTransHistory','uses' => 'TransactionsController@getByAccountId']);
 	
 	Route::get('/get_profile_detail', ['as'=>'david.getProfDet','uses' => 'ProfilesController@myGetById']);
+	
+	Route::get('/filter_cust_mgmt', ['as'=>'david.getFilteredCustomer','uses' => 'ProfilesController@myGetById']);
+	
+	Route::get('/manage_shipping_jeffry', ['uses' => 'ShippingManagementController@view_shipping_mgmt']);
+	
+	Route::get('/manage_shipping_agent_jeffry', ['uses' => 'ShippingAgentManagementController@view_shipping_agent_mgmt']);
+	
+	Route::get('/get_detail_shipment_agent', ['as'=>'jeffry.getDetailShipAgent','uses' => 'ShipmentDatasController@getById']);
+	
     // Review
     Route::get('/manage_review', function()
 	{

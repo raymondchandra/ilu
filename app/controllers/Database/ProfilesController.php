@@ -47,6 +47,167 @@ class ProfilesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	
+	public function getSortedAll($by, $type)
+	{
+		$respond = array();
+		$profile = Profile::orderBy($by, $type)->get();
+		if (count($profile) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$profile);
+		}
+		return Response::json($respond);
+	}
+	
+	public function getFilteredProfile($memberId, $fullName, $profileName, $email)
+	{
+		$isFirst = false;
+		
+		if($memberId != '-')
+		{
+			if($isFirst == false)
+			{
+				$profiles = Profile::where('member_id', 'LIKE', '%'.$memberId.'%');
+				$isFirst = true;
+			}
+		}
+		
+		if($fullName != '-')
+		{
+			if($isFirst == false)
+			{
+				$profiles = Profile::where('full_name', 'LIKE', '%'.$fullName.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$profiles = $profiles->where('full_name', 'LIKE', '%'.$fullName.'%');
+			}
+		}
+		
+		if($profileName != '-')
+		{
+			if($isFirst == false)
+			{
+				$profiles = Profile::where('name_in_profile', 'LIKE', '%'.$profileName.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$profiles = $profiles->where('name_in_profile', 'LIKE', '%'.$profileName.'%');
+			}
+		}
+		
+		if($email != '-')
+		{
+			if($isFirst == false)
+			{
+				$profiles = Profile::where('email', 'LIKE', '%'.$email.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$profiles = $profiles->where('email', 'LIKE', '%'.$email.'%');
+			}
+		}
+		
+		if($isFirst == false)
+		{
+			$profiles = Profile::all();
+			$isFirst = true;
+		}
+		else
+		{
+			$profiles = $profiles->get();
+		}
+		
+		if (count($profiles) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$profiles);
+		}
+		return Response::json($respond);
+	}
+	
+	public function getFilteredProfileSorted($memberId, $fullName, $profileName, $email, $sortBy, $sortType)
+	{
+		$isFirst = false;
+		
+		if($memberId != '-')
+		{
+			if($isFirst == false)
+			{
+				$profiles = Profile::where('member_id', 'LIKE', '%'.$memberId.'%');
+				$isFirst = true;
+			}
+		}
+		
+		if($fullName != '-')
+		{
+			if($isFirst == false)
+			{
+				$profiles = Profile::where('full_name', 'LIKE', '%'.$fullName.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$profiles = $profiles->where('full_name', 'LIKE', '%'.$fullName.'%');
+			}
+		}
+		
+		if($profileName != '-')
+		{
+			if($isFirst == false)
+			{
+				$profiles = Profile::where('name_in_profile', 'LIKE', '%'.$profileName.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$profiles = $profiles->where('name_in_profile', 'LIKE', '%'.$profileName.'%');
+			}
+		}
+		
+		if($email != '-')
+		{
+			if($isFirst == false)
+			{
+				$profiles = Profile::where('email', 'LIKE', '%'.$email.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$profiles = $profiles->where('email', 'LIKE', '%'.$email.'%');
+			}
+		}
+		
+		if($isFirst == false)
+		{
+			$profiles = Profile::orderBy($sortBy, $sortType)->get();
+			$isFirst = true;
+		}
+		else
+		{
+			$profiles = $profiles->orderBy($sortBy, $sortType)->get();
+		}
+		
+		if (count($profiles) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$profiles);
+		}
+		return Response::json($respond);
+	}
 
 	/**
 	 * Display the specified profile.
