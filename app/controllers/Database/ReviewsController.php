@@ -15,11 +15,198 @@ class ReviewsController extends \BaseController {
 					
 		return View::make('pages.admin.review.manage_review', compact('datas'));		
 	}
+	
+	public function view_main_reviewProductNoAsc()
+	{
+		$review_json = $this->getAllSortedProductNoAsc();		
+		$paginator = json_decode($review_json->getContent())->{'messages'};		
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+			$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);		
+					
+		return View::make('pages.admin.review.manage_review', compact('datas'));		
+	}
+	
+	public function view_main_reviewProductNoDesc()
+	{
+		$review_json = $this->getAllSortedProductNoDesc();		
+		$paginator = json_decode($review_json->getContent())->{'messages'};		
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+			$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);		
+					
+		return View::make('pages.admin.review.manage_review', compact('datas'));		
+	}
+	
+	public function view_main_reviewProductNameAsc()
+	{
+		$review_json = $this->getAllSortedProductNameAsc();		
+		$paginator = json_decode($review_json->getContent())->{'messages'};		
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+			$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);		
+					
+		return View::make('pages.admin.review.manage_review', compact('datas'));		
+	}
+	
+	public function view_main_reviewProductNameDesc()
+	{
+		$review_json = $this->getAllSortedProductNameDesc();		
+		$paginator = json_decode($review_json->getContent())->{'messages'};		
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+			$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);		
+					
+		return View::make('pages.admin.review.manage_review', compact('datas'));		
+	}
+	
+	public function view_main_reviewTextAsc()
+	{
+		$review_json = $this->getAllSortedTextAsc();		
+		$paginator = json_decode($review_json->getContent())->{'messages'};		
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+			$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);		
+					
+		return View::make('pages.admin.review.manage_review', compact('datas'));		
+	}
 
+	public function view_main_reviewTextDesc()
+	{
+		$review_json = $this->getAllSortedTextDesc();		
+		$paginator = json_decode($review_json->getContent())->{'messages'};		
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+			$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);		
+					
+		return View::make('pages.admin.review.manage_review', compact('datas'));		
+	}
+	
+	public function view_main_reviewRatingAsc()
+	{
+		$review_json = $this->getAllSortedRatingAsc();		
+		$paginator = json_decode($review_json->getContent())->{'messages'};		
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+			$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);		
+					
+		return View::make('pages.admin.review.manage_review', compact('datas'));		
+	}
+	
+	public function view_main_reviewRatingDesc()
+	{
+		$review_json = $this->getAllSortedRatingDesc();		
+		$paginator = json_decode($review_json->getContent())->{'messages'};		
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+			$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);		
+					
+		return View::make('pages.admin.review.manage_review', compact('datas'));		
+	}
+	
+	public function view_main_reviewApprovedAsc()
+	{
+		$review_json = $this->getAllSortedApprovedAsc();		
+		$paginator = json_decode($review_json->getContent())->{'messages'};		
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+			$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);		
+					
+		return View::make('pages.admin.review.manage_review', compact('datas'));		
+	}
+	
+	public function view_main_reviewApprovedDesc()
+	{
+		$review_json = $this->getAllSortedApprovedDesc();		
+		$paginator = json_decode($review_json->getContent())->{'messages'};		
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+			$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);		
+					
+		return View::make('pages.admin.review.manage_review', compact('datas'));		
+	}
+	
 	public function view_detail_review($id)
 	{
 		$json = json_decode($this->getById($id)->getContent());
 		return json_encode($json);
+	}
+		
+	public function view_search_review()
+	{
+		$json_data = Input::get('json_data');
+		$json = json_decode($json_data);
+				
+		$product_no = $json->{'product_no'};		
+		$product_name = $json->{'product_name'};		
+		$text = $json->{'text'};		
+		$rating = $json->{'rating'};		
+		$approved = $json->{'approved'};		
+		
+		if($rating == ""){
+			$rating = -1;
+		}
+		
+		if($approved == ""){
+			$approved = -1;
+		}
+		
+		$input = array(
+				'product_no' => $product_no,
+				'product_name' => $product_name,
+				'text' => $text,
+				'rating' => $rating,
+				'approved' => $approved
+		);
+		
+		$review_json = $this->searchReview($input);		
+		$decode = json_decode($review_json->getContent());
+		if($decode->code==404)
+		{
+			//not found
+			$datas = null;
+		}
+		else
+		{		
+			$temp = json_decode($review_json->getContent())->{'messages'};					
+			$result = array();
+			foreach($temp as $key)						
+			{
+				$result[] = $key;
+			}
+			$datas = $result;			
+		}						
+		return $datas;
 	}
 	
 	// public function w_insert()
