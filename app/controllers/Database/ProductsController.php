@@ -3,6 +3,7 @@
 class ProductsController extends \BaseController {
 	
 	public function view_main_product(){
+		
 		$product_json = $this->getAll();
 		$paginator = json_decode($product_json->getContent())->{'messages'};
 		$perPage = 5;   
@@ -11,9 +12,98 @@ class ProductsController extends \BaseController {
 			$offset = ($page * $perPage) - $perPage;
 		$articles = array_slice($paginator,$offset,$perPage);
 		$datas = Paginator::make($articles, count($paginator), $perPage);
-		
 		//return $products;
 		return View::make('pages.admin.product.manage_product',compact('datas'));
+	}
+	
+	public function coba_sort(){
+		$id=Input::get('id');
+		$product_id=Input::get('product_id');
+		$name=Input::get('name');
+		$category=Input::get('category');
+		$promotion=Input::get('promotion');
+		$order=Input::get('sort');
+		$ascdesc = Input::get('asc');
+		
+		$product = Product::where('product_no','LIKE', $product_id.'%')->where('name','LIKE', $name.'%')->orderBy($order,$ascdesc)->get();
+		
+		foreach($product as $key)
+		{	
+			$cat_name = Category::where('id','=',$key->category_id)->first()->name;								
+			
+			//add category_name
+			$key->category_name = $cat_name;
+			
+			if($key->promotion_id == null) //if($key->promotion_id == -1)
+			{
+				//no promotion
+				$promo_amount = 0;
+				$promo_expired = 0;						
+			}	
+			else
+			{
+				//promotion
+				$promo_amount = Promotion::where('id','=',$key->promotion_id)->first()->amount;
+				$promo_expired = Promotion::where('id','=',$key->promotion_id)->first()->expired;					
+			}						
+				//add promotion_amount, promotion_expired
+			$key->promotion_amount = $promo_amount;
+			$key->promotion_expired = $promo_expired;
+			
+			$prices = Price::where('product_id','=',$key->id)->get();
+				
+				foreach($prices as $key_prices)
+				{
+					$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+					$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
+					//add attribute name
+					$key_prices->attr_name = $attr_name;										
+					//add price with tax
+					$key_prices->price_with_tax = ($key_prices->amount + ($key_prices->amount * $tax_amount / 100));
+					//add price with tax and promotion
+					$key_prices->price_with_tax_promotion = ($key_prices->price_with_tax - $promo_amount);
+				}
+			
+			//add prices by attribute
+			$key->prices = $prices;
+			
+			$main_photo = Gallery::where('product_id','=',$key->id)->where('type','=','main_photo')->first();						
+			$other_photos = Gallery::where('product_id','=',$key->id)->where('type','=','other_photos')->get();
+			
+			//add main_photo
+			if(count($main_photo) == 0)
+			{
+				$key->main_photo = "";
+			}
+			else
+			{					
+				$key->main_photo = $main_photo->photo_path;
+			}
+							
+			//add other_photo
+			if(count($other_photos) == 0)
+			{
+				$key->other_photos = "";
+			}
+			else
+			{
+				$key->other_photos = $other_photos->photo_path;
+			}
+		}
+		
+		$product = $product->toArray();
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($product) or $page < 1) { $page = 1; }
+		$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($product,$offset,$perPage);
+		$datas = Paginator::make($articles, count($product), $perPage);
+		$datas->setBaseUrl('product');
+		$datas->appends(array('sort' => $order));
+		$datas->appends(array('no_product' => $product_id));
+		$datas->appends(array('name_product' => $name));
+		$links = $datas ->links();
+		return json_encode(array( 'datas' => $datas->getCollection()->toArray(), 'links' =>(string)$links ));
 	}
 	
 	public function view_detail_product($id){
