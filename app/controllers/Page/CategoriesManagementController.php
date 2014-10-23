@@ -8,6 +8,7 @@ class CategoriesManagementController extends \BaseController
 		$sortType = Input::get('order','none');
 		$filtered = Input::get('filtered','0');			
 		$categoryController = new CategoriesController();
+		$list_category = $categoryController->getListCategory();
 				
 		if($filtered == '0')
 		{					
@@ -43,7 +44,7 @@ class CategoriesManagementController extends \BaseController
 				$categories = $json;
 			}
 			
-			return View::make('pages.admin.category.manage_category', compact('categories','sortBy','sortType','page','filtered'));
+			return View::make('pages.admin.category.manage_category', compact('categories','list_category','sortBy','sortType','page','filtered'));
 		}
 		else
 		{
@@ -82,7 +83,62 @@ class CategoriesManagementController extends \BaseController
 			{				
 				$categories = null;
 			}
-			return View::make('pages.admin.category.manage_category', compact('categories','filtered','id','name','parent_name','sortBy','sortType'));
+			return View::make('pages.admin.category.manage_category', compact('categories','list_category','filtered','id','name','parent_name','sortBy','sortType'));
 		}	
+	}
+	
+	public function view_detail_category($id)
+	{
+		$categoryController = new CategoriesController();
+		$json = json_decode($categoryController->getById($id)->getContent());
+		return json_encode($json);
+	}
+	
+	public function addCategory()
+	{
+		$json_data = Input::get('json_data');
+		$json = json_decode($json_data);
+		
+		$name = $json->{'name'};
+		$parent_category = $json->{'parent_category'};
+		$deleted = $json->{'deleted'};
+		
+		$input = array(
+				'name' => $name,
+				'parent_category' => $parent_category,
+				'deleted' => $deleted
+		);
+		
+		$categoryController = new CategoriesController();
+		$json = json_decode($categoryController->insert($input)->getContent());
+		return json_encode($json);
+	}
+	
+	public function editFull()
+	{
+		$json_data = Input::get('json_data');		
+		$json = json_decode($json_data);				
+		
+		$id = $json->{'id'};
+		$new_name = $json->{'name'};
+		$new_parent_category = $json->{'parent_category'};
+		
+		$categoryController = new CategoriesController();
+		$json = json_decode($categoryController->updateFull($id, $new_name, $new_parent_category)->getContent());
+		
+		return json_encode($json);
+	}
+	
+	public function deleteCategory()
+	{
+		$json_data = Input::get('json_data');
+		$json = json_decode($json_data);
+		
+		$id = $json->{'id'};		
+		$new_deleted = $json->{'deleted'};
+		
+		$categoryController = new CategoriesController();
+		$json = json_decode($categoryController->updateDeleted($id, $new_deleted)->getContent());
+		return json_encode($json);
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 
 class AttributesController extends \BaseController {
-		
+			
 	// input : name, deleted	
 	public function insert($input)
 	{

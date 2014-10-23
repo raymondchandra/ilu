@@ -37,6 +37,7 @@ return array(
     'CartTableSeeder' => $baseDir . '/app/database/seeds/CartTableSeeder.php',
     'CartsController' => $baseDir . '/app/controllers/Database/CartsController.php',
     'CategoriesController' => $baseDir . '/app/controllers/Database/CategoriesController.php',
+    'CategoriesManagementController' => $baseDir . '/app/controllers/Page/CategoriesManagementController.php',
     'Category' => $baseDir . '/app/models/Category.php',
     'CategoryTableSeeder' => $baseDir . '/app/database/seeds/CategoryTableSeeder.php',
     'ClassPreloader\\Application' => $vendorDir . '/classpreloader/classpreloader/src/ClassPreloader/Application.php',

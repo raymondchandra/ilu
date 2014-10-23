@@ -10,7 +10,6 @@
 					<div class="row">
 						<div class="col-sm-12"><!-- col-sm-5 -->
 
-
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Nama Attribute</label>
 								<div class="col-sm-3">

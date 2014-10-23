@@ -13,30 +13,22 @@
 						<div class="col-sm-6">
 							<input id="edit_name_input" type="text" class="form-control">			
 						</div>
+						<div class="col-sm-3">
+						<span id="alert_edit_nama" class="btn btn-danger hidden">Nama category ini sudah ada</span>	
+					</div>
 					</div>
 
 					<div class="form-group">
 						<label for="inputPassword3" class="col-sm-3 control-label">Choose Parent</label>
 						<div class="col-sm-6">
-							{{Form::select('edit_parent_category', $list_category, '', array('id'=>'edit_parent_category_input'))}}
-							<!--<select class="form-control">
-								<option value="">Category</option>
-								<option value="">Category</option>
-								<option value="">Category</option>
-								<option value="">Category</option>
-								<option value="">Category</option>
-								<option value="">Category</option>
-								<option value="">Category</option>
-								<option value="">Category</option>
-								<option value="">Category</option>
-							</select>-->
+							{{Form::select('edit_parent_category', $list_category, '', array('id'=>'edit_parent_category_input'))}}							
 						</div>
 					</div>
-					
+										
 
 				</div>
 				<div class="modal-footer">
-					<button id="edit_category" type="button" class="btn btn-success" data-dismiss="modal">Ya</button>
+					<button id="edit_category" type="button" class="btn btn-success">Ya</button>
 					<button type="button" class="btn btn-primary" data-dismiss="modal">Tidak</button>
 				</div>
 			</form>
@@ -45,9 +37,9 @@
 </div>
 
 <script>
-	$('body').on('click', '#edit_category', function(){		
+	$('body').on('click', '#edit_category', function(){			
 		$edit_name = $('#edit_name_input').val();
-		$edit_parent_category = $('#edit_parent_category_input').val();
+		$edit_parent_category = $('#edit_parent_category_input').val();		
 		$data = {
 			'id' : $id,
 			'name' : $edit_name,
@@ -60,11 +52,16 @@
 			data : {
 				'json_data' : json_data
 			},
-			success: function(response){
-				result = JSON.parse(response);
-				if(result.code==204){
+			success: function(response){	
+				result = JSON.parse(response);				
+				if(result.code==204){					
 					alert(result.status);
 					location.reload();
+				}
+				else if(result.code==400)
+				{
+					alert(result.status);
+					$('#alert_edit_nama').removeClass('hidden');
 				}
 				else
 				{
