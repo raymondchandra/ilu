@@ -17,6 +17,7 @@ return array(
     'Attribute' => $baseDir . '/app/models/Attribute.php',
     'AttributeTableSeeder' => $baseDir . '/app/database/seeds/AttributeTableSeeder.php',
     'AttributesController' => $baseDir . '/app/controllers/Database/AttributesController.php',
+    'AttributesManagementController' => $baseDir . '/app/controllers/Page/AttributesManagementController.php',
     'Bank' => $baseDir . '/app/models/Bank.php',
     'BankTableSeeder' => $baseDir . '/app/database/seeds/BankTableSeeder.php',
     'BanksController' => $baseDir . '/app/controllers/Database/BanksController.php',

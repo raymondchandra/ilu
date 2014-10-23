@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/tes', 'CategoriesController@getListCategory');
+Route::get('/tes', 'CategoriesController@test');
 
 Route::get('/tesview', function (){
 	return View::make('pages.admin.product.manage_product');
@@ -89,21 +89,21 @@ Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
 
 Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 {
-	//attribute
-		Route::get('/attribute', ['as' => 'attribute', 'uses' => 'AttributesController@view_main_attribute']);
-			// Route::get('/attributeIdAsc', ['as' => 'attributeIdAsc', 'uses' => 'AttributesController@view_main_attributeIdAsc']);
-			// Route::get('/attributeIdDesc', ['as' => 'attributeIdDesc', 'uses' => 'AttributesController@view_main_attributeIdDesc']);
-			// Route::get('/attributeNameAsc', ['as' => 'attributeNameAsc', 'uses' => 'AttributesController@view_main_attributeNameAsc']);
-			// Route::get('/attributeNameDesc', ['as' => 'attributeNameDesc', 'uses' => 'AttributesController@view_main_attributeNameDesc']);
-		Route::get('/attribute/{id}', ['as' => 'attribute_detail', 'uses' => 'AttributesController@view_detail_attribute']);
-		Route::get('/searchAttribute', ['as' => 'searchAttribute', 'uses' => 'AttributesController@view_search_attribute']);		
-			// Route::get('/searchAttributeIdAsc', ['as' => 'searchAttributeIdAsc', 'uses' => 'AttributesController@view_search_attribute']);
-			// Route::get('/searchAttributeIdDesc', ['as' => 'searchAttributeIdDesc', 'uses' => 'AttributesController@view_search_attribute']);
-			// Route::get('/searchAttributeNameAsc', ['as' => 'searchAttributeNameAsc', 'uses' => 'AttributesController@view_search_attribute']);
-			// Route::get('/searchAttributeNameDesc', ['as' => 'searchAttributeNameDesc', 'uses' => 'AttributesController@view_search_attribute']);
-		Route::post('/attribute/editName', ['as' => 'attribute.editName', 'uses' => 'AttributesController@editName']);
-		Route::post('/attribute/addAttribute', ['as' => 'attribute.addAttribute', 'uses' => 'AttributesController@addAttribute']);
-		// Route::delete();
+
+	//-------------------------------------------ATTRIBUTE VIEW ADMIN-------------------------------------------		
+	Route::get('manage_attributes', ['as' => 'viewAttributesManagement', 'uses' => 'AttributesManagementController@view_admin_attribute']);
+	Route::get('/attribute/{id}', ['as' => 'attribute_detail', 'uses' => 'AttributesManagementController@view_detail_attribute']);
+	Route::post('/attribute/addAttribute', ['as' => 'attribute.addAttribute', 'uses' => 'AttributesManagementController@addAttribute']);
+	Route::post('/attribute/editName', ['as' => 'attribute.editName', 'uses' => 'AttributesManagementController@editName']);	
+	Route::post('/attribute/deleteAttribute', ['as' => 'attribute.deleteAttribute', 'uses' => 'AttributesManagementController@deleteAttribute']);	
+	
+	//-------------------------------------------CATEGORY VIEW ADMIN-------------------------------------------	
+	Route::get('manage_categories', ['as' => 'viewCategoriesManagement', 'uses' => 'CategoriesManagementController@view_admin_category']);
+	// Route::get('/category/{id}', ['as' => 'category_detail', 'uses' => 'CategoriesManagementController@view_detail_category']);
+	// Route::post('/category/addCategory', ['as' => 'category.addCategory', 'uses' => 'CategoriesManagementController@addCategory']);
+	// Route::post('/category/editFull', ['as' => 'category.editFull', 'uses' => 'CategoriesManagementController@editFull']);	
+	// Route::post('/category/deleteCategory', ['as' => 'category.deleteCategory', 'uses' => 'CategoriesManagementController@deleteCategory']);	
+
 	
 	//category 
 		Route::get('/category', ['as' => 'category', 'uses' => 'CategoriesController@view_main_category']);
@@ -113,10 +113,10 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 			// Route::get('/categoryNameDesc', ['as' => 'categoryNameDesc', 'uses' => 'CategoriesController@view_main_categoryNameDesc']);
 			// Route::get('/categoryParentNameAsc', ['as' => 'categoryParentNameAsc', 'uses' => 'CategoriesController@view_main_categoryParentNameAsc']);
 			// Route::get('/categoryParentNameDesc', ['as' => 'categoryParentNameDesc', 'uses' => 'CategoriesController@view_main_categoryParentNameDesc']);
-		Route::get('/category/{id}', ['as' => 'category_detail', 'uses' => 'CategoriesController@view_detail_category']);
-		Route::get('/searchCategory', ['as' => 'searchCategory', 'uses' => 'CategoriesController@view_search_category']);
-		Route::post('/category/editFull', ['as' => 'category.editFull', 'uses' => 'CategoriesController@editFull']);
-		Route::post('/category/addCategory', ['as' => 'category.addCategory', 'uses' => 'CategoriesController@addCategory']);
+		// Route::get('/category/{id}', ['as' => 'category_detail', 'uses' => 'CategoriesController@view_detail_category']);
+		// Route::get('/searchCategory', ['as' => 'searchCategory', 'uses' => 'CategoriesController@view_search_category']);
+		// Route::post('/category/editFull', ['as' => 'category.editFull', 'uses' => 'CategoriesController@editFull']);
+		// Route::post('/category/addCategory', ['as' => 'category.addCategory', 'uses' => 'CategoriesController@addCategory']);
 	
 	//review
 		Route::get('/review', ['as' => 'review', 'uses' => 'ReviewsController@view_main_review']);
@@ -276,7 +276,9 @@ Route::group(array('prefix' => 'test'), function()
     Route::get('/manage_customer', function()
 	{
 		return View::make('pages.admin.customer.manage_customer');
-	});
+	});	
+	
+	
 	
 	Route::get('/manage_customer_david', ['as'=>'david.viewCustomerManagement','uses' => 'CustomerManagementController@view_cust_mgmt']);
 	

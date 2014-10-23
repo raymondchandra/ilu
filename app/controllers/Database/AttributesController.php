@@ -1,162 +1,7 @@
 <?php
 
 class AttributesController extends \BaseController {
-
-	public function view_main_attribute()
-	{
-		$attribute_json = $this->getAll();
-		$paginator = json_decode($attribute_json->getContent())->{'messages'};
-		$perPage = 5;   
-		$page = Input::get('page', 1);
-		if ($page > count($paginator) or $page < 1) { $page = 1; }
-		$offset = ($page * $perPage) - $perPage;
-		$articles = array_slice($paginator,$offset,$perPage);
-		$datas = Paginator::make($articles, count($paginator), $perPage);
 		
-		return View::make('pages.admin.attribute.manage_attribute',compact('datas'));
-	}
-	
-	public function view_main_attributeIdAsc()
-	{
-		$attribute_json = $this->getAllSortedIdAsc();
-		$paginator = json_decode($attribute_json->getContent())->{'messages'};
-		$perPage = 5;   
-		$page = Input::get('page', 1);
-		if ($page > count($paginator) or $page < 1) { $page = 1; }
-			$offset = ($page * $perPage) - $perPage;
-		$articles = array_slice($paginator,$offset,$perPage);
-		$datas = Paginator::make($articles, count($paginator), $perPage);
-		
-		return View::make('pages.admin.attribute.manage_attribute',compact('datas'));
-	}
-	
-	public function view_main_attributeIdDesc()
-	{
-		$attribute_json = $this->getAllSortedIdDesc();
-		$paginator = json_decode($attribute_json->getContent())->{'messages'};
-		$perPage = 5;   
-		$page = Input::get('page', 1);
-		if ($page > count($paginator) or $page < 1) { $page = 1; }
-			$offset = ($page * $perPage) - $perPage;
-		$articles = array_slice($paginator,$offset,$perPage);
-		$datas = Paginator::make($articles, count($paginator), $perPage);
-		
-		return View::make('pages.admin.attribute.manage_attribute',compact('datas'));
-	}
-	
-	public function view_main_attributeNameAsc()
-	{
-		$attribute_json = $this->getAllSortedNameAsc();
-		$paginator = json_decode($attribute_json->getContent())->{'messages'};
-		$perPage = 5;   
-		$page = Input::get('page', 1);
-		if ($page > count($paginator) or $page < 1) { $page = 1; }
-			$offset = ($page * $perPage) - $perPage;
-		$articles = array_slice($paginator,$offset,$perPage);
-		$datas = Paginator::make($articles, count($paginator), $perPage);
-		
-		return View::make('pages.admin.attribute.manage_attribute',compact('datas'));
-	}
-	
-	public function view_main_attributeNameDesc()
-	{
-		$attribute_json = $this->getAllSortedNameDesc();
-		$paginator = json_decode($attribute_json->getContent())->{'messages'};
-		$perPage = 5;   
-		$page = Input::get('page', 1);
-		if ($page > count($paginator) or $page < 1) { $page = 1; }
-			$offset = ($page * $perPage) - $perPage;
-		$articles = array_slice($paginator,$offset,$perPage);
-		$datas = Paginator::make($articles, count($paginator), $perPage);
-		
-		return View::make('pages.admin.attribute.manage_attribute',compact('datas'));
-	}	
-	
-	public function view_detail_attribute($id)
-	{
-		$json = json_decode($this->getById($id)->getContent());
-		return json_encode($json);
-	}	
-	
-	public function view_search_attribute()
-	{				
-		$json_data = Input::get('json_data');
-		$json = json_decode($json_data);
-				
-		$id = $json->{'id'};		
-		$name = $json->{'name'};
-		
-		if($id == ""){
-			$id = -1;
-		}
-		
-		$input = array(
-				'id' => $id,
-				'name' => $name
-		);
-		
-		$attribute_json = $this->searchAttribute($input);		
-		$decode = json_decode($attribute_json->getContent());
-		if($decode->code==404)
-		{
-			//not found
-			$datas = null;
-		}
-		else
-		{		
-			$temp = json_decode($attribute_json->getContent())->{'messages'};					
-			$result = array();
-			foreach($temp as $key)						
-			{
-				$result[] = $key;
-			}
-			$datas = $result;			
-		}						
-		return $datas;
-	}		
-	
-	public function addAttribute()
-	{
-		$json_data = Input::get('json_data');
-		$json = json_decode($json_data);
-		
-		$name = $json->{'name'};
-		$deleted = $json->{'deleted'};
-		
-		$input = array(
-				'name' => $name,
-				'deleted' => $deleted
-		);
-		
-		$json = json_decode($this->insert($input)->getContent());
-		return json_encode($json);
-	}
-		
-	public function editName()
-	{		
-		$json_data = Input::get('json_data');		
-		$json = json_decode($json_data);
-		
-		$id = $json->{'id'};
-		$new_name = $json->{'new_name'};
-		
-		$json = json_decode($this->updateName($id, $new_name)->getContent());
-		return json_encode($json);
-	}
-	
-	// public function w_insert()
-	// {
-		// $json = Input::get('json_data');
-		// $decode = json_decode($json);
-		
-		// $name = $decode->{'name'};		
-		
-		// $input = array(
-					// 'name' => $name,
-					// 'deleted' => 0);
-		
-		// return $this->insert($input);
-	// }		
 	// input : name, deleted	
 	public function insert($input)
 	{
@@ -185,9 +30,10 @@ class AttributesController extends \BaseController {
 		return Response::json($respond);
 	}	
 		
+	//RETURN : id, name, deleted, created_at, updated_at	
 	public function getAll(){
 		$respond = array();
-		$attribute = Attribute::all();
+		$attribute = Attribute::where('deleted', '=', 0)->get();
 		if (count($attribute) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -198,7 +44,75 @@ class AttributesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	
+	//RETURN : id, name, deleted, created_at, updated_at	
+	//SORTED : id, name
+	public function getAllSorted($by, $type)
+	{
+		$respond = array();
+		$attribute = Attribute::where('deleted', '=', 0)->orderBy($by, $type)->get();
+		if (count($attribute) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
+		}
+		return Response::json($respond);
+	}
+	
+	//RETURN : id, name, deleted, created_at, updated_at	
+	//SEARCH : id, name
+	public function getFilteredAttribute($id, $name)
+	{		
+		$respond = array();		
+		$attribute = Attribute::where('name', 'LIKE', '%'.$name.'%');				
+		
+		if($id != -1)
+		{
+			$attribute = $attribute->where('id', '=', $id);
+		}
+		
+		$attribute = $attribute->where('deleted', '=', 0)->get();
+		if(count($attribute) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
+		}
+		return Response::json($respond);	
+	}		
+	
+	//RETURN : id, name, deleted, created_at, updated_at	
+	//SEARCH : id, name
+	//SORTED : id, name
+	public function getFilteredAttributeSorted($id, $name, $sortBy, $sortType)
+	{
+		$respond = array();		
+		$attribute = Attribute::where('name', 'LIKE', '%'.$name.'%');				
+		
+		if($id != -1)
+		{
+			$attribute = $attribute->where('id', '=', $id);
+		}
+		
+		$attribute = $attribute->where('deleted', '=', 0)->orderBy($sortBy, $sortType)->get();						
+		
+		if(count($attribute) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$attribute);
+		}
+		return Response::json($respond);	
+	}
 
+	/*
 	public function getAllSortedIdAsc(){
 		$respond = array();
 		$attribute = Attribute::orderBy('id')->get();
@@ -254,7 +168,9 @@ class AttributesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	*/
 	
+	/*
 	// asumsi :
 		// kalo field input integer ada yang kosong maka -1
 		// kalo field input string ada yang kosong maka dapetnya ""
@@ -376,6 +292,7 @@ class AttributesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	*/
 	
 	public function getById($id)
 	{
@@ -416,7 +333,17 @@ class AttributesController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
+		{						
+			$validator = Validator::make(
+				array('name' => $new_name),
+				array('name' => 'required|unique:attributes,name')
+			);
+			if ($validator->fails())
+			{
+				$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
+				return Response::json($respond);
+			}
+			
 			//edit value
 			$attribute->name = $new_name;
 			try {

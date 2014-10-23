@@ -2,6 +2,7 @@
 
 class CategoriesController extends \BaseController {
 		
+	/*
 	public function view_main_category()
 	{
 		$category_json = $this->getAll();
@@ -208,7 +209,9 @@ class CategoriesController extends \BaseController {
 					
 		// return $this->insert($input);
 	// }
-	// input : parent_category kalo kosong maka -1 atau null
+	*/
+		
+	// input : parent_category kalo kosong maka atau null
 	public function insert($input)
 	{
 		// $input = json_decode(Input::all());
@@ -238,6 +241,7 @@ class CategoriesController extends \BaseController {
 		return Response::json($respond);
 	}	
 	
+	/*
 	//reverse array
 	public function reverse($arr)
 	{
@@ -249,7 +253,7 @@ class CategoriesController extends \BaseController {
 			$lastIdx--;
 		}
 		return $reverse;
-	}
+	}	
 	
 	public function getListCategory()
 	{
@@ -263,6 +267,7 @@ class CategoriesController extends \BaseController {
 		}
 		return $arrCategory;
 	}
+	*/
 	
 	public function getAll(){
 		$respond = array();
@@ -523,7 +528,64 @@ class CategoriesController extends \BaseController {
 	}
 	
 	public function test()
-	{
+	{	
+		// $respond = array();				
+		// $category = Category::where('name', 'LIKE', '%'.$input['name'].'%');
+		// $category = Category::where('name', 'LIKE', '%'.''.'%');
+		
+		// if($input['id'] != -1)
+		// {
+			// $category = $category->where('id', '=', $input['id']);
+		// }
+		
+		// $category = $category->orderBy(Category::find())->get();
+		
+		/*
+		$category = DB::table('categories AS cat')
+						->where('cat.name', 'LIKE', '%aa%')
+						->leftJoin('categories AS par', 'cat.parent_category', '=', 'par.id')
+						->orderBy('par.name')
+						->get(array('cat.id','cat.name','cat.parent_category','cat.deleted','cat.created_at',
+								'cat.updated_at','par.name AS parent_name'));
+						// ->orderBy('cat.id', 'desc');
+		*/		
+		$category = Attribute::where('name', 'LIKE', '%'.''.'%')->where('id', '=', '1')->get();
+		
+		return $category;
+		// set parent name
+		// foreach($category as $key)
+		// {
+			// if($key->parent_category == -1 || $key->parent_category==null) // ga ada parent_category
+			// {
+				// $key->parent_name = "";
+			// }
+			// else
+			// {					
+				// $key->parent_name = Category::find($key->parent_category)->name;
+			// }				
+		// }
+		
+		// $result = array();
+		// search by parent_name		
+		// if($input['parent_name'] != "")
+		// {					
+			// foreach($category as $key)
+			// {
+				// $pos = strpos($key->parent_name, $input['parent_name']);
+				// if($pos !== false)
+				// {
+					// $result[] = $key;
+				// }
+			// }
+		// }
+		// else
+		// {
+			// $result = $category;
+		// }
+		
+		
+		
+		
 		// $bank = Bank::all();
 		// foreach($bank as $key)
 		// {
@@ -551,12 +613,12 @@ class CategoriesController extends \BaseController {
 		
 		// return $category;
 		
-		$input = array(
-				'name' => 'namaasdasd',
-				'amount' => 'amountasda');
-		$input['deleted'] = 'deleted';		
+		// $input = array(
+				// 'name' => 'namaasdasd',
+				// 'amount' => 'amountasda');
+		// $input['deleted'] = 'deleted';		
 		
-		return $input;
+		// return $input;
 	}
 	
 	/*

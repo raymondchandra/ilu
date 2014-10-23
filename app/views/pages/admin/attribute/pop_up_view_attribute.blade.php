@@ -50,6 +50,11 @@
 													alert(result.status);
 													location.reload();
 												}
+												else if(result.code==400)
+												{
+													alert(result.status);
+													$('#alert_edit_nama').removeClass('hidden');
+												}
 												else
 												{
 													alert(result.status);
@@ -57,7 +62,7 @@
 												}
 											},
 											error: function(jqXHR, textStatus, errorThrown){
-												alert(errorThrown);
+												alert(errorThrown);												
 											}
 										},'json');
 											
@@ -70,7 +75,7 @@
 									</script>
 								</div>
 								<div class="col-sm-3">
-									<span class="btn btn-danger">Nama attribute ini sudah ada</span>	
+									<span id="alert_edit_nama" class="btn btn-danger hidden">Nama attribute ini sudah ada</span>	
 								</div>
 							</div>
 						</div>
