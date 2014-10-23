@@ -17,6 +17,96 @@ class CategoriesController extends \BaseController {
 		return View::make('pages.admin.category.manage_category',compact('datas', 'list_category'));		
 	}
 	
+	public function view_main_categoryIdAsc()
+	{
+		$category_json = $this->getAllSortedIdAsc();
+		$paginator = json_decode($category_json->getContent())->{'messages'};
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+		$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);
+		$list_category = $this->getListCategory();
+		
+		return View::make('pages.admin.category.manage_category',compact('datas', 'list_category'));		
+	}
+	
+	public function view_main_categoryIdDesc()
+	{
+		$category_json = $this->getAllSortedIdDesc();
+		$paginator = json_decode($category_json->getContent())->{'messages'};
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+		$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);
+		$list_category = $this->getListCategory();
+		
+		return View::make('pages.admin.category.manage_category',compact('datas', 'list_category'));		
+	}
+	
+	public function view_main_categoryNameAsc()
+	{
+		$category_json = $this->getAllSortedNameAsc();
+		$paginator = json_decode($category_json->getContent())->{'messages'};
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+		$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);
+		$list_category = $this->getListCategory();
+		
+		return View::make('pages.admin.category.manage_category',compact('datas', 'list_category'));		
+	}
+	
+	public function view_main_categoryNameDesc()
+	{
+		$category_json = $this->getAllSortedNameDesc();
+		$paginator = json_decode($category_json->getContent())->{'messages'};
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+		$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);
+		$list_category = $this->getListCategory();
+		
+		return View::make('pages.admin.category.manage_category',compact('datas', 'list_category'));		
+	}
+	
+	public function view_main_categoryParentNameAsc()
+	{
+		$category_json = $this->getAllSortedParentNameAsc();
+		$paginator = json_decode($category_json->getContent())->{'messages'};
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+		$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);
+		$list_category = $this->getListCategory();
+		
+		return View::make('pages.admin.category.manage_category',compact('datas', 'list_category'));		
+	}
+	
+	public function view_main_categoryParentNameDesc()
+	{
+		$category_json = $this->getAllSortedParentNameDesc();
+		$paginator = json_decode($category_json->getContent())->{'messages'};
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+		$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);
+		$list_category = $this->getListCategory();
+		
+		return View::make('pages.admin.category.manage_category',compact('datas', 'list_category'));		
+	}
+	
 	public function view_detail_category($id)
 	{
 		$json = json_decode($this->getById($id)->getContent());
@@ -24,7 +114,7 @@ class CategoriesController extends \BaseController {
 	}
 	
 	public function view_search_category()
-	{
+	{	
 		$json_data = Input::get('json_data');
 		$json = json_decode($json_data);
 				
@@ -40,18 +130,26 @@ class CategoriesController extends \BaseController {
 				'id' => $id,
 				'name' => $name,
 				'parent_name' => $parent_name
-		);
+		);				
 		
-		$categoroy_json = $this->searchCategory($input);
-		$paginator = json_decode($category_json->getContent())->{'messages'};		
-		$perPage = 5;   
-		$page = Input::get('page', 1);
-		if ($page > count($paginator) or $page < 1) { $page = 1; }
-			$offset = ($page * $perPage) - $perPage;
-		$articles = array_slice($paginator,$offset,$perPage);
-		$datas = Paginator::make($articles, count($paginator), $perPage);
-		
-		return View::make('pages.admin.category.manage_category',compact('datas', 'list_category'));
+		$category_json = $this->searchCategory($input);
+		$decode = json_decode($category_json->getContent());									
+		if($decode->code==404)
+		{
+			// not found
+			$datas = null;
+		}
+		else
+		{		
+			$temp = json_decode($category_json->getContent())->{'messages'};					
+			$result = array();
+			foreach($temp as $key)						
+			{
+				$result[] = $key;
+			}
+			$datas = $result;			
+		}						
+		return $datas;
 	}
 	
 	public function addCategory()
@@ -266,7 +364,7 @@ class CategoriesController extends \BaseController {
 		return Response::json($respond);
 	}
 	
-	public function getAllSortedIdNameDesc(){
+	public function getAllSortedNameDesc(){
 		$respond = array();
 		$category = Category::orderBy('name', 'desc')->get();
 		if (count($category) == 0)
@@ -371,7 +469,7 @@ class CategoriesController extends \BaseController {
 	// input : id, name, parent_name	
 	//return tambahan : parent_name
 	public function searchCategory($input)
-	{
+	{			
 		$respond = array();				
 		$category = Category::where('name', 'LIKE', '%'.$input['name'].'%');
 		
@@ -381,7 +479,7 @@ class CategoriesController extends \BaseController {
 		}
 		
 		$category = $category->get();
-		//set parent name
+		// set parent name
 		foreach($category as $key)
 		{
 			if($key->parent_category == -1 || $key->parent_category==null) // ga ada parent_category
@@ -395,7 +493,7 @@ class CategoriesController extends \BaseController {
 		}
 		
 		$result = array();
-		//search by parent_name		
+		// search by parent_name		
 		if($input['parent_name'] != "")
 		{					
 			foreach($category as $key)
@@ -421,7 +519,7 @@ class CategoriesController extends \BaseController {
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$result);
 		}
 		
-		return Response::json($respond);		
+		return Response::json($respond);			
 	}
 	
 	public function test()

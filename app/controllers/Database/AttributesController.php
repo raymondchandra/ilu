@@ -9,12 +9,68 @@ class AttributesController extends \BaseController {
 		$perPage = 5;   
 		$page = Input::get('page', 1);
 		if ($page > count($paginator) or $page < 1) { $page = 1; }
+		$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);
+		
+		return View::make('pages.admin.attribute.manage_attribute',compact('datas'));
+	}
+	
+	public function view_main_attributeIdAsc()
+	{
+		$attribute_json = $this->getAllSortedIdAsc();
+		$paginator = json_decode($attribute_json->getContent())->{'messages'};
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
 			$offset = ($page * $perPage) - $perPage;
 		$articles = array_slice($paginator,$offset,$perPage);
 		$datas = Paginator::make($articles, count($paginator), $perPage);
 		
 		return View::make('pages.admin.attribute.manage_attribute',compact('datas'));
 	}
+	
+	public function view_main_attributeIdDesc()
+	{
+		$attribute_json = $this->getAllSortedIdDesc();
+		$paginator = json_decode($attribute_json->getContent())->{'messages'};
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+			$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);
+		
+		return View::make('pages.admin.attribute.manage_attribute',compact('datas'));
+	}
+	
+	public function view_main_attributeNameAsc()
+	{
+		$attribute_json = $this->getAllSortedNameAsc();
+		$paginator = json_decode($attribute_json->getContent())->{'messages'};
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+			$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);
+		
+		return View::make('pages.admin.attribute.manage_attribute',compact('datas'));
+	}
+	
+	public function view_main_attributeNameDesc()
+	{
+		$attribute_json = $this->getAllSortedNameDesc();
+		$paginator = json_decode($attribute_json->getContent())->{'messages'};
+		$perPage = 5;   
+		$page = Input::get('page', 1);
+		if ($page > count($paginator) or $page < 1) { $page = 1; }
+			$offset = ($page * $perPage) - $perPage;
+		$articles = array_slice($paginator,$offset,$perPage);
+		$datas = Paginator::make($articles, count($paginator), $perPage);
+		
+		return View::make('pages.admin.attribute.manage_attribute',compact('datas'));
+	}	
 	
 	public function view_detail_attribute($id)
 	{
@@ -54,16 +110,8 @@ class AttributesController extends \BaseController {
 			{
 				$result[] = $key;
 			}
-			$datas = $result;
-			// $perPage = 5;   
-			// $page = Input::get('page', 1);
-			// if ($page > count($paginator) or $page < 1) { $page = 1; }
-				// $offset = ($page * $perPage) - $perPage;
-			// $articles = array_slice($paginator,$offset,$perPage);
-			// $datas = Paginator::make($articles, count($paginator), $perPage);
-		}
-				
-		// return View::make('pages.admin.attribute.manage_attribute',compact('datas'));			
+			$datas = $result;			
+		}						
 		return $datas;
 	}		
 	

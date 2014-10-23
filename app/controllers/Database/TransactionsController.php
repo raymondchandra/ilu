@@ -46,6 +46,13 @@ class TransactionsController extends \BaseController {
 			$arrCart = Input::get('cart_id');
 			$accId = Cart::where('id','=',$arrCart[0])->first()->account_id;
 			
+			//masukin shipment data
+			$shipment = new Shipment();
+			
+			$shipment->shipmentData_id = Input::get('shipment_id');
+			$shipment->save();
+			$idShip = $shipment->id;
+			
 			//masukin transaksi
 			$trans = new Transaction();
 			
@@ -55,7 +62,7 @@ class TransactionsController extends \BaseController {
 			$trans->voucher_id = Input::get('voucher_id');
 			$trans->status = 'pending';
 			$trans->paid = '0';
-			$trans->shipment_id = Input::get('shipment_id');
+			$trans->shipment_id = $idShip;
 			$trans->save();
 			$idCreate  = $trans->id;
 			
@@ -584,31 +591,268 @@ class TransactionsController extends \BaseController {
 	}
 	
 	/**
-	 * Display top ten product
-	 * param 
+	 * Display top ten buyer
+	 *
 	 * @return Response
 	 */
-	public function getTopTenProduct()
-	{
+	public function getTopTenBuyer(){
 		$respond = array();
-		$transaction = Transaction::all();
-		$ttp = array();
-		if (count($transaction) == 0)
+		$topTen = DB::table('transactions')->select(array('transactions.account_id', DB::raw('COUNT(transactions.account_id) as jumlah')))->groupBy('transactions.account_id')->orderBy('jumlah','desc')->take(10)->get();
+		if (count($topTen) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
-			foreach($transaction as $key)
+			foreach($topTen as $key)
 			{
-				$ttp = array($key->id);
+				$account = new AccountsController();
+				$accountTopTen = $profile->getProfileByAccountId($key->account_id);// here
+				$key->account = $accountTopTen;
 			}
-			foreach($ttp as $key2)
-			{
-				
-			}
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$topTen);
 		}
+		return Response::json($respond);
+	}
+	
+	
+	/**
+	 * Display report day
+	 *
+	 * paid
+	 * 0-> not paid
+	 * 1-> paid
+	 * @return Response
+	 */
+	public function getDayReport(){
+		$respond = array();
+		$report = Transaction::where(DB::raw('MONTH(updated_at)'), '=', date('n'))->where(DB::raw('YEAR(updated_at)'), '=', date('Y'))->where('paid','=','1')->get();
+		$idx = 1;
+		$tgl = date('t');
+		$bln = date('F');
+		$tahun = date('Y');
+		$hasil = array();
+		while($idx <= $tgl)
+		{
+			$tempHasil = 0;
+			foreach($report as $key)
+			{
+				$dd = $key->updated_at;
+				$created = Carbon::parse($dd)->format('d');
+				if($created == $idx)
+				{
+					$tempHasil = $tempHasil + $key->total_price;
+				}
+			}
+			$hasil[] = array('tanggal' => $idx.'-'.$bln.'-'.$tahun, 'penjualan' => $tempHasil);
+			$idx = $idx + 1;
+		}
+		$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Display report week
+	 *
+	 * paid
+	 * 0-> not paid
+	 * 1-> paid
+	 * @return Response
+	 */
+	public function getWeekReport(){
+		$respond = array();
+		$report = Transaction::where(DB::raw('MONTH(updated_at)'), '=', date('n'))->where(DB::raw('YEAR(updated_at)'), '=', date('Y'))->where('paid','=','1')->orderBy('updated_at','asc')->get();
+		
+		$idx = 1;
+		$idx2 = 1;
+		$tglAkhir = date('t');
+		$bln = date('F');
+		$blnA = date('n');
+		$tahun = date('Y');
+		$hasil = array();
+		$first = $this->getWeeks($tahun."-".$blnA."-01", "sunday");
+		$tempHasil = 0;
+		while($idx <= $tglAkhir)
+		{
+			$temp = $this->getWeeks($tahun."-".$blnA."-".$idx, "sunday");
+			if($temp == $first)
+			{
+				if($idx != $tglAkhir)
+				{
+					foreach($report as $key)
+					{
+						$dd = $key->updated_at;
+						$created = Carbon::parse($dd)->format('d');
+						if($created == $idx)
+						{
+							$tempHasil = $tempHasil + $key->total_price;
+						}
+					}
+					
+				}else
+				{
+					$hasil[] = array('tanggal_awal' => $idx2.'-'.$bln.'-'.$tahun, 'tanggal_akhir'=> ($idx - 1).'-'.$bln.'-'.$tahun,'penjualan' => $tempHasil);
+				}
+				$idx = $idx + 1;
+			}else
+			{
+				$hasil[] = array('tanggal_awal' => $idx2.'-'.$bln.'-'.$tahun, 'tanggal_akhir'=> ($idx - 1).'-'.$bln.'-'.$tahun,'penjualan' => $tempHasil);
+				$tempHasil = 0;
+				$idx2 = $idx;
+				$first = $this->getWeeks($tahun."-".$blnA."-".$idx, "sunday");
+			}
+		}
+		$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+	
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Display week
+	 *
+	 * @return week
+	 */
+	function getWeeks($date, $rollover)
+    {
+        $cut = substr($date, 0, 8);
+        $daylen = 86400;
+
+        $timestamp = strtotime($date);
+        $first = strtotime($cut . "00");
+        $elapsed = ($timestamp - $first) / $daylen;
+
+        $i = 1;
+        $weeks = 1;
+
+        for($i; $i<=$elapsed; $i++)
+        {
+            $dayfind = $cut . (strlen($i) < 2 ? '0' . $i : $i);
+            $daytimestamp = strtotime($dayfind);
+
+            $day = strtolower(date("l", $daytimestamp));
+
+            if($day == strtolower($rollover))  $weeks ++;
+        }
+
+        return $weeks;
+    }
+	
+	/**
+	 * Display report month
+	 *
+	 * paid
+	 * 0-> not paid
+	 * 1-> paid
+	 * @return Response
+	 */
+	public function getMonthReport(){
+		$respond = array();
+		$report = Transaction::where(DB::raw('YEAR(updated_at)'), '=', date('Y'))->where('paid','=','1')->get();
+		$idx = 1;
+		$tahun = date('Y');
+		$hasil = array();
+		while($idx <= 12)
+		{
+			$tempHasil = 0;
+			$tempBln = Carbon::parse($tahun."-".$idx."-01")->format('F');
+			foreach($report as $key)
+			{
+				$dd = $key->updated_at;
+				$created = Carbon::parse($dd)->format('n');
+				if($created == $idx)
+				{
+					$tempHasil = $tempHasil + $key->total_price;
+				}
+			}
+			$hasil[] = array('tanggal'=>$tempBln.'-'.$tahun, 'penjualan' => $tempHasil);
+			$idx = $idx + 1;
+		}
+		$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Display report year
+	 * 10 year
+	 * paid
+	 * 0-> not paid
+	 * 1-> paid
+	 * @return Response
+	 */
+	public function getYearReport(){
+		$respond = array();
+		$report = Transaction::where('paid','=','1')->get();
+		$tahun = date('Y');
+		$idx = 1;
+		$tahunAkhir = 10;
+		$hasil = array();
+		while($idx <= $tahunAkhir)
+		{
+			$tempHasil = 0;
+			$tempTahun = Carbon::parse($tahun."-01-01")->format('Y');
+			foreach($report as $key)
+			{
+				$dd = $key->updated_at;
+				$created = Carbon::parse($dd)->format('Y');
+				if($created == $tempTahun)
+				{
+					$tempHasil = $tempHasil + $key->total_price;
+				}
+			}
+			$hasil[] = array('tanggal'=>$tempTahun, 'penjualan' => $tempHasil);
+			$idx = $idx + 1;
+			$tahun = $tahun +1;
+		}
+		$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Display report range
+	 * paid
+	 * 0-> not paid
+	 * 1-> paid
+	 * @return Response
+	 */
+	public function getRangeReport($date1,$date2){
+		$respond = array();
+		$report = Transaction::where('paid','=','1')->get();
+		$idx = 1;
+		$tgl = date('t');
+		$bln = date('F');
+		$tahun = date('Y');
+		$hasil = array();
+		$d1 = new Carbon($date1);
+		$d2 = new Carbon($date2);
+		$difference = ($d1->diff($d2)->days);
+		while($idx <= ($difference+1))
+		{
+			$tempHasil = 0;
+			if($idx != 1)
+			{
+				$d1->addDay(1);
+			}
+			foreach($report as $key)
+			{
+				$dd = $key->updated_at;
+				$dd2 = Carbon::parse($dd)->format('Ynd');
+				$dc1 = Carbon::parse($d1)->format('Ynd');
+				if($dd2 == $dc1)
+				{
+					$tempHasil = $tempHasil + $key->total_price;
+				}
+				$tgl = Carbon::parse($d1)->format('d');
+				$bln = Carbon::parse($d1)->format('n');
+				$thn = Carbon::parse($d1)->format('Y');
+			}
+			$hasil[] = array('tanggal' => $tgl.'-'.$bln.'-'.$thn, 'penjualan' => $tempHasil);
+			$idx = $idx + 1;
+		}
+		$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		
 		return Response::json($respond);
 	}
 }

@@ -209,5 +209,35 @@ class VouchersController extends \BaseController {
 		return Response::json($respond);
 	}
 	*/
+	
+	public function generateVoucherNumber()
+	{
+		$number = $this->generateRandomString(7);
+		$voucher = Voucher::where('code','=',$number)->get();
+		if (count($voucher) == 0)
+		{
+			
+		}
+		else
+		{
+			while(count($voucher) != 0)
+			{
+				$number = $this->generateRandomString(10);
+				$voucher = Voucher::where('code','=',$number)->get();
+			}
+		}
+		
+		return $number;
+	}
+	
+	public function generateRandomString($length) 
+	{
+		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$randomString = '';
+		for ($i = 0; $i < $length; $i++) {
+			$randomString .= $characters[rand(0, strlen($characters) - 1)];
+		}
+		return $randomString;
+	}
 
 }
