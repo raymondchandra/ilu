@@ -3,7 +3,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title" id="myModalLabel">Informasi Transaction</h4>
+				<h4 class="modal-title" id="myModalLabel">Informasi Order</h4>
 			</div>
 			<form class="form-horizontal" role="form">
 				<div class="modal-body">
@@ -80,8 +80,9 @@
 								<div class="col-sm-5">
 									<p id="order_status" class="form-control-static">Pending</p>
 									<select id="order_status_list" class="form-control hidden">
-										<option val="pending">Pending</option>
-										<option val="complete">Complete</option>
+										<option value="Pending">Pending</option>
+										<option value="On-process">On-process</option>
+										<option value="Complete">Complete</option>
 									</select>
 								</div>
 								<div class="col-sm-3">

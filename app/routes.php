@@ -10,24 +10,20 @@ Route::get('/tes2', function()
 {
 
 		$respond = array();
-		$transaction = Transaction::where('id','=','1')->get();
-		if (count($transaction) == 0)
+		$order = Order::all();
+		if (count($order) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
-			foreach($transaction as $key)
+			foreach($order as $key)
 			{
-				$accId = $key->account_id;
-				$ship = Shipment::where('id','=',$key->shipment_id)->first();
-				$profId = Account::where('id','=',$accId)->first()->profile_id;
-				$prof = Profile::where('id','=',$profId)->first();
-				$shipA = Shipment::join('shipmentdatas','shipments.shipmentData_id','=','shipmentdatas.id')->where('shipments.id','=',$ship->shipmentData_id)->where('shipmentdatas.deleted','=','0')->get();
-				$key->profile = $prof;
-				$key->shipment = $shipA;
+				$key->transaction = Order::find($key->id)->transaction;
+				$key->acc_name = Account::find($key->transaction->account_id)->profile->full_name;				
+				$key->productName = Order::find($key->id)->price->product->name;
 			}
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
 		}
 		echo $respond['messages'];
 });
@@ -327,6 +323,8 @@ Route::group(array('prefix' => 'test'), function()
 	Route::put('/put_status_transaction' , ['as'=>'jeffry.putStatusTransaction','uses' => 'TransactionsController@updateStatus']);
 	
 	Route::put('/put_paid_transaction' , ['as'=>'jeffry.putPaidTransaction','uses' => 'TransactionsController@updatePaid']);
+	
+	Route::get('/manage_order_jeffry', ['uses' => 'OrderManagementController@view_order_mgmt']);
 	
     // Review
     Route::get('/manage_review', function()

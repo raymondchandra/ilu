@@ -815,6 +815,7 @@ return array(
     'NewsTableSeeder' => $baseDir . '/app/database/seeds/NewsTableSeeder.php',
     'Normalizer' => $vendorDir . '/patchwork/utf8/class/Normalizer.php',
     'Order' => $baseDir . '/app/models/Order.php',
+    'OrderManagementController' => $baseDir . '/app/controllers/Page/OrderManagementController.php',
     'OrderTableSeeder' => $baseDir . '/app/database/seeds/OrderTableSeeder.php',
     'OrdersController' => $baseDir . '/app/controllers/Database/OrdersController.php',
     'PHPParser_Autoloader' => $vendorDir . '/nikic/php-parser/lib/PHPParser/Autoloader.php',

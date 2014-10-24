@@ -39,10 +39,10 @@
 								<div class="col-sm-5">
 									<p id="transaction_status" class="form-control-static" ></p>
 									<select id="transaction_status_list" class="form-control hidden">
-										<option value="pending">Pending</option>
-										<option value="onprocess">Onprocess</option>
-										<option value="onship">Onship</option>
-										<option value="complete">Complete</option>
+										<option value="Pending">Pending</option>
+										<option value="On-process">On-process</option>
+										<option value="On-ship">On-ship</option>
+										<option value="Complete">Complete</option>
 									</select>
 								</div>
 								<div class="col-sm-3">
