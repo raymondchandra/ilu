@@ -1917,6 +1917,7 @@ return array(
     'TemplatesController' => $baseDir . '/app/controllers/Database/TemplatesController.php',
     'TestCase' => $baseDir . '/app/tests/TestCase.php',
     'Transaction' => $baseDir . '/app/models/Transaction.php',
+    'TransactionManagementController' => $baseDir . '/app/controllers/Page/TransactionManagementController.php',
     'TransactionTableSeeder' => $baseDir . '/app/database/seeds/TransactionTableSeeder.php',
     'TransactionsController' => $baseDir . '/app/controllers/Database/TransactionsController.php',
     'Voucher' => $baseDir . '/app/models/Voucher.php',

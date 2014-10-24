@@ -6,7 +6,7 @@
 			
 			<div class="s_title_n_control">
 				<h3 style="float: left;">
-					Manage Shipping Agent | Dari Kota X
+					Manage Shipping Agent
 				</h3>
 				<a href="{{ URL::to('test/manage_shipping') }}" class="btn btn-info" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping</a>
 				<a href="{{ URL::to('test/manage_shipping_agent') }}" class="btn btn-default" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping Agent</a>
@@ -91,35 +91,6 @@
 	<script>
 		$('body').on('click','.viewShippingAgent',function(){
 			$acc_id = $(this).prev().val();
-			$.ajax({
-					type: 'GET',
-					url: '{{URL::route('jeffry.getDetailShipAgent')}}',
-					data: {	
-						"id": $acc_id
-					},
-					success: function(response){
-						if(response['code'] == '404')
-						{
-							//$('#wishlistcontent').append("<td>agent tidak ditemukan</td>");
-						}
-						else
-						{
-							$('#idAgent').append(response['messages'].id);
-							$('#namaKurir').append(response['messages'].courier);
-							$('#tujuan').append(response['messages'].destination);
-							$('#dari').append(response['messages'].destination);
-							$('#harga_pengiriman').append(response['messages'].price);
-							
-						}
-					},error: function(xhr, textStatus, errorThrown){
-						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
-						alert("responseText: "+xhr.responseText);
-					}
-				},'json');
-		});
-		//create edit price
-		$('body').on('click','.viewShippingAgent',function(){
-			$acc_id = $(this).prev().val();
 			$('#idAgent').html("");
 			$('#namaKurir').html("");
 			$('#tujuan').html("");
@@ -138,12 +109,38 @@
 						}
 						else
 						{
+							$('#idAgent').text(response['messages'].id);
+							$('#namaKurir').text(response['messages'].courier);
+							$('#tujuan').text(response['messages'].destination);
+							$('#dari').text(response['messages'].destination);
+							$('#harga_pengiriman').text(response['messages'].price);
 							
-							$('#idAgent').val(response['messages'].id);
-							$('#namaKurir').val(response['messages'].courier);
-							$('#tujuan').val(response['messages'].destination);
-							$('#dari').val(response['messages'].destination);
-							$('#harga_pengiriman').val(response['messages'].price);
+						}
+					},error: function(xhr, textStatus, errorThrown){
+						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+						alert("responseText: "+xhr.responseText);
+					}
+				},'json');
+		});
+		//create edit price
+		$('body').on('click','.harga_pengiriman_setter',function(){
+			$harga = $('#harga_pengiriman_input').val();
+			$id = $('#idAgent').val();
+			$.ajax({
+					type: 'PUT',
+					url: '{{URL::route('jeffry.putPriceShipAgent')}}',
+					data: {	
+						"price": $harga,
+						"id": $id
+					},
+					success: function(response){
+						if(response['code'] == '404')
+						{
+							//$('#wishlistcontent').append("<td>agent tidak ditemukan</td>");
+						}
+						else
+						{
+							
 							
 						}
 					},error: function(xhr, textStatus, errorThrown){

@@ -122,8 +122,9 @@ class TransactionsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function getById($id)
+	public function getById()
 	{
+		$id = Input::get('id');
 		$respond = array();
 		$transaction = Transaction::find($id);
 		
@@ -285,8 +286,10 @@ class TransactionsController extends \BaseController {
 	 * @param  int  $id, $status
 	 * @return Response
 	 */
-	public function updateStatus($id, $status)
+	public function updateStatus()
 	{
+		$id = Input::get('id');
+		$status = Input::get('status');
 		$respond = array();
 		$transaction = Transaction::find($id);
 		if ($transaction == null)
@@ -317,8 +320,11 @@ class TransactionsController extends \BaseController {
 	 * 1-> paid
 	 * @return Response
 	 */
-	public function updatePaid($id, $paid)
+	public function updatePaid()
 	{
+	
+		$id = Input::get('id');
+		$paid = Input::get('paid');
 		$respond = array();
 		$transaction = Transaction::find($id);
 		if ($transaction == null)
@@ -494,8 +500,9 @@ class TransactionsController extends \BaseController {
 	 * @param    $id transaksi
 	 * @return Response
 	 */
-	public function getDetail($id)
+	public function getDetail()
 	{
+		$id = Input::get('id');
 		$respond = array();
 		$transaction = Transaction::where('id','=',$id)->get();
 		if (count($transaction) == 0)
@@ -507,9 +514,12 @@ class TransactionsController extends \BaseController {
 			foreach($transaction as $key)
 			{
 				$accId = $key->account_id;
+				$ship = Shipment::where('id','=',$key->shipment_id)->first();
 				$profId = Account::where('id','=',$accId)->first()->profile_id;
 				$prof = Profile::where('id','=',$profId)->first();
+				$shipA = Shipment::join('shipmentdatas','shipments.shipmentData_id','=','shipmentdatas.id')->where('shipments.id','=',$ship->shipmentData_id)->where('shipmentdatas.deleted','=','0')->get();
 				$key->profile = $prof;
+				$key->shipment = $shipA;
 			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
 		}
