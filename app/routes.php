@@ -9,9 +9,27 @@ Route::get('/tesview', function (){
 Route::get('/tes2', function()
 {
 
-		$shipmentdata = Shipmentdata::find('1');
-
-echo $shipmentdata;
+		$respond = array();
+		$transaction = Transaction::where('id','=','1')->get();
+		if (count($transaction) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			foreach($transaction as $key)
+			{
+				$accId = $key->account_id;
+				$ship = Shipment::where('id','=',$key->shipment_id)->first();
+				$profId = Account::where('id','=',$accId)->first()->profile_id;
+				$prof = Profile::where('id','=',$profId)->first();
+				$shipA = Shipment::join('shipmentdatas','shipments.shipmentData_id','=','shipmentdatas.id')->where('shipments.id','=',$ship->shipmentData_id)->where('shipmentdatas.deleted','=','0')->get();
+				$key->profile = $prof;
+				$key->shipment = $shipA;
+			}
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
+		}
+		echo $respond['messages'];
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -299,6 +317,16 @@ Route::group(array('prefix' => 'test'), function()
 	Route::get('/manage_shipping_agent_jeffry', ['uses' => 'ShippingAgentManagementController@view_shipping_agent_mgmt']);
 	
 	Route::get('/get_detail_shipment_agent', ['as'=>'jeffry.getDetailShipAgent','uses' => 'ShipmentDatasController@getById']);
+	
+	Route::put('/put_price_shipment_agent' , ['as'=>'jeffry.putPriceShipAgent','uses' => 'ShipmentDatasController@updatePrice']);
+	
+	Route::get('/manage_transaction_jeffry', ['uses' => 'TransactionManagementController@view_transaction_mgmt']);
+	
+	Route::get('/get_detail_transaction', ['as'=>'jeffry.getDetailTransaction','uses' => 'TransactionsController@getDetail']);
+	
+	Route::put('/put_status_transaction' , ['as'=>'jeffry.putStatusTransaction','uses' => 'TransactionsController@updateStatus']);
+	
+	Route::put('/put_paid_transaction' , ['as'=>'jeffry.putPaidTransaction','uses' => 'TransactionsController@updatePaid']);
 	
     // Review
     Route::get('/manage_review', function()
