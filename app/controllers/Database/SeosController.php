@@ -76,11 +76,11 @@ class SeosController extends \BaseController {
 	 * @param  
 	 * @return Response
 	 */
-	/*
-	public function getBy{name}()
+
+	public function getByName{$name}()
 	{
 		$respond = array();
-		$seo = Seo::where('','=','')->get();
+		$seo = Seo::where('name','=',$name)->get();
 		if (count($seo) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -91,7 +91,6 @@ class SeosController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-	*/
 
 	/**
 	 * Update all value of the specified seo in database.

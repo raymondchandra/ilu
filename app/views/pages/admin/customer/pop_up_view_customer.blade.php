@@ -79,6 +79,116 @@
 						</div>
 					</div>
 
+					<hr></hr>
+					<h4 class="modal-title" id="myModalLabel">Informasi Voucher
+						<button class="btn btn-success pull-right btn-xs tambah_voucher_trigger">
+							<span class="glyphicon glyphicon-plus"></span>Tambah Voucher
+						</button>
+						<script>
+						$('body').on('click','.tambah_voucher_trigger', function(){
+							$('.tambah_voucher').removeClass('hidden').addClass('display');
+						});
+							
+						</script>
+					</h4>
+					
+
+					<hr></hr>
+					<div class="tambah_voucher hidden">
+						<div class="form-group col-sm-4">
+							<label class="col-sm-4 control-label">Type</label>
+							<div class="col-sm-8">
+								<select class="form-control">
+									<option>Public</option>
+									<option>Private</option>
+								</select>
+
+							</div>
+						</div>
+
+						<div class="form-group col-sm-4">
+							<label class="col-sm-4 control-label">Ammount</label>
+							<div class="col-sm-8">
+								<input type=""text class="form-control" id="">
+
+							</div>
+						</div>
+
+						<div class="form-group col-sm-4">
+							<label class="col-sm-4 control-label">Code</label>
+							<div class="col-sm-8">
+								<p type=""text class="form-control-static" id="">4353d54d34</p>
+
+							</div>
+						</div>
+						<button class="btn btn-success pull-right btn-xs">
+							<span class="glyphicon glyphicon-plus"></span>Add
+						</button>
+					</div>
+
+					<table class="table">
+						<thead>
+							<tr>
+								<th>
+									Type
+								</th>
+								<th>
+									Ammount
+								</th>
+								<th>
+									Code
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									Public
+								</td>
+								<td>
+									IDR 500.000
+								</td>
+								<td>
+									543efr43r
+								</td>
+							</tr>
+							<tr>
+								<td>
+									A
+								</td>
+								<td>
+									IDR 500.000
+								</td>
+								<td>
+									543efr43r
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Private
+								</td>
+								<td>
+									IDR 500.000
+								</td>
+								<td>
+									543efr43r
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Public
+								</td>
+								<td>
+									IDR 500.000
+								</td>
+								<td>
+									543efr43r
+								</td>
+							</tr>
+						</tbody>
+						
+					</table>
+
 					
 					
 

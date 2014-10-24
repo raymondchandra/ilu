@@ -2,7 +2,7 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<button type="button" id="addButton" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 				<h4 class="modal-title" id="myModalLabel">Add New Attribute</h4>
 			</div>
 			<form class="form-horizontal" role="form">
@@ -16,7 +16,7 @@
 									<input id="new_name_input" type="text" class="form-control" value="">	
 								</div>
 								<div class="col-sm-3">
-									<span class="btn btn-danger">Nama attribute ini sudah ada</span>	
+									<span id="alert_new_name" class="btn btn-danger hidden">Nama attribute ini sudah ada</span>	
 								</div>
 							</div>
 						</div>
@@ -24,8 +24,8 @@
 
 				</div>
 				<div class="modal-footer">
-					<button id="add_attribute" type="button" class="btn btn-success" data-dismiss="modal">Add</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+					<button id="add_attribute" type="button" class="btn btn-success">Add</button>
+					<button type="button" id="cancelAddButton" class="btn btn-default" data-dismiss="modal">Keluar</button>
 				</div>
 			</form>
 		</div>
@@ -33,7 +33,18 @@
 </div>
 
 <script>
-	$('body').on('click', '#add_attribute', function(){		
+	$('body').on('click', '#addButton', function(){
+		//set default 
+		$('#new_name_input').val('');
+		$('#alert_new_name').addClass('hidden');
+	});
+	$('body').on('click', '#cancelAddButton', function(){
+		//set default 
+		$('#new_name_input').val('');
+		$('#alert_new_name').addClass('hidden');
+	});
+
+	$('body').on('click', '#add_attribute', function(){						
 		$name = $('#new_name_input').val();		
 		$deleted = 0;
 		$data = {
@@ -54,6 +65,11 @@
 					alert(result.status);
 					location.reload();
 				}			
+				else if(result.code==400)
+				{
+					alert(result.status);				
+					$('#alert_new_name').removeClass('hidden');
+				}
 				else
 				{
 					alert(result.status);
