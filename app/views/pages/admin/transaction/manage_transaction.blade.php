@@ -149,7 +149,7 @@
 							{
 								$('#transaction_paid').text('Paid');
 							}
-							$('#idShipment').text(response['messages']['0'].shipment['0'].number);
+							$('#idShipment').text(response['messages']['0'].shipment['0'].shipmentNumber);
 							$('#courier').text(response['messages']['0'].shipment['0'].courier);
 							$('#destinasi').text(response['messages']['0'].shipment['0'].destination);
 							$('#full_name').text(response['messages']['0'].profile.full_name);

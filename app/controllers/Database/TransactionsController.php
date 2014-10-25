@@ -53,6 +53,28 @@ class TransactionsController extends \BaseController {
 			$shipment->save();
 			$idShip = $shipment->id;
 			
+			//masukin order
+			foreach($arrCart as $key)
+			{
+				$cart = Cart::where('id','=',$key)->first();
+				$priceId = $cart->price_id;
+				$qty = $cart->quantity;
+				
+				$order = new Order();
+			
+				$order->price_id = $priceId;
+				$order->quantity = $qty;
+				$order->transaction_id = $idCreate;
+				
+				$pr = Price::where('id','=',$priceId)->first();
+				$tx = Tax::where('id','=',$pr->tax_id)->first();
+				
+				$priceNow = (($pr->amount) * (100+$tx->amount))/100;
+				
+				$order->priceNow = $priceNow;
+				$order->save();
+			}
+			
 			//masukin transaksi
 			$trans = new Transaction();
 			
@@ -66,20 +88,7 @@ class TransactionsController extends \BaseController {
 			$trans->save();
 			$idCreate  = $trans->id;
 			
-			//masukin order
-			foreach($arrCart as $key)
-			{
-				$cart = Cart::where('id','=',$key)->first();
-				$priceId = $cart->price_id;
-				$qty = $cart->quantity;
-				
-				$order = new Order();
 			
-				$order->price_id = $priceId;
-				$order->quantity = $qty;
-				$order->transaction_id = $idCreate;
-				$order->save();
-			}
 			
 			
 			$respond = array('code'=>'201','status' => 'Created','messages'=>$invoice);
@@ -108,6 +117,10 @@ class TransactionsController extends \BaseController {
 			{
 				$accId = $key->account_id;
 				$profId = Account::where('id','=',$accId)->first()->profile_id;
+				if($key->voucher_id == null)
+				{
+					$key->voucher_id = "-";
+				}
 				$profName = Profile::where('id','=',$profId)->first()->full_name;
 				$key->full_name = $profName;
 			}
@@ -514,10 +527,24 @@ class TransactionsController extends \BaseController {
 			foreach($transaction as $key)
 			{
 				$accId = $key->account_id;
+				if($key->voucher_id == null)
+				{
+					$key->voucher_id = "-";
+				}
 				$ship = Shipment::where('id','=',$key->shipment_id)->first();
 				$profId = Account::where('id','=',$accId)->first()->profile_id;
 				$prof = Profile::where('id','=',$profId)->first();
-				$shipA = Shipment::join('shipmentdatas','shipments.shipmentData_id','=','shipmentdatas.id')->where('shipments.id','=',$ship->shipmentData_id)->where('shipmentdatas.deleted','=','0')->get();
+				$shipA = ShipmentData::where('id','=',$ship->shipmentData_id)->where('deleted','=','0')->get();
+				foreach($shipA as $key2)
+				{
+					if($ship->number == '' || $ship->number == null)
+					{
+						$key2->shipmentNumber = "-";
+					}else
+					{
+						$key2->shipmentNumber = $ship->number;
+					}
+				}
 				$key->profile = $prof;
 				$key->shipment = $shipA;
 			}
