@@ -14,8 +14,8 @@
 							<input id="edit_name_input" type="text" class="form-control">				
 						</div>
 						<div class="col-sm-3">
-							<span class="btn btn-danger">
-								Maaf form harus diisi
+							<span id="alert_edit_name_required" class="btn btn-danger hidden">
+								Name harus diisi
 							</span>
 						</div>
 					</div>
@@ -27,17 +27,20 @@
 							<input id="edit_amount_input" type="text" class="form-control" >				
 						</div>
 						<div class="col-sm-3">
-							<span class="btn btn-danger">
-								Maaf form harus diisi
+							<span id="alert_edit_amount_required" class="btn btn-danger hidden">
+								Amount harus diisi
+							</span>
+						</div>
+						<div class="col-sm-3">
+							<span id="alert_edit_amount_format" class="btn btn-danger hidden">
+								Amount harus berupa angka
 							</span>
 						</div>
 					</div>
-
-
 					
 				</div>
 				<div class="modal-footer">
-					<button id="edit_tax" type="button" class="btn btn-success" data-dismiss="modal">Ya</button>
+					<button id="edit_tax" type="button" class="btn btn-success">Ya</button>
 					<button type="button" class="btn btn-primary" data-dismiss="modal">Tidak</button>
 				</div>
 			</form>
@@ -53,8 +56,7 @@ $('body').on('click', '#edit_tax', function(){
 			'id' : $id,
 			'name' : $edit_name,
 			'amount' : $edit_amount
-		};
-		// alert($id);
+		};		
 		var json_data = JSON.stringify($data);
 		$.ajax({
 			type: 'POST',
@@ -68,6 +70,34 @@ $('body').on('click', '#edit_tax', function(){
 					alert(result.status);
 					location.reload();
 				}
+				else if(result.code==400)
+				{
+					alert(result.status);																		
+					if(result.messages['name'] == 'The name field is required.')
+					{
+						$('#alert_edit_name_required').removeClass('hidden');
+					}
+					else
+					{
+						$('#alert_edit_name_required').addClass('hidden');
+					}
+					if(result.messages['amount'] == 'The amount field is required.')
+					{
+						$('#alert_edit_amount_required').removeClass('hidden');
+					}
+					else
+					{
+						$('#alert_edit_amount_required').addClass('hidden');
+					}					
+					if(result.messages['amount'] == 'The amount format is invalid.')
+					{
+						$('#alert_edit_amount_format').removeClass('hidden');
+					}
+					else
+					{
+						$('#alert_edit_amount_format').addClass('hidden');
+					}				
+				}				
 				else
 				{					
 					alert(result.status);

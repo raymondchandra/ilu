@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/tes', 'CategoriesController@test');
+Route::get('/tes', 'ReviewsController@getAll');
 
 Route::get('/tesview', function (){
 	return View::make('pages.admin.product.manage_product');
@@ -123,6 +123,20 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	Route::post('/category/editFull', ['as' => 'category.editFull', 'uses' => 'CategoriesManagementController@editFull']);	
 	Route::post('/category/deleteCategory', ['as' => 'category.deleteCategory', 'uses' => 'CategoriesManagementController@deleteCategory']);	
 
+	//-------------------------------------------TAX VIEW ADMIN-------------------------------------------	
+	Route::get('/manage_taxes', ['as' => 'viewTaxesManagement', 'uses' => 'TaxesManagementController@view_admin_tax']);
+	Route::get('/tax/{id}', ['as' => 'tax_detail', 'uses' => 'TaxesManagementController@view_detail_tax']);
+	Route::post('/tax/addTax', ['as' => 'tax.addTax', 'uses' => 'TaxesManagementController@addTax']);
+	Route::post('/tax/editFull', ['as' => 'tax.editFull', 'uses' => 'TaxesManagementController@editFull']);	
+	Route::post('/tax/deleteTax', ['as' => 'tax.deleteTax', 'uses' => 'TaxesManagementController@deleteTax']);	
+	
+	//-------------------------------------------REVIEW VIEW ADMIN-------------------------------------------	
+	Route::get('/manage_reviews', ['as' => 'viewReviewsManagement', 'uses' => 'ReviewsManagementController@view_admin_review']);
+	Route::get('/review/{id}', ['as' => 'review_detail', 'uses' => 'ReviewsManagementController@view_detail_review']);
+	Route::post('/review/editApproved', ['as' => 'review.editApproved', 'uses' => 'ReviewsManagementController@editApproved']);
+	
+	
+	// Route::get('/bernico', function(){return View::make('pages.admin.tax.manage_tax');});
 	
 	//category 
 		// Route::get('/category', ['as' => 'category', 'uses' => 'CategoriesController@view_main_category']);
@@ -138,7 +152,7 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		// Route::post('/category/addCategory', ['as' => 'category.addCategory', 'uses' => 'CategoriesController@addCategory']);
 	
 	//review
-		Route::get('/review', ['as' => 'review', 'uses' => 'ReviewsController@view_main_review']);
+		// Route::get('/review', ['as' => 'review', 'uses' => 'ReviewsController@view_main_review']);
 			// Route::get('/reviewProductNoAsc', ['as' => 'reviewProductNoAsc', 'uses' => 'ReviewsController@view_main_reviewProductNoAsc']);
 			// Route::get('/reviewProductNoDesc', ['as' => 'reviewProductNoDesc', 'uses' => 'ReviewsController@view_main_reviewProductNoDesc']);
 			// Route::get('/reviewProductNameAsc', ['as' => 'reviewProductNameAsc', 'uses' => 'ReviewsController@view_main_reviewProductNameAsc']);
@@ -149,16 +163,16 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 			// Route::get('/reviewRatingDesc', ['as' => 'reviewRatingDesc', 'uses' => 'ReviewsController@view_main_reviewRatingDesc']);
 			// Route::get('/reviewApprovedAsc', ['as' => 'reviewApprovedAsc', 'uses' => 'ReviewsController@view_main_reviewApprovedAsc']);
 			// Route::get('/reviewApprovedDesc', ['as' => 'reviewApprovedDesc', 'uses' => 'ReviewsController@view_main_reviewApprovedDesc']);
-		Route::get('/review/{id}', ['as' => 'review_detail', 'uses' => 'ReviewsController@view_detail_review']);
-		Route::get('/searchReview', ['as' => 'searchReview', 'uses' => 'ReviewsController@view_search_review']);
-		Route::post('/review/editApproved', ['as' => 'review.editApproved', 'uses' => 'ReviewsController@editApproved']);
+		// Route::get('/review/{id}', ['as' => 'review_detail', 'uses' => 'ReviewsController@view_detail_review']);
+		// Route::get('/searchReview', ['as' => 'searchReview', 'uses' => 'ReviewsController@view_search_review']);
+		// Route::post('/review/editApproved', ['as' => 'review.editApproved', 'uses' => 'ReviewsController@editApproved']);
 		
 	//tax
-		Route::get('/tax', ['as' => 'tax', 'uses' => 'TaxesController@view_main_tax']);			
-		Route::get('/tax/{id}', ['as' => 'tax_detail', 'uses' => 'TaxesController@view_detail_tax']);
-		Route::get('/searchTax', ['as' => 'searchTax', 'uses' => 'TaxesController@view_search_tax']);
-		Route::post('/tax/editFull', ['as' => 'tax.editFull', 'uses' => 'TaxesController@editFull']);
-		Route::post('/tax/addTax', ['as' => 'tax.addTax', 'uses' => 'TaxesController@addTax']);			
+		// Route::get('/tax', ['as' => 'tax', 'uses' => 'TaxesController@view_main_tax']);			
+		// Route::get('/tax/{id}', ['as' => 'tax_detail', 'uses' => 'TaxesController@view_detail_tax']);
+		// Route::get('/searchTax', ['as' => 'searchTax', 'uses' => 'TaxesController@view_search_tax']);
+		// Route::post('/tax/editFull', ['as' => 'tax.editFull', 'uses' => 'TaxesController@editFull']);
+		// Route::post('/tax/addTax', ['as' => 'tax.addTax', 'uses' => 'TaxesController@addTax']);			
 	
 	//product 
 		Route::get('/product', ['as' => 'product' , 'uses' => 'ProductsController@view_main_product']);

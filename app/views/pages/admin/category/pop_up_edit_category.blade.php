@@ -14,8 +14,11 @@
 							<input id="edit_name_input" type="text" class="form-control">			
 						</div>
 						<div class="col-sm-3">
-						<span id="alert_edit_nama" class="btn btn-danger hidden">Nama category ini sudah ada</span>	
-					</div>
+							<span id="alert_edit_nama_taken" class="btn btn-danger hidden">Nama category ini sudah ada</span>	
+						</div>
+						<div class="col-sm-3">
+							<span id="alert_edit_nama_required" class="btn btn-danger hidden">Nama category harus diisi</span>	
+						</div>
 					</div>
 
 					<div class="form-group">
@@ -61,7 +64,22 @@
 				else if(result.code==400)
 				{
 					alert(result.status);
-					$('#alert_edit_nama').removeClass('hidden');
+					if(result.messages['name'] == 'The name field is required.')
+					{
+						$('#alert_edit_nama_required').removeClass('hidden');
+					}
+					else
+					{
+						$('#alert_edit_nama_required').addClass('hidden');
+					}
+					if(result.messages['name'] == 'The name has already been taken.')
+					{
+						$('#alert_edit_nama_taken').removeClass('hidden');
+					}
+					else
+					{
+						$('#alert_edit_nama_taken').addClass('hidden');
+					}						
 				}
 				else
 				{
