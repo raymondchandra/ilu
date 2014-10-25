@@ -44,6 +44,12 @@ class OrdersController extends \BaseController {
 		}
 		else
 		{
+			foreach($order as $key)
+			{
+				$key->transaction = Order::find($key->id)->transaction;
+				$key->acc_name = Account::find($key->transaction->account_id)->profile->full_name;				
+				$key->productName = Order::find($key->id)->price->product->name;
+			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
 		}
 		return Response::json($respond);
