@@ -1,7 +1,8 @@
 <?php
 
 class TaxesController extends \BaseController {
-
+	
+	/*
 	public function view_main_tax()
 	{
 		$tax_json = $this->getAll();
@@ -15,6 +16,7 @@ class TaxesController extends \BaseController {
 		
 		return View::make('pages.admin.tax.manage_tax',compact('datas'));				
 	}
+	*/
 
 	// public function view_main_taxNameAsc()
 	// {
@@ -32,16 +34,16 @@ class TaxesController extends \BaseController {
 	// {
 	// }
 	
-	public function view_detail_tax($id)
-	{
-		$json = json_decode($this->getById($id)->getContent());
-		return json_encode($json);
-	}
+	// public function view_detail_tax($id)
+	// {
+		// $json = json_decode($this->getById($id)->getContent());
+		// return json_encode($json);
+	// }
 	
 	// public function view_search_tax()
 	// {
 	// }
-	
+	/*
 	public function view_search_tax()
 	{				
 		$json_data = Input::get('json_data');
@@ -133,6 +135,8 @@ class TaxesController extends \BaseController {
 					
 		// return $this->insert($input);
 	// }
+	*/
+		
 	//input : name, amount, deleted
 	public function insert($input)
 	{
@@ -153,7 +157,8 @@ class TaxesController extends \BaseController {
 			Tax::create([
 					'name' => $input['name'],
 					'amount' => $input['amount'],
-					'deleted' => $input['deleted']]);
+					'deleted' => $input['deleted']
+				]);
 			$respond = array('code'=>'201','status' => 'Created');
 		} catch (Exception $e) {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
@@ -161,9 +166,10 @@ class TaxesController extends \BaseController {
 		return Response::json($respond);
 	}
 	
+	//RETURN : id, amount, deleted, created_at, updated_at, name
 	public function getAll(){
 		$respond = array();
-		$tax = Tax::all();
+		$tax = Tax::where('deleted', '=', 0)->get();
 		if (count($tax) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -175,6 +181,74 @@ class TaxesController extends \BaseController {
 		return Response::json($respond);
 	}
 	
+	//RETURN : id, amount, deleted, created_at, updated_at, name
+	//SORTED : name, amount
+	public function getAllSorted($by, $type)
+	{
+		$respond = array();
+		$tax = Tax::where('deleted', '=', 0)->orderBy($by, $type)->get();
+		if (count($tax) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$tax);
+		}
+		return Response::json($respond);
+	}
+	
+	//RETURN : id, amount, deleted, created_at, updated_at
+	//SEARCH : name, amount
+	public function getFilteredTax($name, $amount)
+	{
+		$respond = array();
+		$tax = Tax::where('name', 'LIKE', '%'.$name.'%');
+		
+		if($amount != -1)
+		{
+			$tax = $tax->where('amount', '=', $amount);
+		}
+					
+		$tax = $tax->where('deleted', '=', 0)->get();				
+		if (count($tax) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$tax);
+		}
+		return Response::json($respond);
+	}
+	
+	//RETURN : id, amount, deleted, created_at, updated_at
+	//SEARCH : name, amount
+	//SORTED : name, amount
+	public function getFilteredTaxSorted($name, $amount, $sortBy, $sortType)
+	{
+		$respond = array();
+		$tax = Tax::where('name', 'LIKE', '%'.$name.'%');
+		
+		if($amount != -1)
+		{
+			$tax = $tax->where('amount', '=', $amount);
+		}
+					
+		$tax = $tax->where('deleted', '=', 0)->orderBy($sortBy, $sortType)->get();				
+		
+		if (count($tax) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$tax);
+		}
+		return Response::json($respond);
+	}
+	
+	/*
 	public function getAllSortedNameAsc()
 	{
 		$respond = array();
@@ -327,6 +401,7 @@ class TaxesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	*/
 	
 	public function getById($id)
 	{
@@ -344,7 +419,7 @@ class TaxesController extends \BaseController {
 	}
 	
 	// input : name, amount
-	public function updateFull($id, $input)
+	public function updateFull($id, $new_name, $new_amount)
 	{
 		$respond = array();
 		$tax = Tax::find($id);
@@ -354,8 +429,11 @@ class TaxesController extends \BaseController {
 		}
 		else
 		{				
-			//add deleted to input
-			$input['deleted'] = $tax->deleted;
+			$input = array(
+					'name' => $new_name,
+					'amount' => $new_amount,
+					'deleted' => 0
+			);
 			
 			//validate 
 			$validator = Validator::make($data = $input, Tax::$rules);
@@ -367,11 +445,7 @@ class TaxesController extends \BaseController {
 			}
 			
 			//save
-			try {
-				// $tax->name = $input['name'];
-				// $tax->amount = $input['amount'];
-				// $tax->deleted = $input['deleted'];
-				// $tax->save();
+			try {				
 				$tax->update($data);
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {

@@ -16,7 +16,10 @@
 									<input id="new_name_input" type="text" class="form-control" value="">	
 								</div>
 								<div class="col-sm-3">
-									<span id="alert_new_name" class="btn btn-danger hidden">Nama attribute ini sudah ada</span>	
+									<span id="alert_new_name_taken" class="btn btn-danger hidden">Nama attribute ini sudah ada</span>	
+								</div>
+								<div class="col-sm-3">
+									<span id="alert_new_name_required" class="btn btn-danger hidden">Nama attribute harus diisi</span>	
 								</div>
 							</div>
 						</div>
@@ -36,12 +39,14 @@
 	$('body').on('click', '#addButton', function(){
 		//set default 
 		$('#new_name_input').val('');
-		$('#alert_new_name').addClass('hidden');
+		$('#alert_new_name_required').addClass('hidden');
+		$('#alert_new_name_taken').addClass('hidden');
 	});
 	$('body').on('click', '#cancelAddButton', function(){
 		//set default 
 		$('#new_name_input').val('');
-		$('#alert_new_name').addClass('hidden');
+		$('#alert_new_name_required').addClass('hidden');
+		$('#alert_new_name_taken').addClass('hidden');
 	});
 
 	$('body').on('click', '#add_attribute', function(){						
@@ -67,8 +72,23 @@
 				}			
 				else if(result.code==400)
 				{
-					alert(result.status);				
-					$('#alert_new_name').removeClass('hidden');
+					alert(result.status);											
+					if(result.messages['name'] == 'The name field is required.')
+					{
+						$('#alert_new_name_required').removeClass('hidden');
+					}
+					else
+					{
+						$('#alert_new_name_required').addClass('hidden');
+					}
+					if(result.messages['name'] == 'The name has already been taken.')
+					{
+						$('#alert_new_name_taken').removeClass('hidden');
+					}
+					else
+					{
+						$('#alert_new_name_taken').addClass('hidden');
+					}					
 				}
 				else
 				{

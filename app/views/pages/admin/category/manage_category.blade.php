@@ -20,6 +20,93 @@
 						@else
 							<button class="btn btn-success backButton" style="float: right; margin-top: 20px; margin-bottom: 25px;">Back</button>
 							<p>Search not match anything</p>
+							<table class="table table-striped table-hover ">
+								<thead class="table-bordered">
+									<tr>
+										<th class="table-bordered">
+											<a href="javascript:void(0)">ID</a>
+											@if($filtered == 0)
+												@if($sortBy == "id")
+													@if($sortType == "asc")
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'id', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
+													@else
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+													@endif
+												@else
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
+												@endif	
+											@else
+												@if($sortBy == "id")
+													@if($sortType == "asc")
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'id', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+													@else
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+													@endif
+												@else
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+												@endif	
+											@endif		
+											<span class="glyphicon glyphicon-sort" style="float: right;"></span>										
+											</a>
+										</th>
+										<th class="table-bordered">
+											<a href="javascript:void(0)">Nama Category</a>
+											@if($filtered == 0)
+												@if($sortBy == "name")
+													@if($sortType == "asc")
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'name', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
+													@else
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+													@endif
+												@else
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
+												@endif	
+											@else
+												@if($sortBy == "name")
+													@if($sortType == "asc")
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'name', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+													@else
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+													@endif
+												@else
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+												@endif	
+											@endif		
+											<span class="glyphicon glyphicon-sort" style="float: right;"></span>										
+											</a>
+										</th>
+										<th class="table-bordered">
+											<a href="javascript:void(0)">Parent Category</a>
+											@if($filtered == 0)
+												@if($sortBy == "parent_name")
+													@if($sortType == "asc")
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'parent_name', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
+													@else
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'parent_name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+													@endif
+												@else
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'parent_name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
+												@endif	
+											@else
+												@if($sortBy == "parent_name")
+													@if($sortType == "asc")
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'parent_name', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+													@else
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'parent_name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+													@endif
+												@else
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'parent_name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+												@endif	
+											@endif		
+											<span class="glyphicon glyphicon-sort" style="float: right;"></span>										
+											</a>
+										</th>
+										<th class="table-bordered">
+										
+										</th>
+									</tr>
+								</thead>
+							</table>	
 						@endif
 					@else
 						@if($filtered == 0)
@@ -151,8 +238,11 @@
 
 	<script>
 		$('body').on('click', '.detailButton', function(){
-			$id = $(this).prev().val();				
-			$('#alert_edit_nama').addClass('hidden');
+			$id = $(this).prev().val();					
+			$('#alert_edit_nama_required').addClass('hidden');
+			$('#alert_edit_nama_taken').addClass('hidden');
+			// $edit_name = $('#edit_name_input').val();
+			// $edit_parent_category = $('#edit_parent_category_input').val();		
 			$.ajax({
 				type: 'GET',
 				url: "{{URL('admin/category')}}/"+$id,

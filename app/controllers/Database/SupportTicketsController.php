@@ -54,7 +54,7 @@ class SupportTicketsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function getById($id)
+	/*public function getById($id)
 	{
 		$respond = array();
 		$supportticket = Supportticket::find($id);
@@ -67,6 +67,10 @@ class SupportTicketsController extends \BaseController {
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$supportticket);
 		}
 		return Response::json($respond);
+	}*/
+	
+	public function getById($id){
+		
 	}
 
 	/**
@@ -98,6 +102,8 @@ class SupportTicketsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
+	 
+	 
 	public function updateFull($id)
 	{
 		$respond = array();
@@ -158,6 +164,27 @@ class SupportTicketsController extends \BaseController {
 		return Response::json($respond);
 	}
 	*/
+	
+	public function update_solve(){
+		$json = Input::get('json_data');
+		$decode = json_decode($json);
+		$id = $decode->{'id'};
+		$ticket_message = SupportTicket::find($id);
+		if(count($ticket_message) == 1){
+			$ticket_message->solved = 1;
+			try{
+				$ticket_message->save();
+				$respond = array('code'=>'200','status' => 'OK');
+			}
+			catch(Exception $e){
+				$respond = array('code'=>'500','status' => 'Internal Server Error');
+			}
+		}
+		else{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		return Response::json($respond);
+	}
 	
 	
 	/**

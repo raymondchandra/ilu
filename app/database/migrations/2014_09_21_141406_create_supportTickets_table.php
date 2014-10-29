@@ -17,7 +17,7 @@ class CreateSupportTicketsTable extends Migration {
 			$table->increments('id');
 			$table->string('number');
 			$table->integer('account_id')->unsigned();
-			$table->tinyInteger('solved');
+			$table->tinyInteger('solved')->default(0);
 			$table->timestamps();
 		});
 	}
