@@ -316,6 +316,42 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.cms.manage_cms');
 	});
 
+    // Email Template 00
+    Route::get('/email_new_registran', function()
+	{
+		return View::make('pages.admin.email_template.new_registran');
+	});
+
+    // Email Template 01
+    Route::get('/email_voucher', function()
+	{
+		return View::make('pages.admin.email_template.voucher');
+	});
+
+    // Email Promo
+    Route::get('/email_promo', function()
+	{
+		return View::make('pages.admin.email_template.promo');
+	});
+
+    // Email Promo
+    Route::get('/email_message', function()
+	{
+		return View::make('pages.admin.email_template.message');
+	});
+
+    // Email Promo
+    Route::get('/email_forgot_pass', function()
+	{
+		return View::make('pages.admin.email_template.forgot_password');
+	});
+
+    // Email Promo
+    Route::get('/email_news', function()
+	{
+		return View::make('pages.admin.email_template.news');
+	});
+
 
 });
 
