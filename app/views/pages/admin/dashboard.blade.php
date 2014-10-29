@@ -1,80 +1,226 @@
 @extends('layouts.admin.admin_layout'){{-- WARNING! fase ini sementara untuk show saja, untuk lebih lanjut akan dibuat controller agar tidak meng-extend layout --}}
 @section('content')	
-				<div class="container-fluid">
-					<div class="row ">
-						<div class="col-lg-12">
-							<div class="s_title_n_control">
-								<h3 style="float: left;">
-									Login
-								</h3>
-								<!--<a href="index.php" class="btn btn-default" style="float: right; margin-top: 20px; margin-right: 10px;">Back</a> -->
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12">
+			
+				<div class="s_title_n_control">
+					<h3 style="float: left;">
+						Welcome To Dashboard
+					</h3>
+				</div>
+				<span class="clearfix"></span>
+				<hr></hr>
+				
+				<div>
+					<div class="col-lg-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">Penjualan Bulan Ini</h3>
 							</div>
-							<span class="clearfix"></span>
-							<hr></hr>
-							<div class="s_tbl s_set_height_window">
-								<div class="s_cl">
-									<div class="col-lg-6 col-lg-push-3">
-									
-										<p class="bg-danger" style="padding-top: 10px; padding-bottom: 10px; margin-bottom: 20px;">Maaf username/password anda salah!</p>
-										
-										<div class="panel panel-default">
-											<div class="panel-heading">
-												<h3 class="panel-title">Login to Admin Panel</h3>
-											</div>
-											<div class="panel-body">
-												<form class="form-horizontal" role="form">
-													<div class="form-group">
-														<label for="inputEmail3" class="col-sm-3 control-label">Username/Email</label>
-														<div class="col-sm-6">
-															<input type="text" class="form-control" placeholder="Username/Email">	
-														</div>
-													</div>
-												  
-													<div class="form-group">
-														<label for="inputPassword3" class="col-sm-3 control-label">Password</label>
-														<div class="col-sm-6">
-															<input type="password" class="form-control" placeholder="Password">	
-														</div>
-													</div>
-												  
-													<div class="form-group">
-														<div class=" g-sm-3 g-sm-push-3">
-															<button type="button" class="btn btn-warning flogin">Login</button>
-														</div>
-													</div>
-												</form>
-											</div>
-										</div>
-									</div>
-								</div>
+							<div class="panel-body">
+							 <style type="text/css">
+							${demo.css}
+							</style>
+							<script type="text/javascript">
+							$(function () {
+
+						    // Get the CSV and create the chart
+						    $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=analytics.csv&callback=?', function (csv) {
+
+						    	$('#container').highcharts({
+
+						    		data: {
+						    			csv: csv
+						    		},
+
+						    		title: {
+						    			text: 'Kurva Penjualan'
+						    		},
+
+						    		subtitle: {
+						    			text: ''
+						    		},
+
+						    		xAxis: {
+						                tickInterval: 7 * 24 * 3600 * 1000, // one week
+						                tickWidth: 0,
+						                gridLineWidth: 1,
+						                labels: {
+						                	align: 'left',
+						                	x: 3,
+						                	y: -3
+						                }
+						            },
+
+						            yAxis: [{ // left y axis
+						            	title: {
+						            		text: null
+						            	},
+						            	labels: {
+						            		align: 'left',
+						            		x: 3,
+						            		y: 16,
+						            		format: '{value:.,0f}'
+						            	},
+						            	showFirstLabel: false
+						            }, { // right y axis
+						            	linkedTo: 0,
+						            	gridLineWidth: 0,
+						            	opposite: true,
+						            	title: {
+						            		text: null
+						            	},
+						            	labels: {
+						            		align: 'right',
+						            		x: -3,
+						            		y: 16,
+						            		format: '{value:.,0f}'
+						            	},
+						            	showFirstLabel: false
+						            }],
+
+						            legend: {
+						            	align: 'left',
+						            	verticalAlign: 'top',
+						            	y: 20,
+						            	floating: true,
+						            	borderWidth: 0
+						            },
+
+						            tooltip: {
+						            	shared: true,
+						            	crosshairs: true
+						            },
+
+						            plotOptions: {
+						            	series: {
+						            		cursor: 'pointer',
+						            		point: {
+						            			events: {
+						            				click: function (e) {
+						            					hs.htmlExpand(null, {
+						            						pageOrigin: {
+						            							x: e.pageX,
+						            							y: e.pageY
+						            						},
+						            						headingText: this.series.name,
+						            						maincontentText: Highcharts.dateFormat('%A, %b %e, %Y', this.x) + ':<br/> ' +
+						            						this.y + ' visits',
+						            						width: 200
+						            					});
+						            				}
+						            			}
+						            		},
+						            		marker: {
+						            			lineWidth: 1
+						            		}
+						            	}
+						            },
+
+						            series: [{
+						            	name: 'All visits',
+						            	lineWidth: 4,
+						            	marker: {
+						            		radius: 4
+						            	}
+						            }, {
+						            	name: 'New visitors'
+						            }]
+						        });
+							});
+
+							});
+
+
+							</script>
+
+							<script src="{{ asset('assets/js/highcharts4/js/highcharts.js') }}"></script>
+							<script src="{{ asset('assets/js/highcharts4/js/modules/data.js') }}"></script>
+							<script src="{{ asset('assets/js/highcharts4/js/modules/exporting.js') }}"></script>
+
+							<!-- Additional files for the Highslide popup effect -->
+							<script type="text/javascript" src="http://www.highcharts.com/media/com_demo/highslide-full.min.js"></script>
+							<script type="text/javascript" src="http://www.highcharts.com/media/com_demo/highslide.config.js" charset="utf-8"></script>
+							<link rel="stylesheet" type="text/css" href="http://www.highcharts.com/media/com_demo/highslide.css" />
+
+							<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
 							</div>
 						</div>
 					</div>
+					<div class="col-lg-3">
+						<div class="panel panel-default">
+						  <div class="panel-heading">
+						    <h3 class="panel-title">Top 10 Products</h3>
+						  </div>
+						  <div class="panel-body">
+						   	<table class="table">
+						   		<thead>
+						   			<tr>
+						   				<th>
+						   					Nama Produk
+						   				</th>
+						   			</tr>
+						   		</thead>
+						   		<tbody>
+						   			<?php
+						   				for($i = 0; $i < 10; $i++){
+				   					?>
+						   			<tr>
+						   				<td>
+						   					Nama Produk
+						   				</td>
+						   			</tr>
+				   					<?php
+						   				}
+						   			?>
+						   		</tbody>
+						   	</table>
+						  </div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="panel panel-default">
+						  <div class="panel-heading">
+						    <h3 class="panel-title">Top 10 Buyers</h3>
+						  </div>
+						  <div class="panel-body">
+						   	<table class="table">
+						   		<thead>
+						   			<tr>
+						   				<th>
+						   					Nama Produk
+						   				</th>
+						   			</tr>
+						   		</thead>
+						   		<tbody>
+						   			<?php
+						   				for($i = 0; $i < 10; $i++){
+				   					?>
+						   			<tr>
+						   				<td>
+						   					Nama Orang
+						   				</td>
+						   			</tr>
+
+				   					<?php
+						   				}
+						   			?>
+						   		</tbody>
+						   	</table>
+						  </div>
+						</div>
+					</div>
+
 				</div>
-			
-<script>
+				
+			</div>
+		</div>
+	</div>
 	
-	$('body').on('click','.flogin',function(){
-		$data = {
-			'status' : '202',
-			'text' : "Hello World!"
-		}
-		
-		var json_data = JSON.stringify($data);
-		
-		$.ajax({
-			url: '../test_login',
-			type: 'POST',
-			data: {
-				'json_data':json_data
-			},
-			success: function (res) {
-				alert(res)
-			},
-			error: function(jqXHR, textStatus, errorThrown){
-						alert(errorThrown);
-			}
-		},'json');	
-	});
-</script>
-			@stop
+	@include('includes.modals.alertYesNo')	
+	@include('pages.admin.cms.pop_up_edit_company_info')
+	@include('pages.admin.cms.pop_up_edit_seo')
+
+@stop
