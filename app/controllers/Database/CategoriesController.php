@@ -1199,23 +1199,16 @@ class CategoriesController extends \BaseController {
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{		
-			if($new_name === $category->name)
+		{	
+			$validator = Validator::make(
+				array('name' => $new_name),
+				array('name' => 'required|unique:categories,name')
+			);
+			if ($validator->fails())
 			{
-				//do nothing
-			}
-			else
-			{
-				$validator = Validator::make(
-					array('name' => $new_name),
-					array('name' => 'required|unique:categories,name')
-				);
-				if ($validator->fails())
-				{
-					$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
-					return Response::json($respond);
-				}		
-			}			
+				$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
+				return Response::json($respond);
+			}		
 			
 			//edit value
 			$category->name = $new_name;

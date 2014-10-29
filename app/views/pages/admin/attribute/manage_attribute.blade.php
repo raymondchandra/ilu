@@ -20,6 +20,74 @@
 					@else
 						<button class="btn btn-success backButton" style="float: right; margin-top: 20px; margin-bottom: 25px;">Back</button>
 						<p>Search not match anything</p>
+						<table class="table table-striped table-hover ">
+							<thead class="table-bordered">
+								<tr>
+									<th class="table-bordered">
+										<a href="javascript:void(0)">ID Attribute</a>
+										@if($filtered == 0)
+											@if($sortBy == "id")
+												@if($sortType == "asc")
+													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
+												@else
+													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+												@endif
+											@else
+												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
+											@endif	
+										@else
+											@if($sortBy == "id")
+												@if($sortType == "asc")
+													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+												@else
+													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+												@endif
+											@else
+												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+											@endif	
+										@endif								
+										<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+										</a>
+									</th>
+									<th class="table-bordered">
+										<a href="javascript:void(0)">Nama Attribute</a>
+										@if($filtered == 0)
+											@if($sortBy == "name")
+												@if($sortType == "asc")
+													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
+												@else
+													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+												@endif
+											@else
+												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
+											@endif	
+										@else
+											@if($sortBy == "name")
+												@if($sortType == "asc")
+													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+												@else
+													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+												@endif
+											@else
+												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+											@endif	
+										@endif								
+										<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+										</a>
+									</th>
+									<th class="table-bordered">
+
+									</th>
+								</thead>
+								<thead>
+									<tr>
+										<td><input type="text" class="form-control input-sm filterId"></td>
+										<td><input type="text" class="form-control input-sm filterName"></td>
+										
+										<td width=""><a class="btn btn-primary btn-xs filterButton">Filter</a></td>
+									</tr>
+								</thead>
+						</table>	
 					@endif					
 				@else								
 					@if($filtered == 0)					
@@ -46,12 +114,12 @@
 									@else
 										@if($sortBy == "id")
 											@if($sortType == "asc")
-												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name ))}}">
 											@else
-												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name ))}}">
 											@endif
 										@else
-											<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+											<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name ))}}">
 										@endif	
 									@endif								
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
@@ -123,7 +191,13 @@
 	<script>			
 		$('body').on('click', '.detailButton', function(){
 			$id = $(this).prev().val();
-			$('#alert_edit_nama').addClass('hidden');
+			$('#alert_edit_nama_required').addClass('hidden');
+			$('#alert_edit_nama_taken').addClass('hidden');
+			$('#nama_attribute_input').addClass('hidden');
+			$('#nama_attribute_setter').addClass('hidden');
+			$('#nama_attribute').removeClass('hidden');
+			$('#nama_attribute_editor').removeClass('hidden');
+			$('#nama_attribute').text($('#nama_attribute_input').val());
 			$.ajax({
 				type: 'GET',
 				url: "{{URL('admin/attribute')}}/"+$id,
