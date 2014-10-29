@@ -12,24 +12,143 @@
 			<span class="clearfix"></span>
 			<hr></hr>
 
-			<div id="div_pagination">					
-					{{$datas->links()}}
-					
-					<button class="btn btn-success" style="float: right; margin-top: 20px;"  data-toggle="modal" data-target=".pop_up_add_attribute">+ Add New Attribute</button>
+			<div>
+				@if($attributes == null)
+					@if($filtered == 0)
+						<button class="btn btn-success" style="float: right; margin-top: 20px; margin-bottom: 25px;"  data-toggle="modal" data-target=".pop_up_add_attribute">+ Add New Attribute</button>
+						<p>No Attributes</p>
+					@else
+						<button class="btn btn-success backButton" style="float: right; margin-top: 20px; margin-bottom: 25px;">Back</button>
+						<p>Search not match anything</p>
+						<table class="table table-striped table-hover ">
+							<thead class="table-bordered">
+								<tr>
+									<th class="table-bordered">
+										<a href="javascript:void(0)">ID Attribute</a>
+										@if($filtered == 0)
+											@if($sortBy == "id")
+												@if($sortType == "asc")
+													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
+												@else
+													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+												@endif
+											@else
+												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
+											@endif	
+										@else
+											@if($sortBy == "id")
+												@if($sortType == "asc")
+													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+												@else
+													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+												@endif
+											@else
+												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+											@endif	
+										@endif								
+										<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+										</a>
+									</th>
+									<th class="table-bordered">
+										<a href="javascript:void(0)">Nama Attribute</a>
+										@if($filtered == 0)
+											@if($sortBy == "name")
+												@if($sortType == "asc")
+													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
+												@else
+													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+												@endif
+											@else
+												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
+											@endif	
+										@else
+											@if($sortBy == "name")
+												@if($sortType == "asc")
+													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+												@else
+													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+												@endif
+											@else
+												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+											@endif	
+										@endif								
+										<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+										</a>
+									</th>
+									<th class="table-bordered">
 
+									</th>
+								</thead>
+								<thead>
+									<tr>
+										<td><input type="text" class="form-control input-sm filterId"></td>
+										<td><input type="text" class="form-control input-sm filterName"></td>
+										
+										<td width=""><a class="btn btn-primary btn-xs filterButton">Filter</a></td>
+									</tr>
+								</thead>
+						</table>	
+					@endif					
+				@else								
+					@if($filtered == 0)					
+						{{$attributes->appends(array('sortBy' => $sortBy, 'order' => $sortType, 'filtered' => $filtered))->links()}}
+						<button class="btn btn-success" style="float: right; margin-top: 20px; margin-bottom: 25px;"  data-toggle="modal" data-target=".pop_up_add_attribute">+ Add New Attribute</button>
+					@else
+						<button class="btn btn-success backButton" style="float: right; margin-top: 20px; margin-bottom: 25px;">Back</button>
+					@endif
 					<table class="table table-striped table-hover ">
 						<thead class="table-bordered">
 							<tr>
 								<th class="table-bordered">
 									<a href="javascript:void(0)">ID Attribute</a>
-									<a href="javascript:void(0)">
-										<span id="toogle_sorted_id" class="glyphicon glyphicon-sort" style="float: right;"></span>
+									@if($filtered == 0)
+										@if($sortBy == "id")
+											@if($sortType == "asc")
+												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
+											@else
+												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+											@endif
+										@else
+											<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
+										@endif	
+									@else
+										@if($sortBy == "id")
+											@if($sortType == "asc")
+												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name ))}}">
+											@else
+												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name ))}}">
+											@endif
+										@else
+											<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name ))}}">
+										@endif	
+									@endif								
+									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
 								<th class="table-bordered">
 									<a href="javascript:void(0)">Nama Attribute</a>
-									<a href="javascript:void(0)">
-										<span id="toogle_sorted_name" class="glyphicon glyphicon-sort" style="float: right;"></span>
+									@if($filtered == 0)
+										@if($sortBy == "name")
+											@if($sortType == "asc")
+												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
+											@else
+												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+											@endif
+										@else
+											<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
+										@endif	
+									@else
+										@if($sortBy == "name")
+											@if($sortType == "asc")
+												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+											@else
+												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+											@endif
+										@else
+											<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+										@endif	
+									@endif								
+									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
 								<th class="table-bordered">
@@ -38,52 +157,97 @@
 							</thead>
 							<thead>
 								<tr>
-									<td><input id="search_id_input" type="text" class="form-control input-sm"></td>
-									<td><input id="search_name_input" type="text" class="form-control input-sm"></td>
+									<td><input type="text" class="form-control input-sm filterId"></td>
+									<td><input type="text" class="form-control input-sm filterName"></td>
 									
-									<td width=""><a id="search-attribute" class="btn btn-primary btn-xs">Filter</a></td>
+									<td width=""><a class="btn btn-primary btn-xs filterButton">Filter</a></td>
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($datas as $attribute)
+								@foreach($attributes as $attribute)
 									<tr> 
-										<td>{{$attribute->id}}</td>
-										<td>{{$attribute->name}}</td>
+										<td id="id_{{$attribute->id}}">{{$attribute->id}}</td>
+										<td id="name_{{$attribute->name}}">{{$attribute->name}}</td>
 										<td>
-											<input type='hidden' class='id_attribute' value='{{$attribute->id}}'>
-											<button class="btn btn-info btn-xs detail-attribute" data-toggle="modal" data-target=".pop_up_view_attribute">View</button>											
-											<button class="btn btn-danger btn-xs delete-attribute" data-toggle="modal" data-target=".alertYesNo">Delete</button>
+											<input type='hidden' value='{{$attribute->id}}'>
+											<button class="btn btn-info btn-xs detailButton" data-toggle="modal" data-target=".pop_up_view_attribute">View</button>											
+											<input type='hidden' value='{{$attribute->id}}'>
+											<button class="btn btn-danger btn-xs deleteButton" data-toggle="modal" data-target=".alertYesNo">Delete</button>
 										</td>
 									</tr> 	
 								@endforeach	
 							</tbody>
-					</table>				
+					</table>	
+				@endif	
 			</div>			
 		</div>
 	</div>
 </div>
 	
-	@include('includes.modals.alertYesNo')
+	@include('pages.admin.attribute.alertYesNo')
 	@include('pages.admin.attribute.pop_up_add_attribute')
 	@include('pages.admin.attribute.pop_up_view_attribute')
 
-	<script>
+	<script>			
+		$('body').on('click', '.detailButton', function(){
+			$id = $(this).prev().val();
+			$('#alert_edit_nama_required').addClass('hidden');
+			$('#alert_edit_nama_taken').addClass('hidden');
+			$('#nama_attribute_input').addClass('hidden');
+			$('#nama_attribute_setter').addClass('hidden');
+			$('#nama_attribute').removeClass('hidden');
+			$('#nama_attribute_editor').removeClass('hidden');
+			$('#nama_attribute').text($('#nama_attribute_input').val());
+			$.ajax({
+				type: 'GET',
+				url: "{{URL('admin/attribute')}}/"+$id,
+				success: function(response){
+					result = JSON.parse(response);
+					if(result.code==200){
+						$message = result.messages;
+						$('#nama_attribute').text($message.name);
+					}					
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					alert(errorThrown);
+				}
+			},'json');
+		});			
+		
+		$('body').on('click', '.deleteButton', function(){
+			$id = $(this).prev().val();
+			// alert($id);			
+		});
+	
+		$('body').on('click', '.filterButton', function(){
+			$id = $('.filterId').val();
+			$name = $('.filterName').val();
+			window.location = "{{URL::route('viewAttributesManagement')}}"+"?filtered=1&id="+$id+"&name="+$name;			
+		});
+		
+		$('body').on('click','.backButton', function(){
+			window.location = "{{URL::route('viewAttributesManagement')}}";
+		});
+		
+		
+	
+		/*BEFORE
 		//global
-		var view_all = "{{URL('admin/attribute')}}";		
-		var filtered = 0;			//0 false, 1 true
+		// var view_all = "{{URL('admin/attribute')}}";		
+		// var filtered = 0;			//0 false, 1 true
 		// var sorted_id = 0;	//-1 desc, 1 asc
 		// var sorted_name = 0;	//-1 desc, 1 asc
-		var temp_id;
-		var temp_name;
-		var fill = "";
-		var search_result;
+		// var temp_id;
+		// var temp_name;
+		// var fill = "";
+		// var search_result;
 			
 		// sort on values
-		function srt(desc) {
-		  return function(a,b){
-		   return desc ? ~~(a < b) : ~~(a > b);
-		  };
-		}
+		// function srt(desc) {
+		  // return function(a,b){
+		   // return desc ? ~~(a < b) : ~~(a > b);
+		  // };
+		// }
 		
 		// sort on key values
 		// function keysrt(key, desc) {
@@ -107,9 +271,9 @@
 			// }			
 		// });	
 
-		$('body').on('click', '#toogle_sorted_id', function(){
-			if(filtered == 1)
-			{							
+		// $('body').on('click', '#toogle_sorted_id', function(){
+			// if(filtered == 1)
+			// {							
 				//BERHASIL SORT NAME ASC
 				// var temp = search_result.sort(srt({key:'name', string:true}, true));
 				// temp = search_result.sort(srt({key:'name', string:true}, true));
@@ -127,23 +291,23 @@
 				// temp = search_result.sort(srt({key:'id', integer:true}, true));
 				
 				// BERHASIL SORT ID DESC				
-				var temp = search_result.sort(srt({key:'id', integer:true}, true));
-				temp = search_result.sort(srt({key:'id', integer:true}, true));
-				temp = search_result.sort(srt({key:'id', integer:true}, true));
-				temp.reverse();
+				// var temp = search_result.sort(srt({key:'id', integer:true}, true));
+				// temp = search_result.sort(srt({key:'id', integer:true}, true));
+				// temp = search_result.sort(srt({key:'id', integer:true}, true));
+				// temp.reverse();
 								
-				fill = "";
-				fill += "<a id='button_view_all' href='"+view_all+"' class='btn btn-success' style='float: left; margin-top: 20px; margin-bottom: 25px;'>View All</a><button class='btn btn-success' style='float: right; margin-top: 20px; margin-bottom: 25px;'  data-toggle='modal' data-target='.pop_up_add_attribute'>+ Add New Attribute</button>";
-				fill += "<table class='table table-striped table-hover'><thead class='table-bordered'><tr><th class='table-bordered'><a href='javascript:void(0)'>ID Attribute</a><a href='javascript:void(0)'><span id='toogle_sorted_id' class='glyphicon glyphicon-sort' style='float: right;'></span></a></th><th class='table-bordered'><a href='javascript:void(0)'>Nama Attribute</a><a href='javascript:void(0)'><span id='toogle_sorted_name' class='glyphicon glyphicon-sort' style='float: right;'></span></a></th><th class='table-bordered'></th></thead><thead><tr><td><input id='search_id_input' type='text' class='form-control input-sm'></td><td><input id='search_name_input' type='text' class='form-control input-sm'></td><td width=''><a id='search-attribute' class='btn btn-primary btn-xs'>Filter</a></td></tr></thead><tbody>";					
-				for(i=0; i<temp.length; i++){
-					temp_id = temp[i]['id'];							
-					temp_name = temp[i]['name'];
-					fill += "<tr><td>"+temp_id+"</td><td>"+temp_name+"</td><td><input type='hidden' class='id_attribute' value='"+temp_id+"'><button class='btn btn-info btn-xs detail-attribute' data-toggle='modal' data-target='.pop_up_view_attribute'>View</button><button class='btn btn-danger btn-xs delete-attribute' data-toggle='modal' data-target='.alertYesNo'>Delete</button></td></tr>";
-				}					
-				fill += "</tbody></table>";						
-				document.getElementById("div_pagination").innerHTML = fill;
-			}
-		});
+				// fill = "";
+				// fill += "<a id='button_view_all' href='"+view_all+"' class='btn btn-success' style='float: left; margin-top: 20px; margin-bottom: 25px;'>View All</a><button class='btn btn-success' style='float: right; margin-top: 20px; margin-bottom: 25px;'  data-toggle='modal' data-target='.pop_up_add_attribute'>+ Add New Attribute</button>";
+				// fill += "<table class='table table-striped table-hover'><thead class='table-bordered'><tr><th class='table-bordered'><a href='javascript:void(0)'>ID Attribute</a><a href='javascript:void(0)'><span id='toogle_sorted_id' class='glyphicon glyphicon-sort' style='float: right;'></span></a></th><th class='table-bordered'><a href='javascript:void(0)'>Nama Attribute</a><a href='javascript:void(0)'><span id='toogle_sorted_name' class='glyphicon glyphicon-sort' style='float: right;'></span></a></th><th class='table-bordered'></th></thead><thead><tr><td><input id='search_id_input' type='text' class='form-control input-sm'></td><td><input id='search_name_input' type='text' class='form-control input-sm'></td><td width=''><a id='search-attribute' class='btn btn-primary btn-xs'>Filter</a></td></tr></thead><tbody>";					
+				// for(i=0; i<temp.length; i++){
+					// temp_id = temp[i]['id'];							
+					// temp_name = temp[i]['name'];
+					// fill += "<tr><td>"+temp_id+"</td><td>"+temp_name+"</td><td><input type='hidden' class='id_attribute' value='"+temp_id+"'><button class='btn btn-info btn-xs detail-attribute' data-toggle='modal' data-target='.pop_up_view_attribute'>View</button><button class='btn btn-danger btn-xs delete-attribute' data-toggle='modal' data-target='.alertYesNo'>Delete</button></td></tr>";
+				// }					
+				// fill += "</tbody></table>";						
+				// document.getElementById("div_pagination").innerHTML = fill;
+			// }
+		// });
 				
 		//kalo jadi 2 button berbeda
 		// $('body').on('click', '#toogle_sorted_id_asc', function(){
@@ -241,6 +405,8 @@
 			// $id_delete = $(this).siblings('.id_attribute').val();
 			
 		// });		
+	*/
 	</script>
+	
 	
 	@stop

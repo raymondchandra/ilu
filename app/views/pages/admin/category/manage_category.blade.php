@@ -12,72 +12,274 @@
 				<span class="clearfix"></span>
 				<hr></hr>
 				
-				<div id="div_pagination">
-					{{$datas->links()}}
-					
-					<button class="btn btn-success" style="float: right; margin-top: 20px;"  data-toggle="modal" data-target=".pop_up_add_category">+ Add Category</button>
-					
-					<table class="table table-striped table-hover ">
-						<thead class="table-bordered">
-							<tr>
-								<th class="table-bordered">
-								ID
-									<a href="javascript:void(0)">
-									<span id="toogle_sorted_id" class="glyphicon glyphicon-sort" style="float: right;"></span>
-									</a>
-								</th>
-								<th class="table-bordered">
-									<a href="javascript:void(0)">Nama Category</a>
-									<a href="javascript:void(0)">
-									<span id="toogle_sorted_name" class="glyphicon glyphicon-sort" style="float: right;"></span>
-									</a>
-								</th>
-								<th class="table-bordered">
-									<a href="javascript:void(0)">Parent Category</a>
-									<a href="javascript:void(0)">
-									<span id="toogle_sorted_parent_name" class="glyphicon glyphicon-sort" style="float: right;"></span>
-									</a>
-								</th>
-								<th class="table-bordered">
-								Edit
-								</th>
-							</tr>
-						</thead>
-						<thead>
-							<tr>
-								<td width="125"><input id="search_id_input" type="text" class="form-control input-sm"></td>
-								<td><input id="search_name_input" type="text" class="form-control input-sm"></td>
-								<td><input id="search_parent_name_input" type="text" class="form-control input-sm"></td>
-								
-								<td width="120"><a id="search-category" class="btn btn-primary btn-xs">Filter</a></td>
-							</tr>
-						</thead>
-						<tbody>			
-							@foreach($datas as $category)
-								<tr> 
-									<td>{{$category->id}}</td>
-									<td>{{$category->name}}</td>
-									<td>{{$category->parent_name}}</td>								
-									<td>
-										<input type='hidden' class='id_category' value='{{$category->id}}'>
-										<a class="btn btn-warning btn-xs detail-category" data-toggle="modal" data-target=".pop_up_edit_category">Edit</a>										
-										<a class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</a>
-									</td>
-								</tr> 
-							@endforeach
-						</tbody>
-					</table>
-				</div>
-				
+				<div>					
+					@if($categories == null)
+						@if($filtered == 0)
+							<button class="btn btn-success" style="float: right; margin-top: 20px; margin-bottom: 25px;"  data-toggle="modal" data-target=".pop_up_add_category">+ Add Category</button>
+							<p>No Categories</p>
+						@else
+							<button class="btn btn-success backButton" style="float: right; margin-top: 20px; margin-bottom: 25px;">Back</button>
+							<p>Search not match anything</p>
+							<table class="table table-striped table-hover ">
+								<thead class="table-bordered">
+									<tr>
+										<th class="table-bordered">
+											<a href="javascript:void(0)">ID</a>
+											@if($filtered == 0)
+												@if($sortBy == "id")
+													@if($sortType == "asc")
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'id', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
+													@else
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+													@endif
+												@else
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
+												@endif	
+											@else
+												@if($sortBy == "id")
+													@if($sortType == "asc")
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'id', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+													@else
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+													@endif
+												@else
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+												@endif	
+											@endif		
+											<span class="glyphicon glyphicon-sort" style="float: right;"></span>										
+											</a>
+										</th>
+										<th class="table-bordered">
+											<a href="javascript:void(0)">Nama Category</a>
+											@if($filtered == 0)
+												@if($sortBy == "name")
+													@if($sortType == "asc")
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'name', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
+													@else
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+													@endif
+												@else
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
+												@endif	
+											@else
+												@if($sortBy == "name")
+													@if($sortType == "asc")
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'name', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+													@else
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+													@endif
+												@else
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+												@endif	
+											@endif		
+											<span class="glyphicon glyphicon-sort" style="float: right;"></span>										
+											</a>
+										</th>
+										<th class="table-bordered">
+											<a href="javascript:void(0)">Parent Category</a>
+											@if($filtered == 0)
+												@if($sortBy == "parent_name")
+													@if($sortType == "asc")
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'parent_name', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
+													@else
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'parent_name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+													@endif
+												@else
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'parent_name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
+												@endif	
+											@else
+												@if($sortBy == "parent_name")
+													@if($sortType == "asc")
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'parent_name', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+													@else
+														<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'parent_name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+													@endif
+												@else
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'parent_name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+												@endif	
+											@endif		
+											<span class="glyphicon glyphicon-sort" style="float: right;"></span>										
+											</a>
+										</th>
+										<th class="table-bordered">
+										
+										</th>
+									</tr>
+								</thead>
+							</table>	
+						@endif
+					@else
+						@if($filtered == 0)
+							{{$categories->appends(array('sortBy' => $sortBy, 'order' => $sortType, 'filtered' => $filtered))->links()}}
+							<button class="btn btn-success" style="float: right; margin-top: 20px; margin-bottom: 25px;"  data-toggle="modal" data-target=".pop_up_add_category">+ Add Category</button>
+						@else
+							<button class="btn btn-success backButton" style="float: right; margin-top: 20px; margin-bottom: 25px;">Back</button>
+						@endif
+						<table class="table table-striped table-hover ">
+							<thead class="table-bordered">
+								<tr>
+									<th class="table-bordered">
+										<a href="javascript:void(0)">ID</a>
+										@if($filtered == 0)
+											@if($sortBy == "id")
+												@if($sortType == "asc")
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'id', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
+												@else
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+												@endif
+											@else
+												<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
+											@endif	
+										@else
+											@if($sortBy == "id")
+												@if($sortType == "asc")
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'id', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+												@else
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+												@endif
+											@else
+												<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+											@endif	
+										@endif		
+										<span class="glyphicon glyphicon-sort" style="float: right;"></span>										
+										</a>
+									</th>
+									<th class="table-bordered">
+										<a href="javascript:void(0)">Nama Category</a>
+										@if($filtered == 0)
+											@if($sortBy == "name")
+												@if($sortType == "asc")
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'name', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
+												@else
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+												@endif
+											@else
+												<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
+											@endif	
+										@else
+											@if($sortBy == "name")
+												@if($sortType == "asc")
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'name', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+												@else
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+												@endif
+											@else
+												<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+											@endif	
+										@endif		
+										<span class="glyphicon glyphicon-sort" style="float: right;"></span>										
+										</a>
+									</th>
+									<th class="table-bordered">
+										<a href="javascript:void(0)">Parent Category</a>
+										@if($filtered == 0)
+											@if($sortBy == "parent_name")
+												@if($sortType == "asc")
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'parent_name', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
+												@else
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'parent_name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+												@endif
+											@else
+												<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'parent_name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
+											@endif	
+										@else
+											@if($sortBy == "parent_name")
+												@if($sortType == "asc")
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'parent_name', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+												@else
+													<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'parent_name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+												@endif
+											@else
+												<a href="{{action('CategoriesManagementController@view_admin_category', array('sortBy' => 'parent_name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, 'parent_name' => $parent_name))}}">
+											@endif	
+										@endif		
+										<span class="glyphicon glyphicon-sort" style="float: right;"></span>										
+										</a>
+									</th>
+									<th class="table-bordered">
+									
+									</th>
+								</tr>
+							</thead>
+							<thead>
+								<tr>
+									<td width="125"><input type="text" class="form-control input-sm filterId"></td>
+									<td><input type="text" class="form-control input-sm filterName"></td>
+									<td><input type="text" class="form-control input-sm filterParentName"></td>
+									
+									<td width="120"><a class="btn btn-primary btn-xs filterButton">Filter</a></td>
+								</tr>
+							</thead>
+							<tbody>			
+								@foreach($categories as $category)
+									<tr> 
+										<td id="id_{{$category->id}}">{{$category->id}}</td>
+										<td id="name_{{$category->name}}">{{$category->name}}</td>
+										<td id="parent_name_{{$category->parent_name}}">{{$category->parent_name}}</td>								
+										<td>
+											<input type='hidden' value='{{$category->id}}'>
+											<a class="btn btn-warning btn-xs detailButton" data-toggle="modal" data-target=".pop_up_edit_category">Edit</a>										
+											<input type='hidden' value='{{$category->id}}'>
+											<a class="btn btn-danger btn-xs deleteButton" data-toggle="modal" data-target=".alertYesNo">Delete</a>
+										</td>
+									</tr> 
+								@endforeach
+							</tbody>
+						</table>
+					@endif								
+				</div>				
 			</div>
 		</div>
 	</div>
 	
-	@include('includes.modals.alertYesNo')
+	@include('pages.admin.category.alertYesNo')
 	@include('pages.admin.category.pop_up_add_category')
 	@include('pages.admin.category.pop_up_edit_category')
 
 	<script>
+		$('body').on('click', '.detailButton', function(){
+			$id = $(this).prev().val();					
+			$('#alert_edit_nama_required').addClass('hidden');
+			$('#alert_edit_nama_taken').addClass('hidden');
+			// $edit_name = $('#edit_name_input').val();
+			// $edit_parent_category = $('#edit_parent_category_input').val();		
+			$.ajax({
+				type: 'GET',
+				url: "{{URL('admin/category')}}/"+$id,
+				success: function(response){				
+					result = JSON.parse(response);					
+					if(result.code==200){
+						$message = result.messages;						
+						$('#edit_name_input').val($message[0].name);	
+						if($message[0].parent_category == null)
+						{
+							$message[0].parent_category = -1;
+						}
+						$('#edit_parent_category_input').val($message[0].parent_category);						
+					}					
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					alert(errorThrown);
+				}
+			},'json');
+		});	
+	
+		$('body').on('click', '.deleteButton', function(){
+			$id = $(this).prev().val();
+			// alert($id);			
+		});
+		
+		$('body').on('click', '.filterButton', function(){
+			$id = $('.filterId').val();
+			$name = $('.filterName').val();
+			$parent_name = $('.filterParentName').val();
+			window.location = "{{URL::route('viewCategoriesManagement')}}"+"?filtered=1&id="+$id+"&name="+$name+"&parent_name="+$parent_name;			
+		});
+		
+		$('body').on('click','.backButton', function(){
+			window.location = "{{URL::route('viewCategoriesManagement')}}";
+		});
+		/*
 		//global
 		var view_all = "{{URL('admin/category')}}";		
 		var filtered = 0;			//0 false, 1 true
@@ -225,5 +427,6 @@
 				}
 			},'json');
 		});
+		*/
 	</script>
 @stop

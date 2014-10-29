@@ -3,7 +3,7 @@
 class CustomerManagementController extends \BaseController 
 {
 	public function view_cust_mgmt()
-	{
+	{	
 		$sortBy = Input::get('sortBy','none');
 		$sortType = Input::get('order','none');
 		$filtered = Input::get('filtered', '0');

@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/tes', 'CategoriesController@getListCategory');
+Route::get('/tes', 'ReviewsController@getAll');
 
 Route::get('/tesview', function (){
 	return View::make('pages.admin.product.manage_product');
@@ -9,9 +9,23 @@ Route::get('/tesview', function (){
 Route::get('/tes2', function()
 {
 
-		$shipmentdata = Shipmentdata::find('1');
-
-echo $shipmentdata;
+		$respond = array();
+		$order = Order::all();
+		if (count($order) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			foreach($order as $key)
+			{
+				$key->transaction = Order::find($key->id)->transaction;
+				$key->acc_name = Account::find($key->transaction->account_id)->profile->full_name;				
+				$key->productName = Order::find($key->id)->price->product->name;
+			}
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
+		}
+		echo $respond['messages'];
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -90,37 +104,51 @@ Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
 
 Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 {
-	//attribute
-		Route::get('/attribute', ['as' => 'attribute', 'uses' => 'AttributesController@view_main_attribute']);
-			// Route::get('/attributeIdAsc', ['as' => 'attributeIdAsc', 'uses' => 'AttributesController@view_main_attributeIdAsc']);
-			// Route::get('/attributeIdDesc', ['as' => 'attributeIdDesc', 'uses' => 'AttributesController@view_main_attributeIdDesc']);
-			// Route::get('/attributeNameAsc', ['as' => 'attributeNameAsc', 'uses' => 'AttributesController@view_main_attributeNameAsc']);
-			// Route::get('/attributeNameDesc', ['as' => 'attributeNameDesc', 'uses' => 'AttributesController@view_main_attributeNameDesc']);
-		Route::get('/attribute/{id}', ['as' => 'attribute_detail', 'uses' => 'AttributesController@view_detail_attribute']);
-		Route::get('/searchAttribute', ['as' => 'searchAttribute', 'uses' => 'AttributesController@view_search_attribute']);		
-			// Route::get('/searchAttributeIdAsc', ['as' => 'searchAttributeIdAsc', 'uses' => 'AttributesController@view_search_attribute']);
-			// Route::get('/searchAttributeIdDesc', ['as' => 'searchAttributeIdDesc', 'uses' => 'AttributesController@view_search_attribute']);
-			// Route::get('/searchAttributeNameAsc', ['as' => 'searchAttributeNameAsc', 'uses' => 'AttributesController@view_search_attribute']);
-			// Route::get('/searchAttributeNameDesc', ['as' => 'searchAttributeNameDesc', 'uses' => 'AttributesController@view_search_attribute']);
-		Route::post('/attribute/editName', ['as' => 'attribute.editName', 'uses' => 'AttributesController@editName']);
-		Route::post('/attribute/addAttribute', ['as' => 'attribute.addAttribute', 'uses' => 'AttributesController@addAttribute']);
-		// Route::delete();
+
+	//-------------------------------------------ATTRIBUTE VIEW ADMIN-------------------------------------------		
+	Route::get('manage_attributes', ['as' => 'viewAttributesManagement', 'uses' => 'AttributesManagementController@view_admin_attribute']);
+	Route::get('/attribute/{id}', ['as' => 'attribute_detail', 'uses' => 'AttributesManagementController@view_detail_attribute']);
+	Route::post('/attribute/addAttribute', ['as' => 'attribute.addAttribute', 'uses' => 'AttributesManagementController@addAttribute']);
+	Route::post('/attribute/editName', ['as' => 'attribute.editName', 'uses' => 'AttributesManagementController@editName']);	
+	Route::post('/attribute/deleteAttribute', ['as' => 'attribute.deleteAttribute', 'uses' => 'AttributesManagementController@deleteAttribute']);	
+	
+	//-------------------------------------------CATEGORY VIEW ADMIN-------------------------------------------	
+	Route::get('manage_categories', ['as' => 'viewCategoriesManagement', 'uses' => 'CategoriesManagementController@view_admin_category']);
+	Route::get('/category/{id}', ['as' => 'category_detail', 'uses' => 'CategoriesManagementController@view_detail_category']);
+	Route::post('/category/addCategory', ['as' => 'category.addCategory', 'uses' => 'CategoriesManagementController@addCategory']);
+	Route::post('/category/editFull', ['as' => 'category.editFull', 'uses' => 'CategoriesManagementController@editFull']);	
+	Route::post('/category/deleteCategory', ['as' => 'category.deleteCategory', 'uses' => 'CategoriesManagementController@deleteCategory']);	
+
+	//-------------------------------------------TAX VIEW ADMIN-------------------------------------------	
+	Route::get('/manage_taxes', ['as' => 'viewTaxesManagement', 'uses' => 'TaxesManagementController@view_admin_tax']);
+	Route::get('/tax/{id}', ['as' => 'tax_detail', 'uses' => 'TaxesManagementController@view_detail_tax']);
+	Route::post('/tax/addTax', ['as' => 'tax.addTax', 'uses' => 'TaxesManagementController@addTax']);
+	Route::post('/tax/editFull', ['as' => 'tax.editFull', 'uses' => 'TaxesManagementController@editFull']);	
+	Route::post('/tax/deleteTax', ['as' => 'tax.deleteTax', 'uses' => 'TaxesManagementController@deleteTax']);	
+	
+	//-------------------------------------------REVIEW VIEW ADMIN-------------------------------------------	
+	Route::get('/manage_reviews', ['as' => 'viewReviewsManagement', 'uses' => 'ReviewsManagementController@view_admin_review']);
+	Route::get('/review/{id}', ['as' => 'review_detail', 'uses' => 'ReviewsManagementController@view_detail_review']);
+	Route::post('/review/editApproved', ['as' => 'review.editApproved', 'uses' => 'ReviewsManagementController@editApproved']);
+	
+	
+	// Route::get('/bernico', function(){return View::make('pages.admin.tax.manage_tax');});
 	
 	//category 
-		Route::get('/category', ['as' => 'category', 'uses' => 'CategoriesController@view_main_category']);
+		// Route::get('/category', ['as' => 'category', 'uses' => 'CategoriesController@view_main_category']);
 			// Route::get('/categoryIdAsc', ['as' => 'categoryIdAsc', 'uses' => 'CategoriesController@view_main_categoryIdAsc']);
 			// Route::get('/categoryIdDesc', ['as' => 'categoryIdDesc', 'uses' => 'CategoriesController@view_main_categoryIdDesc']);
 			// Route::get('/categoryNameAsc', ['as' => 'categoryNameAsc', 'uses' => 'CategoriesController@view_main_categoryNameAsc']);
 			// Route::get('/categoryNameDesc', ['as' => 'categoryNameDesc', 'uses' => 'CategoriesController@view_main_categoryNameDesc']);
 			// Route::get('/categoryParentNameAsc', ['as' => 'categoryParentNameAsc', 'uses' => 'CategoriesController@view_main_categoryParentNameAsc']);
 			// Route::get('/categoryParentNameDesc', ['as' => 'categoryParentNameDesc', 'uses' => 'CategoriesController@view_main_categoryParentNameDesc']);
-		Route::get('/category/{id}', ['as' => 'category_detail', 'uses' => 'CategoriesController@view_detail_category']);
-		Route::get('/searchCategory', ['as' => 'searchCategory', 'uses' => 'CategoriesController@view_search_category']);
-		Route::post('/category/editFull', ['as' => 'category.editFull', 'uses' => 'CategoriesController@editFull']);
-		Route::post('/category/addCategory', ['as' => 'category.addCategory', 'uses' => 'CategoriesController@addCategory']);
+		// Route::get('/category/{id}', ['as' => 'category_detail', 'uses' => 'CategoriesController@view_detail_category']);
+		// Route::get('/searchCategory', ['as' => 'searchCategory', 'uses' => 'CategoriesController@view_search_category']);
+		// Route::post('/category/editFull', ['as' => 'category.editFull', 'uses' => 'CategoriesController@editFull']);
+		// Route::post('/category/addCategory', ['as' => 'category.addCategory', 'uses' => 'CategoriesController@addCategory']);
 	
 	//review
-		Route::get('/review', ['as' => 'review', 'uses' => 'ReviewsController@view_main_review']);
+		// Route::get('/review', ['as' => 'review', 'uses' => 'ReviewsController@view_main_review']);
 			// Route::get('/reviewProductNoAsc', ['as' => 'reviewProductNoAsc', 'uses' => 'ReviewsController@view_main_reviewProductNoAsc']);
 			// Route::get('/reviewProductNoDesc', ['as' => 'reviewProductNoDesc', 'uses' => 'ReviewsController@view_main_reviewProductNoDesc']);
 			// Route::get('/reviewProductNameAsc', ['as' => 'reviewProductNameAsc', 'uses' => 'ReviewsController@view_main_reviewProductNameAsc']);
@@ -131,16 +159,16 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 			// Route::get('/reviewRatingDesc', ['as' => 'reviewRatingDesc', 'uses' => 'ReviewsController@view_main_reviewRatingDesc']);
 			// Route::get('/reviewApprovedAsc', ['as' => 'reviewApprovedAsc', 'uses' => 'ReviewsController@view_main_reviewApprovedAsc']);
 			// Route::get('/reviewApprovedDesc', ['as' => 'reviewApprovedDesc', 'uses' => 'ReviewsController@view_main_reviewApprovedDesc']);
-		Route::get('/review/{id}', ['as' => 'review_detail', 'uses' => 'ReviewsController@view_detail_review']);
-		Route::get('/searchReview', ['as' => 'searchReview', 'uses' => 'ReviewsController@view_search_review']);
-		Route::post('/review/editApproved', ['as' => 'review.editApproved', 'uses' => 'ReviewsController@editApproved']);
+		// Route::get('/review/{id}', ['as' => 'review_detail', 'uses' => 'ReviewsController@view_detail_review']);
+		// Route::get('/searchReview', ['as' => 'searchReview', 'uses' => 'ReviewsController@view_search_review']);
+		// Route::post('/review/editApproved', ['as' => 'review.editApproved', 'uses' => 'ReviewsController@editApproved']);
 		
 	//tax
-		Route::get('/tax', ['as' => 'tax', 'uses' => 'TaxesController@view_main_tax']);			
-		Route::get('/tax/{id}', ['as' => 'tax_detail', 'uses' => 'TaxesController@view_detail_tax']);
-		Route::get('/searchTax', ['as' => 'searchTax', 'uses' => 'TaxesController@view_search_tax']);
-		Route::post('/tax/editFull', ['as' => 'tax.editFull', 'uses' => 'TaxesController@editFull']);
-		Route::post('/tax/addTax', ['as' => 'tax.addTax', 'uses' => 'TaxesController@addTax']);			
+		// Route::get('/tax', ['as' => 'tax', 'uses' => 'TaxesController@view_main_tax']);			
+		// Route::get('/tax/{id}', ['as' => 'tax_detail', 'uses' => 'TaxesController@view_detail_tax']);
+		// Route::get('/searchTax', ['as' => 'searchTax', 'uses' => 'TaxesController@view_search_tax']);
+		// Route::post('/tax/editFull', ['as' => 'tax.editFull', 'uses' => 'TaxesController@editFull']);
+		// Route::post('/tax/addTax', ['as' => 'tax.addTax', 'uses' => 'TaxesController@addTax']);			
 	
 	//product 
 		Route::get('/product', ['as' => 'product' , 'uses' => 'ProductsController@view_main_product']);
@@ -278,7 +306,9 @@ Route::group(array('prefix' => 'test'), function()
     Route::get('/manage_customer', function()
 	{
 		return View::make('pages.admin.customer.manage_customer');
-	});
+	});	
+	
+	
 	
 	Route::get('/manage_customer_david', ['as'=>'david.viewCustomerManagement','uses' => 'CustomerManagementController@view_cust_mgmt']);
 	
@@ -297,6 +327,18 @@ Route::group(array('prefix' => 'test'), function()
 	Route::get('/manage_shipping_agent_jeffry', ['uses' => 'ShippingAgentManagementController@view_shipping_agent_mgmt']);
 	
 	Route::get('/get_detail_shipment_agent', ['as'=>'jeffry.getDetailShipAgent','uses' => 'ShipmentDatasController@getById']);
+	
+	Route::put('/put_price_shipment_agent' , ['as'=>'jeffry.putPriceShipAgent','uses' => 'ShipmentDatasController@updatePrice']);
+	
+	Route::get('/manage_transaction_jeffry', ['uses' => 'TransactionManagementController@view_transaction_mgmt']);
+	
+	Route::get('/get_detail_transaction', ['as'=>'jeffry.getDetailTransaction','uses' => 'TransactionsController@getDetail']);
+	
+	Route::put('/put_status_transaction' , ['as'=>'jeffry.putStatusTransaction','uses' => 'TransactionsController@updateStatus']);
+	
+	Route::put('/put_paid_transaction' , ['as'=>'jeffry.putPaidTransaction','uses' => 'TransactionsController@updatePaid']);
+	
+	Route::get('/manage_order_jeffry', ['uses' => 'OrderManagementController@view_order_mgmt']);
 	
     // Review
     Route::get('/manage_review', function()

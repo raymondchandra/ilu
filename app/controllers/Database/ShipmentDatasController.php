@@ -291,8 +291,10 @@ class ShipmentDatasController extends \BaseController {
 	 * @param  $price, $id
 	 * @return Response
 	 */
-	public function updatePrice($price, $id)
+	public function updatePrice()
 	{
+		$price = Input::get('price');
+		$id = Input::get('id');
 		$respond = array();
 		$shipmentdata = Shipmentdata::where('id','=',$id)->first();
 		if ($shipmentdata == null)

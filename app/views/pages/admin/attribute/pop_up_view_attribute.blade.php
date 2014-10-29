@@ -10,7 +10,6 @@
 					<div class="row">
 						<div class="col-sm-12"><!-- col-sm-5 -->
 
-
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Nama Attribute</label>
 								<div class="col-sm-3">
@@ -31,6 +30,12 @@
 
 									$( 'body' ).on( "click",'#nama_attribute_setter', function() {
 										var selectedStatus = $('#nama_attribute_input').text($('#nama_attribute').text());
+										$('#nama_attribute_input').addClass('hidden');
+										$('#nama_attribute_setter').addClass('hidden');
+										$('#nama_attribute').removeClass('hidden');
+										$('#nama_attribute_editor').removeClass('hidden');
+										$('#nama_attribute').text($('#nama_attribute_input').val());
+										
 										$new_name = $('#nama_attribute_input').val();										
 										$data = {
 											'id' : $id,
@@ -50,6 +55,31 @@
 													alert(result.status);
 													location.reload();
 												}
+												else if(result.code==400)
+												{
+													alert(result.status);											
+													if(result.messages['name'] == 'The name field is required.')
+													{
+														$('#alert_edit_nama_required').removeClass('hidden');
+													}
+													else
+													{
+														$('#alert_edit_nama_required').addClass('hidden');
+													}
+													if(result.messages['name'] == 'The name has already been taken.')
+													{
+														$('#alert_edit_nama_taken').removeClass('hidden');
+													}
+													else
+													{
+														$('#alert_edit_nama_taken').addClass('hidden');
+													}
+													$('#nama_attribute_input').val($('#nama_attribute').text());
+													$('#nama_attribute_input').removeClass('hidden');
+													$('#nama_attribute_setter').removeClass('hidden');
+													$('#nama_attribute').addClass('hidden');
+													$('#nama_attribute_editor').addClass('hidden');
+												}
 												else
 												{
 													alert(result.status);
@@ -57,28 +87,22 @@
 												}
 											},
 											error: function(jqXHR, textStatus, errorThrown){
-												alert(errorThrown);
+												alert(errorThrown);												
 											}
 										},'json');
-											
-										$('#nama_attribute_input').addClass('hidden');
-										$('#nama_attribute_setter').addClass('hidden');
-										$('#nama_attribute').removeClass('hidden');
-										$('#nama_attribute_editor').removeClass('hidden');
-										$('#nama_attribute').text($('#nama_attribute_input').val());
+																					
 									});
 									</script>
 								</div>
 								<div class="col-sm-3">
-									<span class="btn btn-danger">Nama attribute ini sudah ada</span>	
+									<span id="alert_edit_nama_taken" class="btn btn-danger hidden">Nama attribute ini sudah ada</span>	
+								</div>
+								<div class="col-sm-3">
+									<span id="alert_edit_nama_required" class="btn btn-danger hidden">Nama attribute harus diisi</span>	
 								</div>
 							</div>
 						</div>
-					</div>
-
-
-
-					
+					</div>					
 
 				</div>
 				<div class="modal-footer">

@@ -3,7 +3,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title" id="myModalLabel">Informasi Transaction</h4>
+				<h4 class="modal-title" id="myModalLabel">Information Transaction</h4>
 			</div>
 			<form class="form-horizontal" role="form">
 				<div class="modal-body">
@@ -11,9 +11,9 @@
 						<div class="col-sm-5">
 
 							<div class="form-group" id="nama_promosi">
-								<label class="col-sm-4 control-label">Transaction No.</label>
+								<label class="col-sm-4 control-label">Invoice</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">98767954</p>
+									<p class="form-control-static" id="invoice"></p>
 								</div>
 							</div>
 
@@ -21,7 +21,7 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label">Total Price</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">IDR 90.987.000</p>
+									<p class="form-control-static" id="price"></p>
 
 								</div>
 							</div>
@@ -29,7 +29,7 @@
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Voucher ID</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">-</p>
+									<p class="form-control-static" id="voucher"></p>
 
 								</div>
 							</div>
@@ -37,16 +37,17 @@
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Status</label>
 								<div class="col-sm-5">
-									<p id="transaction_status" class="form-control-static">Pending</p>
+									<p id="transaction_status" class="form-control-static" ></p>
 									<select id="transaction_status_list" class="form-control hidden">
-										<option val="pending">Pending</option>
-										<option val="onprocess">Onprocess</option>
-										<option val="onship">Onship</option>
-										<option val="complete">Complete</option>
+										<option value="Pending">Pending</option>
+										<option value="On-process">On-process</option>
+										<option value="On-ship">On-ship</option>
+										<option value="Complete">Complete</option>
 									</select>
 								</div>
 								<div class="col-sm-3">
 									<button type="button" class="btn btn-warning" id="transaction_status_editor">Edit</button>
+									<input type="hidden" value="" id="idTrans">
 									<button type="button" class="btn btn-success hidden" id="transaction_status_setter">Set</button>
 									<script>
 									$( 'body' ).on( "click",'#transaction_status_editor', function() {
@@ -72,10 +73,10 @@
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Paid</label>
 								<div class="col-sm-5">
-									<p id="transaction_paid" class="form-control-static">False</p>
+									<p id="transaction_paid" class="form-control-static"></p>
 									<select id="transaction_paid_list" class="form-control hidden">
-										<option val="1">Paid</option>
-										<option val="0">Unpaid</option>
+										<option value="1">Paid</option>
+										<option value="0">Unpaid</option>
 									</select>
 								</div>
 								<div class="col-sm-3">
@@ -102,23 +103,23 @@
 							</div>
 
 							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-4 control-label">Shipment ID</label>
+								<label for="inputPassword3" class="col-sm-4 control-label">Shipping Number</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">4657TYU76</p>
+									<p class="form-control-static" id="idShipment"></p>
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Kurir</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">JNE Epic</p>
+									<p class="form-control-static" id="courier"></p>
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Destinasi</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">Bandung, Jawa Barat</p>
+									<p class="form-control-static" id="destinasi"></p>
 								</div>
 							</div>
 						</div>
@@ -132,21 +133,21 @@
 									<div class="form-group" id="nama_promosi">
 										<label class="col-sm-4 control-label">Full Name</label>
 										<div class="col-sm-8">
-											<p class="form-control-static">Muhaudhashdk Nausahjdgjsa</p>
+											<p class="form-control-static" id="full_name"></p>
 										</div>
 									</div>
 
 									<div class="form-group" id="nama_promosi">
 										<label class="col-sm-4 control-label">Name in Profile</label>
 										<div class="col-sm-8">
-											<p class="form-control-static">Muhaudhashdk</p>
+											<p class="form-control-static" id="prof_name"></p>
 										</div>
 									</div>
 
 									<div class="form-group">
 										<label class="col-sm-4 control-label">Member ID</label>
 										<div class="col-sm-8">
-											<p class="form-control-static">234234324</p>
+											<p class="form-control-static" id="memberId"></p>
 
 										</div>
 									</div>
@@ -154,7 +155,7 @@
 									<div class="form-group">
 										<label class="col-sm-4 control-label">No KTP</label>
 										<div class="col-sm-8">
-											<p class="form-control-static">324234234234234234234234564645645</p>
+											<p class="form-control-static" id="noKtp"></p>
 
 										</div>
 									</div>
@@ -162,7 +163,7 @@
 									<div class="form-group">
 										<label class="col-sm-4 control-label">Email</label>
 										<div class="col-sm-8">
-											<p class="form-control-static">emailweh@on.com</p>
+											<p class="form-control-static" id="email"></p>
 
 										</div>
 									</div>
@@ -170,7 +171,7 @@
 									<div class="form-group">
 										<label class="col-sm-4 control-label">Tanggal Lahir</label>
 										<div class="col-sm-8">
-											<p class="form-control-static">11 Oktober 1950</p>
+											<p class="form-control-static" id="ttl"></p>
 
 										</div>
 									</div>
@@ -178,7 +179,7 @@
 									<div class="form-group">
 										<label class="col-sm-4 control-label">Company Name</label>
 										<div class="col-sm-8">
-											<p class="form-control-static">PT Gono Gini</p>
+											<p class="form-control-static" id="comName"></p>
 
 										</div>
 									</div>
@@ -186,7 +187,7 @@
 									<div class="form-group">
 										<label class="col-sm-4 control-label">Company Address</label>
 										<div class="col-sm-8">
-											<p class="form-control-static">Jl Gono Gini No. 999</p>
+											<p class="form-control-static" id="comAdd"></p>
 
 										</div>
 									</div>
@@ -194,7 +195,7 @@
 									<div class="form-group">
 										<label class="col-sm-4 control-label">Member Since</label>
 										<div class="col-sm-8">
-											<p class="form-control-static">11 Oktober 2014</p>
+											<p class="form-control-static" id="MemberSince"></p>
 
 										</div>
 									</div>

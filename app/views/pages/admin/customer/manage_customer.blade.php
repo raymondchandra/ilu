@@ -315,6 +315,28 @@
 							$('#custCompanyAddress').html(response['messages'].company_address);
 							$('#custCompanyAddress').html(response['messages'].company_address);
 							$('#custMemberDate').html(response['messages'].created_at);
+							//ajax buat voucher
+							$.ajax({
+								type: 'GET',
+								url: '{{URL::route('david.getProfDet')}}',
+								data: {	
+									"id": $id
+								},
+								success: function(response){
+									if(response['code'] == '404')
+									{
+									
+									}
+									else
+									{
+										
+									}
+								},error: function(xhr, textStatus, errorThrown){
+									alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+									alert("responseText: "+xhr.responseText);
+								}
+							},'json');
+							//end ajax buat voucher
 						}
 					},error: function(xhr, textStatus, errorThrown){
 						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
@@ -333,6 +355,7 @@
 		$('body').on('click','.backButton',function(){
 			window.location = "{{URL::route('david.viewCustomerManagement')}}" ;
 		});
+		
 	</script>
 
 @stop

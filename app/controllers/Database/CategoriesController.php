@@ -2,6 +2,7 @@
 
 class CategoriesController extends \BaseController {
 		
+	/*
 	public function view_main_category()
 	{
 		$category_json = $this->getAll();
@@ -16,6 +17,7 @@ class CategoriesController extends \BaseController {
 		
 		return View::make('pages.admin.category.manage_category',compact('datas', 'list_category'));		
 	}
+	
 	
 	public function view_main_categoryIdAsc()
 	{
@@ -208,6 +210,8 @@ class CategoriesController extends \BaseController {
 					
 		// return $this->insert($input);
 	// }
+	*/
+		
 	// input : parent_category kalo kosong maka -1 atau null
 	public function insert($input)
 	{
@@ -224,7 +228,11 @@ class CategoriesController extends \BaseController {
 		}
 				
 		// save
-		try {
+		try {			
+			if($input['parent_category'] == -1)
+			{
+				$input['parent_category'] = null;
+			}
 			Category::create([
 					'name' => $input['name'],
 					'parent_category' => $input['parent_category'],
@@ -238,6 +246,7 @@ class CategoriesController extends \BaseController {
 		return Response::json($respond);
 	}	
 	
+	/*
 	//reverse array
 	public function reverse($arr)
 	{
@@ -249,46 +258,143 @@ class CategoriesController extends \BaseController {
 			$lastIdx--;
 		}
 		return $reverse;
-	}
+	}	
+	*/
 	
 	public function getListCategory()
 	{
 		$category = Category::all();		
 		$arrCategory = array();
 		
-		$arrCategory[''] = 'no category';
+		$arrCategory['-1'] = 'no category';
 		foreach($category as $key)		
 		{
 			$arrCategory[$key->id] = $key->name;						
 		}
 		return $arrCategory;
-	}
+	}	
 	
+	//RETURN : id, name, parent_category, deleted, created_at, updated_at, parent_name
 	public function getAll(){
 		$respond = array();
-		$category = Category::all();
+		$category = DB::table('categories AS cat')
+					->where('cat.deleted', '=', 0)
+					->leftJoin('categories AS par', 'cat.parent_category', '=', 'par.id')
+					->get(array('cat.id','cat.name','cat.parent_category','cat.deleted','cat.created_at',
+							'cat.updated_at','par.name AS parent_name'));
+				
 		if (count($category) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
-			foreach($category as $key)
-			{
-				if($key->parent_category == -1 || $key->parent_category==null) // ga ada parent_category
-				{
-					$key->parent_name = "";
-				}
-				else
-				{									
-					$key->parent_name = Category::find($key->parent_category)->name;
-				}				
-			}
+		{			
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$category);
 		}
 		return Response::json($respond);
 	}	
 	
+	//RETURN : id, name, parent_category, deleted, created_at, updated_at, parent_name
+	//SORTED : id, name, parent_name
+	public function getAllSorted($by, $type)
+	{
+		$respond = array();
+		$category = DB::table('categories AS cat')
+					->where('cat.deleted', '=', 0)
+					->leftJoin('categories AS par', 'cat.parent_category', '=', 'par.id')
+					->orderBy($by, $type)
+					->get(array('cat.id','cat.name','cat.parent_category','cat.deleted','cat.created_at',
+							'cat.updated_at','par.name AS parent_name'));
+				
+		if (count($category) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$category);
+		}
+		return Response::json($respond);
+	}
+	
+	//RETURN : id, name, parent_category, deleted, created_at, updated_at, parent_name
+	//SEARCH : id, name, parent_name
+	public function getFilteredCategory($id, $name, $parent_name)
+	{		
+		$respond = array();		
+		$category = DB::table('categories AS cat')
+					->where('cat.deleted', '=', 0)
+					->where('cat.name', 'LIKE', '%'.$name.'%');
+		if($id != -1)
+		{
+			$category = $category->where('cat.id', '=', $id);
+		}									
+		$category = $category->leftJoin('categories AS par', 'cat.parent_category', '=', 'par.id');		
+		if($parent_name != "")
+		{
+			$category = $category->where('par.name', 'LIKE', '%'.$parent_name.'%')
+					->get(array('cat.id','cat.name','cat.parent_category','cat.deleted','cat.created_at',
+							'cat.updated_at','par.name AS parent_name'));									
+		}
+		else
+		{
+			$category = $category->get(array('cat.id','cat.name','cat.parent_category','cat.deleted','cat.created_at',
+					'cat.updated_at','par.name AS parent_name'));									
+		}
+							
+		if(count($category) == 0)
+		{
+			$respond = array('code'=>'404','status'=>'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$category);
+		}
+		
+		return Response::json($respond);			
+	}		
+	
+	//RETURN : id, name, parent_category, deleted, created_at, updated_at, parent_name
+	//SEARCH : id, name, parent_name
+	//SORTED : id, name, parent_name
+	public function getFilteredCategorySorted($id, $name, $parent_name, $sortBy, $sortType)
+	{		
+		$respond = array();		
+		$category = DB::table('categories AS cat')
+					->where('cat.deleted', '=', 0)
+					->where('cat.name', 'LIKE', '%'.$name.'%');
+		if($id != -1)
+		{
+			$category = $category->where('cat.id', '=', $id);
+		}	
+		$category = $category->leftJoin('categories AS par', 'cat.parent_category', '=', 'par.id');		
+		if($parent_name != "")
+		{
+			$category = $category->where('par.name', 'LIKE', '%'.$parent_name.'%')
+					->orderBy($sortBy, $sortType)
+					->get(array('cat.id','cat.name','cat.parent_category','cat.deleted','cat.created_at',
+							'cat.updated_at','par.name AS parent_name'));									
+		}
+		else
+		{
+			$category = $category->orderBy($sortBy, $sortType)
+					->get(array('cat.id','cat.name','cat.parent_category','cat.deleted','cat.created_at',
+							'cat.updated_at','par.name AS parent_name'));									
+		}									
+		
+		if(count($category) == 0)
+		{
+			$respond = array('code'=>'404','status'=>'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$category);
+		}
+		
+		return Response::json($respond);			
+	}	
+	
+	/*
 	public function getAllSortedIdAsc(){
 		$respond = array();
 		$category = Category::orderBy('id')->get();
@@ -521,9 +627,67 @@ class CategoriesController extends \BaseController {
 		
 		return Response::json($respond);			
 	}
-	
+	*/
 	public function test()
-	{
+	{	
+		// $respond = array();				
+		// $category = Category::where('name', 'LIKE', '%'.$input['name'].'%');
+		// $category = Category::where('name', 'LIKE', '%'.''.'%');
+		
+		// if($input['id'] != -1)
+		// {
+			// $category = $category->where('id', '=', $input['id']);
+		// }
+		
+		// $category = $category->orderBy(Category::find())->get();
+		
+		
+		$category = DB::table('categories AS cat')
+						
+						->leftJoin('categories AS par', 'cat.parent_category', '=', 'par.id')
+						->where('cat.name', 'LIKE', '%aa%')
+						->orderBy('par.name')
+						->get(array('cat.id','cat.name','cat.parent_category','cat.deleted','cat.created_at',
+								'cat.updated_at','par.name AS parent_name'));
+						// ->orderBy('cat.id', 'desc');
+		
+		//$category = Attribute::where('name', 'LIKE', '%'.''.'%')->where('id', '=', '1')->get();
+		
+		return $category;
+		// set parent name
+		// foreach($category as $key)
+		// {
+			// if($key->parent_category == -1 || $key->parent_category==null) // ga ada parent_category
+			// {
+				// $key->parent_name = "";
+			// }
+			// else
+			// {					
+				// $key->parent_name = Category::find($key->parent_category)->name;
+			// }				
+		// }
+		
+		// $result = array();
+		// search by parent_name		
+		// if($input['parent_name'] != "")
+		// {					
+			// foreach($category as $key)
+			// {
+				// $pos = strpos($key->parent_name, $input['parent_name']);
+				// if($pos !== false)
+				// {
+					// $result[] = $key;
+				// }
+			// }
+		// }
+		// else
+		// {
+			// $result = $category;
+		// }
+		
+		
+		
+		
 		// $bank = Bank::all();
 		// foreach($bank as $key)
 		// {
@@ -551,12 +715,12 @@ class CategoriesController extends \BaseController {
 		
 		// return $category;
 		
-		$input = array(
-				'name' => 'namaasdasd',
-				'amount' => 'amountasda');
-		$input['deleted'] = 'deleted';		
+		// $input = array(
+				// 'name' => 'namaasdasd',
+				// 'amount' => 'amountasda');
+		// $input['deleted'] = 'deleted';		
 		
-		return $input;
+		// return $input;
 	}
 	
 	/*
@@ -602,8 +766,7 @@ class CategoriesController extends \BaseController {
 		$category = $this->reverse($category);
 		
 		return $category;
-	}	
-	*/
+	}		
 	
 	public function searchCategorySortedIdAsc($input)
 	{
@@ -988,11 +1151,17 @@ class CategoriesController extends \BaseController {
 		
 		return Response::json($respond);		
 	}		
-		
+	*/
+	
 	public function getById($id)
 	{
 		$respond = array();
-		$category = Category::find($id);
+		$category = DB::table('categories AS cat')
+					->where('cat.deleted', '=', 0)
+					->where('cat.id', '=', $id)
+					->leftJoin('categories AS par', 'cat.parent_category', '=', 'par.id')
+					->get(array('cat.id','cat.name','cat.parent_category','cat.deleted','cat.created_at',
+							'cat.updated_at','par.name AS parent_name'));
 		if (count($category) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -1004,6 +1173,7 @@ class CategoriesController extends \BaseController {
 		return Response::json($respond);
 	}		
 	
+	/*
 	public function getByDeleted($deleted)
 	{
 		$respond = array();		
@@ -1018,21 +1188,35 @@ class CategoriesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	*/
 		
-	//update name, parent_category	
 	public function updateFull($id, $new_name, $new_parent_category) 
 	{
 		$respond = array();
-		$category = Category::find($id);
+		$category = Category::find($id);					
 		if ($category == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
+		{	
+			$validator = Validator::make(
+				array('name' => $new_name),
+				array('name' => 'required|unique:categories,name')
+			);
+			if ($validator->fails())
+			{
+				$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
+				return Response::json($respond);
+			}		
+			
 			//edit value
 			$category->name = $new_name;
-			$category->parent_category = $new_parent_category;
+			if($new_parent_category == -1)	
+			{
+				$new_parent_category = null;
+			}
+			$category->parent_category = $new_parent_category;		
 			try {
 				$category->save();
 				$respond = array('code'=>'204','status' => 'No Content');
@@ -1043,7 +1227,7 @@ class CategoriesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-
+	
 	public function updateDeleted($id, $new_deleted)
 	{
 		$respond = array();

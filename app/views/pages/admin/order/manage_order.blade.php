@@ -17,19 +17,10 @@
 
 						<div>
 							
-							<ul class="pagination">
-								<li><a href="#">&laquo;</a></li>
-								<li><a href="#">1</a></li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#">5</a></li>
-								<li><a href="#">&raquo;</a></li>
-							</ul>
+							{{$hasil->links()}}
 							<table class="table table-striped table-hover ">
 								<thead class="table-bordered">
 									<tr>
-										<th class="table-bordered"></th>
 										<th class="table-bordered">
 											<a href="javascript:void(0)">Order No.</a>
 											<a href="javascript:void(0)">
@@ -37,7 +28,7 @@
 											</a>
 										</th>
 										<th class="table-bordered">
-											<a href="javascript:void(0)">Transaction No.</a>
+											<a href="javascript:void(0)">Invoice</a>
 											<a href="javascript:void(0)">
 												<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 											</a>
@@ -116,46 +107,50 @@
 											<td><input type="text" class="form-control input-sm"></td>
 											<td><input type="text" class="form-control input-sm"></td>
 											<td><input type="text" class="form-control input-sm"></td>
-											<td><input type="text" class="form-control input-sm"></td>
 											<td width="120"><input type="text" class="form-control input-sm"></td>
 											<td><a class="btn btn-primary btn-xs">Filter</a></td>
 										</tr>
 									</thead>
 									<tbody>
-										<?php 
-										for ($i=0; $i<=30; $i++) {
-											?>
+										@foreach($hasil as $key)
 											<tr> 
-												<td><input type="checkbox"></td>
-												<td>000000<?php echo($i); ?></td>
-												<td>0004560<?php echo($i); ?></td>
-												<td>Sep 28, 2014 11:54:09 PM</td>
-												<td>Nama Pembeli</td>
-												<td>Nama Penerima</td>
-												<td>Tas Epic</td>
-												<td>3</td>
-												<td>IDR 300.000</td>
-												<td>IDR 900.000</td>
-												<td>Pending</td>
+												<td>{{$key->id}}</td>
+												<td>{{$key->transaction->invoice}}</td>
+												<td>{{$key->created_at}}</td>
+												<td>{{$key->acc_name}}</td>
+												<td>{{$key->acc_name}}</td>
+												<td>{{$key->productName}}</td>
+												<td>{{$key->quantity}}</td>
+												<td>{{$key->priceNow}}</td>
+												<td>{{$key->transaction->total_price}}</td>
+												<td>
+													<select id="" class="">
+														@if($key->transaction->status == "Pending")
+														<option value="Pending" selected="selected">Pending</option>
+														<option value="On-process">On-process</option>
+														<option value="Complete">Complete</option>
+														@elseif($key->transaction->status == "On-process")
+														<option value="Pending" >Pending</option>
+														<option value="On-process" selected="selected">On-process</option>
+														<option value="Complete">Complete</option>
+														@elseif($key->transaction->status == "Complete")
+														<option value="Pending" >Pending</option>
+														<option value="On-process">On-process</option>
+														<option value="Complete" selected="selected">Complete</option>
+														@endif
+														
+													</select>
+												
+												</td>
 												<td>
 													<button class="btn btn-info btn-xs" data-toggle="modal" data-target=".pop_up_view_order">View</button>
 												</td>
 											</tr> 
-											<?php
-										} 
-										?>
+										@endforeach
 
 									</tbody>
 								</table>
-								<ul class="pagination">
-									<li><a href="#">&laquo;</a></li>
-									<li><a href="#">1</a></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">4</a></li>
-									<li><a href="#">5</a></li>
-									<li><a href="#">&raquo;</a></li>
-								</ul>
+								
 
 							</div>
 

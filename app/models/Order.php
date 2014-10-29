@@ -16,7 +16,7 @@ class Order extends \Eloquent {
 	
 	public function price()
 	{
-		return $this->belongsTo('Prices');
+		return $this->belongsTo('Price');
 	}
 	
 	public function transaction()

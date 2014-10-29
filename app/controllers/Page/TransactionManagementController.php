@@ -1,10 +1,10 @@
 <?php
 
-class ShippingAgentManagementController extends \BaseController 
+class TransactionManagementController extends \BaseController 
 {
-	public function view_shipping_agent_mgmt()
+	public function view_transaction_mgmt()
 	{
-		$shp = new ShipmentDatasController();
+		$shp = new TransactionsController();
 		$json = $shp->getAll();
 		$hsl = json_decode($json->getContent());
 		if($hsl->{'code'} == "200")
@@ -25,7 +25,7 @@ class ShippingAgentManagementController extends \BaseController
 			$page = null;
 			$hasil = $hsl;
 		}
-		return View::make('pages.admin.shipping.manage_shipping_agent', compact('hasil'));
+		return View::make('pages.admin.transaction.manage_transaction', compact('hasil'));
 	}
 	
 }
