@@ -104,6 +104,7 @@ Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
 
 Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 {
+	Route::put('solve_ticket_message', ['as' => 'admin.solve_ticket_message', 'uses' => 'SupportTicketsController@update_solve']);
 
 	//-------------------------------------------ATTRIBUTE VIEW ADMIN-------------------------------------------		
 	Route::get('manage_attributes', ['as' => 'viewAttributesManagement', 'uses' => 'AttributesManagementController@view_admin_attribute']);
