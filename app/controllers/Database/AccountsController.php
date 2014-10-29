@@ -219,13 +219,17 @@ class AccountsController extends \BaseController {
 	 *		$remember_me yes/no
 	 * @return Response
 	 */
-	public function adminLogin($id, $password, $remember_me)
+	public function adminLogin()
 	{
+		$json = Input::get('json');
+		$jsonContent = json_decode($json);
+		$username = $jsonContent->{'username'};
+		$password = $jsonContent->{'password'};
+		//return $password;
 		$data = array('username'=>$username, 'password'=>$password);
-		$remember = $remember_me === "yes";
-		if(Auth::attempt($data, $remember))
-		{
-			if(Auth::user()->status_aktif == 1)
+		if(Auth::attempt($data))
+		{	
+			if(Auth::user()->active == 1)
 			{
 				if(Auth::user()->role == 1)
 				{					
@@ -233,14 +237,18 @@ class AccountsController extends \BaseController {
 				}
 				else
 				{
-					$respond = array('code'=>'500','status' => 'Internal Server Error');
+					$respond = array('code'=>'401','status' => 'Unauthorized');
 				}
 			}
 			else
 			{
 				Auth::logout();
-				$respond = array('code'=>'500','status' => 'Internal Server Error');
+				$respond = array('code'=>'401','status' => 'Unauthorized');
 			}
+		}
+		else
+		{
+			$respond = array('code'=>'401','status' => 'Unauthorized');
 		}
 		
 		return Response::json($respond);
@@ -255,13 +263,17 @@ class AccountsController extends \BaseController {
 	 *		$remember_me yes/no
 	 * @return Response
 	 */
-	public function userLogin($id, $password,$remember_me)
+	public function userLogin($json)
 	{
+		//$id, $password,$remember_me
+		$jsonContent = json_decode($json->getContent());
+		
+		$username = $jsonContent['username'];
+		$password = $jsonContent['password'];
 		$data = array('username'=>$username, 'password'=>$password);
-		$remember = $remember_me === "yes";
-		if(Auth::attempt($data, $remember))
+		if(Auth::attempt($data))
 		{
-			if(Auth::user()->status_aktif == 1)
+			if(Auth::user()->active == 1)
 			{
 				if(Auth::user()->role == 0)
 				{					
@@ -269,13 +281,13 @@ class AccountsController extends \BaseController {
 				}
 				else
 				{
-					$respond = array('code'=>'500','status' => 'Internal Server Error');
+					$respond = array('code'=>'401','status' => 'Unauthorized');
 				}
 			}
 			else
 			{
 				Auth::logout();
-				$respond = array('code'=>'500','status' => 'Internal Server Error');
+				$respond = array('code'=>'401','status' => 'Unauthorized');
 			}
 		}
 		

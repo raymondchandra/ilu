@@ -8,24 +8,7 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-
-		$respond = array();
-		$order = Order::all();
-		if (count($order) == 0)
-		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		else
-		{
-			foreach($order as $key)
-			{
-				$key->transaction = Order::find($key->id)->transaction;
-				$key->acc_name = Account::find($key->transaction->account_id)->profile->full_name;				
-				$key->productName = Order::find($key->id)->price->product->name;
-			}
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
-		}
-		echo $respond['messages'];
+	return Hash::make('secret');
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -307,6 +290,14 @@ Route::group(array('prefix' => 'test'), function()
 	Route::get('/get_profile_detail', ['as'=>'david.getProfDet','uses' => 'ProfilesController@myGetById']);
 	
 	Route::get('/filter_cust_mgmt', ['as'=>'david.getFilteredCustomer','uses' => 'ProfilesController@myGetById']);
+	
+	Route::get('/get_new_voucher_code', ['as'=>'david.getNewVoucherCode','uses' => 'VouchersController@generateVoucherNumber']);
+	
+	Route::get('/get_voucher_list', ['as'=>'david.getVoucherList','uses' => 'VouchersController@getByAccountId']);
+	
+	Route::post('/post_new_voucher', ['as'=>'david.postNewVoucher','uses' => 'VouchersController@insert']);
+	
+	Route::get('/admin_sign_in', ['before'=>'force.ssl','as'=>'david.adminSignIn','uses' => 'AccountsController@adminLogin']);
 	
 	Route::get('/manage_shipping_jeffry', ['uses' => 'ShippingManagementController@view_shipping_mgmt']);
 	

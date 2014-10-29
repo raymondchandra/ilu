@@ -192,7 +192,7 @@
 					success: function(response){
 						if(response['code'] == '404')
 						{
-							$('#wishlistcontent').append("<td>wishlist tidak ditemukan</td>");
+							$('#wishlistcontent').append("<tr><td>wishlist tidak ditemukan</td></tr>");
 						}
 						else
 						{
@@ -201,7 +201,7 @@
 								$data = $data + resp.productNumber + "</td><td>";
 								$data = $data + resp.productName + "</td><td>";
 								$data = $data + resp.created_at + "</td><td></tr>";
-								$('#wishlistcontent').append("<td>" + $data + "</td>");
+								$('#wishlistcontent').append($data);
 							});
 						}
 					},error: function(xhr, textStatus, errorThrown){
@@ -226,7 +226,7 @@
 					success: function(response){
 						if(response['code'] == '404')
 						{
-							$('#searchHistorycontent').append("<td>search history tidak ditemukan</td>");
+							$('#searchHistorycontent').append("<tr><td>search history tidak ditemukan</td></tr>");
 						}
 						else
 						{
@@ -235,7 +235,7 @@
 								$data = $data + resp.description + "</td><td>";
 								//$data = $data + resp.productName + "</td><td>";
 								$data = $data + resp.created_at + "</td><td></tr>";
-								$('#searchHistorycontent').append("<td>" + $data + "</td>");
+								$('#searchHistorycontent').append($data);
 							});
 						}
 					},error: function(xhr, textStatus, errorThrown){
@@ -260,7 +260,7 @@
 					success: function(response){
 						if(response['code'] == '404')
 						{
-							$('#belanjaHistoryContent').append("<td>transaction history tidak ditemukan</td>");
+							$('#belanjaHistoryContent').append("<tr><td>transaction history tidak ditemukan</td></tr>");
 						}
 						else
 						{
@@ -269,7 +269,7 @@
 								$data = $data + resp.id + "</td><td>";
 								$data = $data + resp.total_price + "</td><td>";
 								$data = $data + resp.created_at + "</td><td></tr>";
-								$('#belanjaHistoryContent').append("<td>" + $data + "</td>");
+								$('#belanjaHistoryContent').append($data);
 							});
 						}
 					},error: function(xhr, textStatus, errorThrown){
@@ -281,6 +281,8 @@
 		//------end of script buat belanja
 		$('body').on('click','.profilebutton',function(){
 			$id = $(this).prev().val();
+			$nama = $('#full_name_'+$id).html();
+			$('.title1').html("Data Customer Dari " + $nama);
 			$('#custName').html("");
 			$('#custProfileName').html("");
 			$('#custMemberID').html("");
@@ -291,6 +293,8 @@
 			$('#custCompanyAddress').html("");
 			$('#custCompanyAddress').html("");
 			$('#custMemberDate').html("");
+			$('#something_hidden').val($id);
+			$('#voucher_list').html("");
 			$.ajax({
 					type: 'GET',
 					url: '{{URL::route('david.getProfDet')}}',
@@ -316,20 +320,30 @@
 							$('#custCompanyAddress').html(response['messages'].company_address);
 							$('#custMemberDate').html(response['messages'].created_at);
 							//ajax buat voucher
+							
 							$.ajax({
 								type: 'GET',
-								url: '{{URL::route('david.getProfDet')}}',
+								url: '{{URL::route('david.getVoucherList')}}',
 								data: {	
-									"id": $id
+									"acc_id": $id
 								},
 								success: function(response){
 									if(response['code'] == '404')
 									{
-									
+										$data = "<tr><td>Voucher List Not Found</td></tr>"
+										$('#voucher_list').append($data);
 									}
 									else
 									{
 										
+										$.each(response['messages'], function( i, resp ) {
+											$data = "<tr><td>";
+											$data = $data + resp.type + "</td><td>";
+											$data = $data + "IDR " + resp.amount + "</td><td>";
+											$data = $data + resp.code + "</td><td></tr>";
+											$('#voucher_list').append($data);
+										
+										});
 									}
 								},error: function(xhr, textStatus, errorThrown){
 									alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
@@ -355,7 +369,75 @@
 		$('body').on('click','.backButton',function(){
 			window.location = "{{URL::route('david.viewCustomerManagement')}}" ;
 		});
-		
+		//--------end of script buat back button
+		$('body').on('click','.tambah_voucher_button',function(){
+			$.ajax({
+					type: 'GET',
+					url: '{{URL::route('david.getNewVoucherCode')}}',
+					data: {	
+					},
+					success: function(response){
+						if(response['code'] == '404')
+						{
+							//$('#belanjaHistoryContent').append("<td>transaction history tidak ditemukan</td>");
+							alert('failed');
+						}
+						else
+						{
+							//new_kode_voucher
+							$('#new_kode_voucher').html(response['messages']);
+						}
+					},error: function(xhr, textStatus, errorThrown){
+						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+						alert("responseText: "+xhr.responseText);
+					}
+				},'json');
+		});
+		//--------end of script buat generate kode vcr
+		$('body').on('click','.submit_voucher',function(){
+			$type = $('#new_type_voucher').val();
+			$amount = $('#new_amount_voucher').val();
+			$code = $('#new_kode_voucher').text();
+			$acc_id = $('#something_hidden').val();
+			
+			$.ajax({
+					type: 'POST',
+					url: '{{URL::route('david.postNewVoucher')}}',
+					data: {
+					'type' : $type,
+					'amount' : $amount,
+					'account_id' : $acc_id,
+					'code' : $code
+					},
+					success: function(response){
+						if(response['code'] == '400')
+						{
+							//$('#belanjaHistoryContent').append("<td>transaction history tidak ditemukan</td>");
+							alert('failed');
+						}
+						else if(response['code'] == '500')
+						{
+							alert('failed');
+						}
+						else
+						{
+							if($('#voucher_list').html() == "<tr><td>Voucher List Not Found</td></tr>")
+							{
+								$('#voucher_list').html("");
+							}
+							alert("success");
+							$data = "<tr><td>";
+							$data = $data + $type + "</td><td>";
+							$data = $data + "IDR " + $amount + "</td><td>";
+							$data = $data + $code + "</td><td></tr>";
+							$('#voucher_list').append($data);
+						}
+					},error: function(xhr, textStatus, errorThrown){
+						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+						alert("responseText: "+xhr.responseText);
+					}
+				},'json');			
+		});
 	</script>
 
 @stop

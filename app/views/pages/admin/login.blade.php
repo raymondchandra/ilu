@@ -15,7 +15,7 @@
 								<div class="s_cl">
 									<div class="col-lg-6 col-lg-push-3">
 									
-										<p class="bg-danger" style="padding-top: 10px; padding-bottom: 10px; margin-bottom: 20px;">Maaf username/password anda salah!</p>
+										<p class="bg-danger hidden" style="padding-top: 10px; padding-bottom: 10px; margin-bottom: 20px;">Maaf username/password anda salah!</p>
 										
 										<div class="panel panel-default">
 											<div class="panel-heading">
@@ -26,14 +26,14 @@
 													<div class="form-group">
 														<label for="inputEmail3" class="col-sm-3 control-label">Username/Email</label>
 														<div class="col-sm-6">
-															<input type="text" class="form-control" placeholder="Username/Email">	
+															<input type="text" class="form-control" placeholder="Username/Email" id="username">	
 														</div>
 													</div>
 												  
 													<div class="form-group">
 														<label for="inputPassword3" class="col-sm-3 control-label">Password</label>
 														<div class="col-sm-6">
-															<input type="password" class="form-control" placeholder="Password">	
+															<input type="password" class="form-control" placeholder="Password" id="password">	
 														</div>
 													</div>
 												  
@@ -56,23 +56,22 @@
 	
 	$('body').on('click','.flogin',function(){
 		$data = {
-			'status' : '202',
-			'text' : "Hello World!"
+			'username' : $('#username').val(),
+			'password' : $('#password').val()
 		}
-		
-		var json_data = JSON.stringify($data);
-		
+		$json_data = JSON.stringify($data);
 		$.ajax({
-			url: '../test_login',
-			type: 'POST',
+			url: '{{URL::route('david.adminSignIn')}}',
+			type: 'GET',
 			data: {
-				'json_data':json_data
+				'json' : $json_data
 			},
 			success: function (res) {
-				alert(res)
+				alert(res['code']);
 			},
-			error: function(jqXHR, textStatus, errorThrown){
-						alert(errorThrown);
+			error: function(xhr, textStatus, errorThrown){
+					alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+					alert("responseText: "+xhr.responseText);
 			}
 		},'json');	
 	});
