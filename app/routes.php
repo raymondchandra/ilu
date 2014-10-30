@@ -152,6 +152,15 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	
 	Route::get('/filter_cust_mgmt', ['as'=>'david.getFilteredCustomer','uses' => 'ProfilesController@myGetById']);
 	
+	Route::get('/get_new_voucher_code', ['as'=>'david.getNewVoucherCode','uses' => 'VouchersController@generateVoucherNumber']);
+	
+	Route::get('/get_voucher_list', ['as'=>'david.getVoucherList','uses' => 'VouchersController@getByAccountId']);
+	
+	Route::post('/post_new_voucher', ['as'=>'david.postNewVoucher','uses' => 'VouchersController@insert']);
+	
+	Route::get('/admin_sign_in', ['before'=>'force.ssl','as'=>'david.adminSignIn','uses' => 'AccountsController@adminLogin']);
+	
+	Route::get('/logout', ['as'=>'david.logout','uses' => 'AccountsController@postLogout']);
 	
 	// Route::get('/bernico', function(){return View::make('pages.admin.tax.manage_tax');});
 	
@@ -232,16 +241,16 @@ Route::group(array('prefix' => 'test'), function()
 {
 
     // login
-	Route::get('/login', function()
+	Route::get('/login', array('as'=>'ilu.main.login','before'=>'force.ssl',function()
 	{
 		return View::make('pages.admin.login');
-	});
+	}));
 
     // dashboard
-	Route::get('/dashboard', function()
+	Route::get('/dashboard', array('as'=>'ilu.main.dashboard',function()
 	{
 		return View::make('pages.admin.dashboard');
-	});
+	}));
 	
     // manage order
 	Route::get('/manage_order', function()
