@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/tes', 'ReviewsController@getAll');
+Route::get('/tes', 'ProductsController@getAll');
 
 Route::get('/tesview', function (){
 	return View::make('pages.admin.product.manage_product');
@@ -130,6 +130,14 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	Route::get('/manage_reviews', ['as' => 'viewReviewsManagement', 'uses' => 'ReviewsManagementController@view_admin_review']);
 	Route::get('/review/{id}', ['as' => 'review_detail', 'uses' => 'ReviewsManagementController@view_detail_review']);
 	Route::post('/review/editApproved', ['as' => 'review.editApproved', 'uses' => 'ReviewsManagementController@editApproved']);
+	
+	//-------------------------------------------PROMOTION VIEW ADMIN-------------------------------------------
+	Route::get('/manage_promotions', ['as' => 'viewPromotionsManagement', 'uses' => 'PromotionsManagementController@view_admin_promotion']);
+	Route::get('/promotion/getProductById', ['as' => 'promotion.getProductById', 'uses' => 'PromotionsManagementController@getProductById']);
+	Route::get('/promotion/{id}', ['as' => 'promotion_detail', 'uses' => 'PromotionsManagementController@view_detail_promotion']);
+	Route::post('/promotion/addPromotion', ['as' => 'promotion.addPromotion', 'uses' => 'PromotionsManagementController@addPromotion']);
+	Route::post('/promotion/editFull', ['as' => 'promotion.editFull', 'uses' => 'PromotionsManagementController@editFull']);	
+	Route::delete('/promotion/deletePromotion', ['as' => 'promotion.deletePromotion', 'uses' => 'PromotionsManagementController@deletePromotion']);
 	
 	
 	// Route::get('/bernico', function(){return View::make('pages.admin.tax.manage_tax');});

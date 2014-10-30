@@ -7,13 +7,13 @@ class Promotion extends \Eloquent {
 		// 'title' => 'required'
 		'name' => 'required',
 		'amount' => 'required|regex:/^\d*(\.\d{2})?$/',
-		'started' => 'required',
+		'start_date' => 'required',
 		'expired' => 'required',
 		'active' => 'required|integer'
 	];
 
 	// Don't forget to fill this array
-	protected $fillable = ['name', 'amount', 'started', 'expired', 'active'];
+	protected $fillable = ['name', 'amount', 'start_date', 'expired', 'active'];
 	
 	public function product()
 	{

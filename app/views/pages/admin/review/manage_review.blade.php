@@ -333,7 +333,7 @@
 										<td id="approved_{{$review->approved}}">{{$review->approved}}</td>									
 										<td>
 											<input type='hidden' value='{{$review->id}}'>
-											<button class="detailReview btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_view_review">Edit</button>
+											<button class="detailButton btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_view_review">Edit</button>
 										</td>
 									</tr> 							
 								@endforeach
@@ -356,19 +356,19 @@
 				type: 'GET',
 				url: "{{URL('admin/review')}}/"+$id,
 				success: function(response){
-					result = JSON.parse(response);
+					result = JSON.parse(response);						
 					if(result.code==200){
 						$message = result.messages;						
 						$('#detail_product_no').text($message.product_no);
 						$('#detail_product_name').text($message.product_name);
 						$('#detail_text').text($message.text);
-						$('#detail_rating').text($message.rating);
+						$('#detail_rating').text($message.rating);						
 						if($message.approved == 1){
 							$('#review_status').text("Approved");
 						}else{
 							$('#review_status').text("Pending");
 						}						
-						$('#review_status_list').val($message.approved);
+						// $('#review_status_list').val($message.approved);
 					}
 				},
 				error: function(jqXHR, textStatus, errorThrown){

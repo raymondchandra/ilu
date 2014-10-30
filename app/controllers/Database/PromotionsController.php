@@ -2,6 +2,7 @@
 
 class PromotionsController extends \BaseController {
 	
+	/*
 	public function w_insert()
 	{
 		$json = Input::get('json_data');
@@ -27,13 +28,22 @@ class PromotionsController extends \BaseController {
 		
 		return $this->insert($input_promotion, $input_products);
 	}
+	*/
+	
 	// asumsi : 
 		// bisa tambah product langsung tanpa harus ada foto
 		// kalo main_photo atau other_photos kosong maka dapetnya ""
 	// input : name, amount, started, expired, active, products(array)
-	public function insert($input_promotion, $input_products)
-	{
-		// $input = json_decode(Input::all());
+	public function insert($input)
+	{	
+		$input_promotion = array(
+				'name' => $input['name'],
+				'amount' => $input['amount'],
+				'start_date' => $input['start_date'],
+				'expired' => $input['expired'],
+				'active' => $input['active']
+		);
+		$input_products = $input['products'];	
 		
 		$respond = array();
 		//validate
@@ -50,7 +60,7 @@ class PromotionsController extends \BaseController {
 			$promotion = new Promotion();
 			$promotion->name = $input_promotion['name'];
 			$promotion->amount = $input_promotion['amount'];
-			$promotion->started = $input_promotion['started'];
+			$promotion->start_date = $input_promotion['start_date'];
 			$promotion->expired = $input_promotion['expired'];
 			$promotion->active = $input_promotion['active'];
 			$promotion->save();
@@ -66,9 +76,11 @@ class PromotionsController extends \BaseController {
 		} catch (Exception $e) {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 		}
+		// return $respond['code'];
 		return Response::json($respond);
 	}	
 	
+	/*
 	public function getAllProducts()
 	{
 		$respond = array();
@@ -90,9 +102,10 @@ class PromotionsController extends \BaseController {
 		
 		return Response::json($respond);						
 	}
+	*/
 	
 	// return array promotion :
-		// id, name, amount, started, expired, active
+		// id, name, amount, start_date, expired, active
 		// product yang termasuk ke dalam promosi 
 	public function getAll()
 	{
@@ -125,6 +138,123 @@ class PromotionsController extends \BaseController {
 		return Response::json($respond);
 	}
 	
+	// return array promotion :
+		// id, name, amount, start_date, expired, active
+		// product yang termasuk ke dalam promosi 
+	//SORTED : name, amount
+	public function getAllSorted($by, $type)
+	{
+		$respond = array();
+		$promotion = Promotion::orderBy($by, $type)->get();
+		if (count($promotion) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{							
+			foreach($promotion as $key)
+			{
+				$product_cont = new ProductsController();
+				$json_products = $product_cont->getByPromotionId($key->id);
+				$decode = json_decode($json_products->getContent());
+				$code = $decode->{'code'};
+				if($code == 404) //not found
+				{
+					$key->products = "";
+				}
+				else
+				{					
+					$key->products = $decode->{'messages'};
+				}
+			}				
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
+		}
+		return Response::json($respond);
+	}
+	
+	// return array promotion :
+		// id, name, amount, start_date, expired, active
+		// product yang termasuk ke dalam promosi 
+	//SEARCH : name, amount
+	public function getFilteredPromotion($name, $amount)
+	{
+		$respond = array();
+		$promotion = Promotion::where('name', 'LIKE', '%'.$name.'%');
+		if($amount != -1)
+		{
+			$promotion = $promotion->where('amount', '=', $amount);
+		}
+		$promotion = $promotion->get();				
+		if (count($promotion) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{							
+			foreach($promotion as $key)
+			{
+				$product_cont = new ProductsController();
+				$json_products = $product_cont->getByPromotionId($key->id);
+				$decode = json_decode($json_products->getContent());
+				$code = $decode->{'code'};
+				if($code == 404) //not found
+				{
+					$key->products = "";
+				}
+				else
+				{					
+					$key->products = $decode->{'messages'};
+				}
+			}				
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
+		}
+		return Response::json($respond);
+	}
+	
+	// return array promotion :
+		// id, name, amount, start_date, expired, active
+		// product yang termasuk ke dalam promosi 
+	//SEARCH : name, amount
+	//SORTED : name, amount
+	public function getFilteredPromotionSorted($name, $amount, $sortBy, $sortType)
+	{
+		$respond = array();
+		$promotion = Promotion::where('name', 'LIKE', '%'.$name.'%');
+		if($amount != -1)
+		{
+			$promotion = $promotion->where('amount', '=', $amount);
+		}
+		$promotion = $promotion->orderBy($sortBy, $sortType)->get();				
+		if (count($promotion) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{							
+			foreach($promotion as $key)
+			{
+				$product_cont = new ProductsController();
+				$json_products = $product_cont->getByPromotionId($key->id);
+				$decode = json_decode($json_products->getContent());
+				$code = $decode->{'code'};
+				if($code == 404) //not found
+				{
+					$key->products = "";
+				}
+				else
+				{					
+					$key->products = $decode->{'messages'};
+				}
+			}				
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion);
+		}
+		return Response::json($respond);
+	}
+	
+	/*	
 	public function getAllSortedNameAsc()
 	{
 		$respond = array();
@@ -592,17 +722,23 @@ class PromotionsController extends \BaseController {
 	}
 	
 	
-	public function updateFull($id, $input_promotion, $input_products)
-	{
-		$respond = array();
+	public function updateFull($id, $input)
+	{			
 		$promotion = Promotion::find($id);
 		if ($promotion == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
-		{
-			// $input = json_decode(Input::all());
+		{			
+			$input_promotion = array(
+				'name' => $input['name'],
+				'amount' => $input['amount'],
+				'start_date' => $input['start_date'],
+				'expired' => $input['expired'],
+				'active' => $input['active']
+			);
+			$input_products = $input['products'];				
 		
 			//validate
 			$validator = Validator::make($data = $input_promotion, Promotion::$rules);
@@ -616,13 +752,14 @@ class PromotionsController extends \BaseController {
 			//edit value
 			$promotion->name = $input_promotion['name'];
 			$promotion->amount = $input_promotion['amount'];
-			$promotion->started = $input_promotion['started'];
+			$promotion->start_date = $input_promotion['start_date'];
 			$promotion->expired = $input_promotion['expired'];
 			$promotion->active = $input_promotion['active'];		
 
 			//save
 			try {
 				$promotion->save();				
+				
 				//edit products yang berpromosi
 				$products = $input_products;
 				$product_cont = new ProductsController();
@@ -671,10 +808,17 @@ class PromotionsController extends \BaseController {
 		}
 		else
 		{
+			//kosongin dulu product yg ngereference ke id promosi ini			
 			try {
+				$product = Product::where('promotion_id', '=', $id)->get();
+				foreach($product as $key)			
+				{
+					$key->promotion_id = null;
+					$key->save();
+				}
 				$promotion->delete();
 				$respond = array('code'=>'204','status' => 'No Content');
-			} catch (Exception $e) {
+			} catch (Exception $e) {				
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 			}
 			
