@@ -162,6 +162,17 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	
 	Route::get('/logout', ['as'=>'david.logout','uses' => 'AccountsController@postLogout']);
 	
+	Route::get('/login', array('as'=>'ilu.main.login','before'=>'force.ssl',function()
+	{
+		return View::make('pages.admin.login');
+	}));
+
+    // dashboard
+	Route::get('/dashboard', array('as'=>'ilu.main.dashboard',function()
+	{
+		return View::make('pages.admin.dashboard');
+	}));
+	
 	// Route::get('/bernico', function(){return View::make('pages.admin.tax.manage_tax');});
 	
 	//category 
@@ -241,13 +252,13 @@ Route::group(array('prefix' => 'test'), function()
 {
 
     // login
-	Route::get('/login', array('as'=>'ilu.main.login','before'=>'force.ssl',function()
+	Route::get('/login', array('as'=>'ilu.test.login','before'=>'force.ssl',function()
 	{
 		return View::make('pages.admin.login');
 	}));
 
     // dashboard
-	Route::get('/dashboard', array('as'=>'ilu.main.dashboard',function()
+	Route::get('/dashboard', array('as'=>'ilu.test.dashboard',function()
 	{
 		return View::make('pages.admin.dashboard');
 	}));
