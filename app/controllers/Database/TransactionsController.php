@@ -567,10 +567,10 @@ class TransactionsController extends \BaseController {
 	 * full_name
 	 * @return Response
 	 */
-	public function getAllSortByAsc($sortBy)
+	public function getAllSort($sortBy, $type)
 	{
 		$respond = array();
-		$transaction = Transaction::all();
+		$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->orderBy($sortBy,$type)->get(array('transactions.id', 'transactions.invoice' ,'transactions.account_id', 'transactions.total_price', 'transactions.voucher_id', 'transactions.status', 'transactions.paid', 'transactions.shipment_id', 'transactions.created_at', 'transactions.updated_at', 'profiles.full_name'));
 		if (count($transaction) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -579,53 +579,16 @@ class TransactionsController extends \BaseController {
 		{
 			foreach($transaction as $key)
 			{
-				$accId = $key->account_id;
-				$profId = Account::where('id','=',$accId)->first()->profile_id;
-				$profName = Profile::where('id','=',$profId)->first()->full_name;
-				$key->full_name = $profName;
-				$transaction->orderBy($sortBy);
+				if($key->voucher_id == null)
+				{
+					$key->voucher_id = "-";
+				}
 			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
 		}
 		return Response::json($respond);
 	}
 	
-	/**
-	 * Display all of the transaction sorting by attribute Descending
-	 * param sortby
-	 * sort by:
-	 * invoice
-	 * account_id
-	 * total_price
-	 * voucher_id
-	 * status
-	 * paid
-	 * shipment_id
-	 * full_name
-	 * @return Response
-	 */
-	public function getAllSortByDesc($sortBy)
-	{
-		$respond = array();
-		$transaction = Transaction::all();
-		if (count($transaction) == 0)
-		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		else
-		{
-			foreach($transaction as $key)
-			{
-				$accId = $key->account_id;
-				$profId = Account::where('id','=',$accId)->first()->profile_id;
-				$profName = Profile::where('id','=',$profId)->first()->full_name;
-				$key->full_name = $profName;
-				$transaction->orderBy($sortBy,'desc');
-			}
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
-		}
-		return Response::json($respond);
-	}
 	
 	/**
 	 * Display top ten buyer
@@ -648,6 +611,260 @@ class TransactionsController extends \BaseController {
 				$key->account = $accountTopTen;
 			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$topTen);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Filter transaksi
+	 *
+	 * @return Response
+	 */
+	public function getFilteredTransaction($invoice, $accId, $fullName, $totalPrice,$status,$paid)
+	{
+		$isFirst = false;
+		
+		if($invoice != '-')
+		{
+			if($isFirst == false)
+			{
+				$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('invoice', 'LIKE', '%'.$invoice.'%');
+				$isFirst = true;
+			}
+		}
+		
+		if($accId != '-')
+		{
+			if($isFirst == false)
+			{
+				$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('account_id', 'LIKE', '%'.$accId.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$transaction = $transaction->where('account_id', 'LIKE', '%'.$accId.'%');
+			}
+		}
+		
+		if($fullName != '-')
+		{
+			if($isFirst == false)
+			{
+				$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('full_name', 'LIKE', '%'.$fullName.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$transaction = $transaction->where('full_name', 'LIKE', '%'.$fullName.'%');
+			}
+		}
+		
+		if($totalPrice != '-')
+		{
+			if($isFirst == false)
+			{
+				$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('total_price', 'LIKE', '%'.$totalPrice.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$transaction = $transaction->where('total_price', 'LIKE', '%'.$totalPrice.'%');
+			}
+		}
+		
+		if($status != '-')
+		{
+			if($isFirst == false)
+			{
+				$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('status', 'LIKE', '%'.$status.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$transaction = $transaction->where('status', 'LIKE', '%'.$status.'%');
+			}
+		}
+		
+		if($paid != '-')
+		{ 
+			if(preg_match("/[un].*?/i", $paid, $match))
+			{
+				$pay = 0;
+			}else if(preg_match("/[paid]/i", $paid, $match))
+			{
+				$pay = 1;
+			}else
+			{
+				$pay = 2;
+			}
+			
+			if($isFirst == false)
+			{
+				if($pay == 0)
+				{
+					$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('paid', 'LIKE', '%'.$pay.'%');
+				}else if($pay == 1)
+				{
+					$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id');
+				}
+				$isFirst = true;
+			}
+			else
+			{
+				if($pay == 0)
+				{
+					$transaction = $transaction->where('paid', 'LIKE', '%'.$pay.'%');
+				}else if($pay == 1)
+				{
+					$transaction = $transaction;
+				}
+			}
+		}
+		
+		if($isFirst == false)
+		{
+			$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->get();
+			$isFirst = true;
+		}
+		else
+		{
+			$transaction = $transaction->get();
+		}
+		
+		if (count($transaction) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Filter transaksi
+	 *
+	 * @return Response
+	 */
+	public function getFilteredTransactionSort($invoice, $accId, $fullName, $totalPrice,$status,$paid, $sortBy, $sortType)
+	{
+		$isFirst = false;
+		
+		if($invoice != '-')
+		{
+			if($isFirst == false)
+			{
+				$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('invoice', 'LIKE', '%'.$invoice.'%');
+				$isFirst = true;
+			}
+		}
+		
+		if($accId != '-')
+		{
+			if($isFirst == false)
+			{
+				$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('account_id', 'LIKE', '%'.$accId.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$transaction = $transaction->where('account_id', 'LIKE', '%'.$accId.'%');
+			}
+		}
+		
+		if($fullName != '-')
+		{
+			if($isFirst == false)
+			{
+				$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('full_name', 'LIKE', '%'.$fullName.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$transaction = $transaction->where('full_name', 'LIKE', '%'.$fullName.'%');
+			}
+		}
+		
+		if($totalPrice != '-')
+		{
+			if($isFirst == false)
+			{
+				$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('total_price', 'LIKE', '%'.$totalPrice.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$transaction = $transaction->where('total_price', 'LIKE', '%'.$totalPrice.'%');
+			}
+		}
+		
+		if($status != '-')
+		{
+			if($isFirst == false)
+			{
+				$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('status', 'LIKE', '%'.$status.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$transaction = $transaction->where('status', 'LIKE', '%'.$status.'%');
+			}
+		}
+		
+		if($paid != '-')
+		{
+			if(preg_match("/[un].*?/i", $paid, $match))
+			{
+				$pay = 0;
+			}else if(preg_match("/[paid]/i", $paid, $match))
+			{
+				$pay = 1;
+			}else
+			{
+				$pay = 2;
+			}
+			
+			if($isFirst == false)
+			{
+				if($pay == 0)
+				{
+					$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('paid', 'LIKE', '%'.$pay.'%');
+				}else if($pay == 1)
+				{
+					$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id');
+				}
+				$isFirst = true;
+			}
+			else
+			{
+				if($pay == 0)
+				{
+					$transaction = $transaction->where('paid', 'LIKE', '%'.$pay.'%');
+				}else if($pay == 1)
+				{
+					$transaction = $transaction;
+				}
+			}
+		}
+		
+		if($isFirst == false)
+		{
+			$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->orderBy($sortBy, $sortType)->get();
+			$isFirst = true;
+		}
+		else
+		{
+			$transaction = $transaction->orderBy($sortBy, $sortType)->get();
+		}
+		
+		if (count($transaction) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
 		}
 		return Response::json($respond);
 	}
@@ -681,7 +898,7 @@ class TransactionsController extends \BaseController {
 					$tempHasil = $tempHasil + $key->total_price;
 				}
 			}
-			$hasil[] = array('tanggal' => $idx.'-'.$bln.'-'.$tahun, 'penjualan' => $tempHasil);
+			$hasil[] = array('tanggal' => $idx, 'penjualan' => $tempHasil,'bulan' => $bln.'-'.$tahun,'ket' => 'day');
 			$idx = $idx + 1;
 		}
 		$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
@@ -729,12 +946,12 @@ class TransactionsController extends \BaseController {
 					
 				}else
 				{
-					$hasil[] = array('tanggal_awal' => $idx2.'-'.$bln.'-'.$tahun, 'tanggal_akhir'=> ($idx - 1).'-'.$bln.'-'.$tahun,'penjualan' => $tempHasil);
+					$hasil[] = array('tanggal_awal' => $idx2.'-'.$bln.'-'.$tahun, 'tanggal_akhir'=> ($idx ).'-'.$bln.'-'.$tahun,'penjualan' => $tempHasil,'week' =>$first, 'bulan' => $bln.'-'.$tahun,'ket' => 'week');
 				}
 				$idx = $idx + 1;
 			}else
 			{
-				$hasil[] = array('tanggal_awal' => $idx2.'-'.$bln.'-'.$tahun, 'tanggal_akhir'=> ($idx - 1).'-'.$bln.'-'.$tahun,'penjualan' => $tempHasil);
+				$hasil[] = array('tanggal_awal' => $idx2.'-'.$bln.'-'.$tahun, 'tanggal_akhir'=> ($idx - 1).'-'.$bln.'-'.$tahun,'penjualan' => $tempHasil,'week' =>$first, 'bulan' => $bln.'-'.$tahun,'ket' => 'week');
 				$tempHasil = 0;
 				$idx2 = $idx;
 				$first = $this->getWeeks($tahun."-".$blnA."-".$idx, "sunday");
@@ -802,7 +1019,7 @@ class TransactionsController extends \BaseController {
 					$tempHasil = $tempHasil + $key->total_price;
 				}
 			}
-			$hasil[] = array('tanggal'=>$tempBln.'-'.$tahun, 'penjualan' => $tempHasil);
+			$hasil[] = array('tanggal'=>$tempBln,'bulan'=>$tahun, 'penjualan' => $tempHasil,'ket' => 'month');
 			$idx = $idx + 1;
 		}
 		$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
@@ -821,7 +1038,7 @@ class TransactionsController extends \BaseController {
 	public function getYearReport(){
 		$respond = array();
 		$report = Transaction::where('paid','=','1')->get();
-		$tahun = date('Y');
+		$tahun = date('Y') -9;
 		$idx = 1;
 		$tahunAkhir = 10;
 		$hasil = array();
@@ -838,7 +1055,7 @@ class TransactionsController extends \BaseController {
 					$tempHasil = $tempHasil + $key->total_price;
 				}
 			}
-			$hasil[] = array('tanggal'=>$tempTahun, 'penjualan' => $tempHasil);
+			$hasil[] = array('tanggal'=>$tempTahun, 'penjualan' => $tempHasil,'ket'=>'year');
 			$idx = $idx + 1;
 			$tahun = $tahun +1;
 		}
@@ -854,16 +1071,22 @@ class TransactionsController extends \BaseController {
 	 * 1-> paid
 	 * @return Response
 	 */
-	public function getRangeReport($date1,$date2){
+	public function getRangeReport($date1, $date2){
 		$respond = array();
 		$report = Transaction::where('paid','=','1')->get();
 		$idx = 1;
-		$tgl = date('t');
-		$bln = date('F');
-		$tahun = date('Y');
 		$hasil = array();
 		$d1 = new Carbon($date1);
 		$d2 = new Carbon($date2);
+		
+		$tgl1 = Carbon::parse($d1)->format('d');
+		$bln1 = Carbon::parse($d1)->format('F');
+		$thn1 = Carbon::parse($d1)->format('Y');
+		
+		$tgl2 = Carbon::parse($d2)->format('d');
+		$bln2 = Carbon::parse($d2)->format('F');
+		$thn2 = Carbon::parse($d2)->format('Y');
+				
 		$difference = ($d1->diff($d2)->days);
 		while($idx <= ($difference+1))
 		{
@@ -882,10 +1105,10 @@ class TransactionsController extends \BaseController {
 					$tempHasil = $tempHasil + $key->total_price;
 				}
 				$tgl = Carbon::parse($d1)->format('d');
-				$bln = Carbon::parse($d1)->format('n');
+				$bln = Carbon::parse($d1)->format('F');
 				$thn = Carbon::parse($d1)->format('Y');
 			}
-			$hasil[] = array('tanggal' => $tgl.'-'.$bln.'-'.$thn, 'penjualan' => $tempHasil);
+			$hasil[] = array('tanggal' => $tgl,'tanggal2' =>$tgl.'-'.$bln.'-'.$thn, 'penjualan' => $tempHasil,'ket' => 'range', 'bulan' =>  $tgl1.'-'.$bln1.'-'.$thn1.' sampai '.$tgl2.'-'.$bln2.'-'.$thn2 );
 			$idx = $idx + 1;
 		}
 		$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);

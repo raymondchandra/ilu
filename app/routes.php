@@ -8,23 +8,28 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-
 		$respond = array();
-		$order = Order::all();
-		if (count($order) == 0)
+		$transaction = Transaction::all();
+		if (count($transaction) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
-			foreach($order as $key)
+			foreach($transaction as $key)
 			{
-				$key->transaction = Order::find($key->id)->transaction;
-				$key->acc_name = Account::find($key->transaction->account_id)->profile->full_name;				
-				$key->productName = Order::find($key->id)->price->product->name;
+				$accId = $key->account_id;
+				$profId = Account::where('id','=',$accId)->first()->profile_id;
+				if($key->voucher_id == null)
+				{
+					$key->voucher_id = "-";
+				}
+				$profName = Profile::where('id','=',$profId)->first()->full_name;
+				$key->full_name = $profName;
 			}
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
 		}
+		
 		echo $respond['messages'];
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
@@ -330,7 +335,7 @@ Route::group(array('prefix' => 'test'), function()
 	
 	Route::put('/put_price_shipment_agent' , ['as'=>'jeffry.putPriceShipAgent','uses' => 'ShipmentDatasController@updatePrice']);
 	
-	Route::get('/manage_transaction_jeffry', ['uses' => 'TransactionManagementController@view_transaction_mgmt']);
+	Route::get('/manage_transaction_jeffry', ['as'=>'jeffry.getTransaction', 'uses' => 'TransactionManagementController@view_transaction_mgmt']);
 	
 	Route::get('/get_detail_transaction', ['as'=>'jeffry.getDetailTransaction','uses' => 'TransactionsController@getDetail']);
 	
@@ -339,6 +344,9 @@ Route::group(array('prefix' => 'test'), function()
 	Route::put('/put_paid_transaction' , ['as'=>'jeffry.putPaidTransaction','uses' => 'TransactionsController@updatePaid']);
 	
 	Route::get('/manage_order_jeffry', ['uses' => 'OrderManagementController@view_order_mgmt']);
+	
+	Route::get('/manage_report_jeffry', ['as' =>'jeffry.getReport', 'uses' => 'ReportingManagementController@view_reporting_mgmt_day']);
+	
 	
     // Review
     Route::get('/manage_review', function()

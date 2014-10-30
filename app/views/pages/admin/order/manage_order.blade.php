@@ -125,15 +125,15 @@
 												<td>{{$key->transaction->total_price}}</td>
 												<td>
 													<select id="" class="">
-														@if($key->transaction->status == "Pending")
+														@if($key->status == "Pending")
 														<option value="Pending" selected="selected">Pending</option>
 														<option value="On-process">On-process</option>
 														<option value="Complete">Complete</option>
-														@elseif($key->transaction->status == "On-process")
+														@elseif($key->status == "On-process")
 														<option value="Pending" >Pending</option>
 														<option value="On-process" selected="selected">On-process</option>
 														<option value="Complete">Complete</option>
-														@elseif($key->transaction->status == "Complete")
+														@elseif($key->status == "Complete")
 														<option value="Pending" >Pending</option>
 														<option value="On-process">On-process</option>
 														<option value="Complete" selected="selected">Complete</option>

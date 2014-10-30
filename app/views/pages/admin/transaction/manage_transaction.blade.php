@@ -13,43 +13,168 @@
 				<hr></hr>
 				
 				<div>
-						{{$hasil->links()}}
+						@if($filtered == 0)
+					
+						{{$hasil->appends(array('sortBy' => $sortBy, 'order' => $sortType, 'filtered'=>$filtered))->links()}}
+					@else
+						<button class="btn btn-success backButton" style="float: left; margin-top: 20px; margin-left: 20px; margin-bottom: 20px" data-toggle="modal" data-target=".pop_up_add_attribute">Back</button>
+					@endif
 					<table class="table table-striped table-hover ">
 						<thead class="table-bordered">
 							<tr>
 								<th class="table-bordered">
 									<a href="javascript:void(0)">Invoice</a>
-									<a href="javascript:void(0)">
+									@if($filtered == 0)
+										@if($sortBy == "invoice")
+											@if($sortType == "asc")
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'invoice', 'order' => 'desc', 'page'=>  $page, 'filtered'=>'0'))}}">
+											@else
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'invoice', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+											@endif
+										@else
+											<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'invoice', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+										@endif
+									@else
+										@if($sortBy == "invoice")
+											@if($sortType == "asc")
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'invoice', 'order' => 'desc', 'filtered'=>  $filtered, 'invoice'=>$invoice, 'accId'=>$accId, 'fullName'=>$fullName, 'totalPrice'=>$totalPrice, 'status'=>$status, 'paid'=>$paid))}}">
+											@else
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'invoice', 'order' => 'asc', 'filtered'=>  $filtered, 'invoice'=>$invoice, 'accId'=>$accId, 'fullName'=>$fullName, 'totalPrice'=>$totalPrice, 'status'=>$status, 'paid'=>$paid))}}">
+											@endif
+										@else
+											<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'invoice', 'order' => 'asc', 'filtered'=>  $filtered, 'invoice'=>$invoice, 'accId'=>$accId, 'fullName'=>$fullName, 'totalPrice'=>$totalPrice, 'status'=>$status, 'paid'=>$paid))}}">
+										@endif
+									@endif
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
 								<th class="table-bordered">
 									<a href="javascript:void(0)">Account ID</a>
-									<a href="javascript:void(0)">
+									@if($filtered == 0)
+										@if($sortBy == "account_id")
+											@if($sortType == "asc")
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'account_id', 'order' => 'desc', 'page'=>  $page, 'filtered'=>'0'))}}">
+											@else
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'account_id', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+											@endif
+										@else
+											<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'account_id', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+										@endif
+									@else 
+										@if($sortBy == "account_id")
+											@if($sortType == "asc")
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'account_id', 'order' => 'desc', 'filtered'=>  $filtered, 'invoice'=>$invoice, 'accId'=>$accId, 'fullName'=>$fullName, 'totalPrice'=>$totalPrice, 'status'=>$status, 'paid'=>$paid))}}">
+											@else
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'account_id', 'order' => 'asc', 'filtered'=>  $filtered, 'invoice'=>$invoice, 'accId'=>$accId, 'fullName'=>$fullName, 'totalPrice'=>$totalPrice, 'status'=>$status, 'paid'=>$paid))}}">
+											@endif
+										@else
+											<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'account_id', 'order' => 'asc', 'filtered'=>  $filtered, 'invoice'=>$invoice, 'accId'=>$accId, 'fullName'=>$fullName, 'totalPrice'=>$totalPrice, 'status'=>$status, 'paid'=>$paid))}}">
+										@endif
+									@endif
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
 								<th class="table-bordered">
 									<a href="javascript:void(0)">Full Name</a>
-									<a href="javascript:void(0)">
+									@if($filtered == 0)
+										@if($sortBy == "full_name")
+											@if($sortType == "asc")
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'full_name', 'order' => 'desc', 'page'=>  $page, 'filtered'=>'0'))}}">
+											@else
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'full_name', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+											@endif
+										@else
+											<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'full_name', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+										@endif
+									@else 
+										@if($sortBy == "full_name")
+											@if($sortType == "asc")
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'full_name', 'order' => 'desc', 'filtered'=>  $filtered, 'invoice'=>$invoice, 'accId'=>$accId, 'fullName'=>$fullName, 'totalPrice'=>$totalPrice, 'status'=>$status, 'paid'=>$paid))}}">
+											@else
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'full_name', 'order' => 'asc', 'filtered'=>  $filtered, 'invoice'=>$invoice, 'accId'=>$accId, 'fullName'=>$fullName, 'totalPrice'=>$totalPrice, 'status'=>$status, 'paid'=>$paid))}}">
+											@endif
+										@else
+											<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'full_name', 'order' => 'asc', 'filtered'=>  $filtered, 'invoice'=>$invoice, 'accId'=>$accId, 'fullName'=>$fullName, 'totalPrice'=>$totalPrice, 'status'=>$status, 'paid'=>$paid))}}">
+										@endif
+									@endif
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
 								<th class="table-bordered">
 									<a href="javascript:void(0)">Total Price</a>
-									<a href="javascript:void(0)">
+									@if($filtered == 0)
+										@if($sortBy == "total_price")
+											@if($sortType == "asc")
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'total_price', 'order' => 'desc', 'page'=>  $page, 'filtered'=>'0'))}}">
+											@else
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'total_price', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+											@endif
+										@else
+											<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'total_price', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+										@endif
+									@else 
+										@if($sortBy == "total_price")
+											@if($sortType == "asc")
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'total_price', 'order' => 'desc', 'filtered'=>  $filtered, 'invoice'=>$invoice, 'accId'=>$accId, 'fullName'=>$fullName, 'totalPrice'=>$totalPrice, 'status'=>$status, 'paid'=>$paid))}}">
+											@else
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'total_price', 'order' => 'asc', 'filtered'=>  $filtered, 'invoice'=>$invoice, 'accId'=>$accId, 'fullName'=>$fullName, 'totalPrice'=>$totalPrice, 'status'=>$status, 'paid'=>$paid))}}">
+											@endif
+										@else
+											<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'total_price', 'order' => 'asc', 'filtered'=>  $filtered, 'invoice'=>$invoice, 'accId'=>$accId, 'fullName'=>$fullName, 'totalPrice'=>$totalPrice, 'status'=>$status, 'paid'=>$paid))}}">
+										@endif
+									@endif
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
 								<th class="table-bordered">
 									<a href="javascript:void(0)">Status</a>
-									<a href="javascript:void(0)">
+									@if($filtered == 0)
+										@if($sortBy == "status")
+											@if($sortType == "asc")
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'status', 'order' => 'desc', 'page'=>  $page, 'filtered'=>'0'))}}">
+											@else
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'status', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+											@endif
+										@else
+											<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'status', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+										@endif
+									@else 
+										@if($sortBy == "status")
+											@if($sortType == "asc")
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'status', 'order' => 'desc', 'filtered'=>  $filtered, 'invoice'=>$invoice, 'accId'=>$accId, 'fullName'=>$fullName, 'totalPrice'=>$totalPrice, 'status'=>$status, 'paid'=>$paid))}}">
+											@else
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'status', 'order' => 'asc', 'filtered'=>  $filtered, 'invoice'=>$invoice, 'accId'=>$accId, 'fullName'=>$fullName, 'totalPrice'=>$totalPrice, 'status'=>$status, 'paid'=>$paid))}}">
+											@endif
+										@else
+											<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'status', 'order' => 'asc', 'filtered'=>  $filtered, 'invoice'=>$invoice, 'accId'=>$accId, 'fullName'=>$fullName, 'totalPrice'=>$totalPrice, 'status'=>$status, 'paid'=>$paid))}}">
+										@endif
+									@endif
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
 								<th class="table-bordered">
 									<a href="javascript:void(0)">Paid</a>
-									<a href="javascript:void(0)">
+									@if($filtered == 0)
+										@if($sortBy == "paid")
+											@if($sortType == "asc")
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'paid', 'order' => 'desc', 'page'=>  $page, 'filtered'=>'0'))}}">
+											@else
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'paid', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+											@endif
+										@else
+											<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'paid', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+										@endif
+									@else 
+										@if($sortBy == "paid")
+											@if($sortType == "asc")
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'paid', 'order' => 'desc', 'filtered'=>  $filtered, 'invoice'=>$invoice, 'accId'=>$accId, 'fullName'=>$fullName, 'totalPrice'=>$totalPrice, 'status'=>$status, 'paid'=>$paid))}}">
+											@else
+												<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'paid', 'order' => 'asc', 'filtered'=>  $filtered, 'invoice'=>$invoice, 'accId'=>$accId, 'fullName'=>$fullName, 'totalPrice'=>$totalPrice, 'status'=>$status, 'paid'=>$paid))}}">
+											@endif
+										@else
+											<a href="{{action('TransactionManagementController@view_transaction_mgmt', array('sortBy' => 'paid', 'order' => 'asc', 'filtered'=>  $filtered, 'invoice'=>$invoice, 'accId'=>$accId, 'fullName'=>$fullName, 'totalPrice'=>$totalPrice, 'status'=>$status, 'paid'=>$paid))}}">
+										@endif
+									@endif
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
@@ -59,14 +184,14 @@
 						</thead>
 						<thead>
 							<tr>
-								<td><input type="text" class="form-control input-sm"></td>
-								<td><input type="text" class="form-control input-sm"></td>
-								<td><input type="text" class="form-control input-sm"></td>
-								<td><input type="text" class="form-control input-sm"></td>
-								<td><input type="text" class="form-control input-sm"></td>
-								<td><input type="text" class="form-control input-sm"></td>
+								<td><input type="text" class="form-control input-sm" id="filterInvoice"></td>
+								<td><input type="text" class="form-control input-sm" id="filterAccId"></td>
+								<td><input type="text" class="form-control input-sm" id="filterFullName"></td>
+								<td><input type="text" class="form-control input-sm" id="filterTotalPrice"></td>
+								<td><input type="text" class="form-control input-sm" id="filterStatus"></td>
+								<td><input type="text" class="form-control input-sm" id="filterPaid"></td>
 								
-								<td width=""><a class="btn btn-primary btn-xs">Filter</a></td>
+								<td width=""><a class="btn btn-primary btn-xs" id="filterButton">Filter</a></td>
 							</tr>
 						</thead>
 						<tbody>
@@ -226,6 +351,20 @@
 						alert("responseText: "+xhr.responseText);
 					}
 				},'json');
+		});
+		
+		//filter button
+		$('body').on('click','#filterButton',function(){
+			$invoice = $('#filterInvoice').val();
+			$accId = $('#filterAccId').val();
+			$fullName = $('#filterFullName').val();
+			$totalPrice = $('#filterTotalPrice').val();
+			$status = $('#filterStatus').val();
+			$paid = $('#filterPaid').val();
+			window.location = "{{URL::route('jeffry.getTransaction')}}" + "?filtered=1&invoice="+$invoice+"&accId="+$accId+"&fullName="+$fullName+"&totalPrice="+$totalPrice+"&status="+$status+"&paid="+$paid;
+		});
+		$('body').on('click','.backButton',function(){
+			window.location = "{{URL::route('jeffry.getTransaction')}}" ;
 		});
 	</script>
 	

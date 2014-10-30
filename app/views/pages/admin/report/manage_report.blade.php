@@ -9,10 +9,10 @@
 					Manage Report
 				</h3>
 				<a data-toggle="modal" data-target=".pop_up_view_report_range" href="javascript:void(0);" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Range</a>
-				<a href="javascript:void(0);" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Day</a>
-				<a href="javascript:void(0);" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Week</a>
-				<a href="javascript:void(0);" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Month</a>
-				<a href="javascript:void(0);" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Year</a>
+				<a href="{{action('ReportingManagementController@view_reporting_mgmt_day', array('reportBy' => 'day'))}}" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Day</a>
+				<a href="{{action('ReportingManagementController@view_reporting_mgmt_day', array('reportBy' => 'week'))}}" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Week</a>
+				<a href="{{action('ReportingManagementController@view_reporting_mgmt_day', array('reportBy' => 'month'))}}" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Month</a>
+				<a href="{{action('ReportingManagementController@view_reporting_mgmt_day', array('reportBy' => 'year'))}}" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Year</a>
 				<!--<a href="{{ URL::to('test/manage_shipping_agent') }}" class="btn btn-default" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping Agent</a>-->
 			</div>
 			<span class="clearfix"></span>
@@ -22,118 +22,65 @@
 				${demo.css}
 				</style>
 				<script type="text/javascript">
-				$(function () {
-
-	    // Get the CSV and create the chart
-	    $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=analytics.csv&callback=?', function (csv) {
-
-	    	$('#container').highcharts({
-
-	    		data: {
-	    			csv: csv
-	    		},
-
-	    		title: {
-	    			text: 'By Day'
-	    		},
-
-	    		subtitle: {
-	    			text: ''
-	    		},
-
-	    		xAxis: {
-	                tickInterval: 7 * 24 * 3600 * 1000, // one week
-	                tickWidth: 0,
-	                gridLineWidth: 1,
-	                labels: {
-	                	align: 'left',
-	                	x: 3,
-	                	y: -3
-	                }
-	            },
-
-	            yAxis: [{ // left y axis
-	            	title: {
-	            		text: null
-	            	},
-	            	labels: {
-	            		align: 'left',
-	            		x: 3,
-	            		y: 16,
-	            		format: '{value:.,0f}'
-	            	},
-	            	showFirstLabel: false
-	            }, { // right y axis
-	            	linkedTo: 0,
-	            	gridLineWidth: 0,
-	            	opposite: true,
-	            	title: {
-	            		text: null
-	            	},
-	            	labels: {
-	            		align: 'right',
-	            		x: -3,
-	            		y: 16,
-	            		format: '{value:.,0f}'
-	            	},
-	            	showFirstLabel: false
-	            }],
-
-	            legend: {
-	            	align: 'left',
-	            	verticalAlign: 'top',
-	            	y: 20,
-	            	floating: true,
-	            	borderWidth: 0
-	            },
-
-	            tooltip: {
-	            	shared: true,
-	            	crosshairs: true
-	            },
-
-	            plotOptions: {
-	            	series: {
-	            		cursor: 'pointer',
-	            		point: {
-	            			events: {
-	            				click: function (e) {
-	            					hs.htmlExpand(null, {
-	            						pageOrigin: {
-	            							x: e.pageX,
-	            							y: e.pageY
-	            						},
-	            						headingText: this.series.name,
-	            						maincontentText: Highcharts.dateFormat('%A, %b %e, %Y', this.x) + ':<br/> ' +
-	            						this.y + ' visits',
-	            						width: 200
-	            					});
-	            				}
-	            			}
-	            		},
-	            		marker: {
-	            			lineWidth: 1
-	            		}
-	            	}
-	            },
-
-	            series: [{
-	            	name: 'All visits',
-	            	lineWidth: 4,
-	            	marker: {
-	            		radius: 4
-	            	}
-	            }, {
-	            	name: 'New visitors'
-	            }]
-	        });
-	});
-
-	});
-
-
-	</script>
-
+					$(function () {
+						var a = $('#penjualanGraf').val();
+						var b = $('#tanggalGraf').val();
+						var c;
+						var d = $('#ket').val();
+						var e;
+						if(d == 'day')
+						{
+							e = 'Report By Day';
+							c = $('#bulanGraf').val().replace('-',' ');
+						}else if(d == 'week')
+						{
+							e = 'Report By Week';
+							c = $('#bulanGraf').val().replace('-',' ');
+						}else if(d == 'month')
+						{
+							e = 'Report By Month';
+							c = $('#bulanGraf').val();
+						}else if(d == 'year')
+						{
+							e = 'Report By Year';
+						}else if(d == 'range')
+						{
+							e = 'Report By Range';
+						}
+						b = b.split(",");
+						$('#container').highcharts({
+							chart: {
+								type: 'line'
+							},
+							title: {
+								text: e
+							},
+							subtitle: {
+								text: c
+							},
+							xAxis: {
+								categories: b	
+							},
+							yAxis: {
+								title: {
+									text: 'Rupiah'
+								}
+							},
+							plotOptions: {
+								line: {
+									dataLabels: {
+										enabled: true
+									},
+									enableMouseTracking: false
+								}
+							},
+							series: [{
+								name: 'Penjualan',
+								data: JSON.parse("[" + a + "]")
+							}]
+						});
+					});
+			</script>
 	<script src="{{ asset('assets/js/highcharts4/js/highcharts.js') }}"></script>
 	<script src="{{ asset('assets/js/highcharts4/js/modules/data.js') }}"></script>
 	<script src="{{ asset('assets/js/highcharts4/js/modules/exporting.js') }}"></script>
@@ -150,63 +97,89 @@
 	<span class="clearfix"></span>
 
 	<div>
-	<ul class="pagination">
-		<li><a href="#">&laquo;</a></li>
-		<li><a href="#">1</a></li>
-		<li><a href="#">2</a></li>
-		<li><a href="#">3</a></li>
-		<li><a href="#">4</a></li>
-		<li><a href="#">5</a></li>
-		<li><a href="#">&raquo;</a></li>
-	</ul>
+	<div id="navigator">
+	{{$hasil->links()}}
+	</div>
 	<!--<button class="btn btn-success" style="float: right; margin-top: 20px;"  data-toggle="modal" data-target=".pop_up_add_shipping_agent">+ Add New Kurir</button>
 	-->
-	<table class="table table-striped table-hover ">
+	<table class="table table-striped table-hover " >
 		<thead class="table-bordered">
 			<tr>
 				<th class="table-bordered">
 					<a href="javascript:void(0)">Tanggal</a>
-					<a href="javascript:void(0)">
-						<span class="glyphicon glyphicon-sort" style="float: right;"></span>
-					</a>
 				</th>
 				<th class="table-bordered" width="">
-					<a href="javascript:void(0)">Pemasukan</a>
-					<a href="javascript:void(0)">
-						<span class="glyphicon glyphicon-sort" style="float: right;"></span>
-					</a>
+					<a href="javascript:void(0)">Penjualan</a>
 				</th>
 				<!-- <th class="table-bordered">
 
 				</th> -->
 			</thead>
-			<thead>
-				<tr>
-					<td><input type="text" class="form-control input-sm"></td>
-					<td><input type="text" class="form-control input-sm"></td>
-
-					<!-- <td width=""><a class="btn btn-primary btn-xs">Filter</a></td> -->
-				</tr>
-			</thead>
-			<tbody>
-				<?php 
-				for ($i=0; $i<=30; $i++) {
-					?>
+			<tbody id="tblrg">
+				@foreach($hasil as $key)
 					<tr> 
-
-						<td>20 Oktober 2014</td>
-						<td>IDR 90.000.000</td>
-
-						<!-- <td>
-							<button class="btn btn-info btn-xs" data-toggle="modal" data-target=".pop_up_view_report_day">View</button>
-						</td> -->
+						@if($key->ket == 'day')
+							<td>{{$key->tanggal}}-{{$key->bulan}}</td>
+							<td>{{$key->penjualan}}</td>
+						@elseif($key->ket == 'week')
+							<td>Week-{{$key->week}} ({{$key->tanggal_awal}} - {{$key->tanggal_akhir}})</td>
+							<td>{{$key->penjualan}}</td>
+						@elseif($key->ket == 'month')
+							<td>{{$key->tanggal}}-{{$key->bulan}}</td>
+							<td>{{$key->penjualan}}</td>
+						@elseif($key->ket == 'year' || $key->ket == 'range')
+							<td>{{$key->tanggal}}</td>
+							<td>{{$key->penjualan}}</td>
+						@endif
 					</tr> 
-					<?php
-				} 
-				?>
-
+				@endforeach
 			</tbody>
 		</table>
+		<?php 
+			$str = '';
+			$str2 = '';
+			$i = 0;
+		?>
+		@foreach($hsl2 as $key)
+			<?php 
+				if($i == 0)
+				{
+					$str = $str.$key->penjualan ;
+					if($key->ket == 'day' || $key->ket == 'month' || $key->ket == 'year'|| $key->ket == 'range')
+					{
+						$str2 = $str2.$key->tanggal ;
+					}else if($key->ket == 'week')
+					{
+						$str2 = $str2.$key->week ;
+					}
+				}else
+				{
+					$str = $str.','.$key->penjualan ;
+					if($key->ket == 'day'  || $key->ket == 'month' || $key->ket == 'year' || $key->ket == 'range')
+					{
+						$str2 = $str2.','.$key->tanggal ;
+					}else if($key->ket == 'week')
+					{
+						$str2 = $str2.','.$key->week ;
+					}
+				}
+				if( $key->ket != 'year')
+				{
+					$str3 = $key->bulan;
+				}
+				$str4 = $key->ket;
+				$i++;
+			?>
+		@endforeach
+		<?php 
+			echo '<input type="hidden" id = "penjualanGraf" value='.$str.' />';
+			echo '<input type="hidden" id = "tanggalGraf" value='.$str2.' />';
+			if( $key->ket != 'year')
+			{
+				echo '<input type="hidden" id = "bulanGraf" value='.$str3.' />';
+			}
+			echo '<input type="hidden" id = "ket" value='.$str4.' />';
+		?>
 	</div>
 
 </div>
@@ -215,5 +188,159 @@
 
 @include('includes.modals.alertYesNo')
 @include('pages.admin.report.pop_up_view_report_day')
-
+<script>
+		$('body').on('click','#rangeClick',function(){
+			//$('#datepicker00').html("");
+			//$('#datepicker01').html("");
+			$.ajax({
+					type: 'GET',
+					url: "{{URL::route('jeffry.getReport')}}",
+					data: {	
+						"reportBy": "range",
+						"date1" : $('#datepicker00').val(),
+						"date2" : $('#datepicker01').val()
+					},
+					success: function(response){
+						if(response['code'] == '404')
+						{
+							//$('#wishlistcontent').append("<td>agent tidak ditemukan</td>");
+							
+						}
+						else
+						{
+							var respon = response['hasil2'];
+							var pjln = '';
+							var tgl='';
+							var bln='';
+							var ket='';
+							for(i=0; i < respon.length;i++)
+							{
+								if(i == 0)
+								{
+									pjln = pjln + (respon[i].penjualan);
+									tgl = tgl + (respon[i].tanggal);
+									
+								}else
+								{
+									pjln = pjln + ',' + (respon[i].penjualan);
+									tgl = tgl + ',' + (respon[i].tanggal);
+								}
+								bln = (respon[i].bulan);
+								ket = (respon[i].ket);
+							}
+							$('#penjualanGraf').val(pjln);
+							$('#tanggalGraf').val(tgl);
+							$('#bulanGraf').val(bln);
+							$('#ket').val(ket);
+							
+							var a = $('#penjualanGraf').val();
+							var b = $('#tanggalGraf').val();
+							var c;
+							var d = $('#ket').val();
+							var e;
+							if(d == 'day')
+							{
+								e = 'Report By Day';
+								c = $('#bulanGraf').val().replace('-',' ');
+							}else if(d == 'week')
+							{
+								e = 'Report By Week';
+								c = $('#bulanGraf').val().replace('-',' ');
+							}else if(d == 'month')
+							{
+								e = 'Report By Month';
+								c = $('#bulanGraf').val();
+							}else if(d == 'year')
+							{
+								e = 'Report By Year';
+							}else if(d == 'range')
+							{
+								e = 'Report By Range';
+								c = $('#bulanGraf').val();
+							}
+							b = b.split(",");
+							$('#container').highcharts({
+								chart: {
+									type: 'line'
+								},
+								title: {
+									text: e
+								},
+								subtitle: {
+									text: c
+								},
+								xAxis: {
+									categories: b	
+								},
+								yAxis: {
+									title: {
+										text: 'Rupiah'
+									}
+								},
+								plotOptions: {
+									line: {
+										dataLabels: {
+											enabled: true
+										},
+										enableMouseTracking: false
+									}
+								},
+								series: [{
+									name: 'Penjualan',
+									data: JSON.parse("[" + a + "]")
+								}]
+							});
+							
+							var tab ="";
+							var obj = response['hasil1'];
+							var responses = obj;
+							$(responses).each(function() {
+								tab+= "<tr>";
+								tab+="<td>"+$(this)[0].tanggal2+"</td>";
+								tab+="<td>"+$(this)[0].penjualan+"</td>";
+								tab+="</tr>";
+							});
+							$('#tblrg').html(tab);
+							$('#navigator').html(jQuery.parseJSON(response.links));
+						}
+					},error: function(xhr, textStatus, errorThrown){
+						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+						alert("responseText: "+xhr.responseText);
+					}
+				},'json');
+		});
+		
+		$('body').on('click','#navigator ul li a',function(){
+		
+			var cek;
+			var link = $(this).attr('href');
+			$.get(link,function(response){
+				try
+				{
+					if(response['hasil2'][0].ket == 'range')
+					{
+						cek = false;
+						var tab ="";
+						var obj = response['hasil1'];
+						var responses = obj;
+						$(responses).each(function() {
+							tab+= "<tr>";
+							tab+="<td>"+$(this)[0].tanggal2+"</td>";
+							tab+="<td>"+$(this)[0].penjualan+"</td>";
+							tab+="</tr>";
+						});
+						$('#tblrg').html(tab);
+						$('#navigator').html(jQuery.parseJSON(response.links));
+					}
+				}catch(e)
+				{
+					window.location.assign(link);
+				}
+			});
+			
+			return false;
+			
+		});
+		
+</script>
 @stop
