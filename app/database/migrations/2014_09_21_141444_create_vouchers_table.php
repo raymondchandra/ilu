@@ -18,6 +18,7 @@ class CreateVouchersTable extends Migration {
 			$table->string('type');
 			$table->integer('amount');
 			$table->integer('account_id')->unsigned()->nullable();
+			$table->date('expired_date');
 			$table->timestamps();
 		});
 	}

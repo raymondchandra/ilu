@@ -90,8 +90,8 @@ class AttributesManagementController extends \BaseController
 	
 	public function addAttribute()
 	{
-		$json_data = Input::get('json_data');
-		$json = json_decode($json_data);
+		$json_data = Input::get('json_data');				
+		$json = json_decode($json_data);													
 		
 		$name = $json->{'name'};
 		$deleted = $json->{'deleted'};

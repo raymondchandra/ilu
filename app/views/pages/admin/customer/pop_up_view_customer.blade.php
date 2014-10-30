@@ -3,7 +3,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title" id="myModalLabel">Informasi Customer</h4>
+				<h4 class="modal-title title1" id="myModalLabel">Informasi Customer</h4>
 			</div>
 			<div class="form-horizontal" role="form">
 				<div class="modal-body">
@@ -80,8 +80,8 @@
 					</div>
 
 					<hr></hr>
-					<h4 class="modal-title" id="myModalLabel">Informasi Voucher
-						<button class="btn btn-success pull-right btn-xs tambah_voucher_trigger">
+					<h4 class="modal-title title2" id="myModalLabel">Informasi Voucher
+						<button class="btn btn-success pull-right btn-xs tambah_voucher_trigger tambah_voucher_button">
 							<span class="glyphicon glyphicon-plus"></span>Tambah Voucher
 						</button>
 						<script>
@@ -98,7 +98,7 @@
 						<div class="form-group col-sm-4">
 							<label class="col-sm-4 control-label">Type</label>
 							<div class="col-sm-8">
-								<select class="form-control">
+								<select class="form-control" id="new_type_voucher">
 									<option>Public</option>
 									<option>Private</option>
 								</select>
@@ -107,9 +107,9 @@
 						</div>
 
 						<div class="form-group col-sm-4">
-							<label class="col-sm-4 control-label">Ammount</label>
+							<label class="col-sm-4 control-label">Amount</label>
 							<div class="col-sm-8">
-								<input type=""text class="form-control" id="">
+								<input type=""text class="form-control" id="new_amount_voucher">
 
 							</div>
 						</div>
@@ -117,13 +117,15 @@
 						<div class="form-group col-sm-4">
 							<label class="col-sm-4 control-label">Code</label>
 							<div class="col-sm-8">
-								<p type=""text class="form-control-static" id="">4353d54d34</p>
+								<p type="text" class="form-control-static" id="new_kode_voucher"></p>
 
 							</div>
 						</div>
-						<button class="btn btn-success pull-right btn-xs">
+						<button class="btn btn-success pull-right btn-xs submit_voucher">
 							<span class="glyphicon glyphicon-plus"></span>Add
 						</button>
+						
+						<input type="hidden" value="" id="something_hidden">
 					</div>
 
 					<table class="table">
@@ -140,61 +142,11 @@
 								</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td>
-									Public
-								</td>
-								<td>
-									IDR 500.000
-								</td>
-								<td>
-									543efr43r
-								</td>
-							</tr>
-							<tr>
-								<td>
-									A
-								</td>
-								<td>
-									IDR 500.000
-								</td>
-								<td>
-									543efr43r
-								</td>
-							</tr>
-							<tr>
-								<td>
-									Private
-								</td>
-								<td>
-									IDR 500.000
-								</td>
-								<td>
-									543efr43r
-								</td>
-							</tr>
-							<tr>
-								<td>
-									Public
-								</td>
-								<td>
-									IDR 500.000
-								</td>
-								<td>
-									543efr43r
-								</td>
-							</tr>
+						<tbody id="voucher_list">
+							
 						</tbody>
 						
 					</table>
-
-					
-					
-
-
-
-					
 
 				</div>
 				<div class="modal-footer">

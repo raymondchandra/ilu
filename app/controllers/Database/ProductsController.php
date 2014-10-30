@@ -260,7 +260,7 @@ class ProductsController extends \BaseController {
 	public function getAll()
 	{
 		$respond = array();
-		$product = Product::all();
+		$product = Product::where('deleted', '=', 0)->get();
 		if (count($product) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -328,7 +328,12 @@ class ProductsController extends \BaseController {
 				}
 				else
 				{
-					$key->other_photos = $other_photos->photo_path;
+					$temp = array();
+					foreach($other_photos as $ct)
+					{
+						$temp[] = $ct->photo_path;
+					}
+					$key->other_photos = $temp;
 				}
 			}			
 			
@@ -336,7 +341,7 @@ class ProductsController extends \BaseController {
 		}
 		return Response::json($respond);		
 	}
-	
+		
 	public function getAllSortedIdAsc()
 	{
 		$respond = array();
@@ -2830,7 +2835,7 @@ class ProductsController extends \BaseController {
 	public function getByPromotionId($promotion_id)
 	{
 		$respond = array();
-		$product = Product::where('promotion_id', '=', '%'.$promotion_id.'%')->get();	
+		$product = Product::where('promotion_id', '=', $promotion_id)->get();	
 		if (count($product) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -2898,8 +2903,13 @@ class ProductsController extends \BaseController {
 				}
 				else
 				{
-					$key->other_photos = $other_photos->photo_path;
-				}			
+					$temp = array();
+					foreach($other_photos as $ct)
+					{
+						$temp[] = $ct->photo_path;
+					}
+					$key->other_photos = $temp;
+				}		
 			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
 		}

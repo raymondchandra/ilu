@@ -39,33 +39,26 @@
 						<label for="inputPassword3" class="col-sm-3 control-label">Status</label>
 						<div class="col-sm-6">														
 							<p id="review_status" class="form-control-static"></p>							
-							<select id="review_status_list" class="form-control hidden">
+							<!--<select id="review_status_list" class="form-control hidden">
 								<option value="0">Pending</option>
 								<option value="1">Approved</option>
-							</select>
-						<div class="col-sm-6">
-							<p id="review_status" class="form-control-static">Pending</p>
-							<!--<select id="review_status_list" class="form-control hidden">
-								<option val="pending">Pending</option>
-								<option val="onship">Approved</option>
 							</select>-->
 						</div>
 						<div class="col-sm-3">
 							<button type="button" class="btn btn-warning" id="review_status_editor">Change</button>
 							<button type="button" class="btn btn-success hidden" id="review_status_setter">Set</button>
 							<script>
-							$( 'body' ).on( "click",'#review_status_editor', function() {
-								if($('#review_status').text() == "Pending"){
-									$('#review_status').text("Approved");
-								}else{
-									$('#review_status').text("Pending");
-								}
-								//$('#review_status_list').removeClass('hidden');
-								//$('#review_status_setter').removeClass('hidden');
-								//$('#review_status').addClass('hidden');
-								//$('#review_status_editor').addClass('hidden');
-
-							});
+								$( 'body' ).on( "click",'#review_status_editor', function() {
+									if($('#review_status').text() == "Pending"){
+										$('#review_status').text("Approved");
+									}else{
+										$('#review_status').text("Pending");
+									}
+									// $('#review_status_list').removeClass('hidden');
+									// $('#review_status_setter').removeClass('hidden');
+									// $('#review_status').addClass('hidden');
+									// $('#review_status_editor').addClass('hidden');
+								});
 
 						/*	$( 'body' ).on( "click",'#review_status_setter', function() {
 								var selectedStatus = $('#review_status_list').find(":selected").text();
@@ -111,12 +104,51 @@
 
 
 
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-success" data-dismiss="modal">Simpan</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
-						</div>
-					</form>
-				</div>
-			</div>
+					</div>
+					<div class="modal-footer">
+						<button id="edit_review" type="button" class="btn btn-success" data-dismiss="modal">Simpan</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+					</div>
+			</form>
 		</div>
+	</div>
+</div>
+
+<script>
+	$('body').on('click', '#edit_review', function(){		
+		$value = -1;
+		if($('#review_status').text() == "Pending"){
+			$value = 0; //pending
+		}else{
+			$value = 1;	//approved
+		}
+		$data = {
+			'id' : $id,
+			'new_approved' : $value
+		};
+		var json_data = JSON.stringify($data);
+		$.ajax({
+			type: 'POST',
+			url: "{{URL('admin/review/editApproved')}}",
+			data : {
+				'json_data' : json_data
+			},
+			success: function(response){	
+				result = JSON.parse(response);				
+				if(result.code==204){					
+					alert(result.status);
+					location.reload();
+				}
+				else
+				{
+					alert(result.status);
+					alert(result.messages);
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+				alert(errorThrown);
+			}
+		},'json');
+	});
+</script>
+		

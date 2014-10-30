@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/tes', 'ReviewsController@getAll');
+Route::get('/tes', 'ProductsController@getAll');
 
 Route::get('/tesview', function (){
 	return View::make('pages.admin.product.manage_product');
@@ -136,6 +136,47 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	Route::get('/review/{id}', ['as' => 'review_detail', 'uses' => 'ReviewsManagementController@view_detail_review']);
 	Route::post('/review/editApproved', ['as' => 'review.editApproved', 'uses' => 'ReviewsManagementController@editApproved']);
 	
+	//-------------------------------------------PROMOTION VIEW ADMIN-------------------------------------------
+	Route::get('/manage_promotions', ['as' => 'viewPromotionsManagement', 'uses' => 'PromotionsManagementController@view_admin_promotion']);
+	Route::get('/promotion/getProductById', ['as' => 'promotion.getProductById', 'uses' => 'PromotionsManagementController@getProductById']);
+	Route::get('/promotion/{id}', ['as' => 'promotion_detail', 'uses' => 'PromotionsManagementController@view_detail_promotion']);
+	Route::post('/promotion/addPromotion', ['as' => 'promotion.addPromotion', 'uses' => 'PromotionsManagementController@addPromotion']);
+	Route::post('/promotion/editFull', ['as' => 'promotion.editFull', 'uses' => 'PromotionsManagementController@editFull']);	
+	Route::delete('/promotion/deletePromotion', ['as' => 'promotion.deletePromotion', 'uses' => 'PromotionsManagementController@deletePromotion']);
+	
+	//ooooooooooooooooooooooooooooooooooooooKERJAAN DAVIDoooooooooooooooooooooooooooooooooooooooo
+	Route::get('/manage_customer', ['as'=>'david.viewCustomerManagement','uses' => 'CustomerManagementController@view_cust_mgmt']);
+	
+	Route::get('/get_wishlist', ['as'=>'david.getWishlist','uses' => 'WishlistsController@getWishListByAccountId']);
+	
+	Route::get('/get_search_history', ['as'=>'david.getSearchHistory','uses' => 'LogsController@getSearchLogByAccountId']);
+
+	Route::get('/get_trans_history', ['as'=>'david.getTransHistory','uses' => 'TransactionsController@getByAccountId']);
+	
+	Route::get('/get_profile_detail', ['as'=>'david.getProfDet','uses' => 'ProfilesController@myGetById']);
+	
+	Route::get('/filter_cust_mgmt', ['as'=>'david.getFilteredCustomer','uses' => 'ProfilesController@myGetById']);
+	
+	Route::get('/get_new_voucher_code', ['as'=>'david.getNewVoucherCode','uses' => 'VouchersController@generateVoucherNumber']);
+	
+	Route::get('/get_voucher_list', ['as'=>'david.getVoucherList','uses' => 'VouchersController@getByAccountId']);
+	
+	Route::post('/post_new_voucher', ['as'=>'david.postNewVoucher','uses' => 'VouchersController@insert']);
+	
+	Route::get('/admin_sign_in', ['before'=>'force.ssl','as'=>'david.adminSignIn','uses' => 'AccountsController@adminLogin']);
+	
+	Route::get('/logout', ['as'=>'david.logout','uses' => 'AccountsController@postLogout']);
+	
+	Route::get('/login', array('as'=>'ilu.main.login','before'=>'force.ssl',function()
+	{
+		return View::make('pages.admin.login');
+	}));
+
+    // dashboard
+	Route::get('/dashboard', array('as'=>'ilu.main.dashboard',function()
+	{
+		return View::make('pages.admin.dashboard');
+	}));
 	
 	// Route::get('/bernico', function(){return View::make('pages.admin.tax.manage_tax');});
 	
@@ -216,16 +257,16 @@ Route::group(array('prefix' => 'test'), function()
 {
 
     // login
-	Route::get('/login', function()
+	Route::get('/login', array('as'=>'ilu.test.login','before'=>'force.ssl',function()
 	{
 		return View::make('pages.admin.login');
-	});
+	}));
 
     // dashboard
-	Route::get('/dashboard', function()
+	Route::get('/dashboard', array('as'=>'ilu.test.dashboard',function()
 	{
 		return View::make('pages.admin.dashboard');
-	});
+	}));
 	
     // manage order
 	Route::get('/manage_order', function()
