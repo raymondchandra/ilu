@@ -294,6 +294,13 @@ class AccountsController extends \BaseController {
 		return Response::json($respond);
 	}
 	
+	public function postLogout()
+	{
+		Auth::logout();
+		Session::flush();
+		return Redirect::route('ilu.main.login');
+	}
+	
 	/**
 	 * Generating accessToken for user
 	 *

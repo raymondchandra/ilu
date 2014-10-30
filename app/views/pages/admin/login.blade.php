@@ -67,7 +67,14 @@
 				'json' : $json_data
 			},
 			success: function (res) {
-				alert(res['code']);
+				if(res['code'] == 200)
+				{
+					window.location = "{{URL::route('ilu.main.dashboard')}}" ;
+				}
+				else
+				{
+					alert("unauthorized");
+				}
 			},
 			error: function(xhr, textStatus, errorThrown){
 					alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);

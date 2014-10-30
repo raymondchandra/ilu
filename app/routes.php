@@ -8,7 +8,23 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-	return Hash::make('secret');
+	$respond = array();
+		$topTen = Order::join('prices','orders.price_id','=','prices.id')->select(array('prices.product_id', DB::raw('COUNT(prices.product_id*orders.quantity) as jumlah')))->groupBy('prices.product_id')->orderBy('jumlah','desc')->take(10)->get();
+		if (count($topTen) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			foreach($topTen as $key)
+			{
+				$product = new ProductsController();
+				$productTopTen = $product->getById($key->product_id);// here
+				$key->product = $productTopTen;
+			}
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$topTen);
+		}
+		return Response::json($respond);
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -115,6 +131,25 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	Route::get('/review/{id}', ['as' => 'review_detail', 'uses' => 'ReviewsManagementController@view_detail_review']);
 	Route::post('/review/editApproved', ['as' => 'review.editApproved', 'uses' => 'ReviewsManagementController@editApproved']);
 	
+	//ooooooooooooooooooooooooooooooooooooooooooKERJAAN DAVIDoooooooooooooooooooooooooooooooooooooooooooooooo
+	Route::get('/manage_customer', ['as'=>'david.viewCustomerManagement','uses' => 'CustomerManagementController@view_cust_mgmt']);
+	
+	Route::get('/get_wishlist', ['as'=>'david.getWishlist','uses' => 'WishlistsController@getWishListByAccountId']);
+	
+	Route::get('/get_search_history', ['as'=>'david.getSearchHistory','uses' => 'LogsController@getSearchLogByAccountId']);
+
+	Route::get('/get_trans_history', ['as'=>'david.getTransHistory','uses' => 'TransactionsController@getByAccountId']);
+	
+	Route::get('/get_profile_detail', ['as'=>'david.getProfDet','uses' => 'ProfilesController@myGetById']);
+	
+	Route::get('/filter_cust_mgmt', ['as'=>'david.getFilteredCustomer','uses' => 'ProfilesController@myGetById']);
+	
+	Route::get('/get_new_voucher_code', ['as'=>'david.getNewVoucherCode','uses' => 'VouchersController@generateVoucherNumber']);
+	
+	Route::get('/get_voucher_list', ['as'=>'david.getVoucherList','uses' => 'VouchersController@getByAccountId']);
+	
+	Route::post('/post_new_voucher', ['as'=>'david.postNewVoucher','uses' => 'VouchersController@insert']);
+	
 	
 	// Route::get('/bernico', function(){return View::make('pages.admin.tax.manage_tax');});
 	
@@ -195,16 +230,16 @@ Route::group(array('prefix' => 'test'), function()
 {
 
     // login
-	Route::get('/login', function()
+	Route::get('/login', array('as'=>'ilu.main.login','before'=>'force.ssl',function()
 	{
 		return View::make('pages.admin.login');
-	});
+	}));
 
     // dashboard
-	Route::get('/dashboard', function()
+	Route::get('/dashboard', array('as'=>'ilu.main.dashboard',function()
 	{
 		return View::make('pages.admin.dashboard');
-	});
+	}));
 	
     // manage order
 	Route::get('/manage_order', function()
@@ -313,6 +348,8 @@ Route::group(array('prefix' => 'test'), function()
 	Route::post('/post_new_voucher', ['as'=>'david.postNewVoucher','uses' => 'VouchersController@insert']);
 	
 	Route::get('/admin_sign_in', ['before'=>'force.ssl','as'=>'david.adminSignIn','uses' => 'AccountsController@adminLogin']);
+	
+	Route::get('/logout', ['as'=>'david.logout','uses' => 'AccountsController@postLogout']);
 	
 	Route::get('/manage_shipping_jeffry', ['uses' => 'ShippingManagementController@view_shipping_mgmt']);
 	

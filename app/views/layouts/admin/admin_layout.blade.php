@@ -14,7 +14,9 @@
 						<img src="" height="50" width="50" style="float: left; margin-right:20px; margin-top: 10px;"/><h2>Ilu Panel</h2>
 					</div>
 					<div class="col-lg-8" style="line-height: 69px; text-align: right;">
-						log in as admin | <a href="#">log out</a>
+						@if(Auth::check())
+							log in as admin | <a href="{{action('AccountsController@postLogout', array())}}">log out</a>
+						@endif
 					</div>
 				</div>
 			</div>
