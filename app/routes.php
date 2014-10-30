@@ -139,6 +139,19 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	Route::post('/promotion/editFull', ['as' => 'promotion.editFull', 'uses' => 'PromotionsManagementController@editFull']);	
 	Route::delete('/promotion/deletePromotion', ['as' => 'promotion.deletePromotion', 'uses' => 'PromotionsManagementController@deletePromotion']);
 	
+	//ooooooooooooooooooooooooooooooooooooooKERJAAN DAVIDoooooooooooooooooooooooooooooooooooooooo
+	Route::get('/manage_customer', ['as'=>'david.viewCustomerManagement','uses' => 'CustomerManagementController@view_cust_mgmt']);
+	
+	Route::get('/get_wishlist', ['as'=>'david.getWishlist','uses' => 'WishlistsController@getWishListByAccountId']);
+	
+	Route::get('/get_search_history', ['as'=>'david.getSearchHistory','uses' => 'LogsController@getSearchLogByAccountId']);
+
+	Route::get('/get_trans_history', ['as'=>'david.getTransHistory','uses' => 'TransactionsController@getByAccountId']);
+	
+	Route::get('/get_profile_detail', ['as'=>'david.getProfDet','uses' => 'ProfilesController@myGetById']);
+	
+	Route::get('/filter_cust_mgmt', ['as'=>'david.getFilteredCustomer','uses' => 'ProfilesController@myGetById']);
+	
 	
 	// Route::get('/bernico', function(){return View::make('pages.admin.tax.manage_tax');});
 	
