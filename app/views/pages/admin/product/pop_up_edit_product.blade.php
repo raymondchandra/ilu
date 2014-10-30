@@ -78,6 +78,36 @@
 							</div>
 
 							<div class="form-group">
+								<label class="col-sm-4 control-label">Harga</label>
+								<div class="col-sm-5">
+									<p id="product_harga" class="form-control-static">34343443</p>
+									<input id="product_harga_input" class="form-control hidden"/>
+								</div>
+								<div class="col-sm-3">
+									<button type="button" class="btn btn-warning" id="product_harga_editor">Edit</button>
+									<button type="button" class="btn btn-success hidden" id="product_harga_setter">Set</button>
+									<script>
+									$( 'body' ).on( "click",'#product_harga_editor', function() {
+										$('#product_harga_input').val($('#product_harga').text());
+										$('#product_harga_input').removeClass('hidden');
+										$('#product_harga_setter').removeClass('hidden');
+										$('#product_harga').addClass('hidden');
+										$('#product_harga_editor').addClass('hidden');
+									});
+
+									$( 'body' ).on( "click",'#product_harga_setter', function() {
+										var selectedStatus = $('#product_harga_input').val();
+										$('#product_harga_input').addClass('hidden');
+										$('#product_harga_setter').addClass('hidden');
+										$('#product_harga').removeClass('hidden');
+										$('#product_harga_editor').removeClass('hidden');
+										$('#product_harga').text(selectedStatus);
+									});
+									</script>
+								</div>
+							</div>
+
+							<div class="form-group">
 								<label class="col-sm-4 control-label">Description</label>
 								<div class="col-sm-5">
 									<p id="product_description" class="form-control-static">fsddsf</p>

@@ -64,8 +64,8 @@
 			data : {
 				'json_data' : json_data
 			},
-			success: function(response){
-				result = JSON.parse(response);
+			success: function(response){				
+				result = JSON.parse(response);				
 				if(result.code==201){
 					alert(result.status);
 					location.reload();

@@ -1,49 +1,3 @@
-<!--<div class="s_nav_header">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-lg-12">
-				<nav>
-					<ul class="s_top_nav">
-						<li>
-							<a>Dashboard</a>
-						</li>
-						<li>
-							<a>Catalog</a>
-							<ul>
-								<li>
-									<a>Manage Category</a>
-								</li>
-								<li>
-									<a>Manage Product</a>
-								</li>
-								<li>
-									<a>Manage Attribute</a>
-								</li>
-								<li>
-									<a>Manage Attribute Sets</a>
-								</li>
-							</ul>
-						</li>
-						<li>
-							<a>Other Nav</a>
-						</li>
-						<li>
-							<a>Other Nav</a>
-						</li>
-						<li>
-							<a>Other Nav</a>
-						</li>
-						<li>
-							<a>Other Nav</a>
-						</li>
-					</ul>
-					
-				</nav>
-			</div>
-		</div>
-	</div>
-</div>-->
-
 <nav class="navbar navbar-default" role="navigation">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -65,10 +19,37 @@
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book" style="color:#fff; margin-right:10px;"></span>Catalogue<span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
+					<li><a href="{{ URL::to('admin/manage_categories') }}">Manage Category</a></li>
+					<li><a href="#">Manage Product</a></li>
+					<li><a href="{{ URL::to('admin/manage_attributes') }}">Manage Attribute</a></li>
+					<li class="divider"></li>
+					<li><a href="{{ URL::to('admin/manage_promotions') }}">Manage Promosi</a></li>
+					<li><a href="{{ URL::to('admin/manage_taxes') }}">Manage Tax</a></li>
+				</ul>
+			</li>
+
+			<li><a href="{{ URL::to('admin/manage_reviews') }}"><span class="glyphicon glyphicon-home" style="color:#fff; margin-right:10px;"></span>Reviews</a></li>
+			
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book" style="color:#fff; margin-right:10px;"></span>Customer<span class="caret"></span></a>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="{{ URL::to('admin/manage_customer') }}">Manage Customer</a></li>
+					<li><a href="{{ URL::to('admin/get_profile_detail') }}">Profile Detail</a></li>
+					<li><a href="{{ URL::to('admin/get_wishlist') }}">Wishlist</a></li>
+					<li class="divider"></li>
+					<li><a href="{{ URL::to('admin/filter_cust_mgmt') }}">Filter Cust. Management</a></li>
+					<li class="divider"></li>
+					<li><a href="{{ URL::to('admin/get_search_history') }}">Search History</a></li>
+					<li><a href="{{ URL::to('admin/get_trans_history') }}">Transaction History</a></li>
+				</ul>
+			</li>
+
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book" style="color:#fff; margin-right:10px;"></span>Dont Know<span class="caret"></span></a>
+				<ul class="dropdown-menu" role="menu">
 					<li><a href="#">Manage Category</a></li>
 					<li><a href="#">Manage Product</a></li>
 					<li><a href="#">Manage Attribute</a></li>
-					<li><a href="#">Manage Attribute Sets</a></li>
 					<li class="divider"></li>
 					<li><a href="#">Separated link</a></li>
 					<li class="divider"></li>
