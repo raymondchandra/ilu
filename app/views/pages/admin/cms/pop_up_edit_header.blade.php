@@ -1,10 +1,10 @@
-<div class="modal fade pop_up_edit_company_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--<div class="modal fade pop_up_edit_company_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 				<h4 class="modal-title" id="myModalLabel">Edit Company Information</h4>
-			</div>
+			</div>-->
 			<form class="form-horizontal" role="form">
 				<div class="modal-body">
 					
@@ -13,7 +13,7 @@
 						<div class="col-sm-6">
 							<img src="" width="100" height="100">
 							<input type="file" class="">				
-						</div>
+						</div> 
 						<div class="col-sm-3">
 							<span class="btn btn-danger">
 								Maaf file harus diupload
@@ -39,6 +39,6 @@
 					<button type="button" class="btn btn-primary" data-dismiss="modal">Tidak</button>
 				</div>
 			</form>
-		</div>
+		<!--</div>
 	</div>
-</div>
+</div>-->
