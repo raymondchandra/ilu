@@ -19,10 +19,23 @@
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book" style="color:#fff; margin-right:10px;"></span>Catalogue<span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
+					<li><a href="{{ URL::to('admin/manage_categories') }}">Manage Category</a></li>
+					<li><a href="#">Manage Product</a></li>
+					<li><a href="{{ URL::to('admin/manage_attributes') }}">Manage Attribute</a></li>
+					<li class="divider"></li>
+					<li><a href="{{ URL::to('admin/manage_promotions') }}">Manage Promosi</a></li>
+					<li><a href="{{ URL::to('admin/manage_taxes') }}">Manage Tax</a></li>
+				</ul>
+			</li>
+
+			<li><a href="{{ URL::to('admin/manage_reviews') }}"><span class="glyphicon glyphicon-home" style="color:#fff; margin-right:10px;"></span>Reviews</a></li>
+			
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book" style="color:#fff; margin-right:10px;"></span>Transaksi<span class="caret"></span></a>
+				<ul class="dropdown-menu" role="menu">
 					<li><a href="#">Manage Category</a></li>
 					<li><a href="#">Manage Product</a></li>
 					<li><a href="#">Manage Attribute</a></li>
-					<li><a href="#">Manage Attribute Sets</a></li>
 					<li class="divider"></li>
 					<li><a href="#">Separated link</a></li>
 					<li class="divider"></li>
