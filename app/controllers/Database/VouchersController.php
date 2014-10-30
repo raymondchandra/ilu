@@ -212,7 +212,7 @@ class VouchersController extends \BaseController {
 	
 	public function generateVoucherNumber()
 	{
-		$number = $this->generateRandomString(7);
+		$number = $this->generateRandomString(10);
 		$voucher = Voucher::where('code','=',$number)->get();
 		if (count($voucher) == 0)
 		{
@@ -227,7 +227,9 @@ class VouchersController extends \BaseController {
 			}
 		}
 		
-		return $number;
+		$respond = array('code'=>'200','status' => 'OK','messages'=>$number);
+		
+		return $respond;
 	}
 	
 	public function generateRandomString($length) 
@@ -239,5 +241,21 @@ class VouchersController extends \BaseController {
 		}
 		return $randomString;
 	}
-
+	
+	public function getByAccountId()
+	{
+		$acc_id = Input::get('acc_id');
+		
+		$respond = array();
+		$voucher = Voucher::where('account_id','=',$acc_id)->get();
+		if (count($voucher) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$voucher);
+		}
+		return Response::json($respond);
+	}
 }
