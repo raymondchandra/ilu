@@ -31,7 +31,21 @@
 			<li><a href="{{ URL::to('admin/manage_reviews') }}"><span class="glyphicon glyphicon-home" style="color:#fff; margin-right:10px;"></span>Reviews</a></li>
 			
 			<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book" style="color:#fff; margin-right:10px;"></span>Transaksi<span class="caret"></span></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book" style="color:#fff; margin-right:10px;"></span>Customer<span class="caret"></span></a>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="{{ URL::to('admin/manage_customer') }}">Manage Customer</a></li>
+					<li><a href="{{ URL::to('admin/get_profile_detail') }}">Profile Detail</a></li>
+					<li><a href="{{ URL::to('admin/get_wishlist') }}">Wishlist</a></li>
+					<li class="divider"></li>
+					<li><a href="{{ URL::to('admin/filter_cust_mgmt') }}">Filter Cust. Management</a></li>
+					<li class="divider"></li>
+					<li><a href="{{ URL::to('admin/get_search_history') }}">Search History</a></li>
+					<li><a href="{{ URL::to('admin/get_trans_history') }}">Transaction History</a></li>
+				</ul>
+			</li>
+
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book" style="color:#fff; margin-right:10px;"></span>Dont Know<span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
 					<li><a href="#">Manage Category</a></li>
 					<li><a href="#">Manage Product</a></li>
