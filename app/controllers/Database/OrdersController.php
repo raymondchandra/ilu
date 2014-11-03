@@ -37,24 +37,323 @@ class OrdersController extends \BaseController {
 	 */
 	public function getAll(){
 		$respond = array();
-		$order = Order::all();
+		$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->get(array('orders.id', 'orders.priceNow', 'orders.status', 'orders.quantity', 'transactions.invoice', 'transactions.total_price', 'profiles.full_name' ,'products.name','transactions.created_at'));
 		if (count($order) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
-			foreach($order as $key)
-			{
-				$key->transaction = Order::find($key->id)->transaction;
-				$key->acc_name = Account::find($key->transaction->account_id)->profile->full_name;				
-				$key->productName = Order::find($key->id)->price->product->name;
-			}
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Display all of the order sort
+	 *
+	 * @return Response
+	 */
+	public function getAllSort($sortBy, $type){
+		$respond = array();
+		$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->orderBy($sortBy, $type)->get(array('orders.id', 'orders.priceNow', 'orders.status', 'orders.quantity', 'transactions.invoice', 'transactions.total_price', 'profiles.full_name' ,'products.name','transactions.created_at'));
+		if (count($order) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
 		}
 		return Response::json($respond);
 	}
 
+	/**
+	 * Filter order
+	 *
+	 * @return Response
+	 */
+	public function getFilteredOrder($id, $invoice, $purchasedOn, $name, $nameProd, $qty, $hargaSatuan, $hargaTotal, $status)
+	{
+		$isFirst = false;
+		
+		if($id != '-')
+		{
+			if($isFirst == false)
+			{
+				$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->where('orders.id', 'LIKE', '%'.$id.'%');
+				$isFirst = true;
+			}
+		}	
+		
+		if($invoice != '-')
+		{
+			if($isFirst == false)
+			{
+				$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->where('transactions.invoice', 'LIKE', '%'.$invoice.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$order = $order->where('transactions.invoice', 'LIKE', '%'.$invoice.'%');
+			}
+		}
+		
+		if($purchasedOn != '-')
+		{
+			if($isFirst == false)
+			{
+				
+				$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->where('transactions.created_at', 'LIKE', '%'.$purchasedOn.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$order = $order->where('transactions.created_at', 'LIKE', '%'.$purchasedOn.'%');
+			}
+		}
+		
+		if($name != '-')
+		{
+			if($isFirst == false)
+			{
+				$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->where('profiles.full_name', 'LIKE', '%'.$name.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$order = $order->where('profiles.full_name', 'LIKE', '%'.$name.'%');
+			}
+		}
+		
+		if($nameProd != '-')
+		{
+			if($isFirst == false)
+			{
+				$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->where('products.name', 'LIKE', '%'.$nameProd.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$order = $order->where('products.name', 'LIKE', '%'.$nameProd.'%');
+			}
+		}
+		
+		if($qty != '-')
+		{
+			if($isFirst == false)
+			{
+				$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->where('orders.quantity', 'LIKE', '%'.$qty.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$order = $order->where('orders.quantity', 'LIKE', '%'.$qty.'%');
+			}
+		}
+		
+		if($hargaSatuan != '-')
+		{
+			if($isFirst == false)
+			{
+				$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->where('orders.priceNow', 'LIKE', '%'.$hargaSatuan.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$order = $order->where('orders.priceNow', 'LIKE', '%'.$hargaSatuan.'%');
+			}
+		}
+		
+		if($hargaTotal != '-')
+		{
+			if($isFirst == false)
+			{
+				$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->where('transactions.total_price', 'LIKE', '%'.$hargaTotal.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$order = $order->where('transactions.total_price', 'LIKE', '%'.$hargaTotal.'%');
+			}
+		}
+		
+		if($status != '-')
+		{
+			if($isFirst == false)
+			{
+				$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->where('orders.status', 'LIKE', '%'.$status.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$order = $order->where('orders.status', 'LIKE', '%'.$status.'%');
+			}
+		}
+		
+		if($isFirst == false)
+		{
+			$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->get(array('orders.id', 'orders.priceNow', 'orders.status', 'orders.quantity', 'transactions.invoice', 'transactions.total_price', 'profiles.full_name' ,'products.name','transactions.created_at'));
+			
+			$isFirst = true;
+		}else
+		{
+			$order = $order->get(array('orders.id', 'orders.priceNow', 'orders.status', 'orders.quantity', 'transactions.invoice', 'transactions.total_price', 'profiles.full_name' ,'products.name','transactions.created_at'));
+		}
+		
+		if (count($order) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
+		}
+		return Response::json($respond);
+	}
+		
+	/**
+	 * Filter order sort
+	 *
+	 * @return Response
+	 */
+	public function getFilteredOrderSort($id, $invoice, $purchasedOn, $name, $nameProd, $qty, $hargaSatuan, $hargaTotal, $status, $sortBy, $sortType)
+	{
+		$isFirst = false;
+		
+		if($id != '-')
+		{
+			if($isFirst == false)
+			{
+				$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->where('orders.id', 'LIKE', '%'.$id.'%');
+				$isFirst = true;
+			}
+		}	
+		
+		if($invoice != '-')
+		{
+			if($isFirst == false)
+			{
+				$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->where('transactions.invoice', 'LIKE', '%'.$invoice.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$order = $order->where('transactions.invoice', 'LIKE', '%'.$invoice.'%');
+			}
+		}
+		
+		if($purchasedOn != '-')
+		{
+			if($isFirst == false)
+			{
+				$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->where('transactions.created_at', 'LIKE', '%'.$purchasedOn.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$order = $order->where('transactions.created_at', 'LIKE', '%'.$purchasedOn.'%');
+			}
+		}
+		
+		if($name != '-')
+		{
+			if($isFirst == false)
+			{
+				$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->where('profiles.full_name', 'LIKE', '%'.$name.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$order = $order->where('profiles.full_name', 'LIKE', '%'.$name.'%');
+			}
+		}
+		
+		if($nameProd != '-')
+		{
+			if($isFirst == false)
+			{
+				$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->where('products.name', 'LIKE', '%'.$nameProd.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$order = $order->where('products.name', 'LIKE', '%'.$nameProd.'%');
+			}
+		}
+		
+		if($qty != '-')
+		{
+			if($isFirst == false)
+			{
+				$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->where('orders.quantity', 'LIKE', '%'.$qty.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$order = $order->where('orders.quantity', 'LIKE', '%'.$qty.'%');
+			}
+		}
+		
+		if($hargaSatuan != '-')
+		{
+			if($isFirst == false)
+			{
+				$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->where('orders.priceNow', 'LIKE', '%'.$hargaSatuan.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$order = $order->where('orders.priceNow', 'LIKE', '%'.$hargaSatuan.'%');
+			}
+		}
+		
+		if($hargaTotal != '-')
+		{
+			if($isFirst == false)
+			{
+				$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->where('transactions.total_price', 'LIKE', '%'.$hargaTotal.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$order = $order->where('transactions.total_price', 'LIKE', '%'.$hargaTotal.'%');
+			}
+		}
+		
+		if($status != '-')
+		{
+			if($isFirst == false)
+			{
+				$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->where('orders.status', 'LIKE', '%'.$status.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$order = $order->where('orders.status', 'LIKE', '%'.$status.'%');
+			}
+		}
+		
+		if($isFirst == false)
+		{
+			$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.deleted','=','0')->orderBy($sortBy, $type)->get(array('orders.id', 'orders.priceNow', 'orders.status', 'orders.quantity', 'transactions.invoice', 'transactions.total_price', 'profiles.full_name' ,'products.name','transactions.created_at'));
+			$isFirst = true;
+		}else
+		{
+			$order = $order->orderBy($sortBy, $type)->get(array('orders.id', 'orders.priceNow', 'orders.status', 'orders.quantity', 'transactions.invoice', 'transactions.total_price', 'profiles.full_name' ,'products.name','transactions.created_at'));
+		}
+		
+		if (count($order) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
+		}
+		return Response::json($respond);
+	}
+		
 	/**
 	 * Display the specified order.
 	 *
@@ -126,6 +425,37 @@ class OrdersController extends \BaseController {
 			//save
 			try {
 				$order->update($data);
+				$respond = array('code'=>'204','status' => 'No Content');
+			} catch (Exception $e) {
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
+			
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Update status (pending, on progress, sent)
+	 *
+	 * @param  int  $id, $status
+	 * @return Response
+	 */
+	public function updateStatus()
+	{
+		$id = Input::get('id');
+		$status = Input::get('status');
+		$respond = array();
+		$order = Order::find($id);
+		if ($order == null)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			//edit value
+			$order ->status = $status;
+			try {
+				$order->save();
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
@@ -216,31 +546,5 @@ class OrdersController extends \BaseController {
 		return Response::json($respond);
 	}
 	*/
-	
-	/**
-	 * Display top ten product
-	 *
-	 * @return Response
-	 */
-	public function getTopTenProduct(){
-		$respond = array();
-		$topTen = Order::join('prices','orders.price_id','=','prices.id')->select(array('prices.product_id', DB::raw('COUNT(prices.product_id*orders.quantity) as jumlah')))->groupBy('prices.product_id')->orderBy('jumlah','desc')->take(10)->get();
-		if (count($topTen) == 0)
-		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		else
-		{
-			foreach($topTen as $key)
-			{
-				$product = new ProductsController();
-				$productTopTen = $product->getById($key->product_id);// here
-				$key->product = $productTopTen;
-			}
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$topTen);
-		}
-		return Response::json($respond);
-	}
-	
 	
 }

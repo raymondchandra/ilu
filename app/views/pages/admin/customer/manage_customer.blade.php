@@ -11,27 +11,26 @@
 				</div>
 				<span class="clearfix"></span>
 				<hr></hr>
+
 				@if(empty($profiles))
-					<div>
-						@if($filtered == 0)
-						
-							{{$profiles->appends(array('sortBy' => $sortBy, 'order' => $sortType, 'filtered'=>$filtered))->links()}}
-						@else
-							<button class="btn btn-success backButton" style="float: left; margin-top: 20px; margin-left: 20px; margin-bottom: 20px" data-toggle="modal" data-target=".pop_up_add_attribute">Back</button>
-						@endif
-						<table class="table table-striped table-hover ">
-							<thead class="table-bordered">
-								<tr>
-									<th class="table-bordered">
-										<a href="javascript:void(0)">Member ID</a>
-										@if($filtered == 0)
-										
-											@if($sortBy == "member_id")
-												@if($sortType == "asc")
-													<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'member_id', 'order' => 'desc', 'page'=>  $page, 'filtered'=>'0'))}}">
-												@else
-													<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'member_id', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
-												@endif
+				<div>
+					@if($filtered == 0)
+					
+						{{$profiles->appends(array('sortBy' => $sortBy, 'order' => $sortType, 'filtered'=>$filtered))->links()}}
+					@else
+						<button class="btn btn-success backButton" style="float: left; margin-top: 20px; margin-left: 20px; margin-bottom: 20px" data-toggle="modal" data-target=".pop_up_add_attribute">Back</button>
+					@endif
+					<table class="table table-striped table-hover table-condensed table-bordered">
+						<thead class="table-bordered">
+							<tr>
+								<th class="table-bordered">
+									<a href="javascript:void(0)">Member ID</a>
+									@if($filtered == 0)
+									
+										@if($sortBy == "member_id")
+											@if($sortType == "asc")
+												<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'member_id', 'order' => 'desc', 'page'=>  $page, 'filtered'=>'0'))}}">
+
 											@else
 												<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'member_id', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
 											@endif
