@@ -266,10 +266,10 @@ class AccountsController extends \BaseController {
 	public function userLogin($json)
 	{
 		//$id, $password,$remember_me
-		$jsonContent = json_decode($json->getContent());
-		
-		$username = $jsonContent['username'];
-		$password = $jsonContent['password'];
+		$json = Input::get('json');
+		$jsonContent = json_decode($json);
+		$username = $jsonContent->{'username'};
+		$password = $jsonContent->{'password'}
 		$data = array('username'=>$username, 'password'=>$password);
 		if(Auth::attempt($data))
 		{
