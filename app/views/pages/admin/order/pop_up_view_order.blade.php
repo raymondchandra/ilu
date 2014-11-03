@@ -19,6 +19,9 @@
 											Foto Produk
 										</th>
 										<th>
+											Category Produk
+										</th>
+										<th>
 											Harga Satuan
 										</th>
 										<th>
@@ -26,6 +29,9 @@
 										</th>
 										<th>
 											Subtotal
+										</th>
+										<th>
+											Atribute Extra
 										</th>
 									</tr>
 								</thead>
@@ -40,11 +46,17 @@
 										<td>
 											IDR 100.000
 										</td>
+										<th>
+											Backpack
+										</th>
 										<td>
 											2
 										</td>
 										<td>
 											IDR 200.000
+										</td>
+										<td>
+											-
 										</td>
 									</tr>
 									<tr>
@@ -57,115 +69,20 @@
 										<td>
 											IDR 100.000
 										</td>
+										<th>
+											Backpack
+										</th>
 										<td>
 											2
 										</td>
 										<td>
 											IDR 200.000
 										</td>
-									</tr>
-									<tr>
 										<td>
-											Product X
-										</td>
-										<td>
-											<img src="" width="120" height="120">
-										</td>
-										<td>
-											IDR 100.000
-										</td>
-										<td>
-											2
-										</td>
-										<td>
-											IDR 200.000
+											Atribute Extra
 										</td>
 									</tr>
-									<tr>
-										<td>
-											Product X
-										</td>
-										<td>
-											<img src="" width="120" height="120">
-										</td>
-										<td>
-											IDR 100.000
-										</td>
-										<td>
-											2
-										</td>
-										<td>
-											IDR 200.000
-										</td>
-									</tr>
-									<tr>
-										<td>
-											Product X
-										</td>
-										<td>
-											<img src="" width="120" height="120">
-										</td>
-										<td>
-											IDR 100.000
-										</td>
-										<td>
-											2
-										</td>
-										<td>
-											IDR 200.000
-										</td>
-									</tr>
-									<tr>
-										<td>
-											Product X
-										</td>
-										<td>
-											<img src="" width="120" height="120">
-										</td>
-										<td>
-											IDR 100.000
-										</td>
-										<td>
-											2
-										</td>
-										<td>
-											IDR 200.000
-										</td>
-									</tr>
-									<tr>
-										<td>
-											Product X
-										</td>
-										<td>
-											<img src="" width="120" height="120">
-										</td>
-										<td>
-											IDR 100.000
-										</td>
-										<td>
-											2
-										</td>
-										<td>
-											IDR 200.000
-										</td>
-									</tr>
-									<tr>
-										<td>
-											Product X
-										</td>
-										<td>
-											<img src="" width="120" height="120">
-										</td>
-										<td>
-											IDR 100.000
-										</td>
-										<td>
-											2
-										</td>
-										<td>
-											IDR 200.000
-										</td>
-									</tr>
+									
 								</tbody>
 							</table>
 
