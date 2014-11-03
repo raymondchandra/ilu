@@ -31,13 +31,44 @@ class ShipmentsController extends \BaseController {
 	}
 
 	/**
+	 * Update status (pending, on progress, sent)
+	 *
+	 * @param  int  $id, $status
+	 * @return Response
+	 */
+	public function updateStatus()
+	{
+		$id = Input::get('id');
+		$status = Input::get('status');
+		$respond = array();
+		$transaction = Transaction::where('shipment_id','=',$id)->first();
+		if ($transaction == null)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			//edit value
+			$transaction ->status = $status;
+			try {
+				$transaction->save();
+				$respond = array('code'=>'204','status' => 'No Content');
+			} catch (Exception $e) {
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
+			
+		}
+		return Response::json($respond);
+	}
+	
+	/**
 	 * Display all of the shipment.
 	 *
 	 * @return Response
 	 */
 	public function getAll(){
 		$respond = array();
-		$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->get();
+		$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipmentdatas.deleted', '=', '0')->get(array('shipments.id', 'shipments.number', 'shipmentdatas.courier', 'shipmentdatas.destination', 'shipmentdatas.price', 'transactions.status', 'profiles.full_name'));
 		if (count($shipment) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -50,15 +81,244 @@ class ShipmentsController extends \BaseController {
 	}
 
 	/**
+	 * Display all of the shipment sorting
+	 * @return Response
+	 */
+	public function getAllSort($sortBy, $type)
+	{
+		$respond = array();
+		$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipmentdatas.deleted', '=', '0')->orderBy($sortBy, $type)->get(array('shipments.id', 'shipments.number', 'shipmentdatas.courier', 'shipmentdatas.destination', 'shipmentdatas.price', 'transactions.status', 'profiles.full_name'));
+		
+		if (count($shipment) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipment);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Filter shipment
+	 *
+	 * @return Response
+	 */
+	public function getFilteredShipment($noPengiriman, $kurir, $destinasi, $namaPenerima, $hargaPengiriman, $status)
+	{
+		$isFirst = false;
+		
+		if($noPengiriman != '-')
+		{
+			if($isFirst == false)
+			{
+				$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipmentdatas.deleted', '=', '0')->where('number', 'LIKE', '%'.$noPengiriman.'%');
+				$isFirst = true;
+			}
+		}	
+		
+		if($kurir != '-')
+		{
+			if($isFirst == false)
+			{
+				$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipmentdatas.deleted', '=', '0')->where('courier', 'LIKE', '%'.$kurir.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$shipment = $shipment->where('courier', 'LIKE', '%'.$kurir.'%');
+			}
+		}
+		
+		if($destinasi != '-')
+		{
+			if($isFirst == false)
+			{
+				$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipmentdatas.deleted', '=', '0')->where('destination', 'LIKE', '%'.$destinasi.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$shipment = $shipment->where('destination', 'LIKE', '%'.$destinasi.'%');
+			}
+		}
+		
+		if($namaPenerima != '-')
+		{
+			if($isFirst == false)
+			{
+				$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipmentdatas.deleted', '=', '0')->where('full_name', 'LIKE', '%'.$namaPenerima.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$shipment = $shipment->where('full_name', 'LIKE', '%'.$namaPenerima.'%');
+			}
+		}
+		
+		if($hargaPengiriman != '-')
+		{
+			if($isFirst == false)
+			{
+				$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipmentdatas.deleted', '=', '0')->where('price', 'LIKE', '%'.$hargaPengiriman.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$shipment = $shipment->where('price', 'LIKE', '%'.$hargaPengiriman.'%');
+			}
+		}
+		
+		if($status != '-')
+		{
+			if($isFirst == false)
+			{
+				$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipmentdatas.deleted', '=', '0')->where('status', 'LIKE', '%'.$status.'%');
+				$isFirst = true;
+			}
+			else
+			{
+				$shipment = $shipment->where('status', 'LIKE', '%'.$status.'%');
+			}
+		}
+		
+		if($isFirst == false)
+		{
+			$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipmentdatas.deleted', '=', '0')->get(array('shipments.id', 'shipments.number', 'shipmentdatas.courier', 'shipmentdatas.destination', 'shipmentdatas.price', 'transactions.status', 'profiles.full_name'));
+			$isFirst = true;
+		}
+		else
+		{
+			$shipment = $shipment->get(array('shipments.id', 'shipments.number', 'shipmentdatas.courier', 'shipmentdatas.destination', 'shipmentdatas.price', 'transactions.status', 'profiles.full_name'));
+		}
+		
+		if (count($shipment) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipment);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Filter shipment sort
+	 *
+	 * @return Response
+	 */
+	public function getFilteredShipmentSort($noPengiriman, $kurir, $destinasi, $namaPenerima, $hargaPengiriman, $status,  $sortBy, $sortType)
+	{
+		$isFirst = false;
+		
+		if($noPengiriman != '-')
+		{
+			if($isFirst == false)
+			{
+				$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipmentdatas.deleted', '=', '0')->where('number', 'LIKE', '%'.$noPengiriman.'%');
+				$isFirst = true;
+			}
+			
+			if($kurir != '-')
+			{
+				if($isFirst == false)
+				{
+					$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipmentdatas.deleted', '=', '0')->where('courier', 'LIKE', '%'.$kurir.'%');
+					$isFirst = true;
+				}
+				else
+				{
+					$shipment = $shipment->where('courier', 'LIKE', '%'.$kurir.'%');
+				}
+			}
+			
+			if($destinasi != '-')
+			{
+				if($isFirst == false)
+				{
+					$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipmentdatas.deleted', '=', '0')->where('destination', 'LIKE', '%'.$destinasi.'%');
+					$isFirst = true;
+				}
+				else
+				{
+					$shipment = $shipment->where('destination', 'LIKE', '%'.$destinasi.'%');
+				}
+			}
+			
+			if($namaPenerima != '-')
+			{
+				if($isFirst == false)
+				{
+					$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipmentdatas.deleted', '=', '0')->where('full_name', 'LIKE', '%'.$namaPenerima.'%');
+					$isFirst = true;
+				}
+				else
+				{
+					$shipment = $shipment->where('full_name', 'LIKE', '%'.$namaPenerima.'%');
+				}
+			}
+			
+			if($hargaPengiriman != '-')
+			{
+				if($isFirst == false)
+				{
+					$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipmentdatas.deleted', '=', '0')->where('price', 'LIKE', '%'.$hargaPengiriman.'%');
+					$isFirst = true;
+				}
+				else
+				{
+					$shipment = $shipment->where('price', 'LIKE', '%'.$hargaPengiriman.'%');
+				}
+			}
+			
+			if($status != '-')
+			{
+				if($isFirst == false)
+				{
+					$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipmentdatas.deleted', '=', '0')->where('status', 'LIKE', '%'.$status.'%');
+					$isFirst = true;
+				}
+				else
+				{
+					$shipment = $shipment->where('status', 'LIKE', '%'.$status.'%');
+				}
+			}
+			
+			if($isFirst == false)
+			{
+				$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipmentdatas.deleted', '=', '0')->orderBy($sortBy, $sortType)->get(array('shipments.id', 'shipments.number', 'shipmentdatas.courier', 'shipmentdatas.destination', 'shipmentdatas.price', 'transactions.status', 'profiles.full_name'));
+				$isFirst = true;
+			}
+			else
+			{
+				$shipment = $shipment->orderBy($sortBy, $sortType)->get(array('shipments.id', 'shipments.number', 'shipmentdatas.courier', 'shipmentdatas.destination', 'shipmentdatas.price', 'transactions.status', 'profiles.full_name'));
+			}
+			
+			if (count($shipment) == 0)
+			{
+				$respond = array('code'=>'404','status' => 'Not Found');
+			}
+			else
+			{
+				$respond = array('code'=>'200','status' => 'OK','messages'=>$shipment);
+			}
+			return Response::json($respond);
+		}
+	}
+	
+	/**
 	 * Display the specified shipment.
 	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function getById($id)
+	public function getById()
 	{
+		$id = Input::get('id');
 		$respond = array();
-		$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->where('shipmentData_id', '=', $id);
+		$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipments.id', '=', $id)->where('shipmentdatas.deleted', '=', '0')->get(array('shipments.id', 'shipments.number', 'shipmentdatas.courier', 'shipmentdatas.destination', 'shipmentdatas.price', 'transactions.status', 'profiles.full_name'));
 		if (count($shipment) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');

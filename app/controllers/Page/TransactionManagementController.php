@@ -66,10 +66,7 @@ class TransactionManagementController extends \BaseController
 			else
 			{
 				$paginator = $json2->{'messages'};
-				foreach($paginator as $prof)
-				{
-					$prof->acc_id = Profile::find($prof->id)->account->id;
-				}
+				
 				$hasil=$paginator;
 			}
 			return View::make('pages.admin.transaction.manage_transaction', compact('hasil','sortBy','sortType','page','filtered', 'invoice', 'accId', 'fullName', 'totalPrice', 'status', 'paid'));

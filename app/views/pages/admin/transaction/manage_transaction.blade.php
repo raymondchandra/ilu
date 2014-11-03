@@ -195,6 +195,8 @@
 							</tr>
 						</thead>
 						<tbody>
+						@if($hasil->{'code'} == '404')
+						@else
 							@foreach($hasil as $key)
 								<tr> 
 								
@@ -217,6 +219,7 @@
 									</td>
 								</tr> 
 							@endforeach
+						@endif	
 						</tbody>
 					</table>
 				</div>
