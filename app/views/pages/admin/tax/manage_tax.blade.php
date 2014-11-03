@@ -20,7 +20,7 @@
 						@else
 							<button class="btn btn-success backButton" style="float: right; margin-top: 20px; margin-bottom: 25px;">Back</button>
 							<p>Search not match anything</p>
-							<table class="table table-striped table-hover ">
+							<table class="table table-striped table-hover table-condensed">
 								<thead class="table-bordered">
 									<tr>
 										<th class="table-bordered">
@@ -96,7 +96,7 @@
 						@else
 							<button class="btn btn-success backButton" style="float: right; margin-top: 20px; margin-bottom: 25px;">Back</button>
 						@endif
-						<table class="table table-striped table-hover ">										
+						<table class="table table-striped table-hover table-condensed">										
 							<thead class="table-bordered">
 								<tr>
 									<th class="table-bordered">

@@ -22,7 +22,7 @@
 							@else
 									<button class="btn btn-success backButton" style="float: left; margin-top: 20px; margin-left: 20px; margin-bottom: 20px" data-toggle="modal" data-target=".pop_up_add_attribute">Back</button>
 							@endif
-							<table class="table table-striped table-hover ">
+							<table class="table table-striped table-hover table-condensed">
 								<thead class="table-bordered">
 									<tr>
 										<th class="table-bordered">

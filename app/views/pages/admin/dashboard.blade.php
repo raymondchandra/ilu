@@ -155,7 +155,7 @@
 						    <h3 class="panel-title">Top 10 Products</h3>
 						  </div>
 						  <div class="panel-body">
-						   	<table class="table">
+						   	<table class="table table-condensed">
 						   		<thead>
 						   			<tr>
 						   				<th>
@@ -186,7 +186,7 @@
 						    <h3 class="panel-title">Top 10 Buyers</h3>
 						  </div>
 						  <div class="panel-body">
-						   	<table class="table">
+						   	<table class="table table-condensed">
 						   		<thead>
 						   			<tr>
 						   				<th>
