@@ -11,9 +11,9 @@
 						<div class="col-sm-12"><!-- col-sm-5 -->
 
 							<div class="form-group" id="nama_promosi">
-								<label class="col-sm-4 control-label">Shipment ID</label>
+								<label class="col-sm-4 control-label">Nomor Pengiriman</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">987JHJ8969</p>
+									<p class="form-control-static noPengiriman"></p>
 								</div>
 							</div>
 
@@ -21,7 +21,7 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label">Kurir</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">JNE</p>
+									<p class="form-control-static namaKurir"></p>
 
 								</div>
 							</div>
@@ -29,7 +29,7 @@
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Destinasi</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">Jl. Bandung Barat Banget No. 99</p>
+									<p class="form-control-static tujuan"></p>
 
 								</div>
 							</div>
@@ -37,7 +37,7 @@
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Nama Penerima</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">Ashshiddiq Wangsaatmadja</p>
+									<p class="form-control-static namaPenerima" id="namaPenerima"></p>
 
 								</div>
 							</div>
@@ -45,7 +45,7 @@
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Harga Pengiriman</label>
 								<div class="col-sm-8">
-									<p class="form-control-static">IDR 20.000</p>
+									<p class="form-control-static hargaPengiriman"></p>
 
 								</div>
 							</div>
@@ -53,14 +53,15 @@
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Status</label>
 								<div class="col-sm-5">
-									<p id="shipment_status" class="form-control-static">Pending</p>
+									<p id="shipment_status" class="form-control-static"></p>
 									<select id="shipment_status_list" class="form-control hidden">
-										<option val="pending">Pending</option>
-										<option val="onship">Onship</option>
-										<option val="complete">Complete</option>
+										<option value="Pending">Pending</option>
+										<option value="On-ship">On-ship</option>
+										<option value="Complete">Complete</option>
 									</select>
 								</div>
 								<div class="col-sm-3">
+									<input type="hidden" value="" id="idShip">
 									<button type="button" class="btn btn-warning" id="shipment_status_editor">Edit</button>
 									<button type="button" class="btn btn-success hidden" id="shipment_status_setter">Set</button>
 									<script>

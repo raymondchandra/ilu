@@ -8,28 +8,17 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
+		$id = '1';
 		$respond = array();
-		$transaction = Transaction::all();
-		if (count($transaction) == 0)
+		$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipments.id', '=', $id)->where('shipmentdatas.deleted', '=', '0')->get(array('shipments.id', 'shipments.number', 'shipmentdatas.courier', 'shipmentdatas.destination', 'shipmentdatas.price', 'transactions.status', 'profiles.full_name'));
+		if (count($shipment) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
-			foreach($transaction as $key)
-			{
-				$accId = $key->account_id;
-				$profId = Account::where('id','=',$accId)->first()->profile_id;
-				if($key->voucher_id == null)
-				{
-					$key->voucher_id = "-";
-				}
-				$profName = Profile::where('id','=',$profId)->first()->full_name;
-				$key->full_name = $profName;
-			}
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipment);
 		}
-		
 		echo $respond['messages'];
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
@@ -368,14 +357,25 @@ Route::group(array('prefix' => 'test'), function()
 	
 	Route::get('/filter_cust_mgmt', ['as'=>'david.getFilteredCustomer','uses' => 'ProfilesController@myGetById']);
 	
-	Route::get('/manage_shipping_jeffry', ['uses' => 'ShippingManagementController@view_shipping_mgmt']);
+	//SHIPPING
+	Route::get('/manage_shipping_jeffry', ['as'=>'jeffry.getShipping', 'uses' => 'ShippingManagementController@view_shipping_mgmt']);
 	
-	Route::get('/manage_shipping_agent_jeffry', ['uses' => 'ShippingAgentManagementController@view_shipping_agent_mgmt']);
+	Route::get('/get_detail_shipment', ['as'=>'jeffry.getDetailShip','uses' => 'ShipmentsController@getById']);
+	
+	Route::put('/put_status_shipment' , ['as'=>'jeffry.putStatusShipment','uses' => 'ShipmentsController@updateStatus']);
+	
+	//SHIPPING AGENT
+	Route::get('/manage_shipping_agent_jeffry', ['as'=>'jeffry.getShippingAgent','uses' => 'ShippingAgentManagementController@view_shipping_agent_mgmt']);
 	
 	Route::get('/get_detail_shipment_agent', ['as'=>'jeffry.getDetailShipAgent','uses' => 'ShipmentDatasController@getById']);
 	
+	Route::delete('/delete_shipment_agent', ['as' => 'jeffry.deleteShipmentAgent' , 'uses' => 'ShipmentDatasController@delete']);
+	
+	Route::post('/add_shipment_agent', ['as' => 'jeffry.addShipmentAgent' , 'uses' => 'ShipmentDatasController@insert']);
+	
 	Route::put('/put_price_shipment_agent' , ['as'=>'jeffry.putPriceShipAgent','uses' => 'ShipmentDatasController@updatePrice']);
 	
+	//TRANSAKSI
 	Route::get('/manage_transaction_jeffry', ['as'=>'jeffry.getTransaction', 'uses' => 'TransactionManagementController@view_transaction_mgmt']);
 	
 	Route::get('/get_detail_transaction', ['as'=>'jeffry.getDetailTransaction','uses' => 'TransactionsController@getDetail']);
@@ -384,8 +384,12 @@ Route::group(array('prefix' => 'test'), function()
 	
 	Route::put('/put_paid_transaction' , ['as'=>'jeffry.putPaidTransaction','uses' => 'TransactionsController@updatePaid']);
 	
-	Route::get('/manage_order_jeffry', ['uses' => 'OrderManagementController@view_order_mgmt']);
+	//ORDER
+	Route::get('/manage_order_jeffry', ['as' =>'jeffry.getOrder', 'uses' => 'OrderManagementController@view_order_mgmt']);
 	
+	Route::put('/put_status_order' , ['as'=>'jeffry.putStatusOrder','uses' => 'OrdersController@updateStatus']);
+	
+	//REPORT
 	Route::get('/manage_report_jeffry', ['as' =>'jeffry.getReport', 'uses' => 'ReportingManagementController@view_reporting_mgmt_day']);
 	
 	

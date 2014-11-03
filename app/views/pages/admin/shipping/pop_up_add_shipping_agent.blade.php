@@ -13,30 +13,44 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label">Nama Kurir</label>
 								<div class="col-sm-5">
-									<input type="text" class="form-control" value="">	
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-4 control-label">Dari Kota</label>
-								<div class="col-sm-5">
-									<select class="form-control">
-										<option val="">Kota 0</option>
-										<option val="">Kota 1</option>
-										<option val="">Kota 2</option>
-										<option val="">Kota 3</option>
-									</select>
+									<input type="text" class="form-control" value="" id="courier">	
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Destinasi</label>
 								<div class="col-sm-5">
-									<select class="form-control">
-										<option val="">Kota 0</option>
-										<option val="">Kota 1</option>
-										<option val="">Kota 2</option>
-										<option val="">Kota 3</option>
+									<select class="form-control" id="destination">
+										<option value="Aceh">Aceh</option>
+										<option value="Bali">Bali</option>
+										<option value="Bengkulu">Bengkulu</option>
+										<option value="Jakarta">Jakarta</option>
+										<option value="Jambi">Jambi</option>
+										<option value="JawaTengah">Jawa Tengah</option>
+										<option value="Jawa Timur">Jawa Timur</option>
+										<option value="Jawa Barat">Jawa Barat</option>
+										<option value="Papua">Papua</option>
+										<option value="Yogyakarta">Yogyakarta</option>
+										<option value="Kalimantan Barat">Kalimantan Barat</option>
+										<option value="Kalimantan Selatan">Kalimantan Selatan</option>
+										<option value="Kalimantan Tengah">Kalimantan Tengah</option>
+										<option value="Kalimantan Timur">Kalimantan Timur</option>
+										<option value="Lampung">Lampung</option>
+										<option value="NTB">Nusa Tenggara Barat</option>
+										<option value="NTT">Nusa Tenggara Timur</option>
+										<option value="Riau">Riau</option>
+										<option value="Sulawesi Selatan">Sulawesi Selatan</option>
+										<option value="Sulawesi Tengah">Sulawesi Tengah</option>
+										<option value="Sulawesi Tenggara">Sulawesi Tenggara</option>
+										<option value="Sumatera Barat">Sumatera Barat</option>
+										<option value="Sumatera Utara">Sumatera Utara</option>
+										<option value="Maluku">Maluku</option>
+										<option value="Maluku Utara">Maluku Utara</option>
+										<option value="Sulawesi Utara">Sulawesi Utara</option>
+										<option value="Sulawesi Selatan">Sumatera Selatan</option>
+										<option value="Banten">Banten</option>
+										<option value="Gorontalo">Gorontalo</option>
+										<option value="Bangka">Bangka Belitung</option>
 									</select>
 								</div>
 							</div>
@@ -44,7 +58,7 @@
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Harga Pengiriman</label>
 								<div class="col-sm-5">
-									<input type="text" class="form-control" value="">	
+									<input type="text" class="form-control" value="" id="price">	
 								</div>
 							</div>
 						</div>
@@ -56,7 +70,7 @@
 
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-success" data-dismiss="modal">Add</button>
+					<button type="button" class="btn btn-success addShippingAgent" data-dismiss="modal">Add</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
 				</div>
 			</form>
