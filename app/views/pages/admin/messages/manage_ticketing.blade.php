@@ -6,7 +6,7 @@
 			
 			<div class="s_title_n_control">
 				<h3 style="float: left;">
-					Supporting Messages
+					Ticketing Messages
 				</h3>
 			</div>
 			<span class="clearfix"></span>
@@ -42,6 +42,7 @@
 							<li role="presentation" class="active pull-right">
 								<a href="#0" role="tab" data-toggle="tab" style="">
 									<b class="show">Nama Seseorang 0</b>
+									<span class="show">Ticket #: 123211</span>
 									<span>Subjectnya taruh disini</span>
 								</a>
 							</li>
@@ -51,6 +52,7 @@
 								<li role="presentation" class="pull-right">
 									<a href="#<?php echo($i); ?>" role="tab" data-toggle="tab" style="">
 										<b class="show">Nama Seseorang <?php echo($i); ?></b>
+										<span class="show">Ticket #: 123211</span>
 										<span>Subjectnya taruh disini</span>
 									</a>
 								</li>
@@ -69,6 +71,7 @@
 									<div>
 										<b class="show">Nama: Nama Seseorang 0</b>
 										<span class="show">Email: epic0@gmail.com</span>
+										<span class="show">Ticket #: 123211</span>
 										<span>Subject: Subjectnya taruh disini</span>
 										<span class="pull-right">12.30</span>
 
@@ -81,9 +84,14 @@
 									</div>
 									<div>
 										<textarea class="form-control f_message_textinput" id="0" rows="3"></textarea>
-										<button type="button" class="btn btn-success pull-right f_message_textbtn" style="margin-top: 20px;">
-											Send
-										</button>
+										<div class="checkbox">
+										    <label>
+										      	<input type="checkbox"> Solved
+										    </label>
+											<button type="button" class="btn btn-success pull-right f_message_textbtn" style="margin-top: 20px;">
+												Send
+											</button>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -96,6 +104,7 @@
 										<div>
 											<b class="show">Nama: Nama Seseorang <?php echo($i); ?></b>
 											<span class="show">Email: epic<?php echo($i); ?>@gmail.com</span>
+										<span class="show">Ticket #: 123211</span>
 											<span>Subject: Subjectnya taruh disini</span>
 											<span class="pull-right">12.30</span>
 
@@ -108,9 +117,14 @@
 									</div>
 									<div>
 										<textarea class="form-control f_message_textinput" id="0" rows="3"></textarea>
-										<button type="button" class="btn btn-success pull-right f_message_textbtn" style="margin-top: 20px;">
-											Send
-										</button>
+										<div class="checkbox">
+										    <label>
+										      	<input type="checkbox"> Solved
+											</label>
+											<button type="button" class="btn btn-success pull-right f_message_textbtn" style="margin-top: 20px;">
+												Send
+											</button>
+										</div>
 									</div>								
 									</div>
 
@@ -128,15 +142,16 @@
 										var text='<div>';
 										text+='<b class="show">Nama: Administrator</b>';
 										text+='<span class="show">Email: admin@ilu.com</span>';
+										text+='<span class="show">Ticket #: 324234</span>';
 										text+='<span>Subject: Re-Subjectnya taruh disini</span>';
 										text+='<span class="pull-right">timestamp</span>';
 										text+='<p style="margin-top: 20px;">';
-										text+=''+ $(this).siblings("textarea").val(); +'';
+										text+=''+ $(this).parent().siblings("textarea").val(); +'';
 										text+='</p>';
 										text+='</div>';
 										text+='<hr></hr>';
 
-										$(this).parent().siblings('.msg_area').append(text);
+										$(this).parent().parent().siblings('.msg_area').append(text);
 
 
 									});
