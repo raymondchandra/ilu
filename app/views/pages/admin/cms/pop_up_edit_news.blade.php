@@ -6,7 +6,7 @@
 				<h4 class="modal-title" id="myModalLabel">Edit SEO</h4>
 			</div>-->
 			<h3>
-				Daftar News <button id="f_add_informasi" class="btn btn-success pull-right" style="margin-bottom: 20px;" data-toggle="modal" data-target=".pop_up_add_info">+ Add New Info</button>
+				Daftar News <button id="f_add_informasi" class="btn btn-success pull-right" style="margin-bottom: 20px;" data-toggle="modal" data-target=".pop_up_add_news">+ Add New News</button>
 			</h3>
 			<form class="form-horizontal" role="form">
 				<table class="table table-bordered">
@@ -26,7 +26,7 @@
 								Lorem Ipsum
 							</td>
 							<td>
-								<button type="button" class="btn btn-success" data-toggle="modal" data-target=".pop_up_detail_info">Detail</button>
+								<button type="button" class="btn btn-success" data-toggle="modal" data-target=".pop_up_edit_news">Detail</button>
 							</td>
 						</tr>
 					</tbody>
@@ -35,7 +35,7 @@
 			</form>
 
 			<!-- modal add -->
-			<div class="modal fade pop_up_add_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal fade pop_up_add_news" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -102,7 +102,7 @@
 									info_baru+='		'+ $('#judul_news').val() +'';
 									info_baru+='		</td>';
 									info_baru+='		<td>';
-									info_baru+='		<button type="button" class="btn btn-success" data-toggle="modal" data-target=".pop_up_detail_info">Detail</button>';
+									info_baru+='		<button type="button" class="btn btn-success" data-toggle="modal" data-target=".pop_up_edit_news">Detail</button>';
 									info_baru+='		</td>';
 									info_baru+='	</tr>';
 									$('.f_news_table').append(info_baru);
@@ -116,7 +116,7 @@
 			</div>
 
 			<!-- modal add -->
-			<div class="modal fade pop_up_detail_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal fade pop_up_edit_news" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
