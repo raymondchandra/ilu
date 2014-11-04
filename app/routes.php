@@ -8,38 +8,11 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-		$profilesJson = $profileController->getAll();
-		$json = json_decode($profilesJson->getContent());
+	$id = 1;
 		
-			$paginator = $json->{'messages'};
-			if(count($paginator) != 0)
-			{
-				foreach($paginator as $prof)
-				{
-					$account = Profile::find($prof->id)->account;
-					$prof->acc_id = $account->id;
-					$prof->acc_active = $account->active;
-				}
-				
-				$perPage = 5;   
-				$page = Input::get('page', 1);
-				if ($page > count($paginator) or $page < 1)
-				{
-					$page = 1; 
-				}
-				$offset = ($page * $perPage) - $perPage;
-				$articles = array_slice($paginator,$offset,$perPage);
-				$profiles = Paginator::make($articles, count($paginator), $perPage);
-				$filtered = 0;
-			}
-			else
-			{
-				$profiles = null;
-				$filtered = 0;
-			}
-			
-			echo $profiles;
-
+	$account = Account::where('profile_id','=',$id)->first();
+	
+	return $account;
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -171,6 +144,8 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	Route::get('/get_voucher_list', ['as'=>'david.getVoucherList','uses' => 'VouchersController@getByAccountId']);
 	
 	Route::post('/post_new_voucher', ['as'=>'david.postNewVoucher','uses' => 'VouchersController@insert']);
+	
+	Route::post('/post_new_active', ['as'=>'david.postNewActive','uses' => 'AccountsController@changeActive']);
 	
 	Route::get('/admin_sign_in', ['before'=>'force.ssl','as'=>'david.adminSignIn','uses' => 'AccountsController@adminLogin']);
 	

@@ -129,7 +129,29 @@
 									</th>
 									<th>
 										<a href="javascript:void(0)">Status</a>
+										@if($filtered == 0)
+											@if($sortBy == "active")
+												@if($sortType == "asc")
+													<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'active', 'order' => 'desc', 'page'=>  $page, 'filtered'=>'0'))}}">
+												@else
+													<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'active', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+												@endif
+											@else
+												<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'active', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+											@endif
+										@else
+											@if($sortBy == "active")
+												@if($sortType == "asc")
+													<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'active', 'order' => 'desc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email, 'active'=>$active))}}">
+												@else
+													<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'active', 'order' => 'asc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email, 'active'=>$active))}}">
+												@endif
+											@else
+												<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'active', 'order' => 'asc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email, 'active'=>$active))}}">
+											@endif
+										@endif
 										<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+										</a>
 									</th>
 									<th class="table-bordered" width="">
 									</th>
@@ -160,9 +182,9 @@
 									<td id="profile_name_{{$profile->acc_id}}">{{$profile->name_in_profile}}</td>
 									<td id="email_{{$profile->acc_id}}">{{$profile->email}}</td>
 									@if($profile->acc_active == 0)
-										<td id="status">Banned</td>
+										<td id="status_{{$profile->acc_id}}">Banned</td>
 									@else
-										<td id="status">Active</td>
+										<td id="status_{{$profile->acc_id}}">Active</td>
 									@endif
 									
 									
@@ -177,11 +199,15 @@
 										<button class="btn btn-info btn-xs profilebutton" data-toggle="modal" data-target=".pop_up_view_customer">View Profile</button>
 										
 										@if($profile->acc_active == 0)
-											<button class="btn btn-danger btn-xs hidden">Ban</button>
-											<button class="btn btn-success btn-xs">Unban</button>
+											<input type="hidden" value="{{$profile->id}}">
+											<button class="btn btn-danger btn-xs hidden status-btn ban-btn_{{$profile->acc_id}}">Ban</button>
+											<input type="hidden" value="{{$profile->id}}">
+											<button class="btn btn-success btn-xs status-btn unban-btn_{{$profile->acc_id}}">Unban</button>
 										@else
-											<button class="btn btn-danger btn-xs">Ban</button>
-											<button class="btn btn-success btn-xs hidden">Unban</button>
+											<input type="hidden" value="{{$profile->id}}">
+											<button class="btn btn-danger btn-xs status-btn ban-btn_{{$profile->acc_id}}">Ban</button>
+											<input type="hidden" value="{{$profile->id}}">
+											<button class="btn btn-success btn-xs hidden status-btn unban-btn_{{$profile->acc_id}}">Unban</button>
 										@endif
 										<!-- Button trigger modal class ".alertYesNo" -->
 										<!-- <button class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</button> -->
@@ -528,7 +554,9 @@
 			$namaFull = $('.filterFullName').val();
 			$namaProfile = $('.filterProfileName').val();
 			$email = $('.filterEmail').val();
-			window.location = "{{URL::route('david.viewCustomerManagement')}}" + "?filtered=1&memberId="+$id+"&namaFull="+$namaFull+"&namaProfile="+$namaProfile+"&email="+$email;
+			$active = $('.filterStatus').val();
+			alert($active);
+			window.location = "{{URL::route('david.viewCustomerManagement')}}" + "?filtered=1&memberId="+$id+"&namaFull="+$namaFull+"&namaProfile="+$namaProfile+"&email="+$email+"&active="+$active;
 		});
 		$('body').on('click','.backButton',function(){
 			window.location = "{{URL::route('david.viewCustomerManagement')}}" ;
@@ -601,6 +629,44 @@
 						alert("responseText: "+xhr.responseText);
 					}
 				},'json');			
+		});
+		//-----end of code buat post voucher
+		$('body').on('click','.status-btn',function(){
+			$id = $(this).prev().val();
+			$.ajax({
+					type: 'POST',
+					url: '{{URL::route('david.postNewActive')}}',
+					data: {
+						'id' : $id
+					},
+					success: function(response){
+						if(response['code'] == '400')
+						{
+							//$('#belanjaHistoryContent').append("<td>transaction history tidak ditemukan</td>");
+							alert('failed');
+						}
+						else
+						{
+							//new_kode_voucher
+							$acc = response['messages'];
+							if($acc.active == 1)
+							{
+								$('.ban-btn_'+$id).removeClass('hidden');
+								$('.unban-btn_'+$id).addClass('hidden');
+								$('#status_'+$id).html('Active');
+							}
+							else
+							{
+								$('.ban-btn_'+$id).addClass('hidden');
+								$('.unban-btn_'+$id).removeClass('hidden');
+								$('#status_'+$id).html('Banned');
+							}
+						}
+					},error: function(xhr, textStatus, errorThrown){
+						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+						alert("responseText: "+xhr.responseText);
+					}
+				},'json');
 		});
 	</script>
 

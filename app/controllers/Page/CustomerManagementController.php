@@ -56,13 +56,26 @@ class CustomerManagementController extends \BaseController
 			$profileName = Input::get('namaProfile', '-');
 			$email = Input::get('email', '-');
 			$active = Input::get('active');
-			if($sortBy === "none")
+			if($active == "Banned")
 			{
-				$profilesJson = $profileController->getFilteredProfile($memberId, $fullName, $profileName, $email, $active);
+				$activeTab = 0;
+			}
+			else if($active == "Active")
+			{
+				$activeTab = 1;
 			}
 			else
 			{
-				$profilesJson = $profileController->getFilteredProfileSorted($memberId, $fullName, $profileName, $email,$sortBy, $sortType);
+				$activeTab = 2;
+			}
+			
+			if($sortBy == "none")
+			{
+				$profilesJson = $profileController->getFilteredProfile($memberId, $fullName, $profileName, $email, $activeTab);
+			}
+			else
+			{
+				$profilesJson = $profileController->getFilteredProfileSorted($memberId, $fullName, $profileName, $email,$sortBy, $sortType, $activeTab);
 			}
 			
 			$json = json_decode($profilesJson->getContent());
@@ -81,7 +94,7 @@ class CustomerManagementController extends \BaseController
 				}
 				$profiles=$paginator;
 			}
-			return View::make('pages.admin.customer.manage_customer', compact('profiles','filtered','memberId','fullName','profileName', 'email','sortBy','sortType'));
+			return View::make('pages.admin.customer.manage_customer', compact('profiles','filtered','memberId','fullName','profileName', 'email','sortBy','sortType','active'));
 		}
 	}
 }
