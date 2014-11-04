@@ -445,4 +445,11 @@ thead > tr > td {
   border-radius: 4px 4px 4px 4px;
   background-color: #fff;
   border-radius: 0px !important;
+  margin-right: -1px;
+}
+
+/* line 424, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus {
+  border-right: 1px solid #fff !important;
+  background-color: #fff;
 }

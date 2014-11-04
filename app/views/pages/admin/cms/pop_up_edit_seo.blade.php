@@ -11,6 +11,29 @@
 			<form class="form-horizontal" role="form">
 				<div class="modal-body">
 
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>
+									Page
+								</th>
+								<th>
+									Page
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									Page
+								</td>
+								<td>
+									Page
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
 					<div class="form-group">
 						<label class="col-sm-3 control-label">Meta Tag Keywords</label>
 						<div class="col-sm-6">

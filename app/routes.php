@@ -1,6 +1,9 @@
 <?php
-
+use Carbon\Carbon;
 Route::get('/tes', 'ProductsController@getAll');
+
+Route::get('/tes_news', 'NewsManagementController@getNews');
+Route::get('/tes_news/{id}', 'NewsManagementController@getOneNews');
 
 Route::get('/tesview', function (){
 	return View::make('pages.admin.product.manage_product');
@@ -8,11 +11,38 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-	$id = 1;
-		
-	$account = Account::where('profile_id','=',$id)->first();
-	
-	return $account;
+		$respond = array();
+		$report = Transaction::where('paid','=','1')->get();
+		$bulan = date('n') -5;
+		$tahun = date('Y');
+		$idx = 1;
+		$bulanAkhir = 6;
+		$hasil = array();
+		while($idx <= $bulanAkhir)
+		{
+			$tempHasil = 0;
+			$tempBulan = Carbon::parse($tahun."-".$bulan."-01")->format('n');
+			$tempBulanHsl = Carbon::parse($tahun."-".$bulan."-01")->format('F');
+			$tempTahun = Carbon::parse($tahun."-01-01")->format('Y');
+			foreach($report as $key)
+			{
+				$dd = $key->updated_at;
+				$tahunCek = Carbon::parse($dd)->format('Y');
+				$bulanCek = Carbon::parse($dd)->format('n');
+				if($tahunCek == $tempTahun)
+				{
+					if($bulanCek == $tempBulan)
+					{
+						$tempHasil = $tempHasil + $key->total_price;
+					}
+				}
+			}
+			$hasil[] = array('tanggal'=>$tempBulan, 'penjualan' => $tempHasil,'ket'=>'sixmonth','tgl'=>$tempBulanHsl.' '.$tempTahun);
+			$idx = $idx + 1;
+			$bulan = $bulan +1;
+		}
+		$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		echo $respond['status'];
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -145,8 +175,6 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	
 	Route::post('/post_new_voucher', ['as'=>'david.postNewVoucher','uses' => 'VouchersController@insert']);
 	
-	Route::post('/post_new_active', ['as'=>'david.postNewActive','uses' => 'AccountsController@changeActive']);
-	
 	Route::get('/admin_sign_in', ['before'=>'force.ssl','as'=>'david.adminSignIn','uses' => 'AccountsController@adminLogin']);
 	
 	Route::get('/logout', ['as'=>'david.logout','uses' => 'AccountsController@postLogout']);
@@ -229,6 +257,9 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
     	Route::post('/seo', ['as' => 'add.seo' , 'uses' => 'SeosController@insert']);
     	Route::put('/seo/{id}', ['as' => 'edit.seo' , 'uses' => 'SeosController@updateFull']);
     	Route::delete('/seo/{id}', ['as' => 'delete.seo' , 'uses' => 'SeosController@delete']);
+	//news management
+		Route::get('/news', ['as' => 'get.news' , 'uses' => 'NewsManagementController@getNews']);
+	
     //supportMsg
 		Route::get('/supportMsg/{ticket_id}', ['as' => 'get.supportMsg.ticket' , 'uses' => 'SupportMsgsController@getByTicket']);
 		Route::post('/supportMsg', ['as' => 'add.supportMsg' , 'uses' => 'SupportMsgsController@insert']);
@@ -411,17 +442,23 @@ Route::group(array('prefix' => 'test'), function()
 
 
 
-    // Messages
+    // Messages support
     Route::get('/manage_supporting_messages', function()
 	{
 		return View::make('pages.admin.messages.manage_supporting_messages');
 	});
 
 
-    // Messages
+    // Messages ticket
     Route::get('/manage_ticketing', function()
 	{
 		return View::make('pages.admin.messages.manage_ticketing');
+	});
+
+    // 404
+    Route::get('/404', function()
+	{
+		return View::make('pages.admin.other.404');
 	});
 
 

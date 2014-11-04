@@ -16,7 +16,7 @@
 								Judul Informasi
 							</th>
 							<th>
-								Command 
+								Command
 							</th>
 						</tr>
 					</thead>
@@ -26,12 +26,11 @@
 								Lorem Ipsum
 							</td>
 							<td>
-								<button type="button" class="btn btn-success" data-toggle="modal" data-target=".pop_up_edit_news">Detail</button>
+								<button type="button" class="btn btn-success view_detail" data-toggle="modal" data-target=".pop_up_edit_news">Detail</button>
 							</td>
 						</tr>
 					</tbody>
 				</table>
-				
 			</form>
 
 			<!-- modal add -->
@@ -57,11 +56,7 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label">Template Editor *</label>
 									<div class="col-sm-7">
-										<script type="text/javascript">
-										tinymce.init({
-											selector: ".te"
-										});
-										</script>
+
 										<style>
 										</style>
 										<textarea class="te"></textarea>
@@ -115,7 +110,7 @@
 				</div>
 			</div>
 
-			<!-- modal add -->
+			<!-- modal edit -->
 			<div class="modal fade pop_up_edit_news" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
@@ -139,9 +134,7 @@
 									<label class="col-sm-3 control-label">Template Editor *</label>
 									<div class="col-sm-7">
 										<script type="text/javascript">
-										tinymce.init({
-											selector: ".te"
-										});
+										
 										</script>
 										<style>
 										</style>
@@ -167,6 +160,14 @@
 							        }
 
 								});
+								
+								$('body').on('click','.view_detail',function(){
+									$('.te').text($(this).next().val());
+									tinymce.init({
+											selector: ".te"
+										});
+								});
+								
 								</script>
 
 

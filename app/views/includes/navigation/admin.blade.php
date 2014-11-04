@@ -55,8 +55,8 @@
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-envelope" style="color:#fff; margin-right:10px;"></span>Messages<span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
-					<li><a href="{{ URL::to('admin/manage_customer') }}">Supporting Messages</a></li>
-					<li><a href="{{ URL::to('admin/get_profile_detail') }}">Ticketing</a></li>
+					<li><a href="{{ URL::to('test/manage_supporting_messages') }}">Supporting Messages</a></li>
+					<li><a href="{{ URL::to('test/manage_ticketing') }}">Ticketing</a></li>
 				</ul>
 			</li>
 			<li><a href="#">Other Link</a></li>

@@ -35,6 +35,61 @@
 							</span>
 						</div>
 					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Company Email *</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control">				
+						</div>
+						<div class="col-sm-3">
+							<span class="btn btn-danger">
+								Maaf form harus diisi
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Company Telephone Number *</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control">				
+						</div>
+						<div class="col-sm-3">
+							<span class="btn btn-danger">
+								Maaf form harus diisi
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Company Fax Number</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control">				
+						</div>
+						<div class="col-sm-3">
+							<!--<span class="btn btn-danger">
+								Maaf form harus diisi
+							</span>-->
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Company Address</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control">				
+						</div>
+						<div class="col-sm-3">
+							<!--<span class="btn btn-danger">
+								Maaf form harus diisi
+							</span>-->
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Company Description</label>
+						<div class="col-sm-6">
+							<textarea class="form-control" rows="3"></textarea>				
+						</div>
+						<div class="col-sm-3">
+							<!--<span class="btn btn-danger">
+								Maaf form harus diisi
+							</span>-->
+						</div>
+					</div>
 					
 				</div>
 				<div class="modal-footer">

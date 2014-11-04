@@ -4,13 +4,13 @@
 	<div class="row">
 		<div class="col-lg-12">
 			
-			<div class="s_title_n_control">
+			<!--<div class="s_title_n_control">
 				<h3 style="float: left;">
 					Content Management System
 				</h3>
 			</div>
 			<span class="clearfix"></span>
-			<hr></hr>
+			<hr></hr>-->
 
 			<div>
 				<!-- <ul class="pagination">
@@ -28,57 +28,9 @@
 					
 
 					<div class="col-sm-12">
-						<div class="pull-left" style="width: 20%;">
-							<style>
-							.nav-tabs > li {
-								width: 100%;
-							}
-							.nav-tabs > li > a {
-								border-top: 1px solid #ddd;
-								border-bottom: 1px solid #ddd;
-								border-left: 1px solid #ddd;
-								border-right: 1px solid #ddd;
-								border-radius: 4px 4px 4px 4px;
-								background-color: #ddd;
-							}
-
-							.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus{
-								border-top: 1px solid #ddd;
-								border-bottom: 1px solid #ddd;
-								border-left: 1px solid #ddd;
-								border-right: 1px solid #ddd;
-								border-radius: 4px 4px 4px 4px;
-								background-color: #fff;
-							}
-							</style>
-							<!-- Nav tabs -->
-							<ul class="nav nav-tabs" role="tablist" style="border: 0px;">
-								<li role="presentation" class="active pull-right"><a href="#0" role="tab" data-toggle="tab" style="">Company Info</a></li>
-								<span class="clearfix "></span>
-								<li role="presentation" class="pull-right"><a href="#1" role="tab" data-toggle="tab" style="">SEO</a></li>
-								<span class="clearfix "></span>
-								<li role="presentation" class="pull-right"><a href="#2" role="tab" data-toggle="tab" style="">Informasi</a></li>
-								<span class="clearfix "></span>
-								<li role="presentation" class="pull-right"><a href="#3" id='cms_news' role="tab" data-toggle="tab" style="">News</a></li>
-							</ul>
-						</div>
-						<!-- Tab panes -->
-						<div class="pull-left" style="width:76%; padding-left:20px; padding-right: 20px;border: 1px solid #676767 !important;">
-							<div class="tab-content">
-								<div role="tabpanel" class="tab-pane fade in active" id="0">
-									@include('pages.admin.cms.pop_up_edit_company_info')							
-								</div>
-								<div role="tabpanel" class="tab-pane fade" id="1">
-									@include('pages.admin.cms.pop_up_edit_seo')							
-								</div>
-								<div role="tabpanel" class="tab-pane fade" id="2">
-									@include('pages.admin.cms.pop_up_edit_informasi')							
-								</div>
-								<div role="tabpanel" class="tab-pane fade" id="3">
-									@include('pages.admin.cms.pop_up_edit_news')							
-								</div>
-							</div>
-						</div>
+						<h1 style="text-align: center; margin-top: 50px;">
+							Page Forbidden
+						</h1>
 					</div>
 				</div>
 
