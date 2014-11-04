@@ -22,22 +22,31 @@ class CustomerManagementController extends \BaseController
 			$json = json_decode($profilesJson->getContent());
 		
 			$paginator = $json->{'messages'};
-			
-			foreach($paginator as $prof)
+			if(count($paginator) != 0)
 			{
-				$prof->acc_id = Profile::find($prof->id)->account->id;
+				foreach($paginator as $prof)
+				{
+					$account = Profile::find($prof->id)->account;
+					$prof->acc_id = $account->id;
+					$prof->acc_active = $account->active;
+				}
+				
+				$perPage = 5;   
+				$page = Input::get('page', 1);
+				if ($page > count($paginator) or $page < 1)
+				{
+					$page = 1; 
+				}
+				$offset = ($page * $perPage) - $perPage;
+				$articles = array_slice($paginator,$offset,$perPage);
+				$profiles = Paginator::make($articles, count($paginator), $perPage);
+				$filtered = 0;
 			}
-			
-			$perPage = 5;   
-			$page = Input::get('page', 1);
-			if ($page > count($paginator) or $page < 1)
+			else
 			{
-				$page = 1; 
+				$profiles = null;
+				$filtered = 0;
 			}
-			$offset = ($page * $perPage) - $perPage;
-			$articles = array_slice($paginator,$offset,$perPage);
-			$profiles = Paginator::make($articles, count($paginator), $perPage);
-			$filtered = 0;
 			return View::make('pages.admin.customer.manage_customer', compact('profiles','sortBy','sortType','page','filtered'));
 		}
 		else
@@ -46,9 +55,10 @@ class CustomerManagementController extends \BaseController
 			$fullName = Input::get('namaFull', '-');
 			$profileName = Input::get('namaProfile', '-');
 			$email = Input::get('email', '-');
+			$active = Input::get('active');
 			if($sortBy === "none")
 			{
-				$profilesJson = $profileController->getFilteredProfile($memberId, $fullName, $profileName, $email);
+				$profilesJson = $profileController->getFilteredProfile($memberId, $fullName, $profileName, $email, $active);
 			}
 			else
 			{
@@ -65,7 +75,9 @@ class CustomerManagementController extends \BaseController
 				$paginator = $json->{'messages'};
 				foreach($paginator as $prof)
 				{
-					$prof->acc_id = Profile::find($prof->id)->account->id;
+					$account = Profile::find($prof->id)->account;
+					$prof->acc_id = $account->id;
+					$prof->acc_active = $account->active;
 				}
 				$profiles=$paginator;
 			}

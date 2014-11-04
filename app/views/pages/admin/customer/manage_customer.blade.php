@@ -127,7 +127,11 @@
 										<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 										</a>
 									</th>
-									<th class="table-bordered" width="480">
+									<th>
+										<a href="javascript:void(0)">Status</a>
+										<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+									</th>
+									<th class="table-bordered" width="">
 									</th>
 							</thead>
 							<thead>
@@ -136,6 +140,13 @@
 									<td><input type="text" class="form-control input-sm filterFullName"></td>
 									<td><input type="text" class="form-control input-sm filterProfileName"></td>
 									<td><input type="text" class="form-control input-sm filterEmail"></td>
+									<td>
+										<select class="form-control input-sm filterStatus">
+											<option value="All">All</option>
+											<option value="Banned">Banned</option>
+											<option value="Active">Active</option>
+										</select>
+									</td>
 									
 									<td width=""><a class="btn btn-primary btn-xs filterButton">Filter</a></td>
 								</tr>
@@ -148,6 +159,12 @@
 									<td id="full_name_{{$profile->acc_id}}">{{$profile->full_name}}</td>
 									<td id="profile_name_{{$profile->acc_id}}">{{$profile->name_in_profile}}</td>
 									<td id="email_{{$profile->acc_id}}">{{$profile->email}}</td>
+									@if($profile->acc_active == 0)
+										<td id="status">Banned</td>
+									@else
+										<td id="status">Active</td>
+									@endif
+									
 									
 									<td>
 										<input type="hidden" value="{{$profile->acc_id}}">
@@ -158,6 +175,14 @@
 										<button class="btn btn-info btn-xs belanjabutton" data-toggle="modal" data-target=".pop_up_view_belanja">View History Belanja</button>
 										<input type="hidden" value="{{$profile->id}}">
 										<button class="btn btn-info btn-xs profilebutton" data-toggle="modal" data-target=".pop_up_view_customer">View Profile</button>
+										
+										@if($profile->acc_active == 0)
+											<button class="btn btn-danger btn-xs hidden">Ban</button>
+											<button class="btn btn-success btn-xs">Unban</button>
+										@else
+											<button class="btn btn-danger btn-xs">Ban</button>
+											<button class="btn btn-success btn-xs hidden">Unban</button>
+										@endif
 										<!-- Button trigger modal class ".alertYesNo" -->
 										<!-- <button class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</button> -->
 									</td>

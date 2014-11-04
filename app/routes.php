@@ -8,18 +8,38 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-		$id = '1';
-		$respond = array();
-		$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipments.id', '=', $id)->where('shipmentdatas.deleted', '=', '0')->get(array('shipments.id', 'shipments.number', 'shipmentdatas.courier', 'shipmentdatas.destination', 'shipmentdatas.price', 'transactions.status', 'profiles.full_name'));
-		if (count($shipment) == 0)
-		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		else
-		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipment);
-		}
-		echo $respond['messages'];
+		$profilesJson = $profileController->getAll();
+		$json = json_decode($profilesJson->getContent());
+		
+			$paginator = $json->{'messages'};
+			if(count($paginator) != 0)
+			{
+				foreach($paginator as $prof)
+				{
+					$account = Profile::find($prof->id)->account;
+					$prof->acc_id = $account->id;
+					$prof->acc_active = $account->active;
+				}
+				
+				$perPage = 5;   
+				$page = Input::get('page', 1);
+				if ($page > count($paginator) or $page < 1)
+				{
+					$page = 1; 
+				}
+				$offset = ($page * $perPage) - $perPage;
+				$articles = array_slice($paginator,$offset,$perPage);
+				$profiles = Paginator::make($articles, count($paginator), $perPage);
+				$filtered = 0;
+			}
+			else
+			{
+				$profiles = null;
+				$filtered = 0;
+			}
+			
+			echo $profiles;
+
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 

@@ -63,56 +63,38 @@ class ProfilesController extends \BaseController {
 		return Response::json($respond);
 	}
 	
-	public function getFilteredProfile($memberId, $fullName, $profileName, $email)
+	public function getFilteredProfile($memberId, $fullName, $profileName, $email, $active)
 	{
-		$isFirst = false;
-		
+		$isFirst == false
+		$profileTab = DB::table('profiles AS prof')->join('account AS acc', 'prof.id', '=', 'acc.profile_id');
 		if($memberId != '-')
 		{
-			if($isFirst == false)
-			{
-				$profiles = Profile::where('member_id', 'LIKE', '%'.$memberId.'%');
-				$isFirst = true;
-			}
+			$profileTab = $profileTab->where('prof.member_id', 'LIKE', '%'.$memberId.'%');
+			$isFirst = true;
 		}
 		
 		if($fullName != '-')
 		{
-			if($isFirst == false)
-			{
-				$profiles = Profile::where('full_name', 'LIKE', '%'.$fullName.'%');
-				$isFirst = true;
-			}
-			else
-			{
-				$profiles = $profiles->where('full_name', 'LIKE', '%'.$fullName.'%');
-			}
+			$profileTab = $profileTab->where('prof.full_name', 'LIKE', '%'.$fullName.'%');
+			$isFirst = true;
 		}
 		
 		if($profileName != '-')
 		{
-			if($isFirst == false)
-			{
-				$profiles = Profile::where('name_in_profile', 'LIKE', '%'.$profileName.'%');
-				$isFirst = true;
-			}
-			else
-			{
-				$profiles = $profiles->where('name_in_profile', 'LIKE', '%'.$profileName.'%');
-			}
+			$profileTab = $profileTab->where('prof.name_in_profile', 'LIKE', '%'.$profileName.'%');
+			$isFirst = true;
 		}
 		
 		if($email != '-')
 		{
-			if($isFirst == false)
-			{
-				$profiles = Profile::where('email', 'LIKE', '%'.$email.'%');
-				$isFirst = true;
-			}
-			else
-			{
-				$profiles = $profiles->where('email', 'LIKE', '%'.$email.'%');
-			}
+			$profileTab = $profileTab->where('prof.email', 'LIKE', '%'.$email.'%');
+			$isFirst = true;
+		}
+		
+		if($active != "All")
+		{
+			$profileTab = $profileTab->where('acc.active', '=', $email);
+			$isFirst = true;
 		}
 		
 		if($isFirst == false)
@@ -122,7 +104,7 @@ class ProfilesController extends \BaseController {
 		}
 		else
 		{
-			$profiles = $profiles->get();
+			$profiles = $profileTab->get();
 		}
 		
 		if (count($profiles) == 0)
