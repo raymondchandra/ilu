@@ -1139,4 +1139,50 @@ class TransactionsController extends \BaseController {
 		
 		return Response::json($respond);
 	}
+	
+	/**
+	 * Display report
+	 * 6 month
+	 * paid
+	 * 0-> not paid
+	 * 1-> paid
+	 * @return Response
+	 */
+	public function getHalfYearReport(){
+		$respond = array();
+		$report = Transaction::where('paid','=','1')->get();
+		$bulan = date('n') -5;
+		$tahun = date('Y');
+		$idx = 1;
+		$bulanAkhir = 6;
+		$hasil = array();
+		while($idx <= $bulanAkhir)
+		{
+			$tempHasil = 0;
+			$tempBulan = Carbon::parse($tahun."-".$bulan."-01")->format('n');
+			$tempBulanHsl = Carbon::parse($tahun."-".$bulan."-01")->format('F');
+			$tempTahun = Carbon::parse($tahun."-01-01")->format('Y');
+			foreach($report as $key)
+			{
+				$dd = $key->updated_at;
+				$tahunCek = Carbon::parse($dd)->format('Y');
+				$bulanCek = Carbon::parse($dd)->format('n');
+				if($tahunCek == $tempTahun)
+				{
+					if($bulanCek == $tempBulan)
+					{
+						$tempHasil = $tempHasil + $key->total_price;
+					}
+				}
+			}
+			$hasil[] = array('tanggal'=>$tempBulan, 'penjualan' => $tempHasil,'ket'=>'sixmonth','tgl'=>$tempBulanHsl.' '.$tempTahun);
+			$idx = $idx + 1;
+			$bulan = $bulan +1;
+		}
+		$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		
+		return Response::json($respond);
+	}
+	
+	
 }
