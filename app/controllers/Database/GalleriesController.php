@@ -99,7 +99,7 @@ class GalleriesController extends \BaseController {
 	 * @return Response
 	 */
 	
-	public function get_slideshow($type)
+	public function get_slideshow()
 	{
 		return $this->getByType('slideshow');
 	}

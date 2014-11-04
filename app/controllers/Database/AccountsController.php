@@ -269,7 +269,7 @@ class AccountsController extends \BaseController {
 		$json = Input::get('json');
 		$jsonContent = json_decode($json);
 		$username = $jsonContent->{'username'};
-		$password = $jsonContent->{'password'}
+		$password = $jsonContent->{'password'};
 		$data = array('username'=>$username, 'password'=>$password);
 		if(Auth::attempt($data))
 		{
@@ -317,6 +317,34 @@ class AccountsController extends \BaseController {
 		
 		return $accTok;
 	 }
+	 
+	public function changeActive()
+	{
+		$id = Input::get('id');
+		
+		$account = Account::where('profile_id','=',$id)->first();
+		
+		if($account->active == 1)
+		{
+			$account->active = 0;
+		}
+		else
+		{
+			$account->active = 1;
+		}
+		
+		try
+		{
+			$account->save();
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$account);
+		}
+		catch(Exception $e)
+		{
+			$respond = array('code'=>'400','status' => 'NOK');
+		}
+		
+		return Response::json($respond);
+	}
 	 
 	 /**
 	 * Checking accesstoken for user

@@ -51,7 +51,15 @@ class ProfilesController extends \BaseController {
 	public function getSortedAll($by, $type)
 	{
 		$respond = array();
-		$profile = Profile::orderBy($by, $type)->get();
+		if($by !=  "active")
+		{
+			$profile = $profileTab = DB::table('profiles AS prof')->join('accounts AS acc', 'prof.id', '=', 'acc.profile_id')->orderBy('prof.'.$by, $type)->get();
+		}
+		else
+		{
+			$profile = $profileTab = DB::table('profiles AS prof')->join('accounts AS acc', 'prof.id', '=', 'acc.profile_id')->orderBy('acc.'.$by, $type)->get();
+		}
+		
 		if (count($profile) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -63,7 +71,7 @@ class ProfilesController extends \BaseController {
 		return Response::json($respond);
 	}
 	
-	public function getFilteredProfile($memberId, $fullName, $profileName, $email)
+	public function getFilteredProfile($memberId, $fullName, $profileName, $email, $active)
 	{
 		$isFirst = false;
 		
@@ -71,8 +79,12 @@ class ProfilesController extends \BaseController {
 		{
 			if($isFirst == false)
 			{
-				$profiles = Profile::where('member_id', 'LIKE', '%'.$memberId.'%');
+				$profileTab = DB::table('profiles AS prof')->join('accounts AS acc', 'prof.id', '=', 'acc.profile_id')->where('prof.member_id', 'LIKE', '%'.$memberId.'%');
 				$isFirst = true;
+			}
+			else
+			{
+				$profileTab = $profileTab->where('prof.member_id', 'LIKE', '%'.$memberId.'%');
 			}
 		}
 		
@@ -80,12 +92,12 @@ class ProfilesController extends \BaseController {
 		{
 			if($isFirst == false)
 			{
-				$profiles = Profile::where('full_name', 'LIKE', '%'.$fullName.'%');
+				$profileTab = DB::table('profiles AS prof')->join('accounts AS acc', 'prof.id', '=', 'acc.profile_id')->where('prof.full_name', 'LIKE', '%'.$fullName.'%');
 				$isFirst = true;
 			}
 			else
 			{
-				$profiles = $profiles->where('full_name', 'LIKE', '%'.$fullName.'%');
+				$profileTab = $profileTab->where('prof.full_name', 'LIKE', '%'.$fullName.'%');
 			}
 		}
 		
@@ -93,12 +105,12 @@ class ProfilesController extends \BaseController {
 		{
 			if($isFirst == false)
 			{
-				$profiles = Profile::where('name_in_profile', 'LIKE', '%'.$profileName.'%');
+				$profileTab = DB::table('profiles AS prof')->join('accounts AS acc', 'prof.id', '=', 'acc.profile_id')->where('prof.name_in_profile', 'LIKE', '%'.$profileName.'%');
 				$isFirst = true;
 			}
 			else
 			{
-				$profiles = $profiles->where('name_in_profile', 'LIKE', '%'.$profileName.'%');
+				$profileTab = $profileTab->where('prof.name_in_profile', 'LIKE', '%'.$profileName.'%');
 			}
 		}
 		
@@ -106,12 +118,25 @@ class ProfilesController extends \BaseController {
 		{
 			if($isFirst == false)
 			{
-				$profiles = Profile::where('email', 'LIKE', '%'.$email.'%');
+				$profileTab = DB::table('profiles AS prof')->join('accounts AS acc', 'prof.id', '=', 'acc.profile_id')->where('prof.email', 'LIKE', '%'.$email.'%');
 				$isFirst = true;
 			}
 			else
 			{
-				$profiles = $profiles->where('email', 'LIKE', '%'.$email.'%');
+				$profileTab = $profileTab->where('prof.email', 'LIKE', '%'.$email.'%');
+			}
+		}
+		
+		if($active != 2)
+		{
+			if($isFirst == false)
+			{
+				$profileTab = DB::table('profiles AS prof')->join('accounts AS acc', 'prof.id', '=', 'acc.profile_id')->where('acc.active', '=', $active);
+				$isFirst = true;
+			}
+			else
+			{
+				$profileTab = $profileTab->where('acc.active', '=', $active);
 			}
 		}
 		
@@ -122,7 +147,7 @@ class ProfilesController extends \BaseController {
 		}
 		else
 		{
-			$profiles = $profiles->get();
+			$profiles = $profileTab->get();
 		}
 		
 		if (count($profiles) == 0)
@@ -136,7 +161,7 @@ class ProfilesController extends \BaseController {
 		return Response::json($respond);
 	}
 	
-	public function getFilteredProfileSorted($memberId, $fullName, $profileName, $email, $sortBy, $sortType)
+	public function getFilteredProfileSorted($memberId, $fullName, $profileName, $email, $sortBy, $sortType, $active)
 	{
 		$isFirst = false;
 		
@@ -144,8 +169,12 @@ class ProfilesController extends \BaseController {
 		{
 			if($isFirst == false)
 			{
-				$profiles = Profile::where('member_id', 'LIKE', '%'.$memberId.'%');
+				$profileTab = DB::table('profiles AS prof')->join('accounts AS acc', 'prof.id', '=', 'acc.profile_id')->where('prof.member_id', 'LIKE', '%'.$memberId.'%');
 				$isFirst = true;
+			}
+			else
+			{
+				$profileTab = $profileTab->where('prof.member_id', 'LIKE', '%'.$memberId.'%');
 			}
 		}
 		
@@ -153,12 +182,12 @@ class ProfilesController extends \BaseController {
 		{
 			if($isFirst == false)
 			{
-				$profiles = Profile::where('full_name', 'LIKE', '%'.$fullName.'%');
+				$profileTab = DB::table('profiles AS prof')->join('accounts AS acc', 'prof.id', '=', 'acc.profile_id')->where('prof.full_name', 'LIKE', '%'.$fullName.'%');
 				$isFirst = true;
 			}
 			else
 			{
-				$profiles = $profiles->where('full_name', 'LIKE', '%'.$fullName.'%');
+				$profileTab = $profileTab->where('prof.full_name', 'LIKE', '%'.$fullName.'%');
 			}
 		}
 		
@@ -166,12 +195,12 @@ class ProfilesController extends \BaseController {
 		{
 			if($isFirst == false)
 			{
-				$profiles = Profile::where('name_in_profile', 'LIKE', '%'.$profileName.'%');
+				$profileTab = DB::table('profiles AS prof')->join('accounts AS acc', 'prof.id', '=', 'acc.profile_id')->where('prof.name_in_profile', 'LIKE', '%'.$profileName.'%');
 				$isFirst = true;
 			}
 			else
 			{
-				$profiles = $profiles->where('name_in_profile', 'LIKE', '%'.$profileName.'%');
+				$profileTab = $profileTab->where('prof.name_in_profile', 'LIKE', '%'.$profileName.'%');
 			}
 		}
 		
@@ -179,23 +208,42 @@ class ProfilesController extends \BaseController {
 		{
 			if($isFirst == false)
 			{
-				$profiles = Profile::where('email', 'LIKE', '%'.$email.'%');
+				$profileTab = DB::table('profiles AS prof')->join('accounts AS acc', 'prof.id', '=', 'acc.profile_id')->where('prof.email', 'LIKE', '%'.$email.'%');
 				$isFirst = true;
 			}
 			else
 			{
-				$profiles = $profiles->where('email', 'LIKE', '%'.$email.'%');
+				$profileTab = $profileTab->where('prof.email', 'LIKE', '%'.$email.'%');
+			}
+		}
+		
+		if($active != 2)
+		{
+			if($isFirst == false)
+			{
+				$profileTab = DB::table('profiles AS prof')->join('accounts AS acc', 'prof.id', '=', 'acc.profile_id')->where('acc.active', '=', $active);
+				$isFirst = true;
+			}
+			else
+			{
+				$profileTab = $profileTab->where('acc.active', '=', $active);
 			}
 		}
 		
 		if($isFirst == false)
 		{
-			$profiles = Profile::orderBy($sortBy, $sortType)->get();
-			$isFirst = true;
+			if($by !=  "active")
+			{
+				$profiles = $profileTab = DB::table('profiles AS prof')->join('accounts AS acc', 'prof.id', '=', 'acc.profile_id')->orderBy('prof.'.$by, $type)->get();
+			}
+			else
+			{
+				$profile = $profileTab = DB::table('profiles AS prof')->join('accounts AS acc', 'prof.id', '=', 'acc.profile_id')->orderBy('acc.'.$by, $type)->get();
+			}
 		}
 		else
 		{
-			$profiles = $profiles->orderBy($sortBy, $sortType)->get();
+			$profiles = $profileTab->orderBy($sortBy, $sortType)->get();
 		}
 		
 		if (count($profiles) == 0)
@@ -208,6 +256,8 @@ class ProfilesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	
+	
 
 	/**
 	 * Display the specified profile.

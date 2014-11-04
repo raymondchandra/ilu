@@ -2,6 +2,9 @@
 use Carbon\Carbon;
 Route::get('/tes', 'ProductsController@getAll');
 
+Route::get('/tes_news', 'NewsManagementController@getNews');
+Route::get('/tes_news/{id}', 'NewsManagementController@getOneNews');
+
 Route::get('/tesview', function (){
 	return View::make('pages.admin.product.manage_product');
 });
@@ -254,6 +257,9 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
     	Route::post('/seo', ['as' => 'add.seo' , 'uses' => 'SeosController@insert']);
     	Route::put('/seo/{id}', ['as' => 'edit.seo' , 'uses' => 'SeosController@updateFull']);
     	Route::delete('/seo/{id}', ['as' => 'delete.seo' , 'uses' => 'SeosController@delete']);
+	//news management
+		Route::get('/news', ['as' => 'get.news' , 'uses' => 'NewsManagementController@getNews']);
+	
     //supportMsg
 		Route::get('/supportMsg/{ticket_id}', ['as' => 'get.supportMsg.ticket' , 'uses' => 'SupportMsgsController@getByTicket']);
 		Route::post('/supportMsg', ['as' => 'add.supportMsg' , 'uses' => 'SupportMsgsController@insert']);
@@ -444,17 +450,23 @@ Route::group(array('prefix' => 'test'), function()
 
 
 
-    // Messages
+    // Messages support
     Route::get('/manage_supporting_messages', function()
 	{
 		return View::make('pages.admin.messages.manage_supporting_messages');
 	});
 
 
-    // Messages
+    // Messages ticket
     Route::get('/manage_ticketing', function()
 	{
 		return View::make('pages.admin.messages.manage_ticketing');
+	});
+
+    // 404
+    Route::get('/404', function()
+	{
+		return View::make('pages.admin.other.404');
 	});
 
 
