@@ -2,6 +2,8 @@
 
 Route::get('/tes', 'ProductsController@getAll');
 
+Route::get('/tes_messages/{id}', 'MessagesManagementController@get_one_message');
+
 Route::get('/tesview', function (){
 	return View::make('pages.admin.product.manage_product');
 });
