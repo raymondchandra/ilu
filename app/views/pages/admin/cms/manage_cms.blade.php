@@ -63,7 +63,7 @@
 							</ul>
 						</div>
 						<!-- Tab panes -->
-						<div class="pull-left" style="width:76%; padding-left:10px; padding-right: 10px;border: 1px solid #676767 !important;">
+						<div class="pull-left" style="width:76%; padding-left:20px; padding-right: 20px;border: 1px solid #676767 !important;">
 							<div class="tab-content">
 								<div role="tabpanel" class="tab-pane fade in active" id="0">
 									@include('pages.admin.cms.pop_up_edit_company_info')							
