@@ -59,6 +59,12 @@
 									</a>
 								</th>
 								<th>
+									<a href="javascript:void(0)">Ready</a>
+									<a href="javascript:void(0)" id='sort_ready' value='asc'>
+									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+									</a>
+								</th>
+								<th>
 								Edit
 								</th>
 							</tr>
@@ -71,7 +77,8 @@
 								<td><input type="text" class="form-control input-sm" id='filter_name'></td>
 								<td><input type="text" class="form-control input-sm" id='filter_category'></td>
 								<td><input type="text" class="form-control input-sm" id='filter_promotion'></td>
-								<td><a class="btn btn-primary btn-xs" id='button_filter'>Filter</a></td>
+								<td><input type="text" class="form-control input-sm" id='filter_ready'></td>
+								<td><a class="btn btn-primary btn-sm" id='button_filter'>Filter</a></td>
 							</tr>
 						</thead>
 						<tbody id='product_list'>
@@ -82,6 +89,7 @@
 								<td>{{$product->name}}</td>
 								<td>{{$product->category_name}}</td>
 								<td>{{$product->promotion_id}}</td>
+								<td>Yes</td>
 								<td>
 									<input type='hidden' class='id_produk' value='{{$product->id}}'>
 									<a class="btn btn-warning btn-xs detail-product" data-toggle="modal" data-target=".pop_up_edit_product">Edit Info</a>

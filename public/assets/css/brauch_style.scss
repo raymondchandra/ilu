@@ -399,3 +399,23 @@ h3 {
 	color: #EB5E00;
 	font-weight: 700;
 }
+
+ul.nav li.dropdown:hover > ul.dropdown-menu {
+    display: block;    
+}
+
+thead > tr > td {
+	background-color: #d1e0e2;
+	border: 1px solid #bdbdbd;
+}
+
+.nav-tabs > li > a {
+	border-top: 1px solid #676767 !important;
+	border-bottom: 1px solid #676767 !important;
+	border-left: 1px solid #676767 !important;
+	border-right: 1px solid #676767 !important;
+	border-radius: 4px 4px 4px 4px;
+	background-color: #fff;
+
+	border-radius: 0px !important;
+} 
