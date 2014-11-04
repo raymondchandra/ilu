@@ -4,13 +4,13 @@
 /* ==========================================================================
    Common
    ========================================================================== */
-/* line 42, brauch_style.scss */
+/* line 42, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_tbl {
   display: table;
   width: 100%;
   height: inherit;
 }
-/* line 48, brauch_style.scss */
+/* line 48, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_tbl .s_cl {
   width: 100%;
   height: inherit;
@@ -20,7 +20,7 @@
   position: relative;
 }
 
-/* line 58, brauch_style.scss */
+/* line 58, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 hr {
   border-top: 1px solid #ccc;
 }
@@ -28,7 +28,7 @@ hr {
 /* ==========================================================================
    Pop up
    ========================================================================== */
-/* line 66, brauch_style.scss */
+/* line 66, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .pop_up_super_c {
   width: 100%;
   height: 100%;
@@ -40,7 +40,7 @@ hr {
   overflow: auto;
 }
 
-/* line 76, brauch_style.scss */
+/* line 76, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .pop_up_tbl {
   width: 100%;
   height: 100%;
@@ -50,13 +50,13 @@ hr {
   vertical-align: middle;
 }
 
-/* line 84, brauch_style.scss */
+/* line 84, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .pop_up_cell {
   display: table-cell;
   vertical-align: middle;
 }
 
-/* line 88, brauch_style.scss */
+/* line 88, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .close_56 {
   background: url("../img/close56.png") no-repeat;
   width: 56px;
@@ -72,7 +72,7 @@ hr {
 /* ==========================================================================
    Admin panel
    ========================================================================== */
-/* line 105, brauch_style.scss */
+/* line 105, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_orenji_header {
   background-color: #d75f07;
   display: block;
@@ -80,7 +80,7 @@ hr {
   height: 20px;
 }
 
-/* line 112, brauch_style.scss */
+/* line 112, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_top_header {
   display: block;
   width: 100%;
@@ -106,12 +106,12 @@ hr {
   /* IE6-8 */
   border-bottom: 1px #5f767f solid;
 }
-/* line 117, brauch_style.scss */
+/* line 117, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_top_header * {
   color: #fff;
 }
 
-/* line 138, brauch_style.scss */
+/* line 138, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_nav_header {
   background: #606c88;
   /* Old browsers */
@@ -135,21 +135,21 @@ hr {
   width: 100%;
   height: 20px;
 }
-/* line 154, brauch_style.scss */
+/* line 154, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_nav_header * {
   list-style-type: none;
   color: #b9b9b9;
   cursor: pointer;
 }
-/* line 160, brauch_style.scss */
+/* line 160, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_nav_header nav > ul {
   padding-left: 0px;
 }
-/* line 163, brauch_style.scss */
+/* line 163, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_nav_header nav > ul > li {
   display: inline-block;
 }
-/* line 165, brauch_style.scss */
+/* line 165, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_nav_header nav > ul > li > a {
   display: block;
   padding-left: 20px;
@@ -157,15 +157,15 @@ hr {
   line-height: 20px;
   text-align: center;
 }
-/* line 173, brauch_style.scss */
+/* line 173, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_nav_header nav > ul > li > ul {
   padding-left: 0px;
 }
-/* line 176, brauch_style.scss */
+/* line 176, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_nav_header nav > ul > li > ul > li {
   display: block;
 }
-/* line 178, brauch_style.scss */
+/* line 178, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_nav_header nav > ul > li > ul > li > a {
   display: block;
   padding-left: 20px;
@@ -174,20 +174,20 @@ hr {
   text-align: center;
 }
 
-/* line 193, brauch_style.scss */
+/* line 193, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_top_nav {
   margin: 0;
   padding: 0;
 }
 
-/* line 197, brauch_style.scss */
+/* line 197, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_top_nav li {
   float: left;
   list-style: none;
   font: 12px Tahoma, Arial;
 }
 
-/* line 203, brauch_style.scss */
+/* line 203, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_top_nav li a {
   display: block;
   position: relative;
@@ -217,12 +217,12 @@ hr {
   white-space: nowrap;
 }
 
-/* line 226, brauch_style.scss */
+/* line 226, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_top_nav li a:hover {
   background: #1A4473;
 }
 
-/* line 229, brauch_style.scss */
+/* line 229, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_top_nav li ul {
   margin: 0;
   padding: 0;
@@ -232,13 +232,13 @@ hr {
   position: relative;
 }
 
-/* line 237, brauch_style.scss */
+/* line 237, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_top_nav li ul li {
   float: none;
   display: inline;
 }
 
-/* line 242, brauch_style.scss */
+/* line 242, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_top_nav li ul li a {
   width: auto;
   background: #9F1B1B;
@@ -246,20 +246,20 @@ hr {
   z-index: 90;
 }
 
-/* line 248, brauch_style.scss */
+/* line 248, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_top_nav li ul li a:hover {
   background: #7F1616;
 }
 
-/* line 255, brauch_style.scss */
+/* line 255, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_list_container * {
   list-style-type: none;
 }
-/* line 256, brauch_style.scss */
+/* line 256, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_list_container li {
   display: inline-block;
 }
-/* line 259, brauch_style.scss */
+/* line 259, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .s_list_container li > div {
   display: block;
   float: left;
@@ -268,7 +268,7 @@ hr {
 /* ==========================================================================
    Mod
    ========================================================================== */
-/* line 272, brauch_style.scss */
+/* line 272, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color: #fcf5dd;
 }
@@ -278,7 +278,7 @@ hr {
 
  
 /* --- Style --- */
-/* line 284, brauch_style.scss */
+/* line 284, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .navbar-default {
   border-top: 1px #2d444f solid;
   border-bottom: 1px #2d444f solid;
@@ -305,27 +305,27 @@ hr {
   /* IE6-8 */
   border-radius: 0px;
 }
-/* line 307, brauch_style.scss */
+/* line 307, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .navbar-default .navbar-brand {
   color: #ecf0f1;
 }
-/* line 309, brauch_style.scss */
+/* line 309, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
   color: #ffe6d1;
 }
-/* line 313, brauch_style.scss */
+/* line 313, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .navbar-default .navbar-nav > li > a {
   padding-top: 0px;
   padding-bottom: 0px;
   line-height: 30px;
   color: #ecf0f1;
 }
-/* line 318, brauch_style.scss */
+/* line 318, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
   background-color: #d45400;
   color: #ffe6d1;
 }
-/* line 325, brauch_style.scss */
+/* line 325, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .navbar-default .navbar-nav .active > a, .navbar-default .navbar-nav .active > a:hover, .navbar-default .navbar-nav .active > a:focus {
   padding-top: 0px;
   padding-bottom: 0px;
@@ -333,7 +333,7 @@ hr {
   color: #ffe6d1;
   background-color: #9f3f00;
 }
-/* line 332, brauch_style.scss */
+/* line 332, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .navbar-default .navbar-nav .open > a, .navbar-default .navbar-nav .open > a:hover, .navbar-default .navbar-nav .open > a:focus {
   padding-top: 0px;
   padding-bottom: 0px;
@@ -341,58 +341,108 @@ hr {
   color: #ffe6d1;
   background-color: #9f3f00;
 }
-/* line 338, brauch_style.scss */
+/* line 338, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .navbar-default .navbar-nav .open > a .caret, .navbar-default .navbar-nav .open > a:hover .caret, .navbar-default .navbar-nav .open > a:focus .caret {
   border-top-color: #ffe6d1;
   border-bottom-color: #ffe6d1;
 }
-/* line 342, brauch_style.scss */
+/* line 342, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .navbar-default .navbar-nav > .dropdown > a {
   padding-top: 0px;
   padding-bottom: 0px;
   line-height: 30px;
 }
-/* line 346, brauch_style.scss */
+/* line 346, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .navbar-default .navbar-nav > .dropdown > a .caret {
   border-top-color: #ecf0f1;
   border-bottom-color: #ecf0f1;
 }
-/* line 350, brauch_style.scss */
+/* line 350, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .navbar-default .navbar-nav > .dropdown > a:hover .caret, .navbar-default .navbar-nav > .dropdown > a:focus .caret {
   border-top-color: #ffe6d1;
   border-bottom-color: #ffe6d1;
 }
-/* line 353, brauch_style.scss */
+/* line 353, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .navbar-default .navbar-toggle {
   border-color: #9f3f00;
 }
-/* line 355, brauch_style.scss */
+/* line 355, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
   background-color: #9f3f00;
 }
-/* line 357, brauch_style.scss */
+/* line 357, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .navbar-default .navbar-toggle .icon-bar {
   background-color: #ecf0f1;
 }
 
 @media (max-width: 767px) {
-  /* line 360, brauch_style.scss */
+  /* line 360, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
   .navbar-default .navbar-nav .open .dropdown-menu > li > a {
     color: #ecf0f1;
   }
-  /* line 362, brauch_style.scss */
+  /* line 362, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
   .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
     color: #ffe6d1;
     background-color: #9f3f00;
   }
 }
-/* line 373, brauch_style.scss */
+/* line 373, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 #editor {
   overflow: scroll;
   max-height: 300px;
 }
 
-/* line 375, brauch_style.scss */
+/* line 375, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
 .f_table_suggestion tr td {
   cursor: pointer !important;
+}
+
+/* line 381, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
+th {
+  background: #ffffff;
+  /* Old browsers */
+  /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIzJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQlIiBzdG9wLWNvbG9yPSIjZWJlYmViIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2M4YzhjOCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+  background: -moz-linear-gradient(top, white 3%, #ebebeb 4%, #c8c8c8 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(3%, white), color-stop(4%, #ebebeb), color-stop(100%, #c8c8c8));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, white 3%, #ebebeb 4%, #c8c8c8 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, white 3%, #ebebeb 4%, #c8c8c8 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, white 3%, #ebebeb 4%, #c8c8c8 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ffffff 3%, #ebebeb 4%, #c8c8c8 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#c8c8c8',GradientType=0 );
+  /* IE6-8 */
+}
+
+/* line 398, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
+h3 {
+  color: #EB5E00;
+  font-weight: 700;
+}
+
+/* line 403, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
+ul.nav li.dropdown:hover > ul.dropdown-menu {
+  display: block;
+}
+
+/* line 407, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
+thead > tr > td {
+  background-color: #d1e0e2;
+  border: 1px solid #bdbdbd;
+}
+
+/* line 412, E:/xampp/htdocs/ilu/public/assets/css/brauch_style.scss */
+.nav-tabs > li > a {
+  border-top: 1px solid #676767 !important;
+  border-bottom: 1px solid #676767 !important;
+  border-left: 1px solid #676767 !important;
+  border-right: 1px solid #676767 !important;
+  border-radius: 4px 4px 4px 4px;
+  background-color: #fff;
+  border-radius: 0px !important;
 }

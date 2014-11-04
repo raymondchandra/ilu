@@ -15,10 +15,10 @@
 			<div>
 				@if($attributes == null)
 					@if($filtered == 0)
-						<button class="btn btn-success" style="float: right; margin-top: 20px; margin-bottom: 25px;"  data-toggle="modal" data-target=".pop_up_add_attribute">+ Add New Attribute</button>
+						<button class="btn btn-success" style="float: right; margin-bottom: 20px;"  data-toggle="modal" data-target=".pop_up_add_attribute">+ Add New Attribute</button>
 						<p>No Attributes</p>
 					@else
-						<button class="btn btn-success backButton" style="float: right; margin-top: 20px; margin-bottom: 25px;">Back</button>
+						<button class="btn btn-success backButton" style="float: right; margin-bottom: 20px;">Back</button>
 						<p>Search not match anything</p>
 						<table class="table table-striped table-hover table-condensed table-bordered">
 							<thead class="table-bordered">
@@ -92,7 +92,7 @@
 				@else								
 					@if($filtered == 0)					
 						{{$attributes->appends(array('sortBy' => $sortBy, 'order' => $sortType, 'filtered' => $filtered))->links()}}
-						<button class="btn btn-success" style="float: right; margin-top: 20px; margin-bottom: 25px;"  data-toggle="modal" data-target=".pop_up_add_attribute">+ Add New Attribute</button>
+						<button class="btn btn-success" style="float: right; margin-bottom: 20px;"  data-toggle="modal" data-target=".pop_up_add_attribute">+ Add New Attribute</button>
 					@else
 						<button class="btn btn-success backButton" style="float: right; margin-top: 20px; margin-bottom: 25px;">Back</button>
 					@endif

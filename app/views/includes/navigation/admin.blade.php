@@ -43,19 +43,6 @@
 					<li><a href="{{ URL::to('admin/get_trans_history') }}">Transaction History</a></li>
 				</ul>
 			</li>
-
-			<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book" style="color:#fff; margin-right:10px;"></span>Dont Know<span class="caret"></span></a>
-				<ul class="dropdown-menu" role="menu">
-					<li><a href="#">Manage Category</a></li>
-					<li><a href="#">Manage Product</a></li>
-					<li><a href="#">Manage Attribute</a></li>
-					<li class="divider"></li>
-					<li><a href="#">Separated link</a></li>
-					<li class="divider"></li>
-					<li><a href="#">One more separated link</a></li>
-				</ul>
-			</li>
 			
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-volume-up" style="color:#fff; margin-right:10px;"></span>Newsletter<span class="caret"></span></a>
@@ -64,7 +51,14 @@
 					
 				</ul>
 			</li>
-			<li><a href="#">Other Link</a></li>
+
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-envelope" style="color:#fff; margin-right:10px;"></span>Messages<span class="caret"></span></a>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="{{ URL::to('admin/manage_customer') }}">Supporting Messages</a></li>
+					<li><a href="{{ URL::to('admin/get_profile_detail') }}">Ticketing</a></li>
+				</ul>
+			</li>
 			<li><a href="#">Other Link</a></li>
 			<li><a href="#">Other Link</a></li>
 		</ul>

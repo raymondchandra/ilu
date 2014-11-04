@@ -22,43 +22,49 @@
 					  <li><a href="#">3</a></li>
 					  <li><a href="#">4</a></li>
 					  <li><a href="#">5</a></li>
-					  <li><a href="#">&raquo;</a></li>
+					  <li><a href="#">&raquo;</a></li> 
 					</ul>-->
-					<button href="" class="btn btn-success" style="float: right; margin-top: 20px;" data-toggle="modal" data-target=".pop_up_add_product">+ Add Product</button>
+					<button href="" class="btn btn-success" style="float: right; margin-bottom: 20px;" data-toggle="modal" data-target=".pop_up_add_product">+ Add Product</button>
 					<table class="table table-striped table-hover table-condensed table-bordered">
-						<thead class="table-bordered">
+						<thead>
 							<tr>
-								<th class="table-bordered">
+								<th>
 									<a href="javascript:void(0)">ID</a>
 									<a href="javascript:void(0)" id='sort_id' value='asc'>
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
-								<th class="table-bordered">
+								<th>
 									<a href="javascript:void(0)">Product ID</a>
 									<a href="javascript:void(0)" id='sort_product_id' value='asc'>
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
-								<th class="table-bordered">
+								<th>
 									<a href="javascript:void(0)">Name</a>
 									<a href="javascript:void(0)" id='sort_name' value='asc'>
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
-								<th class="table-bordered">
+								<th>
 									<a href="javascript:void(0)">Category Name</a>
 									<a href="javascript:void(0)" id='sort_category' value='asc'>
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
-								<th class="table-bordered">
+								<th>
 									<a href="javascript:void(0)">Promotion ID</a>
 									<a href="javascript:void(0)" id='sort_promotion' value='asc'>
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
-								<th class="table-bordered">
+								<th>
+									<a href="javascript:void(0)">Ready</a>
+									<a href="javascript:void(0)" id='sort_ready' value='asc'>
+									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+									</a>
+								</th>
+								<th>
 								Edit
 								</th>
 							</tr>
@@ -71,7 +77,8 @@
 								<td><input type="text" class="form-control input-sm" id='filter_name'></td>
 								<td><input type="text" class="form-control input-sm" id='filter_category'></td>
 								<td><input type="text" class="form-control input-sm" id='filter_promotion'></td>
-								<td><a class="btn btn-primary btn-xs" id='button_filter'>Filter</a></td>
+								<td><input type="text" class="form-control input-sm" id='filter_ready'></td>
+								<td><a class="btn btn-primary btn-sm" id='button_filter'>Filter</a></td>
 							</tr>
 						</thead>
 						<tbody id='product_list'>
@@ -82,6 +89,7 @@
 								<td>{{$product->name}}</td>
 								<td>{{$product->category_name}}</td>
 								<td>{{$product->promotion_id}}</td>
+								<td>Yes</td>
 								<td>
 									<input type='hidden' class='id_produk' value='{{$product->id}}'>
 									<a class="btn btn-warning btn-xs detail-product" data-toggle="modal" data-target=".pop_up_edit_product">Edit Info</a>
