@@ -7,7 +7,7 @@
 			$trans = new TransactionsController();
 			$report = $trans->getDayReportDashboard();
 			$topTenProd = $trans->getTopTenProduct();
-			//$topTenBuy =$trans->getTopTenBuyer();
+			$topTenBuy =$trans->getTopTenBuyer();
 			
 			$hsl1 = json_decode($report->getContent());
 			if($hsl1->{'code'} == "200")

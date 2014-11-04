@@ -622,10 +622,10 @@ class TransactionsController extends \BaseController {
 			foreach($topTen as $key)
 			{
 				$account = new AccountsController();
-				$accountTopTen = $profile->getProfileByAccountId($key->account_id);// here
-				$temp = json_decode($accountTopTen->getContent());
-				$temp2 = $temp->{'messages'};
-				$key->account_name = $temp2->full_name;
+				$accountTopTen = $account->getProfileByAccountId($key->account_id);// here
+				//$temp = json_decode($accountTopTen->getContent());
+				$temp2 = $accountTopTen['messages'];
+				//$key->account_name = $temp2->full_name;
 			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$topTen);
 		}
