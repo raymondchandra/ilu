@@ -442,17 +442,23 @@ Route::group(array('prefix' => 'test'), function()
 
 
 
-    // Messages
+    // Messages support
     Route::get('/manage_supporting_messages', function()
 	{
 		return View::make('pages.admin.messages.manage_supporting_messages');
 	});
 
 
-    // Messages
+    // Messages ticket
     Route::get('/manage_ticketing', function()
 	{
 		return View::make('pages.admin.messages.manage_ticketing');
+	});
+
+    // 404
+    Route::get('/404', function()
+	{
+		return View::make('pages.admin.other.404');
 	});
 
 
