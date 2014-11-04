@@ -55,6 +55,8 @@
 							<li role="presentation" class="pull-right"><a href="#1" role="tab" data-toggle="tab" style="">SEO</a></li>
 							<span class="clearfix "></span>
 							<li role="presentation" class="pull-right"><a href="#2" role="tab" data-toggle="tab" style="">Informasi</a></li>
+							<span class="clearfix "></span>
+							<li role="presentation" class="pull-right"><a href="#3" role="tab" data-toggle="tab" style="">News</a></li>
 						</ul>
 					</div>
 					<div class="col-sm-9">
@@ -68,6 +70,9 @@
 							</div>
 							<div role="tabpanel" class="tab-pane fade" id="2">
 								@include('pages.admin.cms.pop_up_edit_informasi')							
+							</div>
+							<div role="tabpanel" class="tab-pane fade" id="3">
+								@include('pages.admin.cms.pop_up_edit_news')							
 							</div>
 						</div>
 					</div>
@@ -118,6 +123,22 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		//var asd = $()
+		$('body').on('click','[data-dismiss="modal"]', function(){
+			$('.modal-backdrop').removeClass('in');
+			setTimeout(function() {
+			     $('.modal-backdrop').fadeOut( 300, function(){});
+			}, 500);
+		});
+
+		$('body').on('click','[aria-hidden="true"]', function(){
+			$('.modal-backdrop').removeClass('in');
+			setTimeout(function() {
+			     $('.modal-backdrop').fadeOut( 300, function(){});
+			}, 500);
+		});
+	</script>
 
 	@include('includes.modals.alertYesNo')	
 

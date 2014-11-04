@@ -13,12 +13,12 @@
 				<hr></hr>
 				
 				<div>					
-					@if($categories == null)
+					@if($categories == null) 
 						@if($filtered == 0)
-							<button class="btn btn-success" style="float: right; margin-top: 20px; margin-bottom: 25px;"  data-toggle="modal" data-target=".pop_up_add_category">+ Add Category</button>
+							<button class="btn btn-success" style="float: right; margin-bottom: 20px;"  data-toggle="modal" data-target=".pop_up_add_category">+ Add Category</button>
 							<p>No Categories</p>
 						@else
-							<button class="btn btn-success backButton" style="float: right; margin-top: 20px; margin-bottom: 25px;">Back</button>
+							<button class="btn btn-success backButton" style="float: right; margin-bottom: 20px;">Back</button>
 							<p>Search not match anything</p>
 							<table class="table table-striped table-hover table-condensed table-bordered">
 								<thead class="table-bordered">
@@ -111,7 +111,7 @@
 					@else
 						@if($filtered == 0)
 							{{$categories->appends(array('sortBy' => $sortBy, 'order' => $sortType, 'filtered' => $filtered))->links()}}
-							<button class="btn btn-success" style="float: right; margin-top: 20px; margin-bottom: 25px;"  data-toggle="modal" data-target=".pop_up_add_category">+ Add Category</button>
+							<button class="btn btn-success" style="float: right;  margin-bottom: 20px;"  data-toggle="modal" data-target=".pop_up_add_category">+ Add Category</button>
 						@else
 							<button class="btn btn-success backButton" style="float: right; margin-top: 20px; margin-bottom: 25px;">Back</button>
 						@endif
