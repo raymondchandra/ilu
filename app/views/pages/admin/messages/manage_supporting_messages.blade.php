@@ -32,7 +32,7 @@
 							border-top: 1px solid #ddd;
 							border-bottom: 1px solid #ddd;
 							border-left: 1px solid #ddd;
-							border-right: 1px solid #ddd;
+							border-right: 1px solid #fff !important;
 							border-radius: 4px 4px 4px 4px;
 							background-color: #fff;
 						}

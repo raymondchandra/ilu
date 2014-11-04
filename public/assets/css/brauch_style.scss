@@ -418,4 +418,14 @@ thead > tr > td {
 	background-color: #fff;
 
 	border-radius: 0px !important;
+	margin-right: -1px;
 } 
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus{
+						//	border-top: 1px solid #ddd;
+						//	border-bottom: 1px solid #ddd;
+						//	border-left: 1px solid #ddd;
+							border-right: 1px solid #fff !important;
+						//	border-radius: 4px 4px 4px 4px;
+							background-color: #fff;
+						}
