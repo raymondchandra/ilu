@@ -60,6 +60,8 @@
 								<li role="presentation" class="pull-right"><a href="#2" role="tab" data-toggle="tab" style="">Informasi</a></li>
 								<span class="clearfix "></span>
 								<li role="presentation" class="pull-right"><a href="#3" id='cms_news' role="tab" data-toggle="tab" style="">News</a></li>
+								<span class="clearfix "></span>
+								<li role="presentation" class="pull-right"><a href="#4" id='' role="tab" data-toggle="tab" style="">Slideshow</a></li>
 							</ul>
 						</div>
 						<!-- Tab panes -->
@@ -76,6 +78,9 @@
 								</div>
 								<div role="tabpanel" class="tab-pane fade" id="3">
 									@include('pages.admin.cms.pop_up_edit_news')							
+								</div>
+								<div role="tabpanel" class="tab-pane fade" id="4">
+									@include('pages.admin.cms.pop_up_edit_slideshow')							
 								</div>
 							</div>
 						</div>
