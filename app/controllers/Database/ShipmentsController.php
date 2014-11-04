@@ -500,8 +500,10 @@ class ShipmentsController extends \BaseController {
 	 * @return Response
 	 */
 	
-	public function updateResiNumber($id,$number)
+	public function updateResiNumber()
 	{
+		$id = Input::get('id');
+		$number = Input::get('number');
 		$respond = array();
 		$shipment = Shipment::find($id);
 		if ($shipment == null)

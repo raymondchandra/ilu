@@ -35,53 +35,7 @@
 										</th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr>
-										<td>
-											Product X
-										</td>
-										<td>
-											<img src="" width="120" height="120">
-										</td>
-										<td>
-											IDR 100.000
-										</td>
-										<th>
-											Backpack
-										</th>
-										<td>
-											2
-										</td>
-										<td>
-											IDR 200.000
-										</td>
-										<td>
-											-
-										</td>
-									</tr>
-									<tr>
-										<td>
-											Product X
-										</td>
-										<td>
-											<img src="" width="120" height="120">
-										</td>
-										<td>
-											IDR 100.000
-										</td>
-										<th>
-											Backpack
-										</th>
-										<td>
-											2
-										</td>
-										<td>
-											IDR 200.000
-										</td>
-										<td>
-											Atribute Extra
-										</td>
-									</tr>
+								<tbody id="tblOrder">
 									
 								</tbody>
 							</table>

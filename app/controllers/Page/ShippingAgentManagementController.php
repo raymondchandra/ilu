@@ -36,7 +36,7 @@ class ShippingAgentManagementController extends \BaseController
 			}else
 			{
 				$page = null;
-				$hasil = $hsl;
+				$hasil = null;
 			}
 			$filtered = 0;
 			return View::make('pages.admin.shipping.manage_shipping_agent', compact('hasil','sortBy','sortType','page','filtered'));
@@ -59,7 +59,7 @@ class ShippingAgentManagementController extends \BaseController
 			
 			if($json2->{'code'} == "404")
 			{
-				$hasil = $json2;
+				$hasil = null;
 			}
 			else
 			{

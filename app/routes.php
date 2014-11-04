@@ -393,6 +393,8 @@ Route::group(array('prefix' => 'test'), function()
 	
 	Route::post('/add_shipment_agent', ['as' => 'jeffry.addShipmentAgent' , 'uses' => 'ShipmentDatasController@insert']);
 	
+	Route::post('/add_shipment_agent_excel', ['as' => 'jeffry.addShipmentAgentExcel' , 'uses' => 'ShipmentDatasController@insertExcel']);
+	
 	Route::put('/put_price_shipment_agent' , ['as'=>'jeffry.putPriceShipAgent','uses' => 'ShipmentDatasController@updatePrice']);
 	
 	//TRANSAKSI
@@ -404,14 +406,20 @@ Route::group(array('prefix' => 'test'), function()
 	
 	Route::put('/put_paid_transaction' , ['as'=>'jeffry.putPaidTransaction','uses' => 'TransactionsController@updatePaid']);
 	
+	Route::put('/put_shippingNumber_transaction' , ['as'=>'jeffry.putShippingNumberTransaction','uses' => 'ShipmentsController@updateResiNumber']);
+	
 	//ORDER
 	Route::get('/manage_order_jeffry', ['as' =>'jeffry.getOrder', 'uses' => 'OrderManagementController@view_order_mgmt']);
 	
 	Route::put('/put_status_order' , ['as'=>'jeffry.putStatusOrder','uses' => 'OrdersController@updateStatus']);
 	
+	Route::get('/manage_order_detail_jeffry', ['as' =>'jeffry.getOrderDetail', 'uses' => 'OrdersController@getDetail']);
+	
 	//REPORT
 	Route::get('/manage_report_jeffry', ['as' =>'jeffry.getReport', 'uses' => 'ReportingManagementController@view_reporting_mgmt_day']);
 	
+	//DASHBOARD
+	Route::get('/manage_dashboard_jeffry', ['as' =>'jeffry.getDashboard', 'uses' => 'DashboardsManagementController@view_dashboard_mgmt']);
 	
     // Review
     Route::get('/manage_review', function()

@@ -547,4 +547,45 @@ class OrdersController extends \BaseController {
 	}
 	*/
 	
+	/**
+	 * Display detail order for admin panel
+	 *
+	 * @param    
+	 * @return Response
+	 */
+	public function getDetail()
+	{
+		$id = Input::get('id');
+		$respond = array();
+		$order = Order::where('id','=',$id)->get();
+		if (count($order) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			foreach($order as $key)
+			{
+				$price = Price::where('id','=',$key->price_id)->first();
+				$key->attr_value = $price->attr_value;
+				$attr = Attribute::where('id','=',$price->attr_id)->first();
+				$key->attr_name = $attr->name;
+				$prod = Product::where('id','=',$price->product_id)->first();
+				$key->name_product = $prod->name;
+				$cat = Category::where('id','=',$prod->category_id)->first();
+				$key->ctgr = $cat->name;
+				$main_photo = Gallery::where('product_id','=',$prod->id)->where('type','=','main_photo')->first();
+				if(count($main_photo) == 0)
+				{
+					$phot = "";
+				}else
+				{
+					$phot = $main_photo->photo_path;
+				}
+				$key->phot = $phot;
+			}
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
+		}
+		return Response::json($respond);
+	}
 }

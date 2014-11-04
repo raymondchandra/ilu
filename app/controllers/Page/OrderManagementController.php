@@ -35,7 +35,7 @@ class OrderManagementController extends \BaseController
 			}else
 			{
 				$page = null;
-				$hasil = $hsl;
+				$hasil = null;
 			}
 			$filtered = 0;
 			return View::make('pages.admin.order.manage_order', compact('hasil', 'sortBy','sortType','page','filtered'));
@@ -44,11 +44,18 @@ class OrderManagementController extends \BaseController
 			$id = Input::get('id','-');
 			$invoice = Input::get('invoice','-');
 			$a = Input::get('purchasedOn','-');
-			$tahun = Carbon::parse($a)->format('Y');
-			//echo $tahun;
-			$bulan = Carbon::parse($a)->format('n');
-			$tanggal = Carbon::parse($a)->format('d');
-			$purchasedOn = $tahun.'-'.$bulan.'-'.$tanggal;
+			if($a == '')
+			{
+				$purchasedOn = '-';
+			}else
+			{
+				$tahun = Carbon::parse($a)->format('Y');
+				//echo $tahun;
+				$bulan = Carbon::parse($a)->format('n');
+				$tanggal = Carbon::parse($a)->format('d');
+				$purchasedOn = $tahun.'-'.$bulan.'-'.$tanggal;
+			}
+			
 			
 			$name = Input::get('name','-');
 			$nameProd = Input::get('nameProd','-');
@@ -69,7 +76,7 @@ class OrderManagementController extends \BaseController
 			
 			if($json2->{'code'} == "404")
 			{
-				$hasil = $json2;
+				$hasil = null;
 			}
 			else
 			{
