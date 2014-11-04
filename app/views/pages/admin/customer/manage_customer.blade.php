@@ -12,7 +12,7 @@
 				<span class="clearfix"></span>
 				<hr></hr>
 
-				@if(empty($profiles))
+				@if($profiles != null)
 				<div>
 					@if($filtered == 0)
 					
@@ -26,25 +26,26 @@
 								<th class="table-bordered">
 									<a href="javascript:void(0)">Member ID</a>
 									@if($filtered == 0)
-									
 										@if($sortBy == "member_id")
 											@if($sortType == "asc")
 												<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'member_id', 'order' => 'desc', 'page'=>  $page, 'filtered'=>'0'))}}">
-
 											@else
 												<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'member_id', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
 											@endif
 										@else
-											@if($sortBy == "member_id")
-												@if($sortType == "asc")
-													<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'member_id', 'order' => 'desc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email))}}">
-												@else
-													<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'member_id', 'order' => 'asc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email))}}">
-												@endif
+											<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'member_id', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+										@endif
+									@else
+										@if($sortBy == "member_id")
+											@if($sortType == "asc")
+												<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'member_id', 'order' => 'desc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email))}}">
 											@else
 												<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'member_id', 'order' => 'asc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email))}}">
 											@endif
+										@else
+											<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'member_id', 'order' => 'asc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email))}}">
 										@endif
+									@endif
 										<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 										</a>
 									</th>
@@ -166,9 +167,144 @@
 						</table>
 					</div>
 				@else
-					<div>
-						<p>Nothing to show</p>
-					</div>
+					@if($filtered == 0)
+						<div>
+							<p>Nothing to shows</p>
+						</div>
+					@else
+						<div>
+							<button class="btn btn-success backButton" style="float: left; margin-top: 20px; margin-left: 20px; margin-bottom: 20px" data-toggle="modal" data-target=".pop_up_add_attribute">Back
+							</button>
+							<table class="table table-striped table-hover table-condensed table-bordered">
+								<thead class="table-bordered">
+								<tr>
+									<th class="table-bordered">
+										<a href="javascript:void(0)">Member ID</a>
+										@if($filtered == 0)
+										
+											@if($sortBy == "member_id")
+												@if($sortType == "asc")
+													<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'member_id', 'order' => 'desc', 'page'=>  $page, 'filtered'=>'0'))}}">
+												@else
+													<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'member_id', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+												@endif
+											@else
+												<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'member_id', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+											@endif
+										@else
+											@if($sortBy == "member_id")
+												@if($sortType == "asc")
+													<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'member_id', 'order' => 'desc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email))}}">
+												@else
+													<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'member_id', 'order' => 'asc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email))}}">
+												@endif
+											@else
+												<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'member_id', 'order' => 'asc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email))}}">
+											@endif
+										@endif
+											<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+											</a>
+										</th>
+										<th class="table-bordered">
+											<a href="javascript:void(0)">Full Name</a>
+											@if($filtered == 0)
+												@if($sortBy == "full_name")
+													@if($sortType == "asc")
+														<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'full_name', 'order' => 'desc', 'page'=>  $page, 'filtered'=>'0'))}}">
+													@else
+														<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'full_name', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+													@endif
+												@else
+													<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'full_name', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+												@endif
+											@else
+												@if($sortBy == "full_name")
+													@if($sortType == "asc")
+														<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'full_name', 'order' => 'desc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email))}}">
+													@else
+														<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'full_name', 'order' => 'asc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email))}}">
+													@endif
+												@else
+													<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'full_name', 'order' => 'asc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email))}}">
+												@endif
+											@endif
+											<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+											</a>
+										</th>
+										<th class="table-bordered">
+											<a href="javascript:void(0)">Name in Profile</a>
+											@if($filtered == 0)
+												@if($sortBy == "name_in_profile")
+													@if($sortType == "asc")
+														<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'name_in_profile', 'order' => 'desc', 'page'=>  $page, 'filtered'=>'0'))}}">
+													@else
+														<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'name_in_profile', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+													@endif
+												@else
+													<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'name_in_profile', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+												@endif
+											@else
+												@if($sortBy == "name_in_profile")
+													@if($sortType == "asc")
+														<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'name_in_profile', 'order' => 'desc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email))}}">
+													@else
+														<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'name_in_profile', 'order' => 'asc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email))}}">
+													@endif
+												@else
+													<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'name_in_profile', 'order' => 'asc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email))}}">
+												@endif
+											@endif
+											<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+											</a>
+										</th>
+										<th class="table-bordered">
+											<a href="javascript:void(0)">Email</a>
+											@if($filtered == 0)
+												@if($sortBy == "email")
+													@if($sortType == "asc")
+														<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'email', 'order' => 'desc', 'page'=>  $page, 'filtered'=>'0'))}}">
+													@else
+														<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'email', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+													@endif
+												@else
+													<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'email', 'order' => 'asc', 'page'=>  $page, 'filtered'=>'0'))}}">
+												@endif
+											@else
+												@if($sortBy == "email")
+													@if($sortType == "asc")
+														<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'email', 'order' => 'desc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email))}}">
+													@else
+														<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'email', 'order' => 'asc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email))}}">
+													@endif
+												@else
+													<a href="{{action('CustomerManagementController@view_cust_mgmt', array('sortBy' => 'email', 'order' => 'asc', 'filtered'=>  $filtered, 'memberId'=>$memberId, 'namaFull'=>$fullName, 'namaProfile'=>$profileName, 'email'=>$email))}}">
+												@endif
+											@endif
+											<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+											</a>
+										</th>
+										<th class="table-bordered" width="480">
+										</th>
+									</tr>
+								</thead>
+								<thead>
+									<tr>
+										<td><input type="text" class="form-control input-sm filterMemberID"></td>
+										<td><input type="text" class="form-control input-sm filterFullName"></td>
+										<td><input type="text" class="form-control input-sm filterProfileName"></td>
+										<td><input type="text" class="form-control input-sm filterEmail"></td>
+										
+										<td width=""><a class="btn btn-primary btn-xs filterButton">Filter</a></td>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td colspan="5">Nothing to show</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					@endif
 				@endif
 			</div>
 		</div>

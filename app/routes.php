@@ -1,5 +1,5 @@
 <?php
-
+use Carbon\Carbon;
 Route::get('/tes', 'ProductsController@getAll');
 
 Route::get('/tes_messages/{id}', 'MessagesManagementController@get_one_message');
@@ -10,18 +10,38 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-		$id = '1';
 		$respond = array();
-		$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipments.id', '=', $id)->where('shipmentdatas.deleted', '=', '0')->get(array('shipments.id', 'shipments.number', 'shipmentdatas.courier', 'shipmentdatas.destination', 'shipmentdatas.price', 'transactions.status', 'profiles.full_name'));
-		if (count($shipment) == 0)
+		$report = Transaction::where('paid','=','1')->get();
+		$bulan = date('n') -5;
+		$tahun = date('Y');
+		$idx = 1;
+		$bulanAkhir = 6;
+		$hasil = array();
+		while($idx <= $bulanAkhir)
 		{
-			$respond = array('code'=>'404','status' => 'Not Found');
+			$tempHasil = 0;
+			$tempBulan = Carbon::parse($tahun."-".$bulan."-01")->format('n');
+			$tempBulanHsl = Carbon::parse($tahun."-".$bulan."-01")->format('F');
+			$tempTahun = Carbon::parse($tahun."-01-01")->format('Y');
+			foreach($report as $key)
+			{
+				$dd = $key->updated_at;
+				$tahunCek = Carbon::parse($dd)->format('Y');
+				$bulanCek = Carbon::parse($dd)->format('n');
+				if($tahunCek == $tempTahun)
+				{
+					if($bulanCek == $tempBulan)
+					{
+						$tempHasil = $tempHasil + $key->total_price;
+					}
+				}
+			}
+			$hasil[] = array('tanggal'=>$tempBulan, 'penjualan' => $tempHasil,'ket'=>'sixmonth','tgl'=>$tempBulanHsl.' '.$tempTahun);
+			$idx = $idx + 1;
+			$bulan = $bulan +1;
 		}
-		else
-		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipment);
-		}
-		echo $respond['messages'];
+		$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		echo $respond['status'];
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -411,6 +431,61 @@ Route::group(array('prefix' => 'test'), function()
     Route::get('/manage_cms', function()
 	{
 		return View::make('pages.admin.cms.manage_cms');
+	});
+
+
+
+
+
+
+    // Messages
+    Route::get('/manage_supporting_messages', function()
+	{
+		return View::make('pages.admin.messages.manage_supporting_messages');
+	});
+
+
+    // Messages
+    Route::get('/manage_ticketing', function()
+	{
+		return View::make('pages.admin.messages.manage_ticketing');
+	});
+
+
+
+
+
+
+
+    // email 00
+    Route::get('/email_00', function()
+	{
+		return View::make('pages.admin.email_template.forgot_password');
+	});
+    // email 01
+    Route::get('/email_01', function()
+	{
+		return View::make('pages.admin.email_template.message');
+	});
+    // email 02
+    Route::get('/email_02', function()
+	{
+		return View::make('pages.admin.email_template.new_registran');
+	});
+    // email 03
+    Route::get('/email_03', function()
+	{
+		return View::make('pages.admin.email_template.news');
+	});
+    // email 04
+    Route::get('/email_04', function()
+	{
+		return View::make('pages.admin.email_template.promo');
+	});
+    // email 05
+    Route::get('/email_05', function()
+	{
+		return View::make('pages.admin.email_template.voucher');
 	});
 
 

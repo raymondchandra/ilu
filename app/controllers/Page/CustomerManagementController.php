@@ -58,7 +58,7 @@ class CustomerManagementController extends \BaseController
 			$json = json_decode($profilesJson->getContent());
 			if($json->{'code'} == "404")
 			{
-				$profiles = $json;
+				$profiles = null;
 			}
 			else
 			{
