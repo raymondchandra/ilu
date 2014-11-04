@@ -412,5 +412,42 @@ Route::group(array('prefix' => 'test'), function()
 	});
 
 
+
+
+
+
+
+    // email 00
+    Route::get('/email_00', function()
+	{
+		return View::make('pages.admin.email_template.forgot_password');
+	});
+    // email 01
+    Route::get('/email_00', function()
+	{
+		return View::make('pages.admin.email_template.message');
+	});
+    // email 02
+    Route::get('/email_00', function()
+	{
+		return View::make('pages.admin.email_template.new_registran');
+	});
+    // email 03
+    Route::get('/email_00', function()
+	{
+		return View::make('pages.admin.email_template.news');
+	});
+    // email 04
+    Route::get('/email_00', function()
+	{
+		return View::make('pages.admin.email_template.promo');
+	});
+    // email 05
+    Route::get('/email_00', function()
+	{
+		return View::make('pages.admin.email_template.voucher');
+	});
+
+
 });
 
