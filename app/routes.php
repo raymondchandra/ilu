@@ -1,6 +1,8 @@
 <?php
-
+use Carbon\Carbon;
 Route::get('/tes', 'ProductsController@getAll');
+
+Route::get('/tes_messages/{id}', 'MessagesManagementController@get_one_message');
 
 Route::get('/tesview', function (){
 	return View::make('pages.admin.product.manage_product');
@@ -8,18 +10,38 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-		$id = '1';
 		$respond = array();
-		$shipment = Shipment::join('shipmentdatas', 'shipments.shipmentData_id', '=', 'shipmentdatas.id')->join('transactions', 'shipments.id', '=', 'transactions.shipment_id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->where('shipments.id', '=', $id)->where('shipmentdatas.deleted', '=', '0')->get(array('shipments.id', 'shipments.number', 'shipmentdatas.courier', 'shipmentdatas.destination', 'shipmentdatas.price', 'transactions.status', 'profiles.full_name'));
-		if (count($shipment) == 0)
+		$report = Transaction::where('paid','=','1')->get();
+		$bulan = date('n') -5;
+		$tahun = date('Y');
+		$idx = 1;
+		$bulanAkhir = 6;
+		$hasil = array();
+		while($idx <= $bulanAkhir)
 		{
-			$respond = array('code'=>'404','status' => 'Not Found');
+			$tempHasil = 0;
+			$tempBulan = Carbon::parse($tahun."-".$bulan."-01")->format('n');
+			$tempBulanHsl = Carbon::parse($tahun."-".$bulan."-01")->format('F');
+			$tempTahun = Carbon::parse($tahun."-01-01")->format('Y');
+			foreach($report as $key)
+			{
+				$dd = $key->updated_at;
+				$tahunCek = Carbon::parse($dd)->format('Y');
+				$bulanCek = Carbon::parse($dd)->format('n');
+				if($tahunCek == $tempTahun)
+				{
+					if($bulanCek == $tempBulan)
+					{
+						$tempHasil = $tempHasil + $key->total_price;
+					}
+				}
+			}
+			$hasil[] = array('tanggal'=>$tempBulan, 'penjualan' => $tempHasil,'ket'=>'sixmonth','tgl'=>$tempBulanHsl.' '.$tempTahun);
+			$idx = $idx + 1;
+			$bulan = $bulan +1;
 		}
-		else
-		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipment);
-		}
-		echo $respond['messages'];
+		$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		echo $respond['status'];
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 

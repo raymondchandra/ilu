@@ -16,6 +16,15 @@ class CreateInformationTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('title');
+			$table->integer('edited_by')->unsigned();
+			$table->timestamps();
+		});
+		
+		Schema::create('information_content', function(Blueprint $table)
+		{
+			$table->increments('id');
+			$table->integer('id_information')->unsigned();
+			$table->string('sub_title');
 			$table->longText('content');
 			$table->integer('edited_by')->unsigned();
 			$table->timestamps();

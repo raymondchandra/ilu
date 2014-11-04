@@ -77,7 +77,7 @@ class SeosController extends \BaseController {
 	 * @return Response
 	 */
 
-	public function getByName{$name}()
+	public function getByName($name)
 	{
 		$respond = array();
 		$seo = Seo::where('name','=',$name)->get();
@@ -179,7 +179,7 @@ class SeosController extends \BaseController {
 		{
 			try {
 				$seo->delete();
-				$respond = array('code'=>'204','status' => 'No Content');
+				$respond = array('code'=>'200','status' => 'Ok');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 			}
