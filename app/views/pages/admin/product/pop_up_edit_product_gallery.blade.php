@@ -17,7 +17,7 @@
 								<label class="col-sm-4 control-label">Product Image</label>
 								<div class="col-sm-5">
 									<img id="edit_show_main_photo" src="" width="200" height="200">
-									<input type="file"/>
+									{{ Form::file("edit_main_photo_input", array("name"=>"edit_main_photo_input","class"=>"edit_main_photo_input", "accept" => "image/*")) }}
 									<input id="edit_main_photo_id" type="hidden" value="" />
 								</div>
 							</div>
@@ -44,62 +44,85 @@
 							</table>
 						</div>
 						<script>
-						/*
-						Script untuk add baris produk
-						*/
-						$( '.f_edit_photo' ).on( "click", function() {
-							edit_arr_photos[edit_arr_photos.length] = edit_idx_photos_row;
-						
-							var text =' <tr>';						
-							text +=' <td><img src="" width="150" height="150" class="pull-right showImage'+edit_idx_photos_row+'" /></td>';
-							text +=' <td><input type="hidden" value="'+edit_idx_photos_row+'" /><input type="file" class="other_photos_input'+edit_idx_photos_row+' other_photos_change" accept="image/*" /></td>';						
-							text +=' <td><input type="hidden" value="'+edit_idx_photos_row+'"/><button type="button" class="btn btn-danger f_remove_edit_photo"><span class="glyphicon glyphicon-remove"></span></button></td>';
-							text +='</tr>';							
-							$('#product_photo_edit').append(text);
+							/*
+							Script untuk add baris produk
+							*/
+							$( '.f_edit_photo' ).on( "click", function() {
+								edit_arr_photos[edit_arr_photos.length] = edit_idx_photos_row;
 							
-							alert(edit_arr_photos);
-						});
-
-						/*
-						Script untuk remove baris produk
-						*/
-						$( 'body' ).on( "click",'.f_remove_edit_photo', function() {
-							// delete from arr_photos
-							$edit_id_del_photos = $(this).prev().val();
-							for($i = 0; $i < edit_arr_photos.length; $i++)
-							{
-								if(edit_arr_photos[$i] == $edit_id_del_photos)
-								{
-									edit_arr_photos[$i] = -1;
-								}
-							}
-							
-							$(this).parent().parent().hide(300, function(){ 
-								$(this).remove(); 
+								var text =' <tr>';						
+								text +=' <td><img src="" width="150" height="150" class="pull-right showImage'+edit_idx_photos_row+'" /></td>';
+								text +=' <td><input type="hidden" value="'+edit_idx_photos_row+'" /><input type="file" class="edit_other_photos_input'+edit_idx_photos_row+' edit_other_photos_change" accept="image/*" /></td>';						
+								text +=' <td><input type="hidden" value="" /><input type="hidden" value="'+edit_idx_photos_row+'"/><button type="button" class="btn btn-danger f_remove_edit_photo"><span class="glyphicon glyphicon-remove"></span></button></td>';
+								text +='</tr>';							
+								$('#product_photo_edit').append(text);
+								
+								edit_idx_photos_row++;
+								
+								alert(edit_arr_photos);
 							});
 							
-							alert(edit_arr_photos);
-						});
-						
-						$('body').on('change','.other_photos_change',function(){
-						var i = 0, len = this.files.length, img, reader, file;
-						var idx = $(this).prev().val();						
-							//document.getElementById("images").disabled = true;
-						for ( ; i < len; i++ ) {
-							file = this.files[i];
-							if (!!file.type.match(/image.*/)) {
-								if ( window.FileReader ) {
-									reader = new FileReader();
-									reader.onloadend = function (e) { 																														
-										$(' .showImage'+idx+' ').attr('src', e.target.result);
-									};
-									reader.readAsDataURL(file);
+							$('body').on('change','.edit_main_photo_input',function(){
+								var i = 0, len = this.files.length, img, reader, file;	
+								// alert($(this).prev().val());
+									//document.getElementById("images").disabled = true;
+								for ( ; i < len; i++ ) {
+									file = this.files[i];
+									if (!!file.type.match(/image.*/)) {
+										if ( window.FileReader ) {
+											reader = new FileReader();
+											reader.onloadend = function (e) { 										
+												$('#edit_show_main_photo').attr('src', e.target.result);																	
+											};
+											reader.readAsDataURL(file);
+										}
+										imageUpload = file;
+									}	
 								}
-								imageUpload = file;
-							}	
-						}
-					});	
-
+							});	
+							
+							/*
+							Script untuk remove baris produk
+							*/
+							$( 'body' ).on( "click",'.f_remove_edit_photo', function() {
+								// delete from arr_photos
+								$edit_id_del_photos = $(this).prev().val();
+								for($i = 0; $i < edit_arr_photos.length; $i++)
+								{
+									if(edit_arr_photos[$i] == $edit_id_del_photos)
+									{
+										edit_arr_photos[$i] = -1;
+									}
+								}
+								
+								edit_arr_delete[edit_arr_delete.length] = $(this).prev().prev().val();
+								
+								$(this).parent().parent().hide(300, function(){ 
+									$(this).remove(); 
+								});
+								
+								alert(edit_arr_delete);
+								alert(edit_arr_photos);
+							});
+							
+							$('body').on('change','.edit_other_photos_change',function(){
+								var i = 0, len = this.files.length, img, reader, file;
+								var idx = $(this).prev().val();						
+									//document.getElementById("images").disabled = true;
+								for ( ; i < len; i++ ) {
+									file = this.files[i];
+									if (!!file.type.match(/image.*/)) {
+										if ( window.FileReader ) {
+											reader = new FileReader();
+											reader.onloadend = function (e) { 																														
+												$(' .showImage'+idx+' ').attr('src', e.target.result);
+											};
+											reader.readAsDataURL(file);
+										}
+										imageUpload = file;
+									}	
+								}
+							});	
 						</script>
 
 					</div>
@@ -116,6 +139,70 @@
 
 <script>
 	$('body').on('click', '.editPhoto', function(){
+		var data, xhr;
+		data = new FormData();
 		
+		if($('.edit_main_photo_input').val() == "")
+		{
+			$main_photo = "";	
+		}		
+		else
+		{
+			$main_photo = $('.edit_main_photo_input')[0].files[0];
+		}		
+			data.append('edit_main_photo', $main_photo);	
+				
+		for($j=0; $j<edit_arr_photos.length; $j++){
+			if(edit_arr_photos[$j] != -1){	
+				if( $(' .edit_other_photos_input'+edit_arr_photos[$j]+' ').val() != "")
+				{
+					//edit yg sebelomnya udh ada
+					if( $(' .edit_other_photos_input'+edit_arr_photos[$j]+' ').parent().next()[0].val() != "")
+					{
+						// edit_arr_id[edit_arr_id.length] = ;//id
+						// edit_arr_files[edit_arr_files.length] = ;//nama selector
+					}
+					
+					data.append((edit_temp_name_other_photos+edit_temp_idx_other_photos), $(' .edit_other_photos_input'+edit_arr_photos[$j]+' ')[0].files[0] );				
+			
+					edit_array_input_other_photos[edit_array_input_other_photos.length] = (edit_temp_name_other_photos+edit_temp_idx_other_photos);
+					edit_temp_idx_other_photos++;					
+				}
+			}
+		}
+			data.append('edit_other_photos_name', edit_array_input_other_photos);
+			
+		data.append('edit_arr_delete', edit_arr_delete)	;
+			
+		$.ajax({
+			type: 'POST',
+			url: "{{URL('admin/product/editGallery')}}",						
+			// data: {
+				// json: JSON.stringify({'json_data' : data})				
+				// 'json_data' : JSON.stringify(data)
+			// },
+			data: data,
+			cache: false,
+			processData: false,
+			contentType: false,	
+			// dataType: 'json',
+			success: function(response){			
+				result = JSON.parse(response);
+				if(result.code == 200)
+				{	
+					alert(result.status);
+					location.reload();					
+				}
+				else
+				{
+					alert(result.status);
+					alert(result.messages);
+				}				
+			},
+			error:function(errorThrown){
+				alert('errror loh');
+				alert(errorThrown);
+			}
+		},'json');	
 	});
 </script>

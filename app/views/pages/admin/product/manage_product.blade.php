@@ -32,6 +32,15 @@
 	
 	var edit_arr_photos = new Array();
 	var edit_idx_photos_row = 1;
+	
+	var edit_array_input_other_photos = new Array();
+	var edit_temp_name_other_photos = "edit_other_photos_";
+	var edit_temp_idx_other_photos = 1;	
+	
+	var edit_arr_id = new Array();
+	var edit_arr_files = new Array();
+	
+	var edit_arr_delete = new Array();
 </script>
 
 	<div class="container-fluid">
@@ -362,11 +371,21 @@
 			$id = $(this).prev().val();
 			
 				//refresh semua variable yang dipake buat editGallery
+				//global variabel buat edit photo
 				edit_main_photo = "";
 				arr_edit_other_photo = "";
 				
 				edit_arr_photos = new Array();
 				edit_idx_photos_row = 1;
+				
+				edit_array_input_other_photos = new Array();
+				edit_temp_name_other_photos = "edit_other_photos_";
+				edit_temp_idx_other_photos = 1;	
+								
+				edit_arr_id = new Array();
+				edit_arr_files = new Array();
+				
+				edit_arr_delete = new Array();					
 				
 				//set value di pop up edit
 				$.ajax({
@@ -377,12 +396,16 @@
 						if(result.code==200){
 							$message = result.messages;														
 							// alert(JSON.stringify($message.main_photo_id));													
-							//set value di pop up edit	
-								//main_photo --> path main photo
-								//main_photo_id --> id main photo
-								//other_photos --> array other photos
-								
-							$('#edit_show_main_photo').attr('src', '../'+$message.main_photo );
+							//set value di pop up edit		
+							if($message.main_photo != "")
+							{
+								$('#edit_show_main_photo').attr('src', '../'+$message.main_photo );
+							}
+							else
+							{
+								$('#edit_show_main_photo').attr('src', '');
+							}
+							
 							$('#edit_main_photo_id').val($message.main_photo_id);
 							
 							arr_edit_other_photo = $message.other_photos;
@@ -403,8 +426,8 @@
 										{
 											text +=' <td><img src="" alt="no photos" width="150" height="150" class="pull-right showImage'+edit_idx_photos_row+'" /></td>';
 										}										
-										text +=' <td><input type="hidden" value="'+edit_idx_photos_row+'" /><input type="file" class="other_photos_input'+edit_idx_photos_row+' other_photos_change" accept="image/*" /></td>';						
-										text +=' <td><input type="hidden" value="'+edit_idx_photos_row+'"/><button type="button" class="btn btn-danger f_remove_edit_photo"><span class="glyphicon glyphicon-remove"></span></button></td>';
+										text +=' <td><input type="hidden" value="'+edit_idx_photos_row+'" /><input type="file" class="edit_other_photos_input'+edit_idx_photos_row+' edit_other_photos_change" accept="image/*" /></td>';						
+										text +=' <td><input type="hidden" value="'+$message.other_photos[$i]['id']+'" /><input type="hidden" value="'+edit_idx_photos_row+'"/><button type="button" class="btn btn-danger f_remove_edit_photo"><span class="glyphicon glyphicon-remove"></span></button></td>';
 									text +='</tr>';																
 									
 									edit_idx_photos_row++;

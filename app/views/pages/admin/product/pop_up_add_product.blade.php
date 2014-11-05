@@ -327,8 +327,14 @@
 		$deleted = 0;
 			data.append('deleted', $deleted);		
 			
-			
-		$main_photo = $('.main_photo_input')[0].files[0];
+		if($('.main_photo_input').val() == "")
+		{
+			$main_photo = "";	
+		}		
+		else
+		{
+			$main_photo = $('.main_photo_input')[0].files[0];
+		}		
 			data.append('main_photo', $main_photo);
 		
 		// var array_input_other_photos = new Array();

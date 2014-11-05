@@ -250,10 +250,10 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		// Route::post('/tax/addTax', ['as' => 'tax.addTax', 'uses' => 'TaxesController@addTax']);			
 	
 	//product 
-		Route::get('/product', ['as' => 'product' , 'uses' => 'ProductsController@view_main_product']);
-		Route::get('/product/{id}', ['as' => 'product_detail' , 'uses' => 'ProductsController@view_detail_product']);
+		// Route::get('/product', ['as' => 'product' , 'uses' => 'ProductsController@view_main_product']);
+		// Route::get('/product/{id}', ['as' => 'product_detail' , 'uses' => 'ProductsController@view_detail_product']);
 		
-		Route::get('/filter', ['as' => 'admin.filter' , 'uses' => 'ProductsController@coba_sort']);
+		// Route::get('/filter', ['as' => 'admin.filter' , 'uses' => 'ProductsController@coba_sort']);
 	
     //transaction
 
