@@ -68,19 +68,19 @@
 						<div class="pull-left" style="width:76%; padding-left:20px; padding-right: 20px;border: 1px solid #676767 !important;">
 							<div class="tab-content">
 								<div role="tabpanel" class="tab-pane fade in active" id="0">
-									@include('pages.admin.cms.pop_up_edit_company_info')							
+									@include('pages.admin.cms.edit_company_info')							
 								</div>
 								<div role="tabpanel" class="tab-pane fade" id="1">
-									@include('pages.admin.cms.pop_up_edit_seo')							
+									@include('pages.admin.cms.edit_seo')							
 								</div>
 								<div role="tabpanel" class="tab-pane fade" id="2">
-									@include('pages.admin.cms.pop_up_edit_informasi')							
+									@include('pages.admin.cms.edit_informasi')							
 								</div>
 								<div role="tabpanel" class="tab-pane fade" id="3">
-									@include('pages.admin.cms.pop_up_edit_news')							
+									@include('pages.admin.cms.edit_news')							
 								</div>
 								<div role="tabpanel" class="tab-pane fade" id="4">
-									@include('pages.admin.cms.pop_up_edit_slideshow')							
+									@include('pages.admin.cms.edit_slideshow')							
 								</div>
 							</div>
 						</div>

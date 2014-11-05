@@ -28,7 +28,7 @@
 								</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody class="f_tbody_slideshow">
 							<tr>
 								<td>
 									Page
@@ -65,7 +65,7 @@
 								<div class="form-group" id="nama_edit_cont_info">
 									<label class="col-sm-4 control-label">Caption</label>
 									<div class="col-sm-7">
-										<input type="text" class="form-control" id="">
+										<input type="text" class="form-control" id="new_caption">
 									</div>
 								</div>
 
@@ -81,21 +81,46 @@
 
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
+								<button type="button" class="btn btn-success f_save_to_tbody" data-dismiss="modal">Save</button>
 								<button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
 							</div>
+							<script>
+							$('body').on('click','.f_save_to_tbody',function(){
+								var cap = $('#new_caption').val();
+									//alert(cap);
+								var tr = '<tr>';
+								tr += '<td>';
+								tr += ''+ cap +'';
+								tr += '</td>';
+								tr += '<td>';
+								tr += '	<img src="" width="160" height="120" alt=""/>';
+								tr += '</td>';
+								tr += '<td>';
+								tr += '	<button class="btn btn-warning" data-toggle="modal" data-target=".pop_up_edit_image">';
+								tr += '		Edit';
+								tr += '	</button>';
+								tr += '	<button class="btn btn-danger" data-toggle="modal" data-target=".pop_up_delete_image">';
+								tr += '		Delete';
+								tr += '	</button>';
+								tr += '</td>';
+								tr += '</tr>';
+
+								$('.f_tbody_slideshow').append(tr);
+
+							});
+							</script>
 						</div>
 					</div>
 				</div>
 			</div>			
 
-			<!-- modal add -->
+			<!-- modal edit -->
 			<div class="modal fade pop_up_edit_image" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-							<h4 class="modal-title title1" id="myModalLabel">Add New Image</h4>
+							<h4 class="modal-title title1" id="myModalLabel">Edit New Image</h4>
 						</div>
 						<div class="form-horizontal" role="form">
 							<div class="modal-body">
