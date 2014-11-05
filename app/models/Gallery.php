@@ -5,7 +5,7 @@ class Gallery extends \Eloquent {
 	// Add your validation rules here
 	public static $rules = [
 		'product_id' => 'required|integer',
-		// 'photo_path' => 'required',
+		'photo_path' => 'required',
 		'type' => 'required'
 	];
 
