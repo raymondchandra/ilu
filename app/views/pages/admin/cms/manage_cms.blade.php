@@ -158,10 +158,11 @@
 					$($msgs).each(function(){
 						//alert($(this)[0].id);
 						div+="<tr>";
-						div+="<td>";
+						div+="<td class='news_title'>";
 						div+=$(this)[0].title;
 						div+="</td>";
 						div+="<td>";
+						div+="<input type='hidden' value='"+$(this)[0].id+"'>";
 						div+="<button type='button' class='btn btn-success view_detail' data-toggle='modal' data-target='.pop_up_edit_news'>Detail</button>";
 						div+="<input type='hidden' value='"+$(this)[0].description+"'>";
 						div+="</td>";

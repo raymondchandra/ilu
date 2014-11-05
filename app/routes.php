@@ -250,10 +250,10 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		// Route::post('/tax/addTax', ['as' => 'tax.addTax', 'uses' => 'TaxesController@addTax']);			
 	
 	//product 
-		Route::get('/product', ['as' => 'product' , 'uses' => 'ProductsController@view_main_product']);
-		Route::get('/product/{id}', ['as' => 'product_detail' , 'uses' => 'ProductsController@view_detail_product']);
+		// Route::get('/product', ['as' => 'product' , 'uses' => 'ProductsController@view_main_product']);
+		// Route::get('/product/{id}', ['as' => 'product_detail' , 'uses' => 'ProductsController@view_detail_product']);
 		
-		Route::get('/filter', ['as' => 'admin.filter' , 'uses' => 'ProductsController@coba_sort']);
+		// Route::get('/filter', ['as' => 'admin.filter' , 'uses' => 'ProductsController@coba_sort']);
 	
     //transaction
 
@@ -278,8 +278,11 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
     	Route::post('/seo', ['as' => 'add.seo' , 'uses' => 'SeosController@insert']);
     	Route::put('/seo/{id}', ['as' => 'edit.seo' , 'uses' => 'SeosController@updateFull']);
     	Route::delete('/seo/{id}', ['as' => 'delete.seo' , 'uses' => 'SeosController@delete']);
+		
 	//news management
 		Route::get('/news', ['as' => 'get.news' , 'uses' => 'NewsManagementController@getNews']);
+		Route::post('/news', ['as' => 'post.news' , 'uses' => 'NewsManagementController@postNews']);
+		Route::put('/news/{id}', ['as' => 'put.news' , 'uses' => 'NewsManagementController@updateNews']);
 	
     //supportMsg
 		Route::get('/supportMsg/{ticket_id}', ['as' => 'get.supportMsg.ticket' , 'uses' => 'SupportMsgsController@getByTicket']);
