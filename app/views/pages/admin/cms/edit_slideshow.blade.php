@@ -5,12 +5,9 @@
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 				<h4 class="modal-title" id="myModalLabel">Edit SEO</h4>
 			</div>-->
-			<h3 class="pull-left">
-				Slideshow
+			<h3>
+				Slideshow <button id="f_add_informasi" class="btn btn-success pull-right" style="margin-bottom: 20px;" data-toggle="modal" data-target=".pop_up_new_image">+ Add New Image</button>
 			</h3>
-			<button class="btn btn-success pull-right" style="margin-top: 20px;" data-toggle="modal" data-target=".pop_up_new_image">
-				+ Add New Image
-			</button>
 			<span class="clear-fix">
 			</span>
 
