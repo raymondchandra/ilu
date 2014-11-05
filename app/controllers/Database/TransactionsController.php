@@ -1253,7 +1253,7 @@ class TransactionsController extends \BaseController {
 					}
 				}
 			}
-			$hasil[] = array('tanggal'=>$tempBulan, 'penjualan' => $tempHasil,'ket'=>'sixmonth','tgl'=>$tempBulanHsl.' '.$tempTahun);
+			$hasil[] = array('tanggal'=>$tempBulanHsl, 'penjualan' => $tempHasil,'ket'=>'sixmonth','bulan'=>$tempBulanHsl.' '.$tempTahun);
 			$idx = $idx + 1;
 			$bulan = $bulan +1;
 		}
