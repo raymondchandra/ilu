@@ -55,13 +55,15 @@
 							<ul class="nav nav-tabs" role="tablist" style="border: 0px;">
 								<li role="presentation" class="active pull-right"><a href="#0" role="tab" data-toggle="tab" style="">Company Info</a></li>
 								<span class="clearfix "></span>
-								<li role="presentation" class="pull-right"><a href="#1" role="tab" data-toggle="tab" style="">SEO</a></li>
+								<li role="presentation" class="pull-right"><a href="#1" role="tab" data-toggle="tab" style="">Bank</a></li>
 								<span class="clearfix "></span>
-								<li role="presentation" class="pull-right"><a href="#2" role="tab" data-toggle="tab" style="">Informasi</a></li>
+								<li role="presentation" class="pull-right"><a href="#2" role="tab" data-toggle="tab" style="">SEO</a></li>
 								<span class="clearfix "></span>
-								<li role="presentation" class="pull-right"><a href="#3" id='cms_news' role="tab" data-toggle="tab" style="">News</a></li>
+								<li role="presentation" class="pull-right"><a href="#3" role="tab" data-toggle="tab" style="">Informasi</a></li>
 								<span class="clearfix "></span>
-								<li role="presentation" class="pull-right"><a href="#4" id='' role="tab" data-toggle="tab" style="">Slideshow</a></li>
+								<li role="presentation" class="pull-right"><a href="#4" id='cms_news' role="tab" data-toggle="tab" style="">News</a></li>
+								<span class="clearfix "></span>
+								<li role="presentation" class="pull-right"><a href="#5" id='cms_slideshow' role="tab" data-toggle="tab" style="">Slideshow</a></li>
 							</ul>
 						</div>
 						<!-- Tab panes -->
@@ -71,15 +73,18 @@
 									@include('pages.admin.cms.edit_company_info')							
 								</div>
 								<div role="tabpanel" class="tab-pane fade" id="1">
-									@include('pages.admin.cms.edit_seo')							
+									@include('pages.admin.cms.edit_bank_info')						
 								</div>
 								<div role="tabpanel" class="tab-pane fade" id="2">
-									@include('pages.admin.cms.edit_informasi')							
+									@include('pages.admin.cms.edit_seo')							
 								</div>
 								<div role="tabpanel" class="tab-pane fade" id="3">
-									@include('pages.admin.cms.edit_news')							
+									@include('pages.admin.cms.edit_informasi')							
 								</div>
 								<div role="tabpanel" class="tab-pane fade" id="4">
+									@include('pages.admin.cms.edit_news')							
+								</div>
+								<div role="tabpanel" class="tab-pane fade" id="5">
 									@include('pages.admin.cms.edit_slideshow')							
 								</div>
 							</div>
@@ -175,6 +180,43 @@
 					alert(errorThrown);
 				}
 			})
+		});
+		
+		$('body').on('click','#cms_slideshow',function(){
+			$.ajax({
+				type: 'GET',
+				url: "{{URL('admin/slideshow')}}",
+				success: function(response){
+					if(response.code == 404){
+						
+					}
+					else{
+						var msgs = response.messages;
+						var div = '';
+						$(msgs).each(function(){
+							div+="<tr>";
+							div+="<td class='photo_preview'>";
+							div+="<img src='"+$(this)[0].photo_path+"' class='preview_image' width='160' height='120' alt=''/>";
+							div+="</td>";
+							div+="<td>";
+							div+="<button class='btn btn-warning edit_slideshow' data-toggle='modal' data-target='.pop_up_edit_image'>";
+							div+="Edit";
+							div+="</button>";
+							div+="<input type='hidden' value='"+$(this)[0].id+"' />";
+							div+="<button class='btn btn-danger delete_slideshow' data-toggle='modal' data-target='.pop_up_delete_image'>";
+							div+="Delete";
+							div+="</button>";
+							div+="</td>";
+							div+="</tr>";
+						});
+						$('.f_tbody_slideshow').html(div);
+					}
+					
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					alert(errorThrown);
+				}
+			});
 		});
 	</script>
 

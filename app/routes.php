@@ -270,9 +270,10 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
     	Route::post('/sendnewsletter', ['as' => 'send.newsletter' , 'uses' => 'TemplatesController@sendNewsletter']);
     	Route::delete('/newsletter/{id}', ['as' => 'delete.newsletter' , 'uses' => 'TemplatesController@delete']);
     //slideshow
-    	Route::post('/postSlideShow', ['as' => 'add.slideshow' , 'uses' => 'GalleryController@upload_slideshow']);
-    	Route::post('/editSlideShow', ['as' => 'edit.slideshow' , 'uses' => 'GalleryController@update_slideshow']);
-    	Route::delete('/slideshow/{id}', ['as' => 'delete.slideshow' , 'uses' => 'GalleryController@delete']);
+		Route::get('/slideshow', ['as' => 'get.slideshow' , 'uses' => 'SlideshowManagementController@get_all_slideshow']);
+		Route::post('/slideshow', ['as' => 'post.slideshow' , 'uses' => 'SlideshowManagementController@insert']);
+		Route::post('/slideshow/{id}', ['as' => 'post.slideshow' , 'uses' => 'SlideshowManagementController@update']);
+		Route::delete('/slideshow/{id}', ['as' => 'delete.slideshow' , 'uses' => 'SlideshowManagementController@delete']);
     //seo
 		Route::get('/seo', ['as' => 'get.seo' , 'uses' => 'SeosController@getAll']);
     	Route::post('/seo', ['as' => 'add.seo' , 'uses' => 'SeosController@insert']);
@@ -288,6 +289,51 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		Route::get('/supportMsg/{ticket_id}', ['as' => 'get.supportMsg.ticket' , 'uses' => 'SupportMsgsController@getByTicket']);
 		Route::post('/supportMsg', ['as' => 'add.supportMsg' , 'uses' => 'SupportMsgsController@insert']);
 
+		
+		
+	//SHIPPING
+	Route::get('/manage_shipping', ['as'=>'jeffry.getShipping', 'uses' => 'ShippingManagementController@view_shipping_mgmt']);
+	
+	Route::get('/get_detail_shipment', ['as'=>'jeffry.getDetailShip','uses' => 'ShipmentsController@getById']);
+	
+	Route::put('/put_status_shipment' , ['as'=>'jeffry.putStatusShipment','uses' => 'ShipmentsController@updateStatus']);
+	
+	//SHIPPING AGENT
+	Route::get('/manage_shipping_agent', ['as'=>'jeffry.getShippingAgent','uses' => 'ShippingAgentManagementController@view_shipping_agent_mgmt']);
+	
+	Route::get('/get_detail_shipment_agent', ['as'=>'jeffry.getDetailShipAgent','uses' => 'ShipmentDatasController@getById']);
+	
+	Route::delete('/delete_shipment_agent', ['as' => 'jeffry.deleteShipmentAgent' , 'uses' => 'ShipmentDatasController@delete']);
+	
+	Route::post('/add_shipment_agent', ['as' => 'jeffry.addShipmentAgent' , 'uses' => 'ShipmentDatasController@insert']);
+	
+	Route::post('/add_shipment_agent_excel', ['as' => 'jeffry.addShipmentAgentExcel' , 'uses' => 'ShipmentDatasController@insertExcel']);
+	
+	Route::put('/put_price_shipment_agent' , ['as'=>'jeffry.putPriceShipAgent','uses' => 'ShipmentDatasController@updatePrice']);
+	
+	//TRANSAKSI
+	Route::get('/manage_transaction', ['as'=>'jeffry.getTransaction', 'uses' => 'TransactionManagementController@view_transaction_mgmt']);
+	
+	Route::get('/get_detail_transaction', ['as'=>'jeffry.getDetailTransaction','uses' => 'TransactionsController@getDetail']);
+	
+	Route::put('/put_status_transaction' , ['as'=>'jeffry.putStatusTransaction','uses' => 'TransactionsController@updateStatus']);
+	
+	Route::put('/put_paid_transaction' , ['as'=>'jeffry.putPaidTransaction','uses' => 'TransactionsController@updatePaid']);
+	
+	Route::put('/put_shippingNumber_transaction' , ['as'=>'jeffry.putShippingNumberTransaction','uses' => 'ShipmentsController@updateResiNumber']);
+	
+	//ORDER
+	Route::get('/manage_order', ['as' =>'jeffry.getOrder', 'uses' => 'OrderManagementController@view_order_mgmt']);
+	
+	Route::put('/put_status_order' , ['as'=>'jeffry.putStatusOrder','uses' => 'OrdersController@updateStatus']);
+	
+	Route::get('/manage_order_detail', ['as' =>'jeffry.getOrderDetail', 'uses' => 'OrdersController@getDetail']);
+	
+	//REPORT
+	Route::get('/manage_report', ['as' =>'jeffry.getReport', 'uses' => 'ReportingManagementController@view_reporting_mgmt_day']);
+	
+	//DASHBOARD
+	Route::get('/manage_dashboard', ['as' =>'jeffry.getDashboard', 'uses' => 'DashboardsManagementController@view_dashboard_mgmt']);
 
 });
 
@@ -407,49 +453,7 @@ Route::group(array('prefix' => 'test'), function()
 	
 	Route::get('/filter_cust_mgmt', ['as'=>'david.getFilteredCustomer','uses' => 'ProfilesController@myGetById']);
 	
-	//SHIPPING
-	Route::get('/manage_shipping_jeffry', ['as'=>'jeffry.getShipping', 'uses' => 'ShippingManagementController@view_shipping_mgmt']);
 	
-	Route::get('/get_detail_shipment', ['as'=>'jeffry.getDetailShip','uses' => 'ShipmentsController@getById']);
-	
-	Route::put('/put_status_shipment' , ['as'=>'jeffry.putStatusShipment','uses' => 'ShipmentsController@updateStatus']);
-	
-	//SHIPPING AGENT
-	Route::get('/manage_shipping_agent_jeffry', ['as'=>'jeffry.getShippingAgent','uses' => 'ShippingAgentManagementController@view_shipping_agent_mgmt']);
-	
-	Route::get('/get_detail_shipment_agent', ['as'=>'jeffry.getDetailShipAgent','uses' => 'ShipmentDatasController@getById']);
-	
-	Route::delete('/delete_shipment_agent', ['as' => 'jeffry.deleteShipmentAgent' , 'uses' => 'ShipmentDatasController@delete']);
-	
-	Route::post('/add_shipment_agent', ['as' => 'jeffry.addShipmentAgent' , 'uses' => 'ShipmentDatasController@insert']);
-	
-	Route::post('/add_shipment_agent_excel', ['as' => 'jeffry.addShipmentAgentExcel' , 'uses' => 'ShipmentDatasController@insertExcel']);
-	
-	Route::put('/put_price_shipment_agent' , ['as'=>'jeffry.putPriceShipAgent','uses' => 'ShipmentDatasController@updatePrice']);
-	
-	//TRANSAKSI
-	Route::get('/manage_transaction_jeffry', ['as'=>'jeffry.getTransaction', 'uses' => 'TransactionManagementController@view_transaction_mgmt']);
-	
-	Route::get('/get_detail_transaction', ['as'=>'jeffry.getDetailTransaction','uses' => 'TransactionsController@getDetail']);
-	
-	Route::put('/put_status_transaction' , ['as'=>'jeffry.putStatusTransaction','uses' => 'TransactionsController@updateStatus']);
-	
-	Route::put('/put_paid_transaction' , ['as'=>'jeffry.putPaidTransaction','uses' => 'TransactionsController@updatePaid']);
-	
-	Route::put('/put_shippingNumber_transaction' , ['as'=>'jeffry.putShippingNumberTransaction','uses' => 'ShipmentsController@updateResiNumber']);
-	
-	//ORDER
-	Route::get('/manage_order_jeffry', ['as' =>'jeffry.getOrder', 'uses' => 'OrderManagementController@view_order_mgmt']);
-	
-	Route::put('/put_status_order' , ['as'=>'jeffry.putStatusOrder','uses' => 'OrdersController@updateStatus']);
-	
-	Route::get('/manage_order_detail_jeffry', ['as' =>'jeffry.getOrderDetail', 'uses' => 'OrdersController@getDetail']);
-	
-	//REPORT
-	Route::get('/manage_report_jeffry', ['as' =>'jeffry.getReport', 'uses' => 'ReportingManagementController@view_reporting_mgmt_day']);
-	
-	//DASHBOARD
-	Route::get('/manage_dashboard_jeffry', ['as' =>'jeffry.getDashboard', 'uses' => 'DashboardsManagementController@view_dashboard_mgmt']);
 	
     // Review
     Route::get('/manage_review', function()

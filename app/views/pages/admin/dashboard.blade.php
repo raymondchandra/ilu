@@ -119,7 +119,9 @@
 											<tr>
 												<td>
 													<input type="hidden" id = "idProd" value="{{$key->idProd}}" />
-													{{$key->product_name}}
+													<a class="detailButtonInfo" data-toggle="modal" data-target=".pop_up_edit_product" href="javascript:void(0)">
+														{{$key->product_name}}
+													</a>
 												</td>
 											</tr>
 										@endforeach
@@ -155,7 +157,9 @@
 											<tr>
 												<td>
 													<input type="hidden" id = "idProf" value="{{$key->account_id}}" />
-													{{$key->account_name}}
+													<a id="profilebutton" href="javascript:void(0)" data-toggle="modal" data-target=".pop_up_view_customer"> 
+														{{$key->account_name}}
+													</a>
 												</td>
 											</tr>
 										@endforeach
@@ -224,7 +228,115 @@
 	</div>
 	
 	@include('includes.modals.alertYesNo')	
-	@include('pages.admin.cms.pop_up_edit_company_info')
-	@include('pages.admin.cms.pop_up_edit_seo')
-	
+	@include('pages.admin.pop_up_view_customer')
+	@include('pages.admin.pop_up_edit_product')
+	<script>
+		//detail customer
+		$('body').on('click','#profilebutton',function(){
+		$id = $(this).prev().val();
+		$nama = $('#profilebutton').html();
+		$('.title1').html("Data Customer Dari " + $nama);
+		$('#custName').html("");
+		$('#custProfileName').html("");
+		$('#custMemberID').html("");
+		$('#custKTP').html("");
+		$('#custEmail').html("");
+		$('#custBirthDate').html("");
+		$('#custCompany').html("");
+		$('#custCompanyAddress').html("");
+		$('#custCompanyAddress').html("");
+		$('#custMemberDate').html("");
+		$('#something_hidden').val($id);
+		$('#voucher_list').html("");
+		$.ajax({
+				type: 'GET',
+				url: '{{URL::route('david.getProfDet')}}',
+				data: {	
+					"id": $id
+				},
+				success: function(response){
+					if(response['code'] == '404')
+					{
+						//$('#belanjaHistoryContent').append("<td>transaction history tidak ditemukan</td>");
+						alert('failed');
+					}
+					else
+					{
+						$('#custName').html(response['messages'].full_name);
+						$('#custProfileName').html(response['messages'].name_in_profile);
+						$('#custMemberID').html(response['messages'].member_id);
+						$('#custKTP').html(response['messages'].no_ktp);
+						$('#custEmail').html(response['messages'].email);
+						$('#custBirthDate').html(response['messages'].dob);
+						$('#custCompany').html(response['messages'].company_name);
+						$('#custCompanyAddress').html(response['messages'].company_address);
+						$('#custCompanyAddress').html(response['messages'].company_address);
+						$('#custMemberDate').html(response['messages'].created_at);
+						//ajax buat voucher
+						
+						$.ajax({
+							type: 'GET',
+							url: '{{URL::route('david.getVoucherList')}}',
+							data: {	
+								"acc_id": $id
+							},
+							success: function(response){
+								if(response['code'] == '404')
+								{
+									$data = "<tr><td>Voucher List Not Found</td></tr>"
+									$('#voucher_list').append($data);
+								}
+								else
+								{
+									
+									$.each(response['messages'], function( i, resp ) {
+										$data = "<tr><td>";
+										$data = $data + resp.type + "</td><td>";
+										$data = $data + "IDR " + resp.amount + "</td><td>";
+										$data = $data + resp.code + "</td><td></tr>";
+										$('#voucher_list').append($data);
+									
+									});
+								}
+							},error: function(xhr, textStatus, errorThrown){
+								alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+								alert("responseText: "+xhr.responseText);
+							}
+						},'json');
+						//end ajax buat voucher
+					}
+				},error: function(xhr, textStatus, errorThrown){
+					alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+					alert("responseText: "+xhr.responseText);
+				}
+			},'json');
+		});
+		//detail product
+		$('body').on('click', '.detailButtonInfo', function(){
+			$id = $(this).prev().val();								
+				//set value di pop up edit
+				$.ajax({
+					type: 'GET',
+					url: "{{URL('admin/product')}}/"+$id,
+					success: function(response){
+						result = JSON.parse(response);
+						if(result.code==200){
+							$message = result.messages;
+							//set value di pop up edit						
+							$('#edit_id').text($message.id);
+							$('#edit_product_no').text($message.product_no);
+							$('#edit_name').text($message.name);
+							$('#edit_description').text($message.description);
+							$('#edit_category_id').text($message.category_name);						
+							$('#edit_category_id_input').val($message.category_id);
+							$('#edit_promotion_id').text($message.promotion_name);						
+							$('#edit_promotion_id_input').val($message.promotion_id);
+						}					
+					},
+					error: function(jqXHR, textStatus, errorThrown){
+						alert(errorThrown);
+					}
+				},'json');
+		});
+	</script>
 @stop

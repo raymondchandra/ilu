@@ -23,6 +23,9 @@ class ReportingManagementController extends \BaseController
 			$d1 = Input::get('date1');
 			$d2 = Input::get('date2');
 			$json = $shp->getRangeReport($d1,$d2);
+		}else if($rpt == 'sixMonth')
+		{
+			$json = $shp->getHalfYearReport();
 		}
 
 		$hsl = json_decode($json->getContent());

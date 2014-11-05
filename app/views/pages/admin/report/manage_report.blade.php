@@ -12,6 +12,7 @@
 				<a href="{{action('ReportingManagementController@view_reporting_mgmt_day', array('reportBy' => 'day'))}}" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Day</a>
 				<a href="{{action('ReportingManagementController@view_reporting_mgmt_day', array('reportBy' => 'week'))}}" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Week</a>
 				<a href="{{action('ReportingManagementController@view_reporting_mgmt_day', array('reportBy' => 'month'))}}" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Month</a>
+				<a href="{{action('ReportingManagementController@view_reporting_mgmt_day', array('reportBy' => 'sixMonth'))}}" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By 6 Month</a>
 				<a href="{{action('ReportingManagementController@view_reporting_mgmt_day', array('reportBy' => 'year'))}}" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Year</a>
 				<!--<a href="{{ URL::to('test/manage_shipping_agent') }}" class="btn btn-default" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping Agent</a>-->
 			</div>
@@ -46,6 +47,9 @@
 						}else if(d == 'range')
 						{
 							e = 'Report By Range';
+						}else if(d == 'sixmonth')
+						{
+							e = 'Report By Six Month';
 						}
 						b = b.split(",");
 						$('#container').highcharts({
@@ -130,6 +134,9 @@
 						@elseif($key->ket == 'year' || $key->ket == 'range')
 							<td>{{$key->tanggal}}</td>
 							<td>{{$key->penjualan}}</td>
+						@elseif($key->ket == 'sixmonth')
+							<td>{{$key->bulan}}</td>
+							<td>{{$key->penjualan}}</td>
 						@endif
 					</tr> 
 				@endforeach
@@ -145,7 +152,7 @@
 				if($i == 0)
 				{
 					$str = $str.$key->penjualan ;
-					if($key->ket == 'day' || $key->ket == 'month' || $key->ket == 'year'|| $key->ket == 'range')
+					if($key->ket == 'day' || $key->ket == 'month' || $key->ket == 'year'|| $key->ket == 'range' || $key->ket == 'sixmonth' )
 					{
 						$str2 = $str2.$key->tanggal ;
 					}else if($key->ket == 'week')
@@ -155,7 +162,7 @@
 				}else
 				{
 					$str = $str.','.$key->penjualan ;
-					if($key->ket == 'day'  || $key->ket == 'month' || $key->ket == 'year' || $key->ket == 'range')
+					if($key->ket == 'day'  || $key->ket == 'month' || $key->ket == 'year' || $key->ket == 'range' || $key->ket == 'sixmonth' )
 					{
 						$str2 = $str2.','.$key->tanggal ;
 					}else if($key->ket == 'week')

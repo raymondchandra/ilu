@@ -4,7 +4,7 @@ class GalleriesController extends \BaseController {
 	
 	public function w_insert()
 	{
-		$json = Input::get('json_data');
+		/*$json = Input::get('json_data');
 		$decode = json_decode($json);
 		
 		$product_id = $decode->{'product_id'};
@@ -17,8 +17,73 @@ class GalleriesController extends \BaseController {
 					'type' => $type
 		);
 		
-		return $this->insert($input);
-	}	
+		return $this->insert($input);*/
+		
+		
+		
+	}
+	
+	public function insert_slideshow(){
+		if(Input::hasFile('image')){
+			$gallery = new Gallery();
+			$gallery->type='slideshow';
+			$gallery->product_id=NULL;
+			$gallery->save();
+			
+			$photo = Input::file('image');
+			
+			$destination = 'assets/file_upload/slideshow/'.$gallery->id.'/';
+			
+			$gallery->photo_path = asset($destination.$photo->getClientOriginalName());
+			$photo->move($destination, $photo->getClientOriginalName());
+			try{
+				$gallery->save();
+				$respond = array('code'=>'201','status' => 'Created');
+			}
+			catch(Exception $e){
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
+			return Response::json($respond);
+		}
+		else{
+			$respond = array('code'=>'404','status' => 'Not Found');
+			return Response::json($respond);
+		}
+	}
+	
+	public function update_slideshow($id){
+		if(Input::hasFile('image')){
+			$gallery = Gallery::find($id);
+			
+			$photo = Input::file('image');
+			
+			$destination = 'assets/file_upload/slideshow/'.$gallery->id.'/';
+			$old_path = $gallery->photo_path;
+			
+			try{
+				File::delete($old_path);
+			}
+			catch(Exception $e){
+			
+			}
+
+			$gallery->photo_path = asset($destination.$photo->getClientOriginalName());
+			$photo->move($destination, $photo->getClientOriginalName());
+			try{
+				$gallery->save();
+				$respond = array('code'=>'201','status' => 'Created');
+			}
+			catch(Exception $e){
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
+			return Response::json($respond);
+		}
+		else{
+			$respond = array('code'=>'404','status' => 'Not Found');
+			return Response::json($respond);
+		}
+	}
+	
 	public function insert($input)
 	{
 		// $input = json_decode(Input::all());
@@ -209,7 +274,7 @@ class GalleriesController extends \BaseController {
 				
 				File::delete($pathLama);
 
-				$respond = array('code'=>'204','status' => 'No Content');
+				$respond = array('code'=>'200','status' => 'OK');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 			}
@@ -280,7 +345,7 @@ class GalleriesController extends \BaseController {
 	}
 
 	//update foto slide
-	public function update_slideshow()
+	/*public function update_slideshow()
 	{	
 		$respond = array();
 		
@@ -320,7 +385,7 @@ class GalleriesController extends \BaseController {
 			
 		}
 		return Response::json($respond);
-	}
+	}*/
 	
 
 }
