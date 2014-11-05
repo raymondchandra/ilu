@@ -8,8 +8,8 @@
 				<h3 style="float: left;">
 					Manage Shipping
 				</h3>
-				<a href="{{ URL::to('/test/manage_shipping_jeffry') }}" class="btn btn-default" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping</a>
-				<a href="{{ URL::to('/test/manage_shipping_agent_jeffry') }}" class="btn btn-info" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping Agent</a>
+				<a href="{{ URL::to('/admin/manage_shipping') }}" class="btn btn-default" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping</a>
+				<a href="{{ URL::to('/admin/manage_shipping_agent') }}" class="btn btn-info" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping Agent</a>
 			</div>
 			<span class="clearfix"></span>
 			<hr></hr>
@@ -208,7 +208,7 @@
 											<td>{{$key->courier}}</td>
 											<td>{{$key->destination}}</td>
 											<td>{{$key->full_name}}</td>
-											<td>{{$key->price}}</td>
+											<td>IDR {{$key->price}}</p></td>
 											<td>{{$key->status}}</td>
 
 											<td>
@@ -464,6 +464,9 @@
 							$('.tujuan').text(response['messages'][0].destination);
 							$('.namaPenerima').text(response['messages'][0].full_name);
 							$('.hargaPengiriman').text(response['messages'][0].price);
+							$(document).ready(function(){
+								$('.hargaPengiriman').text(toRp($('.hargaPengiriman').text()));
+							});
 							$('#shipment_status').text(response['messages'][0].status);
 						}
 					},error: function(xhr, textStatus, errorThrown){
@@ -502,5 +505,22 @@
 					}
 				},'json');
 		});
+		
+			$(document).ready(function(){
+				$('#priceData').text(toRp($('#priceData').text()));
+			});
+		
+		function toRp(angka){
+		var rev     = parseInt(angka, 10).toString().split('').reverse().join('');
+		var rev2    = '';
+		for(var i = 0; i < rev.length; i++){
+			rev2  += rev[i];
+			if((i + 1) % 3 === 0 && i !== (rev.length - 1)){
+				rev2 += '.';
+			}
+		}
+		return 'IDR ' + rev2.split('').reverse().join('');
+		//return 'IDR ' + rev2.split('').reverse().join('') + ',00';
+	}
 	</script>
 	@stop

@@ -14,7 +14,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
-			<li><a href="#"><span class="glyphicon glyphicon-home" style="color:#fff; margin-right:10px;"></span>Dashboard</a></li>
+			<li><a href="{{ URL::to('admin/manage_dashboard') }}"><span class="glyphicon glyphicon-home" style="color:#fff; margin-right:10px;"></span>Dashboard</a></li>
 			
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book" style="color:#fff; margin-right:10px;"></span>Catalogue<span class="caret"></span></a>
@@ -29,6 +29,20 @@
 			</li>
 
 			<li><a href="{{ URL::to('admin/manage_reviews') }}"><span class="glyphicon glyphicon-home" style="color:#fff; margin-right:10px;"></span>Reviews</a></li>
+			
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-envelope" style="color:#fff; margin-right:10px;"></span>Shipping and Transaction<span class="caret"></span></a>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="{{ URL::to('admin/manage_shipping') }}"> Manage  Shipping</a></li>
+					<li><a href="{{ URL::to('admin/manage_shipping_agent') }}"> Manage Shipping Agent</a></li>	
+					<li class="divider"></li>
+					<li><a href="{{ URL::to('admin/manage_transaction') }}">Manage  Transaction</a></li>	
+					<li><a href="{{ URL::to('admin/manage_order') }}">Manage Order</a></li>	
+				</ul>
+			</li>
+			
+			
+			<li><a href="{{ URL::to('admin/manage_report') }}"><span class="glyphicon glyphicon-home" style="color:#fff; margin-right:10px;"></span>Report</a></li>
 			
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book" style="color:#fff; margin-right:10px;"></span>Customer<span class="caret"></span></a>
@@ -59,7 +73,7 @@
 					<li><a href="{{ URL::to('test/manage_ticketing') }}">Ticketing</a></li>
 				</ul>
 			</li>
-			<li><a href="#">Other Link</a></li>
+			
 			<li><a href="#">Other Link</a></li>
 		</ul>
     </div><!-- /.navbar-collapse -->
