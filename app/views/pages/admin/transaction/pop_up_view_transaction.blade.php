@@ -48,6 +48,7 @@
 								<div class="col-sm-3">
 									<button type="button" class="btn btn-warning" id="transaction_status_editor">Edit</button>
 									<input type="hidden" value="" id="idTrans">
+									<input type="hidden" value="" id="idShip">
 									<button type="button" class="btn btn-success hidden" id="transaction_status_setter">Set</button>
 									<script>
 									$( 'body' ).on( "click",'#transaction_status_editor', function() {
@@ -104,9 +105,34 @@
 
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Shipping Number</label>
-								<div class="col-sm-8">
+								<div class="col-sm-5">
 									<p class="form-control-static" id="idShipment"></p>
+									<input type="text" class="form-control hidden" id="idShipment_text">
 								</div>
+								<div class="col-sm-3">
+									<button type="button" class="btn btn-warning" id="transaction_sn_editor">Edit</button>
+									<button type="button" class="btn btn-success hidden" id="transaction_sn_setter">Set</button>
+									<script>
+									$( 'body' ).on( "click",'#transaction_sn_editor', function() {
+									var selectedSN = $('#idShipment').text();
+										$('#idShipment_text').val(selectedSN);
+										$('#idShipment_text').removeClass('hidden');
+										$('#transaction_sn_setter').removeClass('hidden');
+										$('#idShipment').addClass('hidden');
+										$('#transaction_sn_editor').addClass('hidden');
+									});
+
+									$( 'body' ).on( "click",'#transaction_sn_setter', function() {
+										var selectedSN = $('#idShipment_text').val();
+										$('#idShipment_text').addClass('hidden');
+										$('#transaction_sn_setter').addClass('hidden');
+										$('#idShipment').removeClass('hidden');
+										$('#transaction_sn_editor').removeClass('hidden');
+										$('#idShipment').text(selectedSN);
+									});
+									</script>
+								</div>
+								
 							</div>
 
 							<div class="form-group">

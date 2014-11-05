@@ -50,7 +50,7 @@
 
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Show</button>
+					<button type="button" id="rangeClick" class="btn btn-default" data-dismiss="modal">Show</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
 				</div>
 			</form>

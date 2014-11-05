@@ -1,6 +1,9 @@
 <?php
+use Carbon\Carbon;
+Route::get('/tes', 'ProductsController@getAll');
 
-Route::get('/tes', 'ProductsController@getById');
+Route::get('/tes_news', 'NewsManagementController@getNews');
+Route::get('/tes_news/{id}', 'NewsManagementController@getOneNews');
 
 Route::get('/tesview', function (){
 	return View::make('pages.admin.product.manage_product');
@@ -8,24 +11,38 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-
 		$respond = array();
-		$order = Order::all();
-		if (count($order) == 0)
+		$report = Transaction::where('paid','=','1')->get();
+		$bulan = date('n') -5;
+		$tahun = date('Y');
+		$idx = 1;
+		$bulanAkhir = 6;
+		$hasil = array();
+		while($idx <= $bulanAkhir)
 		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		else
-		{
-			foreach($order as $key)
+			$tempHasil = 0;
+			$tempBulan = Carbon::parse($tahun."-".$bulan."-01")->format('n');
+			$tempBulanHsl = Carbon::parse($tahun."-".$bulan."-01")->format('F');
+			$tempTahun = Carbon::parse($tahun."-01-01")->format('Y');
+			foreach($report as $key)
 			{
-				$key->transaction = Order::find($key->id)->transaction;
-				$key->acc_name = Account::find($key->transaction->account_id)->profile->full_name;				
-				$key->productName = Order::find($key->id)->price->product->name;
+				$dd = $key->updated_at;
+				$tahunCek = Carbon::parse($dd)->format('Y');
+				$bulanCek = Carbon::parse($dd)->format('n');
+				if($tahunCek == $tempTahun)
+				{
+					if($bulanCek == $tempBulan)
+					{
+						$tempHasil = $tempHasil + $key->total_price;
+					}
+				}
 			}
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
+			$hasil[] = array('tanggal'=>$tempBulan, 'penjualan' => $tempHasil,'ket'=>'sixmonth','tgl'=>$tempBulanHsl.' '.$tempTahun);
+			$idx = $idx + 1;
+			$bulan = $bulan +1;
 		}
-		echo $respond['messages'];
+		$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		echo $respond['status'];
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -139,22 +156,39 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	Route::post('/promotion/editFull', ['as' => 'promotion.editFull', 'uses' => 'PromotionsManagementController@editFull']);	
 	Route::delete('/promotion/deletePromotion', ['as' => 'promotion.deletePromotion', 'uses' => 'PromotionsManagementController@deletePromotion']);
 	
-	//-------------------------------------------PRODUCT VIEW ADMIN-------------------------------------------
-	Route::get('/manage_products', ['as' => 'viewProductsManagement', 'uses' => 'ProductsManagementController@view_admin_product']);	
-	Route::get('product/{id}', ['as' => 'product_detail', 'uses' => 'ProductsManagementController@view_detail_product']);
-	// Route::get('product/info/{id}', ['as' => 'product_detail_info', 'uses' => 'ProductsManagementController@view_detail_info']);
-	// Route::get('product/gallery/{id}', ['as' => 'product_detail_gallery', 'uses' => 'ProductsManagementController@view_detail_gallery']);
-	Route::post('/product/addProduct', ['as' => 'product.addProduct', 'uses' => 'ProductsManagementController@addProduct']);
-	// Route::post('/product/editInfo', ['as' => 'product.editInfo', 'uses' => 'ProductsManagementController@editInfo']);
-		Route::post('/product/editProductNo', ['as' => 'product.editProducyNo', 'uses' => 'ProductsManagementController@editProductNo']);
-		Route::post('/product/editName', ['as' => 'product.editName', 'uses' => 'ProductsManagementController@editName']);
-		Route::post('/product/editDescription', ['as' => 'product.editDescription', 'uses' => 'ProductsManagementController@editDescription']);
-		Route::post('/product/editCategoryId', ['as' => 'product.editCategoryId', 'uses' => 'ProductsManagementController@editCategoryId']);
-		Route::post('/product/editPromotionId', ['as' => 'product.editPromotionId', 'uses' => 'ProductsManagementController@editPromotionId']);
-		Route::post('/product/editPrice', ['as' => 'product.editPrice', 'uses' => 'ProductsManagementController@editPrice']);		
-		Route::post('/product/editGallery', ['as' => 'product.editGallery', 'uses' => 'ProductsManagementController@editGallery']);
-	Route::post('/product/deleteProduct', ['as' => 'product.deleteProduct', 'uses' => 'ProductsManagementController@deleteProduct']);	
+	//ooooooooooooooooooooooooooooooooooooooKERJAAN DAVIDoooooooooooooooooooooooooooooooooooooooo
+	Route::get('/manage_customer', ['as'=>'david.viewCustomerManagement','uses' => 'CustomerManagementController@view_cust_mgmt']);
 	
+	Route::get('/get_wishlist', ['as'=>'david.getWishlist','uses' => 'WishlistsController@getWishListByAccountId']);
+	
+	Route::get('/get_search_history', ['as'=>'david.getSearchHistory','uses' => 'LogsController@getSearchLogByAccountId']);
+
+	Route::get('/get_trans_history', ['as'=>'david.getTransHistory','uses' => 'TransactionsController@getByAccountId']);
+	
+	Route::get('/get_profile_detail', ['as'=>'david.getProfDet','uses' => 'ProfilesController@myGetById']);
+	
+	Route::get('/filter_cust_mgmt', ['as'=>'david.getFilteredCustomer','uses' => 'ProfilesController@myGetById']);
+	
+	Route::get('/get_new_voucher_code', ['as'=>'david.getNewVoucherCode','uses' => 'VouchersController@generateVoucherNumber']);
+	
+	Route::get('/get_voucher_list', ['as'=>'david.getVoucherList','uses' => 'VouchersController@getByAccountId']);
+	
+	Route::post('/post_new_voucher', ['as'=>'david.postNewVoucher','uses' => 'VouchersController@insert']);
+	
+	Route::get('/admin_sign_in', ['before'=>'force.ssl','as'=>'david.adminSignIn','uses' => 'AccountsController@adminLogin']);
+	
+	Route::get('/logout', ['as'=>'david.logout','uses' => 'AccountsController@postLogout']);
+	
+	Route::get('/login', array('as'=>'ilu.main.login','before'=>'force.ssl',function()
+	{
+		return View::make('pages.admin.login');
+	}));
+
+    // dashboard
+	Route::get('/dashboard', array('as'=>'ilu.main.dashboard',function()
+	{
+		return View::make('pages.admin.dashboard');
+	}));
 	
 	// Route::get('/bernico', function(){return View::make('pages.admin.tax.manage_tax');});
 	
@@ -196,9 +230,9 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	
 	//product 
 		Route::get('/product', ['as' => 'product' , 'uses' => 'ProductsController@view_main_product']);
-		// Route::get('/product/{id}', ['as' => 'product_detail' , 'uses' => 'ProductsController@view_detail_product']);
+		Route::get('/product/{id}', ['as' => 'product_detail' , 'uses' => 'ProductsController@view_detail_product']);
 		
-		// Route::get('/filter', ['as' => 'admin.filter' , 'uses' => 'ProductsController@coba_sort']);
+		Route::get('/filter', ['as' => 'admin.filter' , 'uses' => 'ProductsController@coba_sort']);
 	
     //transaction
 
@@ -223,6 +257,9 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
     	Route::post('/seo', ['as' => 'add.seo' , 'uses' => 'SeosController@insert']);
     	Route::put('/seo/{id}', ['as' => 'edit.seo' , 'uses' => 'SeosController@updateFull']);
     	Route::delete('/seo/{id}', ['as' => 'delete.seo' , 'uses' => 'SeosController@delete']);
+	//news management
+		Route::get('/news', ['as' => 'get.news' , 'uses' => 'NewsManagementController@getNews']);
+	
     //supportMsg
 		Route::get('/supportMsg/{ticket_id}', ['as' => 'get.supportMsg.ticket' , 'uses' => 'SupportMsgsController@getByTicket']);
 		Route::post('/supportMsg', ['as' => 'add.supportMsg' , 'uses' => 'SupportMsgsController@insert']);
@@ -235,16 +272,16 @@ Route::group(array('prefix' => 'test'), function()
 {
 
     // login
-	Route::get('/login', function()
+	Route::get('/login', array('as'=>'ilu.test.login','before'=>'force.ssl',function()
 	{
 		return View::make('pages.admin.login');
-	});
+	}));
 
     // dashboard
-	Route::get('/dashboard', function()
+	Route::get('/dashboard', array('as'=>'ilu.test.dashboard',function()
 	{
 		return View::make('pages.admin.dashboard');
-	});
+	}));
 	
     // manage order
 	Route::get('/manage_order', function()
@@ -346,15 +383,28 @@ Route::group(array('prefix' => 'test'), function()
 	
 	Route::get('/filter_cust_mgmt', ['as'=>'david.getFilteredCustomer','uses' => 'ProfilesController@myGetById']);
 	
-	Route::get('/manage_shipping_jeffry', ['uses' => 'ShippingManagementController@view_shipping_mgmt']);
+	//SHIPPING
+	Route::get('/manage_shipping_jeffry', ['as'=>'jeffry.getShipping', 'uses' => 'ShippingManagementController@view_shipping_mgmt']);
 	
-	Route::get('/manage_shipping_agent_jeffry', ['uses' => 'ShippingAgentManagementController@view_shipping_agent_mgmt']);
+	Route::get('/get_detail_shipment', ['as'=>'jeffry.getDetailShip','uses' => 'ShipmentsController@getById']);
+	
+	Route::put('/put_status_shipment' , ['as'=>'jeffry.putStatusShipment','uses' => 'ShipmentsController@updateStatus']);
+	
+	//SHIPPING AGENT
+	Route::get('/manage_shipping_agent_jeffry', ['as'=>'jeffry.getShippingAgent','uses' => 'ShippingAgentManagementController@view_shipping_agent_mgmt']);
 	
 	Route::get('/get_detail_shipment_agent', ['as'=>'jeffry.getDetailShipAgent','uses' => 'ShipmentDatasController@getById']);
 	
+	Route::delete('/delete_shipment_agent', ['as' => 'jeffry.deleteShipmentAgent' , 'uses' => 'ShipmentDatasController@delete']);
+	
+	Route::post('/add_shipment_agent', ['as' => 'jeffry.addShipmentAgent' , 'uses' => 'ShipmentDatasController@insert']);
+	
+	Route::post('/add_shipment_agent_excel', ['as' => 'jeffry.addShipmentAgentExcel' , 'uses' => 'ShipmentDatasController@insertExcel']);
+	
 	Route::put('/put_price_shipment_agent' , ['as'=>'jeffry.putPriceShipAgent','uses' => 'ShipmentDatasController@updatePrice']);
 	
-	Route::get('/manage_transaction_jeffry', ['uses' => 'TransactionManagementController@view_transaction_mgmt']);
+	//TRANSAKSI
+	Route::get('/manage_transaction_jeffry', ['as'=>'jeffry.getTransaction', 'uses' => 'TransactionManagementController@view_transaction_mgmt']);
 	
 	Route::get('/get_detail_transaction', ['as'=>'jeffry.getDetailTransaction','uses' => 'TransactionsController@getDetail']);
 	
@@ -362,7 +412,20 @@ Route::group(array('prefix' => 'test'), function()
 	
 	Route::put('/put_paid_transaction' , ['as'=>'jeffry.putPaidTransaction','uses' => 'TransactionsController@updatePaid']);
 	
-	Route::get('/manage_order_jeffry', ['uses' => 'OrderManagementController@view_order_mgmt']);
+	Route::put('/put_shippingNumber_transaction' , ['as'=>'jeffry.putShippingNumberTransaction','uses' => 'ShipmentsController@updateResiNumber']);
+	
+	//ORDER
+	Route::get('/manage_order_jeffry', ['as' =>'jeffry.getOrder', 'uses' => 'OrderManagementController@view_order_mgmt']);
+	
+	Route::put('/put_status_order' , ['as'=>'jeffry.putStatusOrder','uses' => 'OrdersController@updateStatus']);
+	
+	Route::get('/manage_order_detail_jeffry', ['as' =>'jeffry.getOrderDetail', 'uses' => 'OrdersController@getDetail']);
+	
+	//REPORT
+	Route::get('/manage_report_jeffry', ['as' =>'jeffry.getReport', 'uses' => 'ReportingManagementController@view_reporting_mgmt_day']);
+	
+	//DASHBOARD
+	Route::get('/manage_dashboard_jeffry', ['as' =>'jeffry.getDashboard', 'uses' => 'DashboardsManagementController@view_dashboard_mgmt']);
 	
     // Review
     Route::get('/manage_review', function()
@@ -380,6 +443,67 @@ Route::group(array('prefix' => 'test'), function()
     Route::get('/manage_cms', function()
 	{
 		return View::make('pages.admin.cms.manage_cms');
+	});
+
+
+
+
+
+
+    // Messages support
+    Route::get('/manage_supporting_messages', function()
+	{
+		return View::make('pages.admin.messages.manage_supporting_messages');
+	});
+
+
+    // Messages ticket
+    Route::get('/manage_ticketing', function()
+	{
+		return View::make('pages.admin.messages.manage_ticketing');
+	});
+
+    // 404
+    Route::get('/404', function()
+	{
+		return View::make('pages.admin.other.404');
+	});
+
+
+
+
+
+
+
+    // email 00
+    Route::get('/email_00', function()
+	{
+		return View::make('pages.admin.email_template.forgot_password');
+	});
+    // email 01
+    Route::get('/email_01', function()
+	{
+		return View::make('pages.admin.email_template.message');
+	});
+    // email 02
+    Route::get('/email_02', function()
+	{
+		return View::make('pages.admin.email_template.new_registran');
+	});
+    // email 03
+    Route::get('/email_03', function()
+	{
+		return View::make('pages.admin.email_template.news');
+	});
+    // email 04
+    Route::get('/email_04', function()
+	{
+		return View::make('pages.admin.email_template.promo');
+	});
+    // email 05
+    Route::get('/email_05', function()
+	{
+		return View::make('pages.admin.email_template.voucher');
 	});
 
 

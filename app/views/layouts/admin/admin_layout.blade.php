@@ -36,6 +36,7 @@
 				var iHeight = $(window).height() - 270;
 				
 				$('.s_set_height_window').height(iHeight);
+				$('.f_height_display').height(iHeight);
 				//$('.irashai').width(width);
 				//$('.willkommen').width($('.irashai').width()/2);
 				//$('.willkommen').height(height);

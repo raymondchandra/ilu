@@ -23,7 +23,7 @@
 					  <li><a href="#">&raquo;</a></li>
 					</ul>
 					<button class="btn btn-success" style="float: right; margin-top: 20px;" data-toggle="modal" data-target=".pop_up_add_newsletter">+ Add New Tax</button>
-					<table class="table table-striped table-hover ">
+					<table class="table table-striped table-hover table-condensed table-bordered">
 						<thead class="table-bordered">
 							<tr>
 								<th class="table-bordered">

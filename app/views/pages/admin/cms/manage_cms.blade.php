@@ -25,49 +25,63 @@
 				<!-- <button class="btn btn-success" style="float: right; margin-top: 20px;"  data-toggle="modal" data-target=".pop_up_add_tax">+ Add New Tax</button> -->
 
 				<div class="row">
-					<div class="col-sm-3">
-						<style>
-						.nav-tabs > li {
-							width: 100%;
-						}
-						.nav-tabs > li > a {
-							border-top: 1px solid #ddd;
-							border-bottom: 1px solid #ddd;
-							border-left: 1px solid #ddd;
-							border-right: 1px solid #ddd;
-							border-radius: 4px 4px 4px 4px;
-							background-color: #ddd;
-						}
+					
 
-						.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus{
-							border-top: 1px solid #ddd;
-							border-bottom: 1px solid #ddd;
-							border-left: 1px solid #ddd;
-							border-right: 1px solid #ddd;
-							border-radius: 4px 4px 4px 4px;
-							background-color: #fff;
-						}
-						</style>
-						<!-- Nav tabs -->
-						<ul class="nav nav-tabs" role="tablist" style="border: 0px;">
-							<li role="presentation" class="active pull-right"><a href="#0" role="tab" data-toggle="tab" style="">Company Info</a></li>
-							<span class="clearfix "></span>
-							<li role="presentation" class="pull-right"><a href="#1" role="tab" data-toggle="tab" style="">SEO</a></li>
-							<span class="clearfix "></span>
-							<li role="presentation" class="pull-right"><a href="#2" role="tab" data-toggle="tab" style="">Informasi</a></li>
-						</ul>
-					</div>
-					<div class="col-sm-9">
+					<div class="col-sm-12">
+						<div class="pull-left" style="width: 20%;">
+							<style>
+							.nav-tabs > li {
+								width: 100%;
+							}
+							.nav-tabs > li > a {
+								border-top: 1px solid #ddd;
+								border-bottom: 1px solid #ddd;
+								border-left: 1px solid #ddd;
+								border-right: 1px solid #ddd;
+								border-radius: 4px 4px 4px 4px;
+								background-color: #ddd;
+							}
+
+							.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus{
+								border-top: 1px solid #ddd;
+								border-bottom: 1px solid #ddd;
+								border-left: 1px solid #ddd;
+								border-right: 1px solid #ddd;
+								border-radius: 4px 4px 4px 4px;
+								background-color: #fff;
+							}
+							</style>
+							<!-- Nav tabs -->
+							<ul class="nav nav-tabs" role="tablist" style="border: 0px;">
+								<li role="presentation" class="active pull-right"><a href="#0" role="tab" data-toggle="tab" style="">Company Info</a></li>
+								<span class="clearfix "></span>
+								<li role="presentation" class="pull-right"><a href="#1" role="tab" data-toggle="tab" style="">SEO</a></li>
+								<span class="clearfix "></span>
+								<li role="presentation" class="pull-right"><a href="#2" role="tab" data-toggle="tab" style="">Informasi</a></li>
+								<span class="clearfix "></span>
+								<li role="presentation" class="pull-right"><a href="#3" id='cms_news' role="tab" data-toggle="tab" style="">News</a></li>
+								<span class="clearfix "></span>
+								<li role="presentation" class="pull-right"><a href="#4" id='' role="tab" data-toggle="tab" style="">Slideshow</a></li>
+							</ul>
+						</div>
 						<!-- Tab panes -->
-						<div class="tab-content">
-							<div role="tabpanel" class="tab-pane fade in active" id="0">
-								@include('pages.admin.cms.pop_up_edit_company_info')							
-							</div>
-							<div role="tabpanel" class="tab-pane fade" id="1">
-								@include('pages.admin.cms.pop_up_edit_seo')							
-							</div>
-							<div role="tabpanel" class="tab-pane fade" id="2">
-								@include('pages.admin.cms.pop_up_edit_informasi')							
+						<div class="pull-left" style="width:76%; padding-left:20px; padding-right: 20px;border: 1px solid #676767 !important;">
+							<div class="tab-content">
+								<div role="tabpanel" class="tab-pane fade in active" id="0">
+									@include('pages.admin.cms.edit_company_info')							
+								</div>
+								<div role="tabpanel" class="tab-pane fade" id="1">
+									@include('pages.admin.cms.edit_seo')							
+								</div>
+								<div role="tabpanel" class="tab-pane fade" id="2">
+									@include('pages.admin.cms.edit_informasi')							
+								</div>
+								<div role="tabpanel" class="tab-pane fade" id="3">
+									@include('pages.admin.cms.edit_news')							
+								</div>
+								<div role="tabpanel" class="tab-pane fade" id="4">
+									@include('pages.admin.cms.edit_slideshow')							
+								</div>
 							</div>
 						</div>
 					</div>
@@ -118,6 +132,50 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		//var asd = $()
+		$('body').on('click','[data-dismiss="modal"]', function(){
+			$('.modal-backdrop').removeClass('in');
+			setTimeout(function() {
+			     $('.modal-backdrop').fadeOut( 300, function(){});
+			}, 500);
+		});
+
+		$('body').on('click','[aria-hidden="true"]', function(){
+			$('.modal-backdrop').removeClass('in');
+			setTimeout(function() {
+			     $('.modal-backdrop').fadeOut( 300, function(){});
+			}, 500);
+		});
+		
+		$('body').on('click','#cms_news',function(){
+			$.ajax({
+				type: 'GET',
+				url: "{{URL('admin/news')}}",
+				success: function(response){
+					$msgs = response.messages;
+					var div="";
+					$($msgs).each(function(){
+						//alert($(this)[0].id);
+						div+="<tr>";
+						div+="<td>";
+						div+=$(this)[0].title;
+						div+="</td>";
+						div+="<td>";
+						div+="<button type='button' class='btn btn-success view_detail' data-toggle='modal' data-target='.pop_up_edit_news'>Detail</button>";
+						div+="<input type='hidden' value='"+$(this)[0].description+"'>";
+						div+="</td>";
+						div+="</tr>";
+					});
+					
+					$('.f_news_table').html(div);
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					alert(errorThrown);
+				}
+			})
+		});
+	</script>
 
 	@include('includes.modals.alertYesNo')	
 

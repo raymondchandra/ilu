@@ -40,6 +40,53 @@ class ShipmentDatasController extends \BaseController {
 	}
 
 	/**
+	 * Insert a newly created shipmentdata in database using excel
+	 *
+	 * @return Response
+	 */
+	public function insertExcel()
+	{
+		$respond = array();
+		if(Input::hasFile('fileExl'))
+		{
+			$file = Input::file('fileExl');
+			$destinationPath = "assets/file_csv/shipmendata/";
+			$fileName = $file->getClientOriginalName();
+			$uploadSuccess   = $file->move($destinationPath, $fileName);
+			
+			$file_handle = fopen("assets/file_csv/shipmendata/".$fileName,"r");
+			while (!feof($file_handle) ) 
+			{
+				try
+				{
+					$line_of_text = fgetcsv($file_handle, 1024);	
+					$shipData = new ShipmentData();
+					$shipData->courier = $line_of_text[0];
+					$shipData->destination = $line_of_text[1];
+					$shipData->price = $line_of_text[2];
+					$shipData->deleted = '0';
+					$shipData->save();
+					/*
+					if(File::exists($file_handle))
+					{
+						File::delete($file_handle);
+					}*/
+					$respond = array('code'=>'201','status' => 'Created');
+				}
+				catch(Exception $e){
+					$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+				}
+				fclose($file_handle);
+			}
+		}else
+		{
+			$respond = array('code'=>'404','status' => 'Not Found data');
+		}
+		
+		return Response::json($respond);
+	}
+	
+	/**
 	 * Display all of the shipmentdata.
 	 *
 	 * @return Response
@@ -57,7 +104,177 @@ class ShipmentDatasController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	
+	
+	
+	/**
+	 * Display all of the shipmentdata sort
+	 *
+	 * @return Response
+	 */
+	public function getAllSort($sortBy, $type)
+	{
+		$respond = array();
+		$shipmentdata = Shipmentdata::where('deleted','=','0')->orderBy($sortBy, $type)->get();
+		if (count($shipmentdata) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipmentdata);
+		}
+		return Response::json($respond);
+	}
 
+	/**
+	 * Filter shipment
+	 *
+	 * @return Response
+	 */
+	public function getFilteredShipmentAgent($id, $courier, $destinasi, $price)
+	{
+		$isFirst = false;
+		
+		if($id != '-')
+		{
+			if($isFirst == false)
+			{
+				$shipmentAgt = Shipmentdata::where('deleted','=','0')->where('id','LIKE', '%'.$id.'%');
+				$isFirst = true;
+			}
+		}
+		
+		if($courier != '-')
+		{
+			if($isFirst == false)
+			{
+				$shipmentAgt = Shipmentdata::where('deleted','=','0')->where('courier','LIKE', '%'.$courier.'%');
+				$isFirst = true;
+			}else
+			{
+				$shipmentAgt = $shipmentAgt->where('courier', 'LIKE', '%'.$courier.'%');
+			}
+		}
+		
+		if($destinasi != '-')
+		{
+			if($isFirst == false)
+			{
+				$shipmentAgt = Shipmentdata::where('deleted','=','0')->where('destination','LIKE', '%'.$destinasi.'%');
+				$isFirst = true;
+			}else
+			{
+				$shipmentAgt = $shipmentAgt->where('destination', 'LIKE', '%'.$destinasi.'%');
+			}
+		}
+		
+		if($price != '-')
+		{
+			if($isFirst == false)
+			{
+				$shipmentAgt = Shipmentdata::where('deleted','=','0')->where('price','LIKE', '%'.$price.'%');
+				$isFirst = true;
+			}else
+			{
+				$shipmentAgt = $shipmentAgt->where('price', 'LIKE', '%'.$price.'%');
+			}
+		}
+		
+		if($isFirst == false)
+		{
+			$shipmentAgt = Shipmentdata::where('deleted','=','0')->get();
+			$isFirst = true;
+		}else
+		{
+			$shipmentAgt = $shipmentAgt->get();
+		}
+		
+		if (count($shipmentAgt) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipmentAgt);
+		}
+		return Response::json($respond);
+	}
+	
+	/**
+	 * Filter shipment sort
+	 *
+	 * @return Response
+	 */
+	public function getFilteredShipmentAgentSort($id, $courier, $destinasi, $price, $sortBy, $sortType)
+	{
+		$isFirst = false;
+		
+		if($id != '-')
+		{
+			if($isFirst == false)
+			{
+				$shipmentAgt = Shipmentdata::where('deleted','=','0')->where('id','LIKE', '%'.$id.'%');
+				$isFirst = true;
+			}
+		}
+		
+		if($courier != '-')
+		{
+			if($isFirst == false)
+			{
+				$shipmentAgt = Shipmentdata::where('deleted','=','0')->where('courier','LIKE', '%'.$courier.'%');
+				$isFirst = true;
+			}else
+			{
+				$shipmentAgt = $shipmentAgt->where('courier', 'LIKE', '%'.$courier.'%');
+			}
+		}
+		
+		if($destinasi != '-')
+		{
+			if($isFirst == false)
+			{
+				$shipmentAgt = Shipmentdata::where('deleted','=','0')->where('destination','LIKE', '%'.$destinasi.'%');
+				$isFirst = true;
+			}else
+			{
+				$shipmentAgt = $shipmentAgt->where('destination', 'LIKE', '%'.$destinasi.'%');
+			}
+		}
+		
+		if($price != '-')
+		{
+			if($isFirst == false)
+			{
+				$shipmentAgt = Shipmentdata::where('deleted','=','0')->where('price','LIKE', '%'.$price.'%');
+				$isFirst = true;
+			}else
+			{
+				$shipmentAgt = $shipmentAgt->where('price', 'LIKE', '%'.$price.'%');
+			}
+		}
+		
+		if($isFirst == false)
+		{
+			$shipmentAgt = Shipmentdata::where('deleted','=','0')->orderBy($sortBy, $sortType)->get();
+			$isFirst = true;
+		}else
+		{
+			$shipmentAgt = $shipmentAgt->orderBy($sortBy, $sortType)->get();
+		}
+		
+		if (count($shipmentAgt) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$shipmentAgt);
+		}
+		return Response::json($respond);
+	}
+	
 	/**
 	 * Display the specified shipmentdata.
 	 *
@@ -177,8 +394,9 @@ class ShipmentDatasController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function delete($id)
+	public function delete()
 	{
+		$id = Input::get('id');
 		$respond = array();
 		$shipmentdata = Shipmentdata::find($id);
 		if ($shipmentdata == null)
@@ -188,7 +406,8 @@ class ShipmentDatasController extends \BaseController {
 		else
 		{
 			try {
-				$shipmentdata->delete();
+				$shipmentdata->deleted = '1';
+				$shipmentdata->save();
 				$respond = array('code'=>'204','status' => 'No Content');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
