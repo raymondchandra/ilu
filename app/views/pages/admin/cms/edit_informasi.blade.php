@@ -113,7 +113,7 @@
 										</div>
 									</div>
 
-									<div class="form-group" id="">
+									<div class="form-group" id="gambar_edit_cont_info">
 										<label class="col-sm-4 control-label" >Upload Gambar</label>
 										<div class="col-sm-7">
 											<img srs="" width="200" height="200"/>
@@ -121,7 +121,7 @@
 										</div>
 									</div>
 
-									<div class="form-group hidden" id="">
+									<div class="form-group hidden" id="deskripsi_edit_cont_info">
 										<label class="col-sm-4 control-label" >Tulis Deskripsi</label>
 										<div class="col-sm-7">
 											<textarea id="deskripsi_edit_info"></textarea>

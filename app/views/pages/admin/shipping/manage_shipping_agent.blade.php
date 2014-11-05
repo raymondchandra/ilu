@@ -80,6 +80,10 @@
 								</a>
 							</th>
 							<th class="table-bordered">
+								<a href="javascript:void(0)">Asal</a>
+								<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+							</th>
+							<th class="table-bordered">
 								<a href="javascript:void(0)">Destinasi</a>
 								@if($filtered == 0)
 									@if($sortBy == "destination")
@@ -226,6 +230,10 @@
 								</a>
 							</th>
 							<th class="table-bordered">
+								<a href="javascript:void(0)">Asal</a>
+								<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+							</th>
+							<th class="table-bordered">
 								<a href="javascript:void(0)">Destinasi</a>
 								@if($filtered == 0)
 									@if($sortBy == "destination")
@@ -285,6 +293,7 @@
 							<tr>
 								<td><input type="text" class="form-control input-sm idFilter"></td>
 								<td><input type="text" class="form-control input-sm courierFilter"></td>
+								<td><input type="text" class="form-control input-sm asalFilter"></td>
 								<td><input type="text" class="form-control input-sm destinationFilter"></td>
 								<td><input type="text" class="form-control input-sm priceFilter"></td>
 								
