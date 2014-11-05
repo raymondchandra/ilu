@@ -266,6 +266,10 @@ class CategoriesController extends \BaseController {
 		$category = Category::all();		
 		$arrCategory = array();
 		
+		if(count($category) == 0)
+		{
+			return null;
+		}
 		$arrCategory['-1'] = 'no category';
 		foreach($category as $key)		
 		{

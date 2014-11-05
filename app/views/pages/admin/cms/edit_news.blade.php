@@ -6,7 +6,7 @@
 				<h4 class="modal-title" id="myModalLabel">Edit SEO</h4>
 			</div>-->
 			<h3>
-				Daftar Informasi <button id="f_add_informasi" class="btn btn-success pull-right" style="margin-bottom: 20px;" data-toggle="modal" data-target=".pop_up_add_info">+ Add New Info</button>
+				Daftar News <button id="f_add_informasi" class="btn btn-success pull-right" style="margin-bottom: 20px;" data-toggle="modal" data-target=".pop_up_add_news">+ Add New News</button>
 			</h3>
 			<form class="form-horizontal" role="form">
 				<table class="table table-bordered">
@@ -16,32 +16,26 @@
 								Judul Informasi
 							</th>
 							<th>
-								IMG 
-							</th>
-							<th>
-								Command 
+								Command
 							</th>
 						</tr>
 					</thead>
-					<tbody class="f_info_table">
+					<tbody class="f_news_table">
 						<tr>
 							<td>
 								Lorem Ipsum
 							</td>
 							<td>
-								<img src=""/>
-							</td>
-							<td>
-								<button type="button" class="btn btn-success" data-toggle="modal" data-target=".pop_up_detail_info">Detail</button>
+								<button type="button" class="btn btn-success view_detail" data-toggle="modal" data-target=".pop_up_edit_news">Detail</button>
+								<button type="button" class="btn btn-danger" data-toggle="modal" data-target=".pop_up_delete_news">Delete</button>
 							</td>
 						</tr>
 					</tbody>
 				</table>
-				
 			</form>
 
 			<!-- modal add -->
-			<div class="modal fade pop_up_add_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal fade pop_up_add_news" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -53,39 +47,33 @@
 
 
 								<div class="form-group" id="nama_container_info">
-									<label class="col-sm-4 control-label">Judul Informasi</label>
+									<label class="col-sm-3 control-label">Judul Informasi</label>
 									<div class="col-sm-7">
-										<input type="text" class="form-control" id="judul_info">
+										<input type="text" class="form-control" id="judul_news">
 									</div>
 								</div>
 
-								<div class="form-group" id="metode_container_info">
-									<label class="col-sm-4 control-label">Metoda Pengisian Data</label>
+
+								<div class="form-group">
+									<label class="col-sm-3 control-label">Template Editor *</label>
 									<div class="col-sm-7">
-										<label class="radio-inline">
-											<input type="radio" name="metode_pengisian" id="inlineRadio1" value="gambar" checked> Gambar
-										</label>
-										<label class="radio-inline">
-											<input type="radio" name="metode_pengisian" id="inlineRadio2" value="deskripsi"> Deskripsi
-										</label>
+										<script>
+											tinymce.init({
+												selector: ".text-edit"
+											});
+										</script>
+										<style>
+										</style>
+										<textarea class="text-edit"></textarea>
+
+									</div>
+									<div class="col-sm-3 hidden">
+										<span class="btn btn-danger">
+											Maaf form harus diisi
+										</span>
 									</div>
 								</div>
 
-								<div class="form-group" id="gambar_container_info">
-									<label class="col-sm-4 control-label" >Upload Gambar</label>
-									<div class="col-sm-7">
-										<img srs="" width="200" height="200"/>
-										<input type="file" class="" id="">
-									</div>
-								</div>
-
-								<div class="form-group hidden" id="deskripsi_container_info">
-									<label class="col-sm-4 control-label" >Tulis Deskripsi</label>
-									<div class="col-sm-7">
-										<textarea id="deskripsi_info"></textarea>
-										<script>tinymce.init({selector:'#deskripsi_info'});</script>
-									</div>
-								</div>
 								<script>
 
 							    $('body').on('change', 'input:radio[name="metode_pengisian"]', function() {
@@ -111,16 +99,13 @@
 
 									var info_baru ='<tr>';
 									info_baru+='		<td>';
-									info_baru+='		'+ $('#judul_info').val() +'';
+									info_baru+='		'+ $('#judul_news').val() +'';
 									info_baru+='		</td>';
 									info_baru+='		<td>';
-									info_baru+='		<img src="">';
-									info_baru+='		</td>';
-									info_baru+='		<td>';
-									info_baru+='		<button type="button" class="btn btn-success" data-toggle="modal" data-target=".pop_up_detail_info">Detail</button>';
+									info_baru+='		<button type="button" class="btn btn-success" data-toggle="modal" data-target=".pop_up_edit_news">Detail</button>';
 									info_baru+='		</td>';
 									info_baru+='	</tr>';
-									$('.f_info_table').append(info_baru);
+									$('.f_news_table').append(info_baru);
 
 								});
 								</script>
@@ -130,8 +115,8 @@
 				</div>
 			</div>
 
-			<!-- modal add -->
-			<div class="modal fade pop_up_detail_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<!-- modal edit -->
+			<div class="modal fade pop_up_edit_news" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -142,38 +127,29 @@
 							<div class="modal-body">
 
 
-								<div class="form-group" id="nama_edit_cont_info">
-									<label class="col-sm-4 control-label">Judul Informasi</label>
+								<div class="form-group" id="nama_container_info">
+									<label class="col-sm-3 control-label">Judul Informasi</label>
 									<div class="col-sm-7">
-										<input type="text" class="form-control" id="judul_info">
+										<input type="text" class="form-control" id="judul_news">
 									</div>
 								</div>
 
-								<div class="form-group" id="metode_edit_cont_info">
-									<label class="col-sm-4 control-label">Metoda Pengisian Data</label>
-									<div class="col-sm-7">
-										<label class="radio-inline">
-											<input type="radio" name="metode_pengisian" id="inlineRadio1" value="gambar" checked> Gambar
-										</label>
-										<label class="radio-inline">
-											<input type="radio" name="metode_pengisian" id="inlineRadio2" value="deskripsi"> Deskripsi
-										</label>
-									</div>
-								</div>
 
-								<div class="form-group" id="gambar_edit_cont_info">
-									<label class="col-sm-4 control-label" >Upload Gambar</label>
+								<div class="form-group">
+									<label class="col-sm-3 control-label">Template Editor *</label>
 									<div class="col-sm-7">
-										<img srs="" width="200" height="200"/>
-										<input type="file" class="" id="">
-									</div>
-								</div>
+										<script type="text/javascript">
+										
+										</script>
+										<style>
+										</style>
+										<textarea class="te" id='te'></textarea>
 
-								<div class="form-group hidden" id="deskripsi_edit_cont_info">
-									<label class="col-sm-4 control-label" >Tulis Deskripsi</label>
-									<div class="col-sm-7">
-										<textarea id="deskripsi_edit_info"></textarea>
-										<script>tinymce.init({selector:'#deskripsi_edit_info'});</script>
+									</div>
+									<div class="col-sm-3 hidden">
+										<span class="btn btn-danger">
+											Maaf form harus diisi
+										</span>
 									</div>
 								</div>
 								<script>
@@ -189,6 +165,15 @@
 							        }
 
 								});
+								
+								$('body').on('click','.view_detail',function(){
+									tinymce.EditorManager.execCommand('mceRemoveControl',true, '#te');
+									$('#te').text($(this).next().val());
+									tinymce.init({
+											selector: "#te"
+										});
+								});
+								
 								</script>
 
 
@@ -201,6 +186,25 @@
 						</div>
 					</div>
 				</div>
+			</div>
+
+			<!-- Modal ".alertYesNo"-->
+			<div class="modal fade pop_up_delete_news" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="myModalLabel">Alert!</h4>
+				  </div>
+				  <div class="modal-body"  style="text-align: center;">
+						Apakah Anda yakin ingin menghapus news ini?
+				  </div>
+				  <div class="modal-footer" style="text-align: center;">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Ya</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Tidak</button>
+				  </div>
+				</div>
+			  </div>
 			</div>
 		<!--</div>
 	</div>
