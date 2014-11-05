@@ -1,6 +1,9 @@
 <?php
 use Carbon\Carbon;
-Route::get('/tes', 'ProductsController@getAll');
+
+Route::get('/tes', 'ProductsController@getById');
+
+// Route::get('/tes', 'ProductsController@getAll');
 
 Route::get('/tes_news', 'NewsManagementController@getNews');
 Route::get('/tes_news/{id}', 'NewsManagementController@getOneNews');
@@ -155,6 +158,22 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	Route::post('/promotion/addPromotion', ['as' => 'promotion.addPromotion', 'uses' => 'PromotionsManagementController@addPromotion']);
 	Route::post('/promotion/editFull', ['as' => 'promotion.editFull', 'uses' => 'PromotionsManagementController@editFull']);	
 	Route::delete('/promotion/deletePromotion', ['as' => 'promotion.deletePromotion', 'uses' => 'PromotionsManagementController@deletePromotion']);
+	
+	//-------------------------------------------PRODUCT VIEW ADMIN-------------------------------------------
+	Route::get('/manage_products', ['as' => 'viewProductsManagement', 'uses' => 'ProductsManagementController@view_admin_product']);	
+	Route::get('product/{id}', ['as' => 'product_detail', 'uses' => 'ProductsManagementController@view_detail_product']);
+	// Route::get('product/info/{id}', ['as' => 'product_detail_info', 'uses' => 'ProductsManagementController@view_detail_info']);
+	// Route::get('product/gallery/{id}', ['as' => 'product_detail_gallery', 'uses' => 'ProductsManagementController@view_detail_gallery']);
+	Route::post('/product/addProduct', ['as' => 'product.addProduct', 'uses' => 'ProductsManagementController@addProduct']);
+	// Route::post('/product/editInfo', ['as' => 'product.editInfo', 'uses' => 'ProductsManagementController@editInfo']);
+		Route::post('/product/editProductNo', ['as' => 'product.editProducyNo', 'uses' => 'ProductsManagementController@editProductNo']);
+		Route::post('/product/editName', ['as' => 'product.editName', 'uses' => 'ProductsManagementController@editName']);
+		Route::post('/product/editDescription', ['as' => 'product.editDescription', 'uses' => 'ProductsManagementController@editDescription']);
+		Route::post('/product/editCategoryId', ['as' => 'product.editCategoryId', 'uses' => 'ProductsManagementController@editCategoryId']);
+		Route::post('/product/editPromotionId', ['as' => 'product.editPromotionId', 'uses' => 'ProductsManagementController@editPromotionId']);
+		Route::post('/product/editPrice', ['as' => 'product.editPrice', 'uses' => 'ProductsManagementController@editPrice']);		
+		Route::post('/product/editGallery', ['as' => 'product.editGallery', 'uses' => 'ProductsManagementController@editGallery']);
+	Route::post('/product/deleteProduct', ['as' => 'product.deleteProduct', 'uses' => 'ProductsManagementController@deleteProduct']);	
 	
 	//ooooooooooooooooooooooooooooooooooooooKERJAAN DAVIDoooooooooooooooooooooooooooooooooooooooo
 	Route::get('/manage_customer', ['as'=>'david.viewCustomerManagement','uses' => 'CustomerManagementController@view_cust_mgmt']);
