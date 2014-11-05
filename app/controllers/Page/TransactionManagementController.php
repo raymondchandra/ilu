@@ -36,7 +36,7 @@ class TransactionManagementController extends \BaseController
 			}else
 			{
 				$page = null;
-				$hasil = $hsl;
+				$hasil = null;
 			}
 			$filtered = 0;
 			return View::make('pages.admin.transaction.manage_transaction', compact('hasil','sortBy','sortType','page','filtered'));
@@ -61,7 +61,7 @@ class TransactionManagementController extends \BaseController
 			$json2 = json_decode($json->getContent());
 			if($json2->{'code'} == "404")
 			{
-				$hasil = $json2;
+				$hasil = null;
 			}
 			else
 			{

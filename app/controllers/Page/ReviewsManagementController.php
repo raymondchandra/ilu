@@ -40,7 +40,7 @@ class ReviewsManagementController extends \BaseController
 			else
 			{
 				$page = null;
-				$reviews = $json;
+				$reviews = null;
 			}
 			
 			return View::make('pages.admin.review.manage_review', compact('reviews','sortBy','sortType','page','filtered'));

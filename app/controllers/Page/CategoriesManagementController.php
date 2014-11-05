@@ -41,7 +41,7 @@ class CategoriesManagementController extends \BaseController
 			else
 			{
 				$page = null;
-				$categories = $json;
+				$categories = null;
 			}
 			
 			return View::make('pages.admin.category.manage_category', compact('categories','list_category','sortBy','sortType','page','filtered'));

@@ -34,10 +34,11 @@ class ShippingManagementController extends \BaseController
 			}else
 			{
 				$page = null;
-				$hasil = $hsl;
+				$hasil = null;
 			}
 			$filtered = 0;
 			return View::make('pages.admin.shipping.manage_shipping', compact('hasil','sortBy','sortType','page','filtered'));
+			
 		}else
 		{
 			$noPengiriman = Input::get('noPengiriman','-');
@@ -56,10 +57,10 @@ class ShippingManagementController extends \BaseController
 			}
 			
 			$json2 = json_decode($json->getContent());
-			
+				
 			if($json2->{'code'} == "404")
 			{
-				$hasil = $json2;
+				$hasil = null;
 			}
 			else
 			{
@@ -67,7 +68,7 @@ class ShippingManagementController extends \BaseController
 				
 				$hasil=$paginator;
 			}
-			
+				
 			return View::make('pages.admin.shipping.manage_shipping', compact('hasil','sortBy','sortType','page','filtered', 'noPengiriman', 'kurir', 'destinasi', 'namaPenerima', 'hargaPengiriman', 'status'));
 		}
 	}

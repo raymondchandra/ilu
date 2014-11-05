@@ -24,113 +24,63 @@
 							</style>
 							<script type="text/javascript">
 							$(function () {
-
-						    // Get the CSV and create the chart
-						    $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=analytics.csv&callback=?', function (csv) {
-
-						    	$('#container').highcharts({
-
-						    		data: {
-						    			csv: csv
-						    		},
-
-						    		title: {
-						    			text: 'Kurva Penjualan'
-						    		},
-
-						    		subtitle: {
-						    			text: ''
-						    		},
-
-						    		xAxis: {
-						                tickInterval: 7 * 24 * 3600 * 1000, // one week
-						                tickWidth: 0,
-						                gridLineWidth: 1,
-						                labels: {
-						                	align: 'left',
-						                	x: 3,
-						                	y: -3
-						                }
-						            },
-
-						            yAxis: [{ // left y axis
-						            	title: {
-						            		text: null
-						            	},
-						            	labels: {
-						            		align: 'left',
-						            		x: 3,
-						            		y: 16,
-						            		format: '{value:.,0f}'
-						            	},
-						            	showFirstLabel: false
-						            }, { // right y axis
-						            	linkedTo: 0,
-						            	gridLineWidth: 0,
-						            	opposite: true,
-						            	title: {
-						            		text: null
-						            	},
-						            	labels: {
-						            		align: 'right',
-						            		x: -3,
-						            		y: 16,
-						            		format: '{value:.,0f}'
-						            	},
-						            	showFirstLabel: false
-						            }],
-
-						            legend: {
-						            	align: 'left',
-						            	verticalAlign: 'top',
-						            	y: 20,
-						            	floating: true,
-						            	borderWidth: 0
-						            },
-
-						            tooltip: {
-						            	shared: true,
-						            	crosshairs: true
-						            },
-
-						            plotOptions: {
-						            	series: {
-						            		cursor: 'pointer',
-						            		point: {
-						            			events: {
-						            				click: function (e) {
-						            					hs.htmlExpand(null, {
-						            						pageOrigin: {
-						            							x: e.pageX,
-						            							y: e.pageY
-						            						},
-						            						headingText: this.series.name,
-						            						maincontentText: Highcharts.dateFormat('%A, %b %e, %Y', this.x) + ':<br/> ' +
-						            						this.y + ' visits',
-						            						width: 200
-						            					});
-						            				}
-						            			}
-						            		},
-						            		marker: {
-						            			lineWidth: 1
-						            		}
-						            	}
-						            },
-
-						            series: [{
-						            	name: 'All visits',
-						            	lineWidth: 4,
-						            	marker: {
-						            		radius: 4
-						            	}
-						            }, {
-						            	name: 'New visitors'
-						            }]
-						        });
-							});
-
-							});
+									var a = $('#penjualanGraf').val();
+									var b = $('#tanggalGraf').val();
+									var c;
+									var d = $('#ket').val();
+									var e;
+									if(d == 'day')
+									{
+										e = 'Report By Day';
+										c = $('#bulanGraf').val().replace('-',' ');
+									}else if(d == 'week')
+									{
+										e = 'Report By Week';
+										c = $('#bulanGraf').val().replace('-',' ');
+									}else if(d == 'month')
+									{
+										e = 'Report By Month';
+										c = $('#bulanGraf').val();
+									}else if(d == 'year')
+									{
+										e = 'Report By Year';
+									}else if(d == 'range')
+									{
+										e = 'Report By Range';
+									}
+									b = b.split(",");
+									$('#container').highcharts({
+										chart: {
+											type: 'line'
+										},
+										title: {
+											text: e
+										},
+										subtitle: {
+											text: c
+										},
+										xAxis: {
+											categories: b	
+										},
+										yAxis: {
+											title: {
+												text: 'Rupiah'
+											}
+										},
+										plotOptions: {
+											line: {
+												dataLabels: {
+													enabled: true
+												},
+												enableMouseTracking: false
+											}
+										},
+										series: [{
+											name: 'Penjualan',
+											data: JSON.parse("[" + a + "]")
+										}]
+									});
+								});
 
 
 							</script>
@@ -164,17 +114,14 @@
 						   			</tr>
 						   		</thead>
 						   		<tbody>
-						   			<?php
-						   				for($i = 0; $i < 10; $i++){
-				   					?>
-						   			<tr>
-						   				<td>
-						   					Nama Produk
-						   				</td>
-						   			</tr>
-				   					<?php
-						   				}
-						   			?>
+						   			@foreach($hasil2 as $key)
+										<tr>
+											<td>
+												<input type="hidden" id = "idProd" value="{{$key->product_id}}" />
+												{{$key->product_name}}
+											</td>
+										</tr>
+									@endforeach
 						   		</tbody>
 						   	</table>
 						  </div>
@@ -209,6 +156,51 @@
 						   			?>
 						   		</tbody>
 						   	</table>
+							<?php 
+								$str = '';
+								$str2 = '';
+								$i = 0;
+							?>
+							@foreach($hasil as $key)
+								<?php 
+									if($i == 0)
+									{
+										$str = $str.$key->penjualan ;
+										if($key->ket == 'day' || $key->ket == 'month' || $key->ket == 'year'|| $key->ket == 'range')
+										{
+											$str2 = $str2.$key->tanggal ;
+										}else if($key->ket == 'week')
+										{
+											$str2 = $str2.$key->week ;
+										}
+									}else
+									{
+										$str = $str.','.$key->penjualan ;
+										if($key->ket == 'day'  || $key->ket == 'month' || $key->ket == 'year' || $key->ket == 'range')
+										{
+											$str2 = $str2.','.$key->tanggal ;
+										}else if($key->ket == 'week')
+										{
+											$str2 = $str2.','.$key->week ;
+										}
+									}
+									if( $key->ket != 'year')
+									{
+										$str3 = $key->bulan;
+									}
+									$str4 = $key->ket;
+									$i++;
+								?>
+							@endforeach
+							<?php 
+								echo '<input type="hidden" id = "penjualanGraf" value='.$str.' />';
+								echo '<input type="hidden" id = "tanggalGraf" value='.$str2.' />';
+								if( $key->ket != 'year')
+								{
+									echo '<input type="hidden" id = "bulanGraf" value='.$str3.' />';
+								}
+								echo '<input type="hidden" id = "ket" value='.$str4.' />';
+							?>
 						  </div>
 						</div>
 					</div>
@@ -222,5 +214,5 @@
 	@include('includes.modals.alertYesNo')	
 	@include('pages.admin.cms.pop_up_edit_company_info')
 	@include('pages.admin.cms.pop_up_edit_seo')
-
+	
 @stop

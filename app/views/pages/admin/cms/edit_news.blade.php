@@ -56,10 +56,14 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label">Template Editor *</label>
 									<div class="col-sm-7">
-
+										<script>
+											tinymce.init({
+												selector: ".text-edit"
+											});
+										</script>
 										<style>
 										</style>
-										<textarea class="te"></textarea>
+										<textarea class="text-edit"></textarea>
 
 									</div>
 									<div class="col-sm-3 hidden">
@@ -138,7 +142,7 @@
 										</script>
 										<style>
 										</style>
-										<textarea class="te"></textarea>
+										<textarea class="te" id='te'></textarea>
 
 									</div>
 									<div class="col-sm-3 hidden">
@@ -162,9 +166,10 @@
 								});
 								
 								$('body').on('click','.view_detail',function(){
-									$('.te').text($(this).next().val());
+									tinymce.EditorManager.execCommand('mceRemoveControl',true, '#te');
+									$('#te').text($(this).next().val());
 									tinymce.init({
-											selector: ".te"
+											selector: "#te"
 										});
 								});
 								

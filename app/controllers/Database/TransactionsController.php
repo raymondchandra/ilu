@@ -106,24 +106,13 @@ class TransactionsController extends \BaseController {
 	public function getAll()
 	{
 		$respond = array();
-		$transaction = Transaction::all();
+		$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->get(array('transactions.id', 'transactions.invoice' ,'transactions.account_id', 'transactions.total_price', 'transactions.voucher_id', 'transactions.status', 'transactions.paid', 'transactions.shipment_id', 'transactions.created_at', 'transactions.updated_at', 'profiles.full_name'));
 		if (count($transaction) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
-			foreach($transaction as $key)
-			{
-				$accId = $key->account_id;
-				$profId = Account::where('id','=',$accId)->first()->profile_id;
-				if($key->voucher_id == null)
-				{
-					$key->voucher_id = "-";
-				}
-				$profName = Profile::where('id','=',$profId)->first()->full_name;
-				$key->full_name = $profName;
-			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$transaction);
 		}
 		return Response::json($respond);
@@ -607,7 +596,9 @@ class TransactionsController extends \BaseController {
 			{
 				$product = new ProductsController();
 				$productTopTen = $product->getById($key->product_id);// here
-				$key->product = $productTopTen;
+				$temp = json_decode($productTopTen->getContent());
+				$temp2 = $temp->{'messages'};
+				$key->product_name = $temp2->name;
 			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$topTen);
 		}
@@ -631,8 +622,10 @@ class TransactionsController extends \BaseController {
 			foreach($topTen as $key)
 			{
 				$account = new AccountsController();
-				$accountTopTen = $profile->getProfileByAccountId($key->account_id);// here
-				$key->account = $accountTopTen;
+				$accountTopTen = $account->getProfileByAccountId($key->account_id);// here
+				//$temp = json_decode($accountTopTen->getContent());
+				$temp2 = $accountTopTen['messages'];
+				//$key->account_name = $temp2->full_name;
 			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$topTen);
 		}
@@ -893,6 +886,41 @@ class TransactionsController extends \BaseController {
 		return Response::json($respond);
 	}
 	
+	/**
+	 * Display report day
+	 *
+	 * paid
+	 * 0-> not paid
+	 * 1-> paid
+	 * @return Response
+	 */
+	public function getDayReportDashboard(){
+		$respond = array();
+		$report = Transaction::where(DB::raw('MONTH(updated_at)'), '=', date('n'))->where(DB::raw('YEAR(updated_at)'), '=', date('Y'))->where('paid','=','1')->get();
+		$idx = 1;
+		$tgl = date('j');
+		$bln = date('F');
+		$tahun = date('Y');
+		$hasil = array();
+		while($idx <= $tgl)
+		{
+			$tempHasil = 0;
+			foreach($report as $key)
+			{
+				$dd = $key->updated_at;
+				$created = Carbon::parse($dd)->format('d');
+				if($created == $idx)
+				{
+					$tempHasil = $tempHasil + $key->total_price;
+				}
+			}
+			$hasil[] = array('tanggal' => $idx, 'penjualan' => $tempHasil,'bulan' => $bln.'-'.$tahun,'ket' => 'day');
+			$idx = $idx + 1;
+		}
+		$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		
+		return Response::json($respond);
+	}
 	
 	/**
 	 * Display report day
