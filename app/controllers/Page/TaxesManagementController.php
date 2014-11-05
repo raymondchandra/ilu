@@ -40,7 +40,7 @@ class TaxesManagementController extends \BaseController
 			else
 			{
 				$page = null;
-				$taxes = $json;
+				$taxes = null;
 			}
 			
 			return View::make('pages.admin.tax.manage_tax', compact('taxes','sortBy','sortType','page','filtered'));

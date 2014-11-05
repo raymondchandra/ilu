@@ -52,7 +52,7 @@ class PromotionsManagementController extends \BaseController
 			else
 			{
 				$page = null;
-				$promotions = $json;
+				$promotions = null;
 			}
 			
 			return View::make('pages.admin.promosi.manage_promosi', compact('promotions','sortBy','sortType','page','filtered','list_product'));
