@@ -310,7 +310,33 @@ class ProductsManagementController extends \BaseController
 	//edit main_photo, other_photos
 	public function editGallery()
 	{
-		return null;
+		//main_photo	
+		$main_photo = Input::file('edit_main_photo');	
+		
+		
+		
+		//arr_other_photos				
+		$arr_name_other_photos = Input::get('edit_other_photos_name');						
+		$temp_arr_other_photos = explode("," , $arr_name_other_photos);
+		foreach($temp_arr_other_photos as $key){
+			$arr_other_photos[] = Input::file($key);		
+		}							
+		if($main_photo == null){
+			$main_photo = "";			
+		}	
+		if($arr_other_photos == null){
+			$arr_other_photos = "";
+		}
+		$input_photo = array(
+			'main_photo' => $main_photo,
+			'other_photos' => $arr_other_photos
+		);	
+		
+		$productController = new ProductsController();		
+		
+		$json = json_decode($productController->updateGallery($input_photo)->getContent());
+		return json_encode($json);				
+				
 	}
 	
 	public function deleteProduct()
