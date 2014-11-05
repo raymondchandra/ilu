@@ -40,7 +40,7 @@ class AttributesManagementController extends \BaseController
 			else
 			{
 				$page = null;
-				$attributes = $json;
+				$attributes = null;
 			}
 			
 			return View::make('pages.admin.attribute.manage_attribute', compact('attributes','sortBy','sortType','page','filtered'));

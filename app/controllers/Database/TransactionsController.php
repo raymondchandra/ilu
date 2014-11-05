@@ -585,22 +585,71 @@ class TransactionsController extends \BaseController {
 	 */
 	public function getTopTenProduct(){
 		$respond = array();
-		$topTen = Order::join('prices','orders.price_id','=','prices.id')->select(array('prices.product_id', DB::raw('COUNT(prices.product_id*orders.quantity) as jumlah')))->groupBy('prices.product_id')->orderBy('jumlah','desc')->take(10)->get();
-		if (count($topTen) == 0)
+		$prod = Order::join('prices','orders.price_id','=','prices.id')->groupBy('prices.product_id')->select(array('prices.product_id'))->orderBy('product_id','asc')->get();
+		$qtyProd = Order::join('prices','orders.price_id','=','prices.id')->select(array('prices.product_id', 'orders.quantity'))->orderBy('product_id','asc')->get();
+		if (count($prod) == 0 && count($qtyProd))
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
-			foreach($topTen as $key)
+			$idxLast = count($qtyProd);
+			foreach($prod as $key)
 			{
-				$product = new ProductsController();
-				$productTopTen = $product->getById($key->product_id);// here
-				$temp = json_decode($productTopTen->getContent());
-				$temp2 = $temp->{'messages'};
-				$key->product_name = $temp2->name;
+				$ct = 0;
+				$tempProd = -1;
+				$first = true;
+				$idxCt = 0;
+				foreach($qtyProd as $key2)
+				{
+					$idxCt++;
+					if($key2->product_id == $key->product_id)
+					{
+						$ct = $ct + $key2->quantity;
+						$tempProd = $key->product_id;
+						
+						if($idxLast ==  $idxCt && $first == true)
+						{
+							$allProd[] = array('prod_id'=> $tempProd, 'total'=>$ct);
+						}
+						
+					}else
+					{
+						if($first == true && $ct != 0)
+						{
+							$allProd[] = array('prod_id'=> $tempProd, 'total'=>$ct);
+							$ct = 0;
+							$first = false;
+						}
+					}
+				}
 			}
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$topTen);
+			foreach ($allProd as $key=>$row) 
+			{
+				$pro[$key]  = $row['prod_id'];
+				$tot[$key] = $row['total'];
+			}
+			
+			array_multisort($tot, SORT_DESC, $pro, SORT_ASC, $allProd);
+			$idx = 0;
+			
+			foreach($allProd as $key => $row)
+			{
+				if($idx < 10)
+				{
+					$product = new ProductsController();
+					$productTopTen = $product->getById($row['prod_id']);// here
+					$temp = json_decode($productTopTen->getContent());
+					$temp2 = $temp->{'messages'};
+					$topTenProduct[] = array('idProd'=>$row['prod_id'], 'product_name'=>$temp2->name);
+					$idx++;
+				}else
+				{
+					break;
+				}
+			}
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$topTenProduct);
 		}
 		return Response::json($respond);
 	}
@@ -623,9 +672,10 @@ class TransactionsController extends \BaseController {
 			{
 				$account = new AccountsController();
 				$accountTopTen = $account->getProfileByAccountId($key->account_id);// here
-				//$temp = json_decode($accountTopTen->getContent());
-				$temp2 = $accountTopTen['messages'];
-				//$key->account_name = $temp2->full_name;
+				$temp = json_decode($accountTopTen->getContent());
+				$temp2 = $temp->{'messages'};
+				//echo $temp2->full_name;
+				$key->account_name = $temp2->full_name;
 			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$topTen);
 		}
