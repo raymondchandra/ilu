@@ -278,8 +278,11 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
     	Route::post('/seo', ['as' => 'add.seo' , 'uses' => 'SeosController@insert']);
     	Route::put('/seo/{id}', ['as' => 'edit.seo' , 'uses' => 'SeosController@updateFull']);
     	Route::delete('/seo/{id}', ['as' => 'delete.seo' , 'uses' => 'SeosController@delete']);
+		
 	//news management
 		Route::get('/news', ['as' => 'get.news' , 'uses' => 'NewsManagementController@getNews']);
+		Route::post('/news', ['as' => 'post.news' , 'uses' => 'NewsManagementController@postNews']);
+		Route::put('/news/{id}', ['as' => 'put.news' , 'uses' => 'NewsManagementController@updateNews']);
 	
     //supportMsg
 		Route::get('/supportMsg/{ticket_id}', ['as' => 'get.supportMsg.ticket' , 'uses' => 'SupportMsgsController@getByTicket']);

@@ -114,14 +114,22 @@
 						   			</tr>
 						   		</thead>
 						   		<tbody>
-						   			@foreach($hasil2 as $key)
+									@if($hasil2 != null)
+										@foreach($hasil2 as $key)
+											<tr>
+												<td>
+													<input type="hidden" id = "idProd" value="{{$key->idProd}}" />
+													{{$key->product_name}}
+												</td>
+											</tr>
+										@endforeach
+									@else
 										<tr>
 											<td>
-												<input type="hidden" id = "idProd" value="{{$key->product_id}}" />
-												{{$key->product_name}}
+												Not Found
 											</td>
 										</tr>
-									@endforeach
+									@endif
 						   		</tbody>
 						   	</table>
 						  </div>
@@ -137,23 +145,27 @@
 						   		<thead>
 						   			<tr>
 						   				<th>
-						   					Nama Produk
+						   					Nama Orang
 						   				</th>
 						   			</tr>
 						   		</thead>
 						   		<tbody>
-						   			<?php
-						   				for($i = 0; $i < 10; $i++){
-				   					?>
-						   			<tr>
-						   				<td>
-						   					Nama Orang
-						   				</td>
-						   			</tr>
-
-				   					<?php
-						   				}
-						   			?>
+									@if($hasil3 != null)
+										@foreach($hasil3 as $key)
+											<tr>
+												<td>
+													<input type="hidden" id = "idProf" value="{{$key->account_id}}" />
+													{{$key->account_name}}
+												</td>
+											</tr>
+										@endforeach
+									@else
+										<tr>
+											<td>
+												Not Found
+											</td>
+										</tr>
+									@endif
 						   		</tbody>
 						   	</table>
 							<?php 

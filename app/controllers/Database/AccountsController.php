@@ -381,10 +381,10 @@ class AccountsController extends \BaseController {
 		else
 		{
 			$profController = new ProfilesController();
-			$message = $profController->getById($profileId);
+			$message = Profile::find($profileId->profile_id);
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$message);
 		}
-		return $respond;
+		return Response::json($respond);
 	}
 
 }
