@@ -624,32 +624,39 @@ class TransactionsController extends \BaseController {
 					}
 				}
 			}
-			foreach ($allProd as $key=>$row) 
+			if($allProd != null)
 			{
-				$pro[$key]  = $row['prod_id'];
-				$tot[$key] = $row['total'];
-			}
-			
-			array_multisort($tot, SORT_DESC, $pro, SORT_ASC, $allProd);
-			$idx = 0;
-			
-			foreach($allProd as $key => $row)
-			{
-				if($idx < 10)
+				foreach ($allProd as $key=>$row) 
 				{
-					$product = new ProductsController();
-					$productTopTen = $product->getById($row['prod_id']);// here
-					$temp = json_decode($productTopTen->getContent());
-					$temp2 = $temp->{'messages'};
-					$topTenProduct[] = array('idProd'=>$row['prod_id'], 'product_name'=>$temp2->name);
-					$idx++;
-				}else
-				{
-					break;
+					$pro[$key]  = $row['prod_id'];
+					$tot[$key] = $row['total'];
 				}
+				array_multisort($tot, SORT_DESC, $pro, SORT_ASC, $allProd);
+				$idx = 0;
+				
+				foreach($allProd as $key => $row)
+				{
+					if($idx < 10)
+					{
+						$product = new ProductsController();
+						$productTopTen = $product->getById($row['prod_id']);// here
+						$temp = json_decode($productTopTen->getContent());
+						$temp2 = $temp->{'messages'};
+						$topTenProduct[] = array('idProd'=>$row['prod_id'], 'product_name'=>$temp2->name);
+						$idx++;
+					}else
+					{
+						break;
+					}
+				}
+				
+				$respond = array('code'=>'200','status' => 'OK','messages'=>$topTenProduct);
+			}else
+			{
+					$respond = array('code'=>'404','status' => 'Not Found');
 			}
 			
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$topTenProduct);
+			
 		}
 		return Response::json($respond);
 	}
@@ -1140,9 +1147,9 @@ class TransactionsController extends \BaseController {
 	public function getYearReport(){
 		$respond = array();
 		$report = Transaction::where('paid','=','1')->get();
-		$tahun = date('Y') -9;
+		$tahun = date('Y') -2;
 		$idx = 1;
-		$tahunAkhir = 10;
+		$tahunAkhir = 3;
 		$hasil = array();
 		while($idx <= $tahunAkhir)
 		{

@@ -324,8 +324,8 @@
 													<td>{{$key->full_name}}</td>
 													<td>{{$key->name}}</td>
 													<td>{{$key->quantity}}</td>
-													<td>{{$key->priceNow}}</td>
-													<td>{{$key->total_price}}</td>
+													<td>IDR <?php echo number_format($key->priceNow,0,",",".") ?></td>
+													<td>IDR <?php echo number_format($key->total_price,0,",",".") ?></td>
 													<td>
 														<select id="statusOrder" class="">
 															@if($key->status == "Pending")

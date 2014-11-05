@@ -208,7 +208,7 @@
 											<td>{{$key->courier}}</td>
 											<td>{{$key->destination}}</td>
 											<td>{{$key->full_name}}</td>
-											<td>IDR {{$key->price}}</p></td>
+											<td>IDR <?php echo number_format($key->price,0,",",".") ?></p></td>
 											<td>{{$key->status}}</td>
 
 											<td>
@@ -506,9 +506,6 @@
 				},'json');
 		});
 		
-			$(document).ready(function(){
-				$('#priceData').text(toRp($('#priceData').text()));
-			});
 		
 		function toRp(angka){
 		var rev     = parseInt(angka, 10).toString().split('').reverse().join('');
