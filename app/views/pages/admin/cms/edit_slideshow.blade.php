@@ -321,7 +321,6 @@
 											});
 											$('.f_tbody_slideshow').html(div);
 										}
-										
 									},
 									error: function(jqXHR, textStatus, errorThrown){
 										alert(errorThrown);

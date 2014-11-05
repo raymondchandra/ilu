@@ -315,7 +315,6 @@
 		$('body').on('click', '.detailButtonInfo', function(){
 			$id = $(this).prev().val();								
 				//set value di pop up edit
-				alert($id);
 				$.ajax({
 					type: 'GET',
 					url: "{{URL('admin/product')}}/"+$id,
@@ -326,14 +325,12 @@
 							//set value di pop up edit						
 							$('#edit_id').text($message.id);
 							$('#edit_product_no').text($message.product_no);
-							$('#edit_name').text($message.nama);
+							$('#edit_name').text($message.name);
 							$('#edit_description').text($message.description);
 							$('#edit_category_id').text($message.category_name);						
-								$('#edit_category_id_input').val($message.category_id);
+							$('#edit_category_id_input').val($message.category_id);
 							$('#edit_promotion_id').text($message.promotion_name);						
-								$('#edit_promotion_id_input').val($message.promotion_id);
-								
-							
+							$('#edit_promotion_id_input').val($message.promotion_id);
 						}					
 					},
 					error: function(jqXHR, textStatus, errorThrown){

@@ -8,8 +8,8 @@
 				<h3 style="float: left;">
 					Manage Shipping Agent
 				</h3>
-				<a href="{{ URL::to('test/manage_shipping_jeffry') }}" class="btn btn-info" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping</a>
-				<a href="{{ URL::to('test/manage_shipping_agent_jeffry') }}" class="btn btn-default" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping Agent</a>
+				<a href="{{ URL::to('/admin/manage_shipping') }}" class="btn btn-info" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping</a>
+				<a href="{{ URL::to('/admin/manage_shipping_agent') }}" class="btn btn-default" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping Agent</a>
 			</div>
 			<span class="clearfix"></span>
 			<hr></hr>
