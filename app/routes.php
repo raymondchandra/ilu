@@ -194,6 +194,8 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	
 	Route::post('/post_new_voucher', ['as'=>'david.postNewVoucher','uses' => 'VouchersController@insert']);
 	
+	Route::post('/post_new_active', ['as'=>'david.postNewActive','uses' => 'AccountsController@changeActive']);
+	
 	Route::get('/admin_sign_in', ['before'=>'force.ssl','as'=>'david.adminSignIn','uses' => 'AccountsController@adminLogin']);
 	
 	Route::get('/logout', ['as'=>'david.logout','uses' => 'AccountsController@postLogout']);
@@ -276,8 +278,11 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
     	Route::post('/seo', ['as' => 'add.seo' , 'uses' => 'SeosController@insert']);
     	Route::put('/seo/{id}', ['as' => 'edit.seo' , 'uses' => 'SeosController@updateFull']);
     	Route::delete('/seo/{id}', ['as' => 'delete.seo' , 'uses' => 'SeosController@delete']);
+		
 	//news management
 		Route::get('/news', ['as' => 'get.news' , 'uses' => 'NewsManagementController@getNews']);
+		Route::post('/news', ['as' => 'post.news' , 'uses' => 'NewsManagementController@postNews']);
+		Route::put('/news/{id}', ['as' => 'put.news' , 'uses' => 'NewsManagementController@updateNews']);
 	
     //supportMsg
 		Route::get('/supportMsg/{ticket_id}', ['as' => 'get.supportMsg.ticket' , 'uses' => 'SupportMsgsController@getByTicket']);

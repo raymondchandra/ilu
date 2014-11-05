@@ -27,7 +27,16 @@
 				$hasil2 = null;
 			}
 			
-			return View::make('pages.admin.dashboard', compact('hasil','hasil2'));
+			$hsl3 = json_decode($topTenBuy->getContent());
+			if($hsl3->{'code'} == "200")
+			{
+				$hasil3 = $hsl3->{'messages'};
+			}else
+			{
+				$hasil3 = null;
+			}
+			
+			return View::make('pages.admin.dashboard', compact('hasil','hasil2','hasil3'));
 		}
 	}
 ?>
