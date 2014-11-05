@@ -13,7 +13,18 @@ class SlideshowManagementController extends \BaseController {
 	
 	public function insert(){
 		$slide = new GalleriesController();
-		return $slide->w_insert();
+		
+		//return Input::file('image');
+		
+		return $slide->insert_slideshow();
+	}
+	
+	public function update($id){
+		$slide = new GalleriesController();
+		
+		//return Input::file('image');
+		
+		return $slide->update_slideshow($id);
 	}
 	
 	/*public function get_one_seos($name){

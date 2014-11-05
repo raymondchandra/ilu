@@ -270,9 +270,10 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
     	Route::post('/sendnewsletter', ['as' => 'send.newsletter' , 'uses' => 'TemplatesController@sendNewsletter']);
     	Route::delete('/newsletter/{id}', ['as' => 'delete.newsletter' , 'uses' => 'TemplatesController@delete']);
     //slideshow
-    	Route::post('/postSlideShow', ['as' => 'add.slideshow' , 'uses' => 'GalleryController@upload_slideshow']);
-    	Route::post('/editSlideShow', ['as' => 'edit.slideshow' , 'uses' => 'GalleryController@update_slideshow']);
-    	Route::delete('/slideshow/{id}', ['as' => 'delete.slideshow' , 'uses' => 'GalleryController@delete']);
+		Route::get('/slideshow', ['as' => 'get.slideshow' , 'uses' => 'SlideshowManagementController@get_all_slideshow']);
+		Route::post('/slideshow', ['as' => 'post.slideshow' , 'uses' => 'SlideshowManagementController@insert']);
+		Route::post('/slideshow/{id}', ['as' => 'post.slideshow' , 'uses' => 'SlideshowManagementController@update']);
+		Route::delete('/slideshow/{id}', ['as' => 'delete.slideshow' , 'uses' => 'SlideshowManagementController@delete']);
     //seo
 		Route::get('/seo', ['as' => 'get.seo' , 'uses' => 'SeosController@getAll']);
     	Route::post('/seo', ['as' => 'add.seo' , 'uses' => 'SeosController@insert']);

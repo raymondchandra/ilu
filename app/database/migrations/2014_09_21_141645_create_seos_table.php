@@ -16,7 +16,8 @@ class CreateSeosTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('name');
-			$table->string('content');
+			$table->string('description');
+			$table->string('keyword');
 			$table->timestamps();
 		});
 	}
