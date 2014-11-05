@@ -36,7 +36,7 @@ class NewsController extends \BaseController {
 	 */
 	public function getAll(){
 		$respond = array();
-		$news = News::all();
+		$news = News::orderBy('updated_at','desc')->get();
 		if (count($news) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -119,7 +119,7 @@ class NewsController extends \BaseController {
 			//save
 			try {
 				$news->update($data);
-				$respond = array('code'=>'204','status' => 'No Content');
+				$respond = array('code'=>'200','status' => 'OK');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 			}
