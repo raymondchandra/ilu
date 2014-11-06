@@ -203,7 +203,7 @@
 									<td>{{$key->invoice}}</td>
 									<td>{{$key->account_id}}</td>
 									<td>{{$key->full_name}}</td>
-									<td>{{$key->total_price}}</td>
+									<td>Rp <?php echo number_format($key->total_price,0,",",".") ?>,-</td>
 									<td>{{$key->status}}</td>
 									<td>@if($key->paid == 0)
 									UnPaid
@@ -458,6 +458,9 @@
 						{
 							$('#invoice').text(response['messages']['0'].invoice);
 							$('#price').text(response['messages']['0'].total_price);
+							$(document).ready(function(){
+								$('#price').text(toRp($('#price').text()));
+							});
 							$('#voucher').text(response['messages']['0'].voucher_id);
 							$('#transaction_status').text(response['messages']['0'].status);
 							if(response['messages']['0'].paid == '0')
@@ -476,12 +479,40 @@
 							$('#memberId').text(response['messages']['0'].profile.member_id);
 							$('#noKtp').text(response['messages']['0'].profile.no_ktp);
 							$('#email').text(response['messages']['0'].profile.email);
-							$('#ttl').text(response['messages']['0'].profile.dob);
+							var monthNames = [ "January", "February", "March", "April", "May", "June",
+							"July", "August", "September", "October", "November", "December" ];
+							var d = new Date(response['messages']['0'].profile.dob);
+							var t = d.getDate();
+							var b = d.getMonth();
+							var th = d.getFullYear();
+							$('#ttl').text(t+"-"+monthNames[b]+"-"+th);
+							
 							$('#comName').text(response['messages']['0'].profile.company_name);
 							$('#comAdd').text(response['messages']['0'].profile.company_address);
-							$('#MemberSince').text((response['messages']['0'].profile.created_at).split(" ",1));
+							
+							var d = new Date((response['messages']['0'].profile.created_at).split(" ",1));
+							var t = d.getDate();
+							var b = d.getMonth();
+							var th = d.getFullYear();
+							
+							$('#MemberSince').text(t+"-"+monthNames[b]+"-"+th);
+							
 							$('#idTrans').val(response['messages']['0'].id);
 							$('#idShip').val(response['messages']['0'].shipment_id);
+							
+							var tab ="";
+							var obj = response['messages']['0'].order;
+							alert(obj);
+							var responses = obj;
+							$(responses).each(function() {
+								tab+= "<tr>";
+								tab+="<td>"+$(this)[0].name_product+"</td>";
+								tab+="<td>"+toRp($(this)[0].priceNow)+"</td>";
+								tab+="<td>"+$(this)[0].quantity+"</td>";
+								tab+="<td>"+toRp($(this)[0].priceNow * $(this)[0].quantity)+"</td>";
+								tab+="</tr>";
+							});
+							$('#produk').html(tab);
 						}
 					},error: function(xhr, textStatus, errorThrown){
 						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
@@ -590,6 +621,19 @@
 		$('body').on('click','.backButton',function(){
 			window.location = "{{URL::route('jeffry.getTransaction')}}" ;
 		});
+		
+		function toRp(angka){
+		var rev     = parseInt(angka, 10).toString().split('').reverse().join('');
+		var rev2    = '';
+		for(var i = 0; i < rev.length; i++){
+			rev2  += rev[i];
+			if((i + 1) % 3 === 0 && i !== (rev.length - 1)){
+				rev2 += '.';
+			}
+		}
+		return 'Rp ' + rev2.split('').reverse().join('')+',-';
+		//return 'IDR ' + rev2.split('').reverse().join('') + ',00';
+	}
 	</script>
 	
 	

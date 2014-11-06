@@ -1,5 +1,6 @@
 @extends('layouts.admin.admin_layout'){{-- WARNING! fase ini sementara untuk show saja, untuk lebih lanjut akan dibuat controller agar tidak meng-extend layout --}}
-@section('content')	
+@section('content')
+<?php use Carbon\Carbon; ?>	
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-lg-12">
@@ -319,13 +320,22 @@
 												<tr> 
 													<td>{{$key->id}}</td>
 													<td>{{$key->invoice}}</td>
-													<td>{{$key->created_at}}</td>
+													<td>
+														<?php 
+															
+															$arr = explode(" ",$key->created_at); 
+															$tgl = Carbon::parse($arr[0])->format('d');
+															$bln = Carbon::parse($arr[0])->format('F');
+															$thn = Carbon::parse($arr[0])->format('Y');
+															echo $tgl.'-'.$bln.'-'.$thn;
+														?>
+													</td>
 													<td>{{$key->full_name}}</td>
 													<td>{{$key->full_name}}</td>
 													<td>{{$key->name}}</td>
 													<td>{{$key->quantity}}</td>
-													<td>{{$key->priceNow}}</td>
-													<td>{{$key->total_price}}</td>
+													<td>Rp <?php echo number_format($key->priceNow,0,",",".") ?>,-</td>
+													<td>Rp <?php echo number_format($key->total_price,0,",",".") ?>,-</td>
 													<td>
 														<select id="statusOrder" class="">
 															@if($key->status == "Pending")
@@ -719,9 +729,9 @@
 									tab+="<td>"+$(this)[0].name_product+"</td>";
 									tab+="<td> <img src='"+$(this)[0].phot+"' width='120' height='120'>"+"</td>";
 									tab+="<td>"+$(this)[0].ctgr+"</td>";
-									tab+="<td>"+$(this)[0].priceNow+"</td>";
+									tab+="<td>"+toRp($(this)[0].priceNow)+"</td>";
 									tab+="<td>"+$(this)[0].quantity+"</td>";
-									tab+="<td>"+$(this)[0].priceNow * $(this)[0].quantity+"</td>";
+									tab+="<td>"+toRp($(this)[0].priceNow * $(this)[0].quantity)+"</td>";
 									tab+="<td>"+$(this)[0].attr_name+' - '+$(this)[0].attr_value+"</td>";
 									tab+="</tr>";
 								});
@@ -733,5 +743,18 @@
 						}
 					},'json');
 				});
+				
+				function toRp(angka){
+					var rev     = parseInt(angka, 10).toString().split('').reverse().join('');
+					var rev2    = '';
+					for(var i = 0; i < rev.length; i++){
+						rev2  += rev[i];
+						if((i + 1) % 3 === 0 && i !== (rev.length - 1)){
+							rev2 += '.';
+						}
+					}
+					return 'Rp ' + rev2.split('').reverse().join('')+',-';
+					//return 'IDR ' + rev2.split('').reverse().join('') + ',00';
+				}
 				</script>
 				@stop

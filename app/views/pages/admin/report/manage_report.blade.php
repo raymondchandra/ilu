@@ -124,19 +124,19 @@
 					<tr> 
 						@if($key->ket == 'day')
 							<td>{{$key->tanggal}}-{{$key->bulan}}</td>
-							<td>{{$key->penjualan}}</td>
+							<td>Rp <?php echo number_format($key->penjualan,0,",",".") ?>,-</td>
 						@elseif($key->ket == 'week')
 							<td>Week-{{$key->week}} ({{$key->tanggal_awal}} - {{$key->tanggal_akhir}})</td>
-							<td>{{$key->penjualan}}</td>
+							<td>Rp <?php echo number_format($key->penjualan,0,",",".") ?>,-</td>
 						@elseif($key->ket == 'month')
 							<td>{{$key->tanggal}}-{{$key->bulan}}</td>
-							<td>{{$key->penjualan}}</td>
+							<td>Rp <?php echo number_format($key->penjualan,0,",",".") ?>,-</td>
 						@elseif($key->ket == 'year' || $key->ket == 'range')
 							<td>{{$key->tanggal}}</td>
-							<td>{{$key->penjualan}}</td>
+							<td>Rp <?php echo number_format($key->penjualan,0,",",".") ?>,-</td>
 						@elseif($key->ket == 'sixmonth')
 							<td>{{$key->bulan}}</td>
-							<td>{{$key->penjualan}}</td>
+							<td>Rp <?php echo number_format($key->penjualan,0,",",".") ?>,-</td>
 						@endif
 					</tr> 
 				@endforeach

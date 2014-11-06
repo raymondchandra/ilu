@@ -155,8 +155,7 @@
 									<td>{{$key->id}}</td>
 									<td>{{$key->courier}}</td>
 									<td>{{$key->destination}}</td>
-									<td>{{$key->price}}</td>
-
+									<td>Rp <?php echo number_format($key->price,0,",",".") ?>,-</td>
 									<td>
 										<input type="hidden" value="{{$key->id}}" id="shipAgtId">
 										<button class="btn btn-info btn-xs viewShippingAgent" data-toggle="modal" data-target=".pop_up_view_shipping_agent">View</button>
@@ -360,7 +359,9 @@
 							$('#tujuan').text(response['messages'].destination);
 							$('#dari').text(response['messages'].destination);
 							$('#harga_pengiriman').text(response['messages'].price);
-							
+							$(document).ready(function(){
+								$('#harga_pengiriman').text(toRp($('#harga_pengiriman').text()));
+							});
 						}
 					},error: function(xhr, textStatus, errorThrown){
 						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
@@ -485,6 +486,21 @@
 					}
 				},'json');
 		});
+		
+		
+		
+		function toRp(angka){
+		var rev     = parseInt(angka, 10).toString().split('').reverse().join('');
+		var rev2    = '';
+		for(var i = 0; i < rev.length; i++){
+			rev2  += rev[i];
+			if((i + 1) % 3 === 0 && i !== (rev.length - 1)){
+				rev2 += '.';
+			}
+		}
+		return 'Rp ' + rev2.split('').reverse().join('')+',-';
+		//return 'IDR ' + rev2.split('').reverse().join('') + ',00';
+	}
 	</script>
 	
 	@stop

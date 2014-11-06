@@ -124,7 +124,10 @@ Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
 
 Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 {
-
+	//DASHBOARD
+	Route::get('/', ['as' =>'jeffry.getDashboard', 'uses' => 'DashboardsManagementController@view_dashboard_mgmt']);
+	
+	
 	//-------------------------------------------ATTRIBUTE VIEW ADMIN-------------------------------------------		
 	Route::get('manage_attributes', ['as' => 'viewAttributesManagement', 'uses' => 'AttributesManagementController@view_admin_attribute']);
 	Route::get('/attribute/{id}', ['as' => 'attribute_detail', 'uses' => 'AttributesManagementController@view_detail_attribute']);
@@ -332,8 +335,7 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	//REPORT
 	Route::get('/manage_report', ['as' =>'jeffry.getReport', 'uses' => 'ReportingManagementController@view_reporting_mgmt_day']);
 	
-	//DASHBOARD
-	Route::get('/manage_dashboard', ['as' =>'jeffry.getDashboard', 'uses' => 'DashboardsManagementController@view_dashboard_mgmt']);
+	
 
 });
 
