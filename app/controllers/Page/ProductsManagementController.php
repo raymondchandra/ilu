@@ -310,33 +310,113 @@ class ProductsManagementController extends \BaseController
 	//edit main_photo, other_photos
 	public function editGallery()
 	{
-		//main_photo	
-		$main_photo = Input::file('edit_main_photo');	
+		//INPUT :
+		//product_id
+		// edit_main_photo ('' atau files)
+		// edit_main_photo_id
+		// arr (edit_temp_name_other_photos+edit_temp_idx_other_photos)
+		// arr edit_other_photos_name
+		// edit_arr_id
+		// edit_arr_files
+		// edit_arr_delete
 		
 		
+		//main_photo
+		$main_photo_id = Input::get('edit_main_photo_id'); //kirim
 		
-		//arr_other_photos				
-		$arr_name_other_photos = Input::get('edit_other_photos_name');						
+		$main_photo = Input::get('edit_main_photo');		
+		if($main_photo == "isi") 
+		{
+			$files_main_photo = Input::file('edit_files_main_photo'); //kirim
+		}
+		else
+		{
+			$files_main_photo = "";
+		}
+		
+		
+		//arr photo edit id
+		$edit_arr_other_photos_id = explode(",", Input::get('edit_arr_id'));	 //kirim									
+		//arr photo edit	
+		$edit_arr_name_other_photos = Input::get('edit_arr_files');						
+		$edit_temp_arr_other_photos = explode("," , $edit_arr_name_other_photos);
+		foreach($edit_temp_arr_other_photos as $key){
+			$edit_arr_other_photos[] = Input::file($key);	//kirim		
+		}
+				
+		
+		
+		//arr photo delete
+		$delete_arr_other_photos = explode(",", Input::get('edit_arr_delete'));	 //kirim							
+		
+		
+				
+		//arr_other_photos	tambahan			
+		$arr_name_other_photos = Input::get('edit_other_photos_name');				
 		$temp_arr_other_photos = explode("," , $arr_name_other_photos);
 		foreach($temp_arr_other_photos as $key){
-			$arr_other_photos[] = Input::file($key);		
-		}							
-		if($main_photo == null){
-			$main_photo = "";			
-		}	
-		if($arr_other_photos == null){
-			$arr_other_photos = "";
+			$arr_other_photos[] = Input::file($key);		//kirim
+		}					
+		// return $arr_other_photos;
+		
+		$temp_edit_arr_id = Input::get('edit_arr_id');				
+		if($temp_edit_arr_id == '')
+		{
+			$edit_arr_id = "";	
 		}
-		$input_photo = array(
-			'main_photo' => $main_photo,
-			'other_photos' => $arr_other_photos
-		);	
+		else
+		{
+			$edit_arr_id = explode(",", $temp_edit_arr_id);								
+		}				
 		
+		$temp_edit_arr_files = Input::get('edit_arr_files');
+		$edit_arr_files = explode(",", $temp_edit_arr_files);				
+		
+		
+		
+		$product_id = Input::get('product_id');		
+						
 		$productController = new ProductsController();		
-		
-		$json = json_decode($productController->updateGallery($input_photo)->getContent());
+				
+						
+		$json = json_decode($productController->
+					updateGallery(
+						$main_photo,
+						$main_photo_id, 
+						$files_main_photo, 
+						$edit_arr_other_photos_id, 
+						$edit_arr_other_photos,
+						$delete_arr_other_photos,
+						$arr_other_photos,
+						$edit_arr_id,
+						$edit_arr_files,
+						$product_id
+					)->getContent());				
 		return json_encode($json);				
 				
+		
+		// return "main _photo ".$main_photo." - main photo id ".$main_photo_id. " - files main photo " .$files_main_photo;
+		
+		// return $edit_arr_files;
+		 // - edit arr id " .$edit_arr_id." - edit arr files " .$edit_arr_files;
+		
+		// return $productController->test(null,$main_photo_id,$files_main_photo,$product_id);
+				
+		/*
+		return $productController->
+					updateGallery(
+						null,	
+						null, 
+						null, 
+						null, 
+						null,
+						null,
+						$arr_other_photos,
+						$edit_arr_id,
+						$edit_arr_files,
+						$product_id
+					);
+		*/		
 	}
 	
 	public function deleteProduct()
