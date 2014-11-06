@@ -673,6 +673,35 @@ class PromotionsController extends \BaseController {
 		return Response::json($respond);
 	}
 	
+	public function get3ProductFromNewestPromotion()
+	{
+		$respond = array();
+		
+		$promotion = Promotion::orderBy('created_at', 'desc')->take(1)->get();				
+		if (count($promotion) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{					
+			$product_cont = new ProductsController();
+			$json_products = $product_cont->getByPromotionId($promotion[0]->id);									
+			$decode = json_decode($json_products->getContent());
+			$code = $decode->{'code'};
+			if($code == 404) //not found
+			{
+				$promotion[0]->products = "";
+			}
+			else
+			{					
+				$promotion[0]->products = $decode->{'messages'};				
+			}
+			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$promotion[0]);
+		}
+		return Response::json($respond);
+	}
+	
 	/*
 	public function getByName($name)		
 	{
