@@ -270,13 +270,28 @@ class ProductsController extends \BaseController {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 		}
 		return Response::json($respond);
-	}	
+	}			
+	
+	public function getAllProductName()
+	{
+		$respond = array();
+		$product = DB::table('products')->lists('name');
+		if (count($product) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
+		}
+		return Response::json($respond);						
+	}
 	
 	// return array product :
 			// id, product_no, name, description, category_id, promotion_id, deleted,			
-			// category_name, promotion_amount, promotion_expired, 
+			// category_name, promotion_amount, promotion_expired, promotion_name,
 			// prices {attr_name, price_with_tax, price_with_tax_promotion},
-			// main_photo, other_photos		
+			// main_photo, main_photo_id, other_photos(arr object)
 	public function getAll()
 	{
 		$respond = array();
@@ -351,6 +366,7 @@ class ProductsController extends \BaseController {
 					$key->main_photo = $main_photo->photo_path;
 					$key->main_photo_id = $main_photo->id;
 				}								
+					
 								
 				//add other_photo
 				if(count($other_photos) == 0)
@@ -359,13 +375,14 @@ class ProductsController extends \BaseController {
 				}
 				else
 				{
-					$temp = array();
-					foreach($other_photos as $ct)
-					{
-						$temp[] = $ct->photo_path;
-					}
-					$key->other_photos = $temp;
-				}
+					// $temp = array();
+					// foreach($other_photos as $ct)
+					// {
+						// $temp[] = $ct->photo_path;
+					// }
+					// $product->other_photos = $temp;
+					$key->other_photos = $other_photos;
+				}	
 			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
 		}
@@ -439,11 +456,14 @@ class ProductsController extends \BaseController {
 				if(count($main_photo) == 0)
 				{
 					$key->main_photo = "";
+					$key->main_photo_id = "";
 				}
 				else
 				{					
 					$key->main_photo = $main_photo->photo_path;
-				}
+					$key->main_photo_id = $main_photo->id;
+				}								
+					
 								
 				//add other_photo
 				if(count($other_photos) == 0)
@@ -452,13 +472,14 @@ class ProductsController extends \BaseController {
 				}
 				else
 				{
-					$temp = array();
-					foreach($other_photos as $ct)
-					{
-						$temp[] = $ct->photo_path;
-					}
-					$key->other_photos = $temp;
-				}
+					// $temp = array();
+					// foreach($other_photos as $ct)
+					// {
+						// $temp[] = $ct->photo_path;
+					// }
+					// $product->other_photos = $temp;
+					$key->other_photos = $other_photos;
+				}	
 			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
 		}
@@ -542,11 +563,14 @@ class ProductsController extends \BaseController {
 				if(count($main_photo) == 0)
 				{
 					$key->main_photo = "";
+					$key->main_photo_id = "";
 				}
 				else
 				{					
 					$key->main_photo = $main_photo->photo_path;
-				}
+					$key->main_photo_id = $main_photo->id;
+				}								
+					
 								
 				//add other_photo
 				if(count($other_photos) == 0)
@@ -555,13 +579,14 @@ class ProductsController extends \BaseController {
 				}
 				else
 				{
-					$temp = array();
-					foreach($other_photos as $ct)
-					{
-						$temp[] = $ct->photo_path;
-					}
-					$key->other_photos = $temp;
-				}
+					// $temp = array();
+					// foreach($other_photos as $ct)
+					// {
+						// $temp[] = $ct->photo_path;
+					// }
+					// $product->other_photos = $temp;
+					$key->other_photos = $other_photos;
+				}	
 			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
 		}
@@ -646,11 +671,14 @@ class ProductsController extends \BaseController {
 				if(count($main_photo) == 0)
 				{
 					$key->main_photo = "";
+					$key->main_photo_id = "";
 				}
 				else
 				{					
 					$key->main_photo = $main_photo->photo_path;
-				}
+					$key->main_photo_id = $main_photo->id;
+				}								
+					
 								
 				//add other_photo
 				if(count($other_photos) == 0)
@@ -659,13 +687,14 @@ class ProductsController extends \BaseController {
 				}
 				else
 				{
-					$temp = array();
-					foreach($other_photos as $ct)
-					{
-						$temp[] = $ct->photo_path;
-					}
-					$key->other_photos = $temp;
-				}
+					// $temp = array();
+					// foreach($other_photos as $ct)
+					// {
+						// $temp[] = $ct->photo_path;
+					// }
+					// $product->other_photos = $temp;
+					$key->other_photos = $other_photos;
+				}	
 			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
 		}
@@ -1047,18 +1076,21 @@ class ProductsController extends \BaseController {
 				{
 					//no promotion
 					$promo_amount = 0;
-					$promo_expired = 0;						
+					$promo_expired = '';		
+					$promo_name = '';
 				}	
 				else
 				{
 					//promotion
 					$promo_amount = Promotion::where('id','=',$key->promotion_id)->first()->amount;
 					$promo_expired = Promotion::where('id','=',$key->promotion_id)->first()->expired;					
+					$promo_name = Promotion::where('id','=',$key->promotion_id)->first()->name;
 				}						
 
 				//add promotion_amount, promotion_expired
 				$key->promotion_amount = $promo_amount;
 				$key->promotion_expired = $promo_expired;
+				$key->promotion_name = $promo_name;
 				
 				$prices = Price::where('product_id','=',$key->id)->get();
 					
@@ -1084,11 +1116,14 @@ class ProductsController extends \BaseController {
 				if(count($main_photo) == 0)
 				{
 					$key->main_photo = "";
+					$key->main_photo_id = "";
 				}
 				else
 				{					
 					$key->main_photo = $main_photo->photo_path;
-				}
+					$key->main_photo_id = $main_photo->id;
+				}								
+					
 								
 				//add other_photo
 				if(count($other_photos) == 0)
@@ -1097,12 +1132,13 @@ class ProductsController extends \BaseController {
 				}
 				else
 				{
-					$temp = array();
-					foreach($other_photos as $ct)
-					{
-						$temp[] = $ct->photo_path;
-					}
-					$key->other_photos = $temp;
+					// $temp = array();
+					// foreach($other_photos as $ct)
+					// {
+						// $temp[] = $ct->photo_path;
+					// }
+					// $product->other_photos = $temp;
+					$key->other_photos = $other_photos;
 				}		
 			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
@@ -1142,17 +1178,20 @@ class ProductsController extends \BaseController {
 				{
 					//no promotion
 					$promo_amount = 0;
-					$promo_expired = '';						
+					$promo_expired = '';	
+					$promo_name = '';
 				}	
 				else
 				{
 					//promotion
 					$promo_amount = Promotion::where('id','=',$key->promotion_id)->first()->amount;
 					$promo_expired = Promotion::where('id','=',$key->promotion_id)->first()->expired;					
+					$promo_name = Promotion::where('id','=',$key->promotion_id)->first()->name;
 				}			
 				//add promotion_amount, promotion_expired
 				$key->promotion_amount = $promo_amount;
 				$key->promotion_expired = $promo_expired;
+				$key->promotion_name = $promo_name;
 				
 				$prices = Price::where('product_id','=',$key->id)->get();					
 					foreach($prices as $key_prices)
@@ -1176,11 +1215,14 @@ class ProductsController extends \BaseController {
 				if(count($main_photo) == 0)
 				{
 					$key->main_photo = "";
+					$key->main_photo_id = "";
 				}
 				else
 				{					
 					$key->main_photo = $main_photo->photo_path;
-				}
+					$key->main_photo_id = $main_photo->id;
+				}								
+					
 								
 				//add other_photo
 				if(count($other_photos) == 0)
@@ -1189,13 +1231,14 @@ class ProductsController extends \BaseController {
 				}
 				else
 				{
-					$temp = array();
-					foreach($other_photos as $ct)
-					{
-						$temp[] = $ct->photo_path;
-					}
-					$key->other_photos = $temp;
-				}
+					// $temp = array();
+					// foreach($other_photos as $ct)
+					// {
+						// $temp[] = $ct->photo_path;
+					// }
+					// $product->other_photos = $temp;
+					$key->other_photos = $other_photos;
+				}	
 			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
 		}											
