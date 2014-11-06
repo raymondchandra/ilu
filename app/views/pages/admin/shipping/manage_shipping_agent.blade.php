@@ -8,8 +8,8 @@
 				<h3 style="float: left;">
 					Manage Shipping Agent
 				</h3>
-				<a href="{{ URL::to('test/manage_shipping_jeffry') }}" class="btn btn-info" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping</a>
-				<a href="{{ URL::to('test/manage_shipping_agent_jeffry') }}" class="btn btn-default" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping Agent</a>
+				<a href="{{ URL::to('/admin/manage_shipping') }}" class="btn btn-info" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping</a>
+				<a href="{{ URL::to('/admin/manage_shipping_agent') }}" class="btn btn-default" style="float: right; margin-top: 20px;margin-left: 10px;" >Manage Shipping Agent</a>
 			</div>
 			<span class="clearfix"></span>
 			<hr></hr>
@@ -78,6 +78,10 @@
 								@endif
 									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 								</a>
+							</th>
+							<th class="table-bordered">
+								<a href="javascript:void(0)">Asal</a>
+								<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 							</th>
 							<th class="table-bordered">
 								<a href="javascript:void(0)">Destinasi</a>
@@ -226,6 +230,10 @@
 								</a>
 							</th>
 							<th class="table-bordered">
+								<a href="javascript:void(0)">Asal</a>
+								<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+							</th>
+							<th class="table-bordered">
 								<a href="javascript:void(0)">Destinasi</a>
 								@if($filtered == 0)
 									@if($sortBy == "destination")
@@ -285,6 +293,7 @@
 							<tr>
 								<td><input type="text" class="form-control input-sm idFilter"></td>
 								<td><input type="text" class="form-control input-sm courierFilter"></td>
+								<td><input type="text" class="form-control input-sm asalFilter"></td>
 								<td><input type="text" class="form-control input-sm destinationFilter"></td>
 								<td><input type="text" class="form-control input-sm priceFilter"></td>
 								

@@ -231,6 +231,80 @@
 							
 						</div>
 					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<table class="table table-bordered" id="f_table_detail_transaksi">
+								<thead>
+									<tr>
+										<th>
+											Nama Barang
+										</th>
+										<th>
+											Harga Barang
+										</th>
+										<th>
+											Qty.
+										</th>
+										<th>
+											Subtotal
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											Produk X
+										</td>
+										<td>
+											IDR xxx.xxx
+										</td>
+										<td>
+											xx
+										</td>
+										<td>
+											IDR x.xxx.xxx
+										</td>
+									</tr>
+									<tr>
+										<td>
+											Produk X
+										</td>
+										<td>
+											IDR xxx.xxx
+										</td>
+										<td>
+											xx
+										</td>
+										<td>
+											IDR x.xxx.xxx
+										</td>
+									</tr>
+									<tr>
+										<td>
+											Produk X
+										</td>
+										<td>
+											IDR xxx.xxx
+										</td>
+										<td>
+											xx
+										</td>
+										<td>
+											IDR x.xxx.xxx
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-lg-6 col-lg-push-6">
+							<div class="form-group" id="nama_promosi">
+								<label class="col-sm-4 control-label">Grand Total</label>
+								<div class="col-sm-8">
+									<p class="form-control-static" id="">IDR xx.xxx.xxx</p>
+								</div>
+							</div>
+						</div>
+					</div>
 
 
 

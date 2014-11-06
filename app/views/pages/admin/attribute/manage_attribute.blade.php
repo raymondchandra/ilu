@@ -12,225 +12,344 @@
 			<span class="clearfix"></span>
 			<hr></hr>
 
-			<div>
-				@if($attributes == null)
-					@if($filtered == 0)
-						<button class="btn btn-success" style="float: right; margin-bottom: 20px;"  data-toggle="modal" data-target=".pop_up_add_attribute">+ Add New Attribute</button>
-						<p>No Attributes</p>
-					@else
-						<button class="btn btn-success backButton" style="float: right; margin-bottom: 20px;">Back</button>
-						<p>Search not match anything</p>
-						<table class="table table-striped table-hover table-condensed table-bordered">
-							<thead class="table-bordered">
-								<tr>
-									<th class="table-bordered">
-										<a href="javascript:void(0)">ID Attribute</a>
-										@if($filtered == 0)
-											@if($sortBy == "id")
-												@if($sortType == "asc")
-													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
-												@else
-													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
-												@endif
-											@else
-												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
-											@endif	
-										@else
-											@if($sortBy == "id")
-												@if($sortType == "asc")
-													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
-												@else
-													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
-												@endif
-											@else
-												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
-											@endif	
-										@endif								
-										<span class="glyphicon glyphicon-sort" style="float: right;"></span>
-										</a>
-									</th>
-									<th class="table-bordered">
-										<a href="javascript:void(0)">Nama Attribute</a>
-										@if($filtered == 0)
-											@if($sortBy == "name")
-												@if($sortType == "asc")
-													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
-												@else
-													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
-												@endif
-											@else
-												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
-											@endif	
-										@else
-											@if($sortBy == "name")
-												@if($sortType == "asc")
-													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
-												@else
-													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
-												@endif
-											@else
-												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
-											@endif	
-										@endif								
-										<span class="glyphicon glyphicon-sort" style="float: right;"></span>
-										</a>
-									</th>
-									<th class="table-bordered">
+			<div class="row">
+			<div class="container">
+				<div class="col-lg-12">
 
-									</th>
-								</thead>
-								<thead>
-									<tr>
-										<td><input type="text" class="form-control input-sm filterId"></td>
-										<td><input type="text" class="form-control input-sm filterName"></td>
-										
-										<td width=""><a class="btn btn-primary btn-xs filterButton">Filter</a></td>
-									</tr>
-								</thead>
-						</table>	
-					@endif					
-				@else								
-					@if($filtered == 0)					
-						{{$attributes->appends(array('sortBy' => $sortBy, 'order' => $sortType, 'filtered' => $filtered))->links()}}
-						<button class="btn btn-success" style="float: right; margin-bottom: 20px;"  data-toggle="modal" data-target=".pop_up_add_attribute">+ Add New Attribute</button>
+					<!--<div class="col-lg-6">-->
+					<div class="pop_up_add_attribute">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" id="addButton" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+									<h4 class="modal-title" id="myModalLabel">Add New Attribute</h4>
+								</div>
+								<form class="form-horizontal" role="form">
+									<div class="modal-body">
+										<div class="row">
+											<div class="col-sm-12"><!-- col-sm-5 -->
+
+												<div class="form-group">
+													<label class="col-sm-4 control-label">Nama Attribute</label>
+													<div class="col-sm-5">
+														<input id="new_name_input" type="text" class="form-control" value="">	
+													</div>
+													<div class="col-sm-3">
+														<span id="alert_new_name_taken" class="btn btn-danger hidden">Nama attribute ini sudah ada</span>	
+													</div>
+													<div class="col-sm-3">
+														<span id="alert_new_name_required" class="btn btn-danger hidden">Nama attribute harus diisi</span>	
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</div>
+									<div class="modal-footer">
+										<button id="add_attribute" type="button" class="btn btn-success">Add</button>
+										<button type="button" id="cancelAddButton" class="btn btn-default" data-dismiss="modal">Keluar</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<script>
+					$('body').on('click', '#addButton', function(){
+						//set default 
+						$('#new_name_input').val('');
+						$('#alert_new_name_required').addClass('hidden');
+						$('#alert_new_name_taken').addClass('hidden');
+					});
+									$('body').on('click', '#cancelAddButton', function(){
+						//set default 
+						$('#new_name_input').val('');
+						$('#alert_new_name_required').addClass('hidden');
+						$('#alert_new_name_taken').addClass('hidden');
+					});
+
+									$('body').on('click', '#add_attribute', function(){						
+										$name = $('#new_name_input').val();		
+										$deleted = 0;
+										$data = {
+											'name' : $name,
+											'deleted' : $deleted
+										};
+										var json_data = JSON.stringify($data);
+						// alert(json_data);
+						$.ajax({
+							type: 'POST',
+							url: "{{URL('admin/attribute/addAttribute')}}",
+							data : {
+								'json_data' : json_data
+							},
+							success: function(response){				
+								result = JSON.parse(response);				
+								if(result.code==201){
+									alert(result.status);
+									location.reload();
+								}			
+								else if(result.code==400)
+								{
+									alert(result.status);											
+									if(result.messages['name'] == 'The name field is required.')
+									{
+										$('#alert_new_name_required').removeClass('hidden');
+									}
+									else
+									{
+										$('#alert_new_name_required').addClass('hidden');
+									}
+									if(result.messages['name'] == 'The name has already been taken.')
+									{
+										$('#alert_new_name_taken').removeClass('hidden');
+									}
+									else
+									{
+										$('#alert_new_name_taken').addClass('hidden');
+									}					
+								}
+								else
+								{
+									alert(result.status);
+									alert(result.messages);
+								}
+							},
+							error: function(jqXHR, textStatus, errorThrown){
+								alert(errorThrown);
+							}
+						},'json');
+					});
+				</script>
+				<!--</div>		-->
+
+
+
+
+
+@if($attributes == null)
+@if($filtered == 0)
+<!--<button class="btn btn-success" style="float: right; margin-bottom: 20px;"  data-toggle="modal" data-target=".pop_up_add_attribute">+ Add New Attribute</button>-->
+<p>No Attributes</p>
+@else
+<button class="btn btn-success backButton" style="float: right; margin-bottom: 20px;">Back</button>
+<p>Search not match anything</p>
+<table class="table table-striped table-hover table-condensed table-bordered">
+	<thead class="table-bordered">
+		<tr>
+			<th class="table-bordered">
+				<a href="javascript:void(0)">ID Attribute</a>
+				@if($filtered == 0)
+				@if($sortBy == "id")
+				@if($sortType == "asc")
+				<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
 					@else
-						<button class="btn btn-success backButton" style="float: right; margin-top: 20px; margin-bottom: 25px;">Back</button>
-					@endif
-					<table class="table table-striped table-hover table-condensed table-bordered">
-						<thead class="table-bordered">
-							<tr>
-								<th class="table-bordered">
-									<a href="javascript:void(0)">ID Attribute</a>
-									@if($filtered == 0)
-										@if($sortBy == "id")
-											@if($sortType == "asc")
-												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
-											@else
-												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
-											@endif
-										@else
-											<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
-										@endif	
+					<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+						@endif
+						@else
+						<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
+							@endif	
+							@else
+							@if($sortBy == "id")
+							@if($sortType == "asc")
+							<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+								@else
+								<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+									@endif
 									@else
-										@if($sortBy == "id")
-											@if($sortType == "asc")
-												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name ))}}">
-											@else
-												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name ))}}">
-											@endif
-										@else
-											<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name ))}}">
+									<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
 										@endif	
-									@endif								
-									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+										@endif								
+										<span class="glyphicon glyphicon-sort" style="float: right;"></span>
 									</a>
 								</th>
 								<th class="table-bordered">
 									<a href="javascript:void(0)">Nama Attribute</a>
 									@if($filtered == 0)
-										@if($sortBy == "name")
-											@if($sortType == "asc")
-												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
-											@else
-												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
-											@endif
+									@if($sortBy == "name")
+									@if($sortType == "asc")
+									<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
 										@else
+										<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+											@endif
+											@else
 											<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
-										@endif	
-									@else
-										@if($sortBy == "name")
-											@if($sortType == "asc")
+												@endif	
+												@else
+												@if($sortBy == "name")
+												@if($sortType == "asc")
 												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+													@else
+													<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+														@endif
+														@else
+														<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+															@endif	
+															@endif								
+															<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+														</a>
+													</th>
+													<th class="table-bordered">
+
+													</th>
+												</thead>
+												<thead>
+													<tr>
+														<td><input type="text" class="form-control input-sm filterId"></td>
+														<td><input type="text" class="form-control input-sm filterName"></td>
+
+														<td width=""><a class="btn btn-primary btn-xs filterButton">Filter</a></td>
+													</tr>
+												</thead>
+											</table>	
+											@endif					
+											@else								
+											@if($filtered == 0)					
+											{{$attributes->appends(array('sortBy' => $sortBy, 'order' => $sortType, 'filtered' => $filtered))->links()}}
+											<!--<button class="btn btn-success" style="float: right; margin-bottom: 20px;"  data-toggle="modal" data-target=".pop_up_add_attribute">+ Add New Attribute</button>-->
 											@else
-												<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+											<button class="btn btn-success backButton" style="float: right; margin-top: 20px; margin-bottom: 25px;">Back</button>
 											@endif
-										@else
-											<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
-										@endif	
-									@endif								
-									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
-									</a>
-								</th>
-								<th class="table-bordered">
+											<table class="table table-striped table-hover table-condensed table-bordered">
+												<thead class="table-bordered">
+													<tr>
+														<th class="table-bordered">
+															<a href="javascript:void(0)">ID Attribute</a>
+															@if($filtered == 0)
+															@if($sortBy == "id")
+															@if($sortType == "asc")
+															<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
+																@else
+																<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+																	@endif
+																	@else
+																	<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
+																		@endif	
+																		@else
+																		@if($sortBy == "id")
+																		@if($sortType == "asc")
+																		<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name ))}}">
+																			@else
+																			<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name ))}}">
+																				@endif
+																				@else
+																				<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'id', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name ))}}">
+																					@endif	
+																					@endif								
+																					<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+																				</a>
+																			</th>
+																			<th class="table-bordered">
+																				<a href="javascript:void(0)">Nama Attribute</a>
+																				@if($filtered == 0)
+																				@if($sortBy == "name")
+																				@if($sortType == "asc")
+																				<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'desc', 'page' =>  $page, 'filtered' => '0'))}}">
+																					@else
+																					<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">
+																						@endif
+																						@else
+																						<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'page' =>  $page, 'filtered' => '0'))}}">	
+																							@endif	
+																							@else
+																							@if($sortBy == "name")
+																							@if($sortType == "asc")
+																							<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'desc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+																								@else
+																								<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+																									@endif
+																									@else
+																									<a href="{{action('AttributesManagementController@view_admin_attribute', array('sortBy' => 'name', 'order' => 'asc', 'filtered' => $filtered, 'id' => $id, 'name' => $name, ))}}">
+																										@endif	
+																										@endif								
+																										<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+																									</a>
+																								</th>
+																								<th class="table-bordered">
 
-								</th>
-							</thead>
-							<thead>
-								<tr>
-									<td><input type="text" class="form-control input-sm filterId"></td>
-									<td><input type="text" class="form-control input-sm filterName"></td>
-									
-									<td width=""><a class="btn btn-primary btn-xs filterButton">Filter</a></td>
-								</tr>
-							</thead>
-							<tbody>
-								@foreach($attributes as $attribute)
-									<tr> 
-										<td id="id_{{$attribute->id}}">{{$attribute->id}}</td>
-										<td id="name_{{$attribute->name}}">{{$attribute->name}}</td>
-										<td>
-											<input type='hidden' value='{{$attribute->id}}'>
-											<button class="btn btn-info btn-xs detailButton" data-toggle="modal" data-target=".pop_up_view_attribute">View</button>											
-											<input type='hidden' value='{{$attribute->id}}'>
-											<button class="btn btn-danger btn-xs deleteButton" data-toggle="modal" data-target=".alertYesNo">Delete</button>
-										</td>
-									</tr> 	
-								@endforeach	
-							</tbody>
-					</table>	
-				@endif	
-			</div>			
-		</div>
-	</div>
-</div>
-	
-	@include('pages.admin.attribute.alertYesNo')
-	@include('pages.admin.attribute.pop_up_add_attribute')
-	@include('pages.admin.attribute.pop_up_view_attribute')
+																								</th>
+																							</thead>
+																							<thead>
+																								<tr>
+																									<td><input type="text" class="form-control input-sm filterId"></td>
+																									<td><input type="text" class="form-control input-sm filterName"></td>
 
-	<script>			
-		$('body').on('click', '.detailButton', function(){
-			$id = $(this).prev().val();
-			$('#alert_edit_nama_required').addClass('hidden');
-			$('#alert_edit_nama_taken').addClass('hidden');
-			$('#nama_attribute_input').addClass('hidden');
-			$('#nama_attribute_setter').addClass('hidden');
-			$('#nama_attribute').removeClass('hidden');
-			$('#nama_attribute_editor').removeClass('hidden');
-			$('#nama_attribute').text($('#nama_attribute_input').val());
-			$.ajax({
-				type: 'GET',
-				url: "{{URL('admin/attribute')}}/"+$id,
-				success: function(response){
-					result = JSON.parse(response);
-					if(result.code==200){
-						$message = result.messages;
-						$('#nama_attribute').text($message.name);
-					}					
-				},
-				error: function(jqXHR, textStatus, errorThrown){
-					alert(errorThrown);
-				}
-			},'json');
-		});			
-		
-		$('body').on('click', '.deleteButton', function(){
-			$id = $(this).prev().val();
+																									<td width=""><a class="btn btn-primary btn-xs filterButton">Filter</a></td>
+																								</tr>
+																							</thead>
+																							<tbody>
+																								@foreach($attributes as $attribute)
+																								<tr> 
+																									<td id="id_{{$attribute->id}}">{{$attribute->id}}</td>
+																									<td id="name_{{$attribute->name}}">{{$attribute->name}}</td>
+																									<td>
+																										<input type='hidden' value='{{$attribute->id}}'>
+																										<button class="btn btn-info btn-xs detailButton" data-toggle="modal" data-target=".pop_up_view_attribute">View</button>											
+																										<input type='hidden' value='{{$attribute->id}}'>
+																										<button class="btn btn-danger btn-xs deleteButton" data-toggle="modal" data-target=".alertYesNo">Delete</button>
+																									</td>
+																								</tr> 	
+																								@endforeach	
+																							</tbody>
+																						</table>	
+																						@endif	
+																					</div>
+																					</div>
+																					<!-- NEW STUFF | START-->
+
+																					<!-- NEW STUFF | END -->
+																				</div>			
+																			</div>
+																		</div>
+																	</div>
+
+																	@include('pages.admin.attribute.alertYesNo')
+																	{{-- @include('pages.admin.attribute.pop_up_add_attribute') --}}
+																	@include('pages.admin.attribute.pop_up_view_attribute')
+
+																	<script>			
+																	$('body').on('click', '.detailButton', function(){
+																		$id = $(this).prev().val();
+																		$('#alert_edit_nama_required').addClass('hidden');
+																		$('#alert_edit_nama_taken').addClass('hidden');
+																		$('#nama_attribute_input').addClass('hidden');
+																		$('#nama_attribute_setter').addClass('hidden');
+																		$('#nama_attribute').removeClass('hidden');
+																		$('#nama_attribute_editor').removeClass('hidden');
+																		$('#nama_attribute').text($('#nama_attribute_input').val());
+																		$.ajax({
+																			type: 'GET',
+																			url: "{{URL('admin/attribute')}}/"+$id,
+																			success: function(response){
+																				result = JSON.parse(response);
+																				if(result.code==200){
+																					$message = result.messages;
+																					$('#nama_attribute').text($message.name);
+																				}					
+																			},
+																			error: function(jqXHR, textStatus, errorThrown){
+																				alert(errorThrown);
+																			}
+																		},'json');
+																	});			
+
+$('body').on('click', '.deleteButton', function(){
+	$id = $(this).prev().val();
 			// alert($id);			
 		});
-	
-		$('body').on('click', '.filterButton', function(){
-			$id = $('.filterId').val();
-			$name = $('.filterName').val();
-			window.location = "{{URL::route('viewAttributesManagement')}}"+"?filtered=1&id="+$id+"&name="+$name;			
-		});
-		
-		$('body').on('click','.backButton', function(){
-			window.location = "{{URL::route('viewAttributesManagement')}}";
-		});
-		
-		
-	
+
+$('body').on('click', '.filterButton', function(){
+	$id = $('.filterId').val();
+	$name = $('.filterName').val();
+	window.location = "{{URL::route('viewAttributesManagement')}}"+"?filtered=1&id="+$id+"&name="+$name;			
+});
+
+$('body').on('click','.backButton', function(){
+	window.location = "{{URL::route('viewAttributesManagement')}}";
+});
+
+
+
 		/*BEFORE
 		//global
 		// var view_all = "{{URL('admin/attribute')}}";		
@@ -405,8 +524,8 @@
 			// $id_delete = $(this).siblings('.id_attribute').val();
 			
 		// });		
-	*/
-	</script>
-	
-	
-	@stop
+*/
+</script>
+
+
+@stop

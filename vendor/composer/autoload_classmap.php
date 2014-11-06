@@ -1275,6 +1275,7 @@ return array(
     'Product' => $baseDir . '/app/models/Product.php',
     'ProductTableSeeder' => $baseDir . '/app/database/seeds/ProductTableSeeder.php',
     'ProductsController' => $baseDir . '/app/controllers/Database/ProductsController.php',
+    'ProductsManagementController' => $baseDir . '/app/controllers/Page/ProductsManagementController.php',
     'Profile' => $baseDir . '/app/models/Profile.php',
     'ProfileTableSeeder' => $baseDir . '/app/database/seeds/ProfileTableSeeder.php',
     'ProfilesController' => $baseDir . '/app/controllers/Database/ProfilesController.php',
