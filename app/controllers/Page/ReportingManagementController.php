@@ -70,4 +70,10 @@ class ReportingManagementController extends \BaseController
 			return View::make('pages.admin.report.manage_report', compact('hasil','hsl2'));
 		}
 	}
+	
+	public function view_reporting_product()
+	{
+		$odr = new ProductsController();
+		
+	}
 }
