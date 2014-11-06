@@ -1,7 +1,7 @@
 <?php
 use Carbon\Carbon;
 
-Route::get('/tes', 'ProductsController@getAll');
+Route::get('/tes', 'ProductsController@getAllProductName');
 
 // Route::get('/tes', 'ProductsController@getAll');
 
