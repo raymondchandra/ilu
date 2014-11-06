@@ -18,13 +18,13 @@
 							</div>
 
 
-							<div class="form-group">
+							<!--<div class="form-group">
 								<label class="col-sm-4 control-label">Total Price</label>
 								<div class="col-sm-8">
 									<p class="form-control-static" id="price"></p>
 
 								</div>
-							</div>
+							</div>-->
 
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-4 control-label">Voucher ID</label>
@@ -39,6 +39,7 @@
 								<div class="col-sm-5">
 									<p id="transaction_status" class="form-control-static" ></p>
 									<select id="transaction_status_list" class="form-control hidden">
+										<option value="Cancel">Cancel</option>
 										<option value="Pending">Pending</option>
 										<option value="On-process">On-process</option>
 										<option value="On-ship">On-ship</option>
@@ -243,64 +244,23 @@
 											Harga Barang
 										</th>
 										<th>
-											Qty.
+											Qty
 										</th>
 										<th>
 											Subtotal
 										</th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr>
-										<td>
-											Produk X
-										</td>
-										<td>
-											IDR xxx.xxx
-										</td>
-										<td>
-											xx
-										</td>
-										<td>
-											IDR x.xxx.xxx
-										</td>
-									</tr>
-									<tr>
-										<td>
-											Produk X
-										</td>
-										<td>
-											IDR xxx.xxx
-										</td>
-										<td>
-											xx
-										</td>
-										<td>
-											IDR x.xxx.xxx
-										</td>
-									</tr>
-									<tr>
-										<td>
-											Produk X
-										</td>
-										<td>
-											IDR xxx.xxx
-										</td>
-										<td>
-											xx
-										</td>
-										<td>
-											IDR x.xxx.xxx
-										</td>
-									</tr>
+								<tbody id="produk">
+									
 								</tbody>
 							</table>
 						</div>
 						<div class="col-lg-6 col-lg-push-6">
 							<div class="form-group" id="nama_promosi">
-								<label class="col-sm-4 control-label">Grand Total</label>
+								<label class="col-sm-4 control-label">Total Price</label>
 								<div class="col-sm-8">
-									<p class="form-control-static" id="">IDR xx.xxx.xxx</p>
+									<p class="form-control-static" id="price"></p>
 								</div>
 							</div>
 						</div>

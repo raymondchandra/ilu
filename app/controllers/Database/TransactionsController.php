@@ -534,6 +534,18 @@ class TransactionsController extends \BaseController {
 						$key2->shipmentNumber = $ship->number;
 					}
 				}
+				$key->order = Order::where('transaction_id','=',$id)->get();
+				foreach($key->order as $key2)
+				{
+					$price = Price::where('id','=',$key2->price_id)->first();
+					$key2->attr_value = $price->attr_value;
+					$attr = Attribute::where('id','=',$price->attr_id)->first();
+					$key2->attr_name = $attr->name;
+					$prod = Product::where('id','=',$price->product_id)->first();
+					$key2->name_product = $prod->name;
+					$cat = Category::where('id','=',$prod->category_id)->first();
+					$key2->ctgr = $cat->name;
+				}
 				$key->profile = $prof;
 				$key->shipment = $shipA;
 			}

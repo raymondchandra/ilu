@@ -499,6 +499,20 @@
 							
 							$('#idTrans').val(response['messages']['0'].id);
 							$('#idShip').val(response['messages']['0'].shipment_id);
+							
+							var tab ="";
+							var obj = response['messages']['0'].order;
+							alert(obj);
+							var responses = obj;
+							$(responses).each(function() {
+								tab+= "<tr>";
+								tab+="<td>"+$(this)[0].name_product+"</td>";
+								tab+="<td>"+toRp($(this)[0].priceNow)+"</td>";
+								tab+="<td>"+$(this)[0].quantity+"</td>";
+								tab+="<td>"+toRp($(this)[0].priceNow * $(this)[0].quantity)+"</td>";
+								tab+="</tr>";
+							});
+							$('#produk').html(tab);
 						}
 					},error: function(xhr, textStatus, errorThrown){
 						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
@@ -617,7 +631,7 @@
 				rev2 += '.';
 			}
 		}
-		return 'IDR ' + rev2.split('').reverse().join('');
+		return 'Rp ' + rev2.split('').reverse().join('')+',-';
 		//return 'IDR ' + rev2.split('').reverse().join('') + ',00';
 	}
 	</script>
