@@ -73,7 +73,13 @@ class ReportingManagementController extends \BaseController
 	
 	public function view_reporting_product()
 	{
-		$odr = new ProductsController();
-		
+		$prod = new ProductsController();
+		$json = $prod->getAllProductName();
+		$hsl = json_decode($json->getContent());
+		$hsl2 = $hsl->{'messages'};
+		if($hsl->{'code'} == "200")
+		{
+			return View::make('pages.admin.report.manage_report_produk', compact('hsl2'));
+		}
 	}
 }
