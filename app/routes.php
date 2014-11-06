@@ -539,7 +539,7 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.email_template.voucher');
 	});
 
-        // Report
+    // Report
     Route::get('/manage_report_produk', function()
 	{
 		return View::make('pages.admin.report.manage_report_produk');

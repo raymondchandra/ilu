@@ -44,13 +44,11 @@
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-envelope" style="color:#fff; margin-right:10px;"></span>Report<span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
-					<li><a href="{{ URL::to('admin/manage_shipping') }}"> Manage  Shipping</a></li>
+					<li><a href="{{ URL::to('admin/manage_report') }}">Report Penjualan</a></li>
+					<li><a href="{{ URL::to('test/manage_report_produk') }}">Report Produk</a></li>
 				</ul>
 			</li>
-			
-			
-			<li><a href="{{ URL::to('admin/manage_report') }}"><span class="glyphicon glyphicon-home" style="color:#fff; margin-right:10px;"></span>Report</a></li>
-			
+						
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book" style="color:#fff; margin-right:10px;"></span>Customer<span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
@@ -74,7 +72,7 @@
 			</li>
 
 			<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book" style="color:#fff; margin-right:10px;"></span>Management<span class="caret"></span></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book" style="color:#fff; margin-right:10px;"></span>Configuration<span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
 					<li><a href="{{ URL::to('test/manage_setting') }}">Set Up</a></li>
 					<li><a href="{{ URL::to('test/manage_cms') }}">Manage CMS</a></li>
