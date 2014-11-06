@@ -1,7 +1,7 @@
 <?php
 use Carbon\Carbon;
 
-Route::get('/tes', 'ProductsController@getById');
+Route::get('/tes', 'ProductsController@getAll');
 
 // Route::get('/tes', 'ProductsController@getAll');
 
@@ -472,6 +472,11 @@ Route::group(array('prefix' => 'test'), function()
 	{
 		return View::make('pages.admin.cms.manage_cms');
 	});
+    // Setting
+    Route::get('/manage_setting', function()
+	{
+		return View::make('pages.admin.cms.manage_setting');
+	});
 
 
 
@@ -534,6 +539,11 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.email_template.voucher');
 	});
 
+        // Report
+    Route::get('/manage_report_produk', function()
+	{
+		return View::make('pages.admin.report.manage_report_produk');
+	});
 
 });
 

@@ -102,6 +102,7 @@
 								});
 								
 								alert(edit_arr_delete);
+								
 								alert(edit_arr_photos);
 							});
 							
@@ -142,38 +143,75 @@
 		var data, xhr;
 		data = new FormData();
 		
+		
+		//buat edit main photo
 		if($('.edit_main_photo_input').val() == "")
 		{
-			$main_photo = "";	
+			$main_photo = "";
+			$files_main_photo = "";
 		}		
 		else
 		{
-			$main_photo = $('.edit_main_photo_input')[0].files[0];
+			$main_photo = "isi";
+			$files_main_photo = $('.edit_main_photo_input')[0].files[0];
 		}		
 			data.append('edit_main_photo', $main_photo);	
-				
+			data.append('edit_files_main_photo', $files_main_photo);
+			
+		$main_photo_id = $('#edit_main_photo_id').val();
+			// alert($main_photo_id);
+			data.append('edit_main_photo_id', $main_photo_id);
+		
+		
+		// alert("main photo" + $main_photo);	
+		// alert("files main photo " + $files_main_photo);	
+		// alert("main photo id" + $main_photo_id);	
+		// alert("product id" + $id);
+		
+		
 		for($j=0; $j<edit_arr_photos.length; $j++){
 			if(edit_arr_photos[$j] != -1){	
+				// alert( $(' .edit_other_photos_input'+edit_arr_photos[$j]+' ').parent().next().children().first().val() );
+				
 				if( $(' .edit_other_photos_input'+edit_arr_photos[$j]+' ').val() != "")
-				{
+				{					
 					//edit yg sebelomnya udh ada
-					if( $(' .edit_other_photos_input'+edit_arr_photos[$j]+' ').parent().next()[0].val() != "")
+					if( $(' .edit_other_photos_input'+edit_arr_photos[$j]+' ').parent().next().children().first().val() != "") // dapet id gallery other photos
 					{
-						// edit_arr_id[edit_arr_id.length] = ;//id
-						// edit_arr_files[edit_arr_files.length] = ;//nama selector
+						edit_arr_id[edit_arr_id.length] = $(' .edit_other_photos_input'+edit_arr_photos[$j]+' ').parent().next().children().first().val(); //id
+						edit_arr_files[edit_arr_files.length] = (edit_temp_name_other_photos+edit_temp_idx_other_photos); //nama selector												
+						
+						// alert('masuk yg foto sebelomnya');
 					}
 					
+					// alert('wooops');
 					data.append((edit_temp_name_other_photos+edit_temp_idx_other_photos), $(' .edit_other_photos_input'+edit_arr_photos[$j]+' ')[0].files[0] );				
-			
+					
 					edit_array_input_other_photos[edit_array_input_other_photos.length] = (edit_temp_name_other_photos+edit_temp_idx_other_photos);
-					edit_temp_idx_other_photos++;					
-				}
+					edit_temp_idx_other_photos++;	
+										
+				}												
+				
 			}
-		}
+		}		
 			data.append('edit_other_photos_name', edit_array_input_other_photos);
-			
+				
+		data.append('edit_arr_id', edit_arr_id);
+		data.append('edit_arr_files', edit_arr_files);
+		
+		// alert(edit_array_input_other_photos);
+		// alert(edit_arr_id);
+		// alert(edit_arr_files);
+		
+		
+		
+		
 		data.append('edit_arr_delete', edit_arr_delete)	;
+		
+		
+		data.append('product_id', $id);	
 			
+		
 		$.ajax({
 			type: 'POST',
 			url: "{{URL('admin/product/editGallery')}}",						
@@ -186,9 +224,11 @@
 			processData: false,
 			contentType: false,	
 			// dataType: 'json',
-			success: function(response){			
+			success: function(response){	
+				// alert(response);
+				
 				result = JSON.parse(response);
-				if(result.code == 200)
+				if(result.code == 204)
 				{	
 					alert(result.status);
 					location.reload();					
@@ -198,11 +238,14 @@
 					alert(result.status);
 					alert(result.messages);
 				}				
+				
 			},
 			error:function(errorThrown){
 				alert('errror loh');
 				alert(errorThrown);
 			}
 		},'json');	
+		
+		
 	});
 </script>

@@ -316,7 +316,7 @@
 							//set value di pop up edit						
 							$('#edit_id').text($message.id);
 							$('#edit_product_no').text($message.product_no);
-							$('#edit_name').text($message.nama);
+							$('#edit_name').text($message.name);
 							$('#edit_description').text($message.description);
 							$('#edit_category_id').text($message.category_name);						
 								$('#edit_category_id_input').val($message.category_id);
@@ -368,7 +368,7 @@
 		});
 		
 		$('body').on('click', '.detailButtonGallery', function(){
-			$id = $(this).prev().val();
+			$id = $(this).prev().val(); //id product
 			
 				//refresh semua variable yang dipake buat editGallery
 				//global variabel buat edit photo
@@ -395,7 +395,8 @@
 						result = JSON.parse(response);
 						if(result.code==200){
 							$message = result.messages;														
-							// alert(JSON.stringify($message.main_photo_id));													
+							// alert(JSON.stringify($message.main_photo_id));	
+														
 							//set value di pop up edit		
 							if($message.main_photo != "")
 							{
@@ -407,6 +408,7 @@
 							}
 							
 							$('#edit_main_photo_id').val($message.main_photo_id);
+							
 							
 							arr_edit_other_photo = $message.other_photos;
 							
@@ -486,6 +488,8 @@
 							// {
 								// $('.div_edit_price').html("");
 							// }
+							
+							
 						}					
 					},
 					error: function(jqXHR, textStatus, errorThrown){

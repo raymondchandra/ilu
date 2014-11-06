@@ -40,6 +40,13 @@
 					<li><a href="{{ URL::to('admin/manage_order') }}">Manage Order</a></li>	
 				</ul>
 			</li>
+
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-envelope" style="color:#fff; margin-right:10px;"></span>Report<span class="caret"></span></a>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="{{ URL::to('admin/manage_shipping') }}"> Manage  Shipping</a></li>
+				</ul>
+			</li>
 			
 			
 			<li><a href="{{ URL::to('admin/manage_report') }}"><span class="glyphicon glyphicon-home" style="color:#fff; margin-right:10px;"></span>Report</a></li>
@@ -63,6 +70,21 @@
 				<ul class="dropdown-menu" role="menu">
 					<li><a href="#">Add New Newsletter</a></li>
 					
+				</ul>
+			</li>
+
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book" style="color:#fff; margin-right:10px;"></span>Management<span class="caret"></span></a>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="{{ URL::to('test/manage_setting') }}">Set Up</a></li>
+					<li><a href="{{ URL::to('test/manage_cms') }}">Manage CMS</a></li>
+					<!--<li><a href="{{ URL::to('admin/get_profile_detail') }}">Profile Detail</a></li>
+					<li><a href="{{ URL::to('admin/get_wishlist') }}">Wishlist</a></li>
+					<li class="divider"></li>
+					<li><a href="{{ URL::to('admin/filter_cust_mgmt') }}">Filter Cust. Management</a></li>
+					<li class="divider"></li>
+					<li><a href="{{ URL::to('admin/get_search_history') }}">Search History</a></li>
+					<li><a href="{{ URL::to('admin/get_trans_history') }}">Transaction History</a></li>-->
 				</ul>
 			</li>
 

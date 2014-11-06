@@ -344,11 +344,13 @@ class ProductsController extends \BaseController {
 				if(count($main_photo) == 0)
 				{
 					$key->main_photo = "";
+					$key->main_photo_id = "";
 				}
 				else
 				{					
 					$key->main_photo = $main_photo->photo_path;
-				}
+					$key->main_photo_id = $main_photo->id;
+				}								
 								
 				//add other_photo
 				if(count($other_photos) == 0)
@@ -1357,9 +1359,177 @@ class ProductsController extends \BaseController {
 		return Response::json($respond);
 	}
 	
-	public function updateGallery()
+	// updateGallery(
+						// $main_photo_id, 
+						// $files_main_photo, 
+						// $edit_arr_other_photos_id, 
+						// $edit_arr_other_photos,
+						// $delete_arr_other_photos,
+						// $arr_other_photos
+						// $edit_arr_id
+						// $product_id
+					// )->getContent());
+
+	public function test($main_photo,$main_photo_id,$files_main_photo,$product_id)
 	{
-		return null;
+		return "tods";
+	}	
+					
+	public function updateGallery(
+			$main_photo,
+			$main_photo_id, 
+			$files_main_photo, 
+			$edit_arr_other_photos_id, 
+			$edit_arr_other_photos,
+			$delete_arr_other_photos,
+			$arr_other_photos,
+			$edit_arr_id,
+			$edit_arr_files,
+			$product_id
+		)
+	{
+		// return "masuk todsu";
+		
+		try{
+									
+			$lastindex = 0;
+			//update other photos
+			if($edit_arr_id != "")
+			{			
+				
+				// return "edit arr id ga kosong";
+				
+				$count = count($edit_arr_id);						
+				for($i = 0; $i<$count; $i++)
+				{
+					$lastindex++;
+					
+					$id_edit = $edit_arr_id[$i];	//id foto 			
+					//add to folder
+						$file = $arr_other_photos[$i]; //foto ke $i
+						$destinationPath = "assets/file_upload/product/";
+						$fileName = $file->getClientOriginalName();
+										
+						$new_other_photos = Gallery::find($id_edit);
+						$new_other_photos->product_id = $product_id;					
+						// $new_other_photos->product_id = 5;	//sementara
+						$new_other_photos->type = "other_photos";
+						$new_other_photos->save();
+						
+						$new_other_photos_id = $product_id;
+						// $new_other_photos_id = 5; //sementara
+						$destinationPath .= $new_other_photos_id;
+						$destinationPath .= "/";
+						if(!file_exists($destinationPath))
+						{
+							File::makeDirectory($destinationPath, $mode = 0777, true, true);
+							$uploadSuccess = $file->move($destinationPath, $fileName);
+							$new_other_photos->photo_path = $destinationPath.$fileName;
+							$new_other_photos->save();
+						}
+						else
+						{
+							$uploadSuccess = $file->move($destinationPath, $fileName);
+							$new_other_photos->photo_path = $destinationPath.$fileName;
+							$new_other_photos->save();
+						}
+					
+				}
+				// return "fakfakfka";
+				
+			}
+			else	//langsung add new other photo
+			{
+				
+				// return "masuk elese";
+				
+				//add other photos				
+				if(count($arr_other_photos) != 0)
+				{									
+					
+					$count = count($arr_other_photos);
+					for($j = $lastindex; $j < $count; $j++)
+					{
+						$file = $arr_other_photos[$j];
+						$destinationPath = "assets/file_upload/product/";
+						$fileName = $file->getClientOriginalName();
+						
+						$new_other_photos = new Gallery();
+						$new_other_photos->product_id = $product_id;					
+						// $new_other_photos->product_id = 5;	//sementara
+						$new_other_photos->type = "other_photos";
+						$new_other_photos->save();
+						
+						$new_other_photos_id = $product_id;
+						// $new_other_photos_id = 5; //sementara
+						$destinationPath .= $new_other_photos_id;
+						$destinationPath .= "/";
+						if(!file_exists($destinationPath))
+						{
+							File::makeDirectory($destinationPath, $mode = 0777, true, true);
+							$uploadSuccess = $file->move($destinationPath, $fileName);
+							$new_other_photos->photo_path = $destinationPath.$fileName;
+							$new_other_photos->save();
+						}
+						else
+						{
+							$uploadSuccess = $file->move($destinationPath, $fileName);
+							$new_other_photos->photo_path = $destinationPath.$fileName;
+							$new_other_photos->save();
+						}
+					}
+				}
+			}												
+			
+			
+			
+			//delete other photos
+			foreach($delete_arr_other_photos as $key)
+			{
+				$gal = Gallery::find($key);
+				$gal->delete();
+			}
+									
+			
+			
+			//edit main photo
+			if($main_photo != "")
+			{												
+				$file = $files_main_photo;								
+				$destinationPath = "assets/file_upload/product/";
+				$fileName = $file->getClientOriginalName();
+				
+				// $new_main_photo = new Gallery();
+				$new_main_photo = Gallery::find($main_photo_id);
+				$new_main_photo->product_id = $product_id;				
+				$new_main_photo->type = "main_photo";
+				$new_main_photo->save();
+				
+				$new_main_photo_id = $product_id;
+				$destinationPath .= $new_main_photo_id;
+				$destinationPath .= "/";
+				if(!file_exists($destinationPath))
+				{
+					File::makeDirectory($destinationPath, $mode = 0777, true, true);
+					$uploadSuccess = $file->move($destinationPath, $fileName);
+					$new_main_photo->photo_path = $destinationPath.$fileName;
+					$new_main_photo->save();
+				}
+				else
+				{
+					$uploadSuccess = $file->move($destinationPath, $fileName);
+					$new_main_photo->photo_path = $destinationPath.$fileName;
+					$new_main_photo->save();
+				}
+			}
+			
+											
+			$respond = array('code'=>'204','status' => 'No Content');
+		} catch (Exception $e) {
+			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+		}
+		
+		return Response::json($respond);
 	}
 	
 	public function updateDeleted($id, $new_deleted)
