@@ -192,8 +192,14 @@
 										</tbody>
 										<script type="text/javascript">
 										$(function () {
-											$('#datepicker00_lakunya_sebuah_produk').datepicker();
-											$('#datepicker01_lakunya_sebuah_produk').datepicker();
+											$('#datepicker00_lakunya_sebuah_produk').datepicker({
+												format:"dd-MM-yyyy"
+
+											});
+											$('#datepicker01_lakunya_sebuah_produk').datepicker({
+												format:"dd-MM-yyyy"
+												
+											});
 										});
 										</script>
 									</table>
