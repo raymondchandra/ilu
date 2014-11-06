@@ -90,9 +90,10 @@
 							
 							<div class="modal-body">
 
-							<button class="btn btn-success f_add_new_section" >
+							<button type="button" class="btn btn-success f_add_new_section" >
 								Add New Section
 							</button>
+
 								<div class="f_section_container">
 									<div class="form-group" id="">
 										<label class="col-sm-4 control-label">Judul Section</label>
@@ -105,15 +106,15 @@
 										<label class="col-sm-4 control-label">Metoda Pengisian Data</label>
 										<div class="col-sm-7">
 											<label class="radio-inline">
-												<input type="radio" name="metode_pengisian" id="inlineRadio1" value="gambar" checked> Gambar
+												<input type="radio" name="metode_pengisian0" id="inlineRadio1" value="gambar0" checked> Gambar
 											</label>
 											<label class="radio-inline">
-												<input type="radio" name="metode_pengisian" id="inlineRadio2" value="deskripsi"> Deskripsi
+												<input type="radio" name="metode_pengisian0" id="inlineRadio2" value="deskripsi0"> Deskripsi
 											</label>
 										</div>
 									</div>
 
-									<div class="form-group" id="gambar_edit_cont_info">
+									<div class="form-group" id="gambar_edit_cont_info0">
 										<label class="col-sm-4 control-label" >Upload Gambar</label>
 										<div class="col-sm-7">
 											<img srs="" width="200" height="200"/>
@@ -121,24 +122,88 @@
 										</div>
 									</div>
 
-									<div class="form-group hidden" id="deskripsi_edit_cont_info">
+									<div class="form-group hidden" id="deskripsi_edit_cont_info0">
 										<label class="col-sm-4 control-label" >Tulis Deskripsi</label>
 										<div class="col-sm-7">
-											<textarea id="deskripsi_edit_info"></textarea>
-											<script>tinymce.init({selector:'#deskripsi_edit_info'});</script>
+											<textarea id="deskripsi_edit_info0"></textarea>
 										</div>
 									</div>
 								</div>
+								
+								<div class="f_section_container_appenden">
+
+								</div>
+
 								<script>
+								var i=0;
+								tinymce.init({selector:'#deskripsi_edit_info0'});
+
+								$('body').on('click','.f_add_new_section', function(){
+									i++;
+
+							var new_add_info ='<div class="f_section_container">';
+									new_add_info +='<div class="form-group" id="">';
+									new_add_info +='	<label class="col-sm-4 control-label">Judul Section </label>';
+									new_add_info +='	<div class="col-sm-7">';
+									new_add_info +='		<input type="text" class="form-control" id="">';
+									new_add_info +='	</div>';
+									new_add_info +='</div>';
+
+									new_add_info += '<div class="form-group" id="">';
+									new_add_info += '	<label class="col-sm-4 control-label">Metoda Pengisian Data</label>';
+									new_add_info += '	<div class="col-sm-7">';
+									new_add_info += '		<label class="radio-inline">';
+									new_add_info += '			<input type="radio" name="metode_pengisian" id="inlineRadio1" value="gambar" checked> Gambar';
+									new_add_info += '		</label>';
+									new_add_info += '		<label class="radio-inline">';
+									new_add_info += '			<input type="radio" name="metode_pengisian" id="inlineRadio2" value="deskripsi"> Deskripsi';
+									new_add_info += '		</label>';
+									new_add_info += '	</div>';
+									new_add_info += '</div>';
+
+									new_add_info +=' <div class="form-group gambar_edit_cont_info">';
+									new_add_info +=' 	<label class="col-sm-4 control-label" >Upload Gambar</label>';
+									new_add_info +=' 	<div class="col-sm-7">';
+									new_add_info +=' 		<img srs="" width="200" height="200"/>';
+									new_add_info +=' 		<input type="file" class="" id="">';
+									new_add_info +=' 	</div>';
+									new_add_info +=' </div>';
+
+									new_add_info +='<div class="form-group hidden deskripsi_edit_cont_info">';
+									new_add_info +='	<label class="col-sm-4 control-label" >Tulis Deskripsi</label>';
+									new_add_info +='	<div class="col-sm-7">';
+									new_add_info +='		<textarea id="deskripsi_edit_info'+i+'"></textarea>';
+									new_add_info += '</div>';
+									new_add_info += '</div>';
+								new_add_info += '</div>';
+
+								var s = document.createElement("script");
+								s.type = "text/javascript";
+								s.innerHTML = "tinymce.init({selector:'#deskripsi_edit_info"+i+"'});";
+
+
+									$('.f_section_container_appenden').append(new_add_info).append(s);
+
+								});
+
+								$('body').on('change', 'input:radio[name="metode_pengisian0"]', function() {
+									if ($(this).is(':checked') && $(this).val() == 'gambar0') {
+										$('#deskripsi_edit_cont_info0').addClass('hidden');
+										$('#gambar_edit_cont_info0').removeClass('hidden');
+									}else{
+										$('#deskripsi_edit_cont_info0').removeClass('hidden');
+										$('#gambar_edit_cont_info0').addClass('hidden');
+									}
+
+								});
 
 								$('body').on('change', 'input:radio[name="metode_pengisian"]', function() {
-
 									if ($(this).is(':checked') && $(this).val() == 'gambar') {
-										$('#deskripsi_edit_cont_info').addClass('hidden');
-										$('#gambar_edit_cont_info').removeClass('hidden');
+										$(this).parent().parent().parent().siblings('.deskripsi_edit_cont_info').addClass('hidden');
+										$(this).parent().parent().parent().siblings('.gambar_edit_cont_info').removeClass('hidden');
 									}else{
-										$('#deskripsi_edit_cont_info').removeClass('hidden');
-										$('#gambar_edit_cont_info').addClass('hidden');
+										$(this).parent().parent().parent().siblings('.deskripsi_edit_cont_info').removeClass('hidden');
+										$(this).parent().parent().parent().siblings('.gambar_edit_cont_info').addClass('hidden');
 									}
 
 								});

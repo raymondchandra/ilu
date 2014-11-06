@@ -124,7 +124,10 @@ Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
 
 Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 {
-
+	//DASHBOARD
+	Route::get('/', ['as' =>'jeffry.getDashboard', 'uses' => 'DashboardsManagementController@view_dashboard_mgmt']);
+	
+	
 	//-------------------------------------------ATTRIBUTE VIEW ADMIN-------------------------------------------		
 	Route::get('manage_attributes', ['as' => 'viewAttributesManagement', 'uses' => 'AttributesManagementController@view_admin_attribute']);
 	Route::get('/attribute/{id}', ['as' => 'attribute_detail', 'uses' => 'AttributesManagementController@view_detail_attribute']);
@@ -332,8 +335,7 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	//REPORT
 	Route::get('/manage_report', ['as' =>'jeffry.getReport', 'uses' => 'ReportingManagementController@view_reporting_mgmt_day']);
 	
-	//DASHBOARD
-	Route::get('/manage_dashboard', ['as' =>'jeffry.getDashboard', 'uses' => 'DashboardsManagementController@view_dashboard_mgmt']);
+	
 
 });
 
@@ -472,6 +474,11 @@ Route::group(array('prefix' => 'test'), function()
 	{
 		return View::make('pages.admin.cms.manage_cms');
 	});
+    // Setting
+    Route::get('/manage_setting', function()
+	{
+		return View::make('pages.admin.cms.manage_setting');
+	});
 
 
 
@@ -534,6 +541,11 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.email_template.voucher');
 	});
 
+    // Report
+    Route::get('/manage_report_produk', function()
+	{
+		return View::make('pages.admin.report.manage_report_produk');
+	});
 
 });
 
