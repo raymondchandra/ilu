@@ -348,6 +348,13 @@
 			return false;
 			
 		});
+
+		$(document).ready(function(){
+			
+		$('.datepicker').css('z-index','99999');
+		}
+
+			);
 		
 </script>
 @stop
