@@ -546,6 +546,11 @@ Route::group(array('prefix' => 'test'), function()
 	{
 		return View::make('pages.admin.report.manage_report_produk');
 	});
+    // Report
+    Route::get('/manage_report_pengiriman', function()
+	{
+		return View::make('pages.admin.report.manage_report_pengiriman');
+	});
 
 });
 

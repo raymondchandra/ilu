@@ -6,7 +6,7 @@
 			
 			<div class="s_title_n_control">
 				<h3 style="float: left;">
-					Manage Report Produk
+					Manage Report Pengiriman
 				</h3>
 				<!--<a data-toggle="modal" data-target=".pop_up_view_report_range" href="javascript:void(0);" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Range</a>
 				<a href="{{action('ReportingManagementController@view_reporting_mgmt_day', array('reportBy' => 'day'))}}" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Day</a>
@@ -50,9 +50,9 @@
 					<ul class="nav nav-tabs" role="tablist" style="border: 0px;">
 						<li role="presentation" class="active pull-right"><a href="#3" role="tab" data-toggle="tab" style="">Lakunya Sebuah Produk</a></li>
 						<span class="clearfix "></span>
-						<!--<li role="presentation" class="pull-right"><a href="#4" id='cms_news' role="tab" data-toggle="tab" style="">News</a></li>
+						<li role="presentation" class="pull-right"><a href="#4" id='cms_news' role="tab" data-toggle="tab" style="">News</a></li>
 						<span class="clearfix "></span>
-						<li role="presentation" class="pull-right"><a href="#5" id='cms_slideshow' role="tab" data-toggle="tab" style="">Slideshow</a></li>-->
+						<li role="presentation" class="pull-right"><a href="#5" id='cms_slideshow' role="tab" data-toggle="tab" style="">Slideshow</a></li>
 					</ul>
 				</div>
 				<!-- Tab panes -->
@@ -243,12 +243,12 @@
 
 							<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------- -->				
 						</div>
-						<!--<div role="tabpanel" class="tab-pane fade" id="4">
-							{{-- @include('pages.admin.cms.edit_news') --}}							
+						<div role="tabpanel" class="tab-pane fade" id="4">
+							@include('pages.admin.cms.edit_news')							
 						</div>
 						<div role="tabpanel" class="tab-pane fade" id="5">
-							{{-- @include('pages.admin.cms.edit_slideshow') --}}					
-						</div>-->
+							@include('pages.admin.cms.edit_slideshow')							
+						</div>
 					</div>
 				</div>
 			</div>
