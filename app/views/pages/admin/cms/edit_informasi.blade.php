@@ -58,7 +58,7 @@
 						</tr>
 					</thead>
 					<tbody class="f_info_table">
-						<tr>
+						<!--<tr>
 							<td>
 								Das Epic
 							</td>
@@ -66,7 +66,7 @@
 								<button type="button" class="btn btn-warning" data-toggle="modal" data-target=".pop_up_detail_info">Edit</button>
 								<button type="button" class="btn btn-danger" data-toggle="modal" data-target=".pop_up_delete_info">Delete</button>
 							</td>
-						</tr>
+						</tr>-->
 					</tbody>
 				</table>
 
@@ -84,24 +84,24 @@
 							<div class="modal-body">
 
 
-								<div class="form-group" id="">
+								<!--<div class="form-group" id="">
 									<label class="col-sm-4 control-label">Nama Link</label>
 									<div class="col-sm-7">
 										<input type="text" class="form-control" id="">
 									</div>
-								</div>
+								</div>-->
 
 								<div class="form-group" id="">
-									<label class="col-sm-4 control-label">Judul Informasi</label>
+									<label class="col-sm-4 control-label">Information Title</label>
 									<div class="col-sm-7">
-										<input type="text" class="form-control" id="">
+										<input type="text" class="form-control" id="title_new_info" />
 									</div>
 								</div>
 
 
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-success" data-dismiss="modal">Add Container Info</button>
+								<button type="button" class="btn btn-success add_info" data-dismiss="modal">Add Container Info</button>
 								<button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
 							</div>
 						</div>
@@ -337,6 +337,54 @@
 						alert(errorThrown);
 					}
 				});
+			});
+		
+			$('body').on('click','.add_info',function(){
+				$.ajax({
+					type: 'POST',
+					url: "{{URL('admin/information')}}",
+					data:{
+						'title': $('#title_new_info').val()
+					},
+					success: function(response){
+						if(response.code == 201){
+							$.ajax({
+								type: 'GET',
+								url: "{{URL('admin/information')}}",
+								success: function(response){
+									if(response.code == 404){
+										
+									}
+									else{
+										var msgs = response.messages;
+										var div = '';
+										$(msgs).each(function(){
+											div+="<tr>";
+											div+="<td>";
+											div+=$(this)[0].title;
+											div+="</td>";
+											div+="<td>";
+											div+="<button type='button' class='btn btn-warning' data-toggle='modal' data-target='.pop_up_detail_info'>Edit</button>";
+											div+="<input type='hidden' value='"+$(this)[0].id+"' />";
+											div+="<button type='button' class='btn btn-danger delete_info' data-toggle='modal' data-target='.pop_up_delete_info'>Delete</button>";
+											div+="</td>";
+											div+="</tr>";
+										});
+										$('.f_info_table').html(div);
+										alert('Success Add Information');
+									}
+									
+								},
+								error: function(jqXHR, textStatus, errorThrown){
+									alert(errorThrown);
+								}
+							});
+						}
+					},
+					error: function(jqXHR, textStatus, errorThrown){
+						alert(errorThrown);
+					}
+				},'json');
 			});
 		</script>
 		<!--</div>

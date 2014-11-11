@@ -9,9 +9,7 @@ class Information extends \Eloquent {
 
 	// Don't forget to fill this array
 	protected $fillable = [
-		'title',
-		'content',
-		'edited_by'
+		'title'
 	];
 
 	public function account()
