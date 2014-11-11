@@ -6,7 +6,7 @@
 				<h4 class="modal-title" id="myModalLabel">Edit SEO</h4>
 			</div>-->
 			<h3>
-				Seo <button id="f_add_informasi" class="btn btn-success pull-right" style="margin-bottom: 20px;" data-toggle="modal" data-target=".pop_up_add_seo">+ Add New SEO</button>
+				Seo <!--<button id="f_add_informasi" class="btn btn-success pull-right" style="margin-bottom: 20px;" data-toggle="modal" data-target=".pop_up_add_seo">+ Add New SEO</button>-->
 			</h3>
 				<div class="modal-body">
 

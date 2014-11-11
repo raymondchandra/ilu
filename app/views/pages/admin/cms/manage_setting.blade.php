@@ -55,9 +55,9 @@
 							<ul class="nav nav-tabs" role="tablist" style="border: 0px;">
 								<li role="presentation" class="active pull-right"><a href="#0" role="tab" data-toggle="tab" style="">Company Info</a></li>
 								<span class="clearfix "></span>
-								<li role="presentation" class="pull-right"><a href="#1" role="tab" data-toggle="tab" style="">Bank</a></li>
+								<li role="presentation" class="pull-right"><a href="#1" id='cms_bank' role="tab" data-toggle="tab" style="">Bank</a></li>
 								<span class="clearfix "></span>
-								<li role="presentation" class="pull-right"><a href="#2" role="tab" data-toggle="tab" style="">SEO</a></li>
+								<li role="presentation" class="pull-right"><a href="#2" id='cms_seo' role="tab" data-toggle="tab" style="">SEO</a></li>
 								<span class="clearfix "></span>
 								<!--<li role="presentation" class="pull-right"><a href="#3" role="tab" data-toggle="tab" style="">Informasi</a></li>
 								<span class="clearfix "></span>
@@ -212,6 +212,71 @@
 						$('.f_tbody_slideshow').html(div);
 					}
 					
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					alert(errorThrown);
+				}
+			});
+		});
+		
+		$('body').on('click','#cms_bank',function(){
+			$.ajax({
+				type: 'GET',
+				url: "{{URL('admin/banks')}}",
+				success: function(response){
+					//alert(response);
+					var tr_bank ='';
+					$msg = response.messages;
+					$.each($msg,function(){
+						tr_bank +='<tr>';
+						tr_bank +='		<td class="form-name">';
+						tr_bank +='			<input type="text" value="'+$(this)[0].name+'" class="form-control" placeholder="Bank Name"  />';
+						tr_bank +='		</td>';
+						tr_bank +='		<td class="form-number">';
+						tr_bank +='			<input type="text" value="'+$(this)[0].acc_number+'" class="form-control" placeholder="Account Number"  />';
+						tr_bank +='		</td>';
+						tr_bank +='		<td class="form-owner">';
+						tr_bank +='			<input type="text"  value="'+$(this)[0].acc_owner+'" class="form-control" placeholder="Account Owner" />';
+						tr_bank +='		</td>';
+						tr_bank +='		<td>';
+						tr_bank +='			<button type="button" class="btn btn-danger f_delete_bank">Delete</button>';
+						tr_bank +='		</td>';
+						tr_bank +="<input type='hidden' value="+$(this)[0].id+" class='id_bank'   />";
+						tr_bank +='	</tr>';
+					});
+					$('.f_tbody_bank').html(tr_bank);
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					alert(errorThrown);
+				}
+			});
+		});
+		
+		$('body').on('click','#cms_seo',function(){
+			$.ajax({
+				type: 'GET',
+				url: "{{URL('admin/seo')}}",
+				success: function(response){
+					$msgs = response.messages;
+					var tr_seo="";
+					$.each($msgs,function(){
+						//alert($(this)[0].id);
+						tr_seo += '<tr>';
+						tr_seo +='	<td>';
+						tr_seo +=''+ $(this)[0].name +'';
+						tr_seo +='	</td>';
+						tr_seo +='	<td>';
+						tr_seo +='		<span class="meta">'+ $(this)[0].content +'</span>';
+						tr_seo +='		<input type="text" class="form-control hidden meta">';
+						tr_seo +='	</td>';
+						tr_seo +='	<td>';
+						tr_seo +='		<span class="meta">'+ $(this)[0].key +'</span>';
+						tr_seo +='		<input type="text" class="form-control hidden meta">';
+						tr_seo +='	</td>';
+						tr_seo +='</tr>';
+					});
+					
+					$('.f_tbody_table').html(tr_seo);
 				},
 				error: function(jqXHR, textStatus, errorThrown){
 					alert(errorThrown);

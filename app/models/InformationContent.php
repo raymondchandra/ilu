@@ -1,15 +1,19 @@
 <?php
 
-class Information extends \Eloquent {
+class InformationContent extends \Eloquent {
 
 	// Add your validation rules here
 	public static $rules = [
-		 'title' => 'required'
+		 'id_information' => 'required',
+		 'sub_title' => 'required',
+		 'content' => 'required'
 	];
 
 	// Don't forget to fill this array
 	protected $fillable = [
-		'title'
+		'sub_title',
+		'content',
+		'edited_by'
 	];
 
 	public function account()

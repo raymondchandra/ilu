@@ -9,7 +9,7 @@ class InformationController extends \BaseController {
 	 */
 	public function insert()
 	{
-		$input = json_decode(Input::all());
+		$input = Input::all();
 		$respond = array();
 		//validate
 		$validator = Validator::make($data = $input, Information::$rules);
@@ -19,13 +19,18 @@ class InformationController extends \BaseController {
 			$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
 			return Response::json($respond);
 		}
-
-		$data['edited_by'] = Auth::user()->id;
+		try{
+			$data['edited_by'] = Auth::user()->id;
+		}
+		catch(Exception $e){
+			$data['edited_by'] = 2;
+		}
+		
 		//save
 		try {
 			Information::create($data);
 			$respond = array('code'=>'201','status' => 'Created');
-		} catch (Exception $e) {
+		}catch (Exception $e) {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 		}
 		return Response::json($respond);
@@ -184,7 +189,7 @@ class InformationController extends \BaseController {
 		{
 			try {
 				$information->delete();
-				$respond = array('code'=>'204','status' => 'No Content');
+				$respond = array('code'=>'200','status' => 'OK');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 			}

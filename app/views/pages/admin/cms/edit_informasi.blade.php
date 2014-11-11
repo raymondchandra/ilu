@@ -5,6 +5,40 @@
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 				<h4 class="modal-title" id="myModalLabel">Edit SEO</h4>
 			</div>-->
+		<script>
+			$('document').ready(function(){
+				$.ajax({
+					type: 'GET',
+					url: "{{URL('admin/information')}}",
+					success: function(response){
+						if(response.code == 404){
+							
+						}
+						else{
+							var msgs = response.messages;
+							var div = '';
+							$(msgs).each(function(){
+								div+="<tr>";
+								div+="<td>";
+								div+=$(this)[0].title;
+								div+="</td>";
+								div+="<td>";
+								div+="<button type='button' class='btn btn-warning' data-toggle='modal' data-target='.pop_up_detail_info'>Edit</button>";
+								div+="<input type='hidden' value='"+$(this)[0].id+"' />";
+								div+="<button type='button' class='btn btn-danger delete_info' data-toggle='modal' data-target='.pop_up_delete_info'>Delete</button>";
+								div+="</td>";
+								div+="</tr>";
+							});
+							$('.f_info_table').html(div);
+						}
+						
+					},
+					error: function(jqXHR, textStatus, errorThrown){
+						alert(errorThrown);
+					}
+				});
+			});
+		</script>
 			<h3>
 				Daftar Informasi <button id="f_add_informasi" class="btn btn-success pull-right" style="margin-bottom: 20px;" data-toggle="modal" data-target=".pop_up_add_container_info">+ Add New Info</button>
 			</h3>
@@ -12,9 +46,9 @@
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th>
+							<!--<th>
 								Nama Link
-							</th>
+							</th>-->
 							<th>
 								Judul Informasi
 							</th>
@@ -24,10 +58,7 @@
 						</tr>
 					</thead>
 					<tbody class="f_info_table">
-						<tr>
-							<td>
-								Lorem Ipsum
-							</td>
+						<!--<tr>
 							<td>
 								Das Epic
 							</td>
@@ -35,7 +66,7 @@
 								<button type="button" class="btn btn-warning" data-toggle="modal" data-target=".pop_up_detail_info">Edit</button>
 								<button type="button" class="btn btn-danger" data-toggle="modal" data-target=".pop_up_delete_info">Delete</button>
 							</td>
-						</tr>
+						</tr>-->
 					</tbody>
 				</table>
 
@@ -53,24 +84,24 @@
 							<div class="modal-body">
 
 
-								<div class="form-group" id="">
+								<!--<div class="form-group" id="">
 									<label class="col-sm-4 control-label">Nama Link</label>
 									<div class="col-sm-7">
 										<input type="text" class="form-control" id="">
 									</div>
-								</div>
+								</div>-->
 
 								<div class="form-group" id="">
-									<label class="col-sm-4 control-label">Judul Informasi</label>
+									<label class="col-sm-4 control-label">Information Title</label>
 									<div class="col-sm-7">
-										<input type="text" class="form-control" id="">
+										<input type="text" class="form-control" id="title_new_info" />
 									</div>
 								</div>
 
 
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-success" data-dismiss="modal">Add Container Info</button>
+								<button type="button" class="btn btn-success add_info" data-dismiss="modal">Add Container Info</button>
 								<button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
 							</div>
 						</div>
@@ -144,8 +175,13 @@
 							var new_add_info ='<div class="f_section_container">';
 									new_add_info +='<div class="form-group" id="">';
 									new_add_info +='	<label class="col-sm-4 control-label">Judul Section </label>';
-									new_add_info +='	<div class="col-sm-7">';
+									new_add_info +='	<div class="col-sm-6">';
 									new_add_info +='		<input type="text" class="form-control" id="">';
+									new_add_info +='	</div>';
+									new_add_info +='	<div class="col-sm-1">';
+									new_add_info +='		<button type="button" class="btn btn-danger f_section_info_deleter" >';
+									new_add_info +='			<span class="glyphicon glyphicon-remove"></span>';
+									new_add_info +='		</button>';
 									new_add_info +='	</div>';
 									new_add_info +='</div>';
 
@@ -185,6 +221,16 @@
 									$('.f_section_container_appenden').append(new_add_info).append(s);
 
 								});
+								
+								//Untuk men-delete section info
+								$('body').on('click','.f_section_info_deleter',function(){
+									$(this).closest('.f_section_container').remove();
+								});
+
+								//Untuk men-delete section info pada saat di-close
+								$('.pop_up_detail_info').on('hidden.bs.modal', function (e) {
+								  $(this).find('.f_section_container_appenden > .f_section_container').remove();
+								})
 
 								$('body').on('change', 'input:radio[name="metode_pengisian0"]', function() {
 									if ($(this).is(':checked') && $(this).val() == 'gambar0') {
@@ -207,6 +253,11 @@
 									}
 
 								});
+								
+								$('body').on('click','.delete_info',function(){
+									$id = $(this).prev().val();
+									$('#deleted_id').val($id);
+								})
 								</script>
 
 
@@ -233,12 +284,109 @@
 						Apakah Anda yakin ingin menghapus image ini?
 				  </div>
 				  <div class="modal-footer" style="text-align: center;">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Ya</button>
+					<button type="button" class="btn btn-danger yes-delete" data-dismiss="modal">Ya</button>
+					<input type='hidden' id='deleted_id' />
 					<button type="button" class="btn btn-primary" data-dismiss="modal">Tidak</button>
 				  </div>
 				</div>
 			  </div>
 			</div>
+			
+		<script>
+			$('body').on('click','.yes-delete',function(){
+				$id = $(this).next().val();
+				$.ajax({
+					type: 'DELETE',
+					url: "{{URL('admin/information')}}/"+$id,
+					success: function(response){
+						if(response.code == 200){
+							$.ajax({
+								type: 'GET',
+								url: "{{URL('admin/information')}}",
+								success: function(response){
+									if(response.code == 404){
+										
+									}
+									else{
+										var msgs = response.messages;
+										var div = '';
+										$(msgs).each(function(){
+											div+="<tr>";
+											div+="<td>";
+											div+=$(this)[0].title;
+											div+="</td>";
+											div+="<td>";
+											div+="<button type='button' class='btn btn-warning' data-toggle='modal' data-target='.pop_up_detail_info'>Edit</button>";
+											div+="<input type='hidden' value='"+$(this)[0].id+"' />";
+											div+="<button type='button' class='btn btn-danger delete_info' data-toggle='modal' data-target='.pop_up_delete_info'>Delete</button>";
+											div+="</td>";
+											div+="</tr>";
+										});
+										$('.f_info_table').html(div);
+										alert('Success Delete Information');
+									}
+									
+								},
+								error: function(jqXHR, textStatus, errorThrown){
+									alert(errorThrown);
+								}
+							});
+						}
+					},
+					error: function(jqXHR, textStatus, errorThrown){
+						alert(errorThrown);
+					}
+				});
+			});
+		
+			$('body').on('click','.add_info',function(){
+				$.ajax({
+					type: 'POST',
+					url: "{{URL('admin/information')}}",
+					data:{
+						'title': $('#title_new_info').val()
+					},
+					success: function(response){
+						if(response.code == 201){
+							$.ajax({
+								type: 'GET',
+								url: "{{URL('admin/information')}}",
+								success: function(response){
+									if(response.code == 404){
+										
+									}
+									else{
+										var msgs = response.messages;
+										var div = '';
+										$(msgs).each(function(){
+											div+="<tr>";
+											div+="<td>";
+											div+=$(this)[0].title;
+											div+="</td>";
+											div+="<td>";
+											div+="<button type='button' class='btn btn-warning' data-toggle='modal' data-target='.pop_up_detail_info'>Edit</button>";
+											div+="<input type='hidden' value='"+$(this)[0].id+"' />";
+											div+="<button type='button' class='btn btn-danger delete_info' data-toggle='modal' data-target='.pop_up_delete_info'>Delete</button>";
+											div+="</td>";
+											div+="</tr>";
+										});
+										$('.f_info_table').html(div);
+										alert('Success Add Information');
+									}
+									
+								},
+								error: function(jqXHR, textStatus, errorThrown){
+									alert(errorThrown);
+								}
+							});
+						}
+					},
+					error: function(jqXHR, textStatus, errorThrown){
+						alert(errorThrown);
+					}
+				},'json');
+			});
+		</script>
 		<!--</div>
 	</div>
 </div>-->

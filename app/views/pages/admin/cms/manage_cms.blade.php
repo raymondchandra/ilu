@@ -59,7 +59,7 @@
 								<span class="clearfix "></span>
 								<li role="presentation" class="pull-right"><a href="#2" role="tab" data-toggle="tab" style="">SEO</a></li>
 								<span class="clearfix "></span>-->
-								<li role="presentation" class="active pull-right"><a href="#3" role="tab" data-toggle="tab" style="">Informasi</a></li>
+								<li role="presentation" class="active pull-right"><a href="#3" role="tab" id='cms_info' data-toggle="tab" style="">Informasi</a></li>
 								<span class="clearfix "></span>
 								<li role="presentation" class="pull-right"><a href="#4" id='cms_news' role="tab" data-toggle="tab" style="">News</a></li>
 								<span class="clearfix "></span>
@@ -210,6 +210,39 @@
 							div+="</tr>";
 						});
 						$('.f_tbody_slideshow').html(div);
+					}
+					
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					alert(errorThrown);
+				}
+			});
+		});
+	
+		$('body').on('click','#cms_info',function(){
+			$.ajax({
+				type: 'GET',
+				url: "{{URL('admin/information')}}",
+				success: function(response){
+					if(response.code == 404){
+						
+					}
+					else{
+						var msgs = response.messages;
+						var div = '';
+						$(msgs).each(function(){
+							div+="<tr>";
+							div+="<td>";
+							div+=$(this)[0].title;
+							div+="</td>";
+							div+="<td>";
+							div+="<button type='button' class='btn btn-warning' data-toggle='modal' data-target='.pop_up_detail_info'>Edit</button>";
+							div+="<input type='hidden' value='"+$(this)[0].id+"' />";
+							div+="<button type='button' class='btn btn-danger delete_info' data-toggle='modal' data-target='.pop_up_delete_info'>Delete</button>";
+							div+="</td>";
+							div+="</tr>";
+						});
+						$('.f_info_table').html(div);
 					}
 					
 				},
