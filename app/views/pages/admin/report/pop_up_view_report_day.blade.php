@@ -22,7 +22,10 @@
 							</div>
 							<script type="text/javascript">
 							$(function () {
-								$('#datepicker00').datepicker();
+								$('#datepicker00').datepicker({
+												format:"dd-MM-yyyy"
+												
+											});
 							});
 							</script>
 
@@ -38,7 +41,10 @@
 							</div>
 							<script type="text/javascript">
 							$(function () {
-								$('#datepicker01').datepicker();
+								$('#datepicker01').datepicker({
+												format:"dd-MM-yyyy"
+												
+											});
 							});
 							</script>
 						</div>

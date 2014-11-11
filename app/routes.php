@@ -1,7 +1,7 @@
 <?php
 use Carbon\Carbon;
 
-Route::get('/tes', 'ProductsController@getAll');
+Route::get('/tes', 'ProductsController@getAllProductName');
 
 // Route::get('/tes', 'ProductsController@getAll');
 
@@ -551,6 +551,11 @@ Route::group(array('prefix' => 'test'), function()
     Route::get('/manage_report_produk', function()
 	{
 		return View::make('pages.admin.report.manage_report_produk');
+	});
+    // Report
+    Route::get('/manage_report_pengiriman', function()
+	{
+		return View::make('pages.admin.report.manage_report_pengiriman');
 	});
 
 });
