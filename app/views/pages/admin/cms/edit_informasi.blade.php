@@ -175,8 +175,13 @@
 							var new_add_info ='<div class="f_section_container">';
 									new_add_info +='<div class="form-group" id="">';
 									new_add_info +='	<label class="col-sm-4 control-label">Judul Section </label>';
-									new_add_info +='	<div class="col-sm-7">';
+									new_add_info +='	<div class="col-sm-6">';
 									new_add_info +='		<input type="text" class="form-control" id="">';
+									new_add_info +='	</div>';
+									new_add_info +='	<div class="col-sm-1">';
+									new_add_info +='		<button type="button" class="btn btn-danger f_section_info_deleter" >';
+									new_add_info +='			<span class="glyphicon glyphicon-remove"></span>';
+									new_add_info +='		</button>';
 									new_add_info +='	</div>';
 									new_add_info +='</div>';
 
@@ -216,6 +221,16 @@
 									$('.f_section_container_appenden').append(new_add_info).append(s);
 
 								});
+								
+								//Untuk men-delete section info
+								$('body').on('click','.f_section_info_deleter',function(){
+									$(this).closest('.f_section_container').remove();
+								});
+
+								//Untuk men-delete section info pada saat di-close
+								$('.pop_up_detail_info').on('hidden.bs.modal', function (e) {
+								  $(this).find('.f_section_container_appenden > .f_section_container').remove();
+								})
 
 								$('body').on('change', 'input:radio[name="metode_pengisian0"]', function() {
 									if ($(this).is(':checked') && $(this).val() == 'gambar0') {
