@@ -76,7 +76,7 @@
 
 
 					$('body').on('click','.f_email_del_addition_btn',function(){
-						$(this).parents('.f_email_addition_form_node').remove();
+						$(this).closest('.f_email_addition_form_node').remove();
 					});
 					</script>
 					<!-- company email ADDITION END -->
@@ -121,7 +121,7 @@
 
 
 					$('body').on('click','.f_telp_del_addition_btn',function(){
-						$(this).parents('.f_telp_addition_form_node').remove();
+						$(this).closest('.f_telp_addition_form_node').remove();
 					});
 					</script>
 					<!-- company email ADDITION END -->
@@ -167,7 +167,7 @@
 
 
 					$('body').on('click','.f_fax_del_addition_btn',function(){
-						$(this).parents('.f_fax_addition_form_node').remove();
+						$(this).closest('.f_fax_addition_form_node').remove();
 					});
 					</script>
 					<!-- company fax ADDITION END -->
@@ -213,7 +213,7 @@
 
 
 					$('body').on('click','.f_address_del_addition_btn',function(){
-						$(this).parents('.f_address_addition_form_node').remove();
+						$(this).closest('.f_address_addition_form_node').remove();
 					});
 					</script>
 					<!-- company address ADDITION END -->
