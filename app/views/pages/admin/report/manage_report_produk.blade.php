@@ -257,12 +257,12 @@
 
 							</h3>
 							<label class="radio-inline pull-right" style="margin-top: 20px;">
-								<input type="radio" name="f_radio_pilih_lakunya_sebuah_produk" id="" value="range"> Range
+								<input type="radio" name="f_radio_pilih_lakunya_sebuah_produk_1" id="" value="range"> Range
 							</label>
 							<label class="radio-inline pull-right" style="margin-right: 20px; margin-top: 20px;">
-								<input type="radio" name="f_radio_pilih_lakunya_sebuah_produk" id="" value="one_month" checked> Per 1 Bulan
+								<input type="radio" name="f_radio_pilih_lakunya_sebuah_produk_1" id="" value="one_month" checked> Per 1 Bulan
 							</label>
-							<div id="f_lakunya_sebuah_produk_bulan">
+							<div id="f_lakunya_sebuah_produk_bulan_1">
 								<form class="form-horizontal" role="form">
 									<table class="table table-bordered">
 										<thead>
@@ -281,10 +281,10 @@
 										<tbody class="f_lakunya_sebuah_produk">
 											<tr>
 												<td>
-													<input type='text' class="form-control"  id='datepicker00_lakunya_sebuah_produk'/> 
+													<input type='text' class="form-control"  id='datepicker001_lakunya_sebuah_produk'/> 
 												</td>
 												<td>
-													<input type='text' class="form-control"  id='datepicker01_lakunya_sebuah_produk'/>
+													<input type='text' class="form-control"  id='datepicker011_lakunya_sebuah_produk'/>
 												</td>
 												<td>
 													<button type="button" class="btn btn-success butRepPro">
@@ -295,10 +295,10 @@
 										</tbody>
 										<script type="text/javascript">
 										$(function () {
-											$('#datepicker00_lakunya_sebuah_produk').datepicker({
+											$('#datepicker001_lakunya_sebuah_produk').datepicker({
 												format:"dd-MM-yyyy"
 											});
-											$('#datepicker01_lakunya_sebuah_produk').datepicker({
+											$('#datepicker011_lakunya_sebuah_produk').datepicker({
 												format:"dd-MM-yyyy"
 												
 											});
@@ -322,7 +322,7 @@
 									</tbody>
 								</table>
 							</div>
-							<div id="f_lakunya_sebuah_produk_range" class="hidden">
+							<div id="f_lakunya_sebuah_produk_range_1" class="hidden">
 								<form class="form-horizontal" role="form">
 									<table class="table table-bordered">
 										<thead>
@@ -390,14 +390,14 @@
 								</table>		
 							</div>
 							<script>
-							$('body').on('change', 'input:radio[name="f_radio_pilih_lakunya_sebuah_produk"]', function() {
+							$('body').on('change', 'input:radio[name="f_radio_pilih_lakunya_sebuah_produk_1"]', function() {
 
 								if ($(this).is(':checked') && $(this).val() == 'one_month') {
-									$('#f_lakunya_sebuah_produk_range').addClass('hidden');
-									$('#f_lakunya_sebuah_produk_bulan').removeClass('hidden');
+									$('#f_lakunya_sebuah_produk_range_1').addClass('hidden');
+									$('#f_lakunya_sebuah_produk_bulan_1').removeClass('hidden');
 								}else{
-									$('#f_lakunya_sebuah_produk_range').removeClass('hidden');
-									$('#f_lakunya_sebuah_produk_bulan').addClass('hidden');
+									$('#f_lakunya_sebuah_produk_range_1').removeClass('hidden');
+									$('#f_lakunya_sebuah_produk_bulan_1').addClass('hidden');
 								}
 
 							});
