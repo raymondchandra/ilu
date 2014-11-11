@@ -48,218 +48,248 @@
 					</style>
 					<!-- Nav tabs -->
 					<ul class="nav nav-tabs" role="tablist" style="border: 0px;">
-						<li role="presentation" class="active pull-right"><a href="#3" role="tab" data-toggle="tab" style="">Lakunya Sebuah Produk</a></li>
+						<li role="presentation" class="active pull-right"><a href="#3" role="tab" data-toggle="tab" style="">Laporan Pengiriman</a></li>
 						<span class="clearfix "></span>
+						<!--
 						<li role="presentation" class="pull-right"><a href="#4" id='cms_news' role="tab" data-toggle="tab" style="">News</a></li>
 						<span class="clearfix "></span>
 						<li role="presentation" class="pull-right"><a href="#5" id='cms_slideshow' role="tab" data-toggle="tab" style="">Slideshow</a></li>
-					</ul>
-				</div>
-				<!-- Tab panes -->
-				<div class="pull-left" style="width:76%; padding-left:20px; padding-right: 20px;border: 1px solid #676767 !important;">
-					<div class="tab-content">
-						<div role="tabpanel" class="tab-pane fade in active" id="3">
-							<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-							<h3 class="pull-left">
-								Daftar Informasi 
+					-->
+				</ul>
+			</div>
+			<!-- Tab panes -->
+			<div class="pull-left" style="width:76%; padding-left:20px; padding-right: 20px;border: 1px solid #676767 !important;">
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane fade in active" id="3">
+						<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+						<h3 class="pull-left">
+							Daftar Informasi 
 
-							</h3>
-							<label class="radio-inline pull-right" style="margin-top: 20px;">
-								<input type="radio" name="f_radio_pilih_lakunya_sebuah_produk" id="" value="range"> Range
-							</label>
-							<label class="radio-inline pull-right" style="margin-right: 20px; margin-top: 20px;">
-								<input type="radio" name="f_radio_pilih_lakunya_sebuah_produk" id="" value="one_month" checked> Per 1 Bulan
-							</label>
-							<div id="f_lakunya_sebuah_produk_bulan">
-								<form class="form-horizontal" role="form">
-									<table class="table table-bordered">
-										<thead>
-											<tr>
-												<th>
-													Nama Produk
-												</th>
-												<th>
-													Bulan
-												</th>
-												<th>
-													Tahun
-												</th>
-												<th>
-													Command 
-												</th>
-											</tr>
-										</thead>
-										<tbody class="f_lakunya_sebuah_produk">
-											<tr>
-												<td>
-													<select class="form-control">
-														<option value="">Produk A</option>
-														<option value="">Produk B</option>
-														<option value="">Produk C</option>
-														<option value="">Produk X</option>
-													</select>
-												</td>
-												<td>
-													<select class="form-control">
-														<option value="">Januari</option>
-														<option value="">Februari</option>
-														<option value="">Maret</option>
-														<option value="">April</option>
-														<option value="">Mei</option>
-														<option value="">Juni</option>
-														<option value="">Juli</option>
-														<option value="">Agustus</option>
-														<option value="">September</option>
-														<option value="">Oktober</option>
-														<option value="">November</option>
-														<option value="">Desember</option>
-													</select>
-												</td>
-												<td>
-													<select class="form-control">
-														<?php
-														for($i = 0; $i<50; $i++){
-															?>
-															<option value=""><?php echo(2015-$i); ?></option>
-															<?php
-														}
-														?>
-
-													</select>
-												</td>
-												<td>
-													<button type="button" class="btn btn-success">Show</button>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</form>		
-								<table class="table table-bordered table-striped">
+						</h3>
+						<label class="radio-inline pull-right" style="margin-top: 20px;">
+							<input type="radio" name="f_radio_pilih_laporan_pengiriman" id="" value="range"> By Range
+						</label>
+						<label class="radio-inline pull-right" style="margin-right: 20px; margin-top: 20px;">
+							<input type="radio" name="f_radio_pilih_laporan_pengiriman" id="" value="one_month" checked> By Status
+						</label>
+						<div id="f_laporan_pengiriman_status">
+							<form class="form-horizontal" role="form">
+								<table class="table table-bordered">
 									<thead>
 										<tr>
 											<th>
-												Date
+												Nama Produk
 											</th>
 											<th>
-												Count Penjualan
+												Command 
 											</th>
 										</tr>
 									</thead>
-									<tbody class="f_lakunya_sebuah_produk_hasil">
-										<tr data-toggle="modal" data-target=".pop_up_view_report_produk_detail">
+									<tbody class="f_laporan_pengiriman">
+										<tr>
 											<td>
-												45 45 3454
+												<select class="form-control">
+													<option value="Cancel">Cancel</option>
+													<option value="Pending">Pending</option>
+													<option value="On-process">On-process</option>
+													<option value="On-ship">On-ship</option>
+													<option value="Complete">Complete</option>
+												</select>
 											</td>
 											<td>
-												Count Penjualan
+												<button type="button" class="btn btn-success">Show</button>
 											</td>
 										</tr>
 									</tbody>
 								</table>
-							</div>
-							<div id="f_lakunya_sebuah_produk_range" class="hidden">
-								<form class="form-horizontal" role="form">
-									<table class="table table-bordered">
-										<thead>
-											<tr>
-												<th>
-													Dari Tanggal
-												</th>
-												<th>
-													Sampai Tanggal
-												</th>
-												<th>
-													Command 
-												</th>
-											</tr>
-										</thead>
-										<tbody class="f_lakunya_sebuah_produk">
-											<tr>
-												<td>
-													<input type='text' class="form-control"  id='datepicker00_lakunya_sebuah_produk'/>
-													<input type="hidden">
-												</td>
-												<td>
-													<input type='text' class="form-control"  id='datepicker01_lakunya_sebuah_produk'/>
-													<input type="hidden">
-												</td>
-												<td>
-													<button type="button" class="btn btn-success">
-														Show
-													</button>
-												</td>
-											</tr>
-										</tbody>
-										<script type="text/javascript">
-										$(function () {
-											$('#datepicker00_lakunya_sebuah_produk').datepicker({
-												format:"dd-MM-yyyy"
+							</form>		
+							<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>
+											Nama Penerima
+										</th>
+										<th>
+											No. Transaksi
+										</th>
+										<th>
+											No. Resi
+										</th>
+										<th>
+											Kurir
+										</th>
+										<th>
+											Asal
+										</th>
+										<th>
+											Destinasi
+										</th>
+										<th>
+											Tanggal Pengiriman
+										</th>
+									</tr>
+								</thead>
+								<tbody class="f_laporan_pengiriman_hasil">
+									<tr data-toggle="modal" data-target=".pop_up_view_report_produk_detail">
+										<td>
+											Orang
+										</td>
+										<td>
+											24234234252
+										</td>
+										<td>
+											234fv2343v
+										</td>
+										<td>
+											JNE
+										</td>
+										<td>
+											Narnia, Antah Berantah
+										</td>
+										<td>
+											Frankfurt, Germany
+										</td>
+										<td>
+											11-11-2014
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div id="f_laporan_pengiriman_range" class="hidden">								
+							<form class="form-horizontal" role="form">
 
-											});
-											$('#datepicker01_lakunya_sebuah_produk').datepicker({
-												format:"dd-MM-yyyy"
-												
-											});
-										});
-										</script>
-									</table>
-								</form>		
-								<table class="table table-bordered table-striped">
+								<table class="table table-bordered">
 									<thead>
 										<tr>
 											<th>
-												Date
+												Dari Tanggal
 											</th>
 											<th>
-												Count Penjualan
+												Sampai Tanggal
+											</th>
+											<th>
+												Command 
 											</th>
 										</tr>
 									</thead>
-									<tbody class="f_lakunya_sebuah_produk_hasil">
-										<tr data-toggle="modal" data-target=".pop_up_view_report_produk_detail">
+									<tbody class="f_laporan_pengiriman">
+										<tr>
 											<td>
-												45 45 3454
+												<input type='text' class="form-control"  id='datepicker00_laporan_pengiriman'/>
+												<input type="hidden">
 											</td>
 											<td>
-												Count Penjualan
+												<input type='text' class="form-control"  id='datepicker01_laporan_pengiriman'/>
+												<input type="hidden">
+											</td>
+											<td>
+												<button type="button" class="btn btn-success">
+													Show
+												</button>
 											</td>
 										</tr>
 									</tbody>
-								</table>		
-							</div>
-							<script>
-							$('body').on('change', 'input:radio[name="f_radio_pilih_lakunya_sebuah_produk"]', function() {
+									<script type="text/javascript">
+									$(function () {
+										$('#datepicker00_laporan_pengiriman').datepicker({
+											format:"dd-MM-yyyy"
 
-								if ($(this).is(':checked') && $(this).val() == 'one_month') {
-									$('#f_lakunya_sebuah_produk_range').addClass('hidden');
-									$('#f_lakunya_sebuah_produk_bulan').removeClass('hidden');
-								}else{
-									$('#f_lakunya_sebuah_produk_range').removeClass('hidden');
-									$('#f_lakunya_sebuah_produk_bulan').addClass('hidden');
-								}
+										});
+										$('#datepicker01_laporan_pengiriman').datepicker({
+											format:"dd-MM-yyyy"
 
-							});
-							</script>
+										});
+									});
+									</script>
+								</table>
+							</form>		
+							<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>
+											Nama
+										</th>
+										<th>
+											No. Transaksi
+										</th>
+										<th>
+											No. Resi
+										</th>
+										<th>
+											Kurir
+										</th>
+										<th>
+											Asal
+										</th>
+										<th>
+											Destinasi
+										</th>
+										<th>
+											Tanggal Pengiriman
+										</th>
+									</tr>
+								</thead>
+								<tbody class="f_laporan_pengiriman_hasil">
+									<tr data-toggle="modal" data-target=".pop_up_view_report_produk_detail">
+										<td>
+											Orang
+										</td>
+										<td>
+											24234234252
+										</td>
+										<td>
+											234fv2343v
+										</td>
+										<td>
+											JNE
+										</td>
+										<td>
+											Narnia, Antah Berantah
+										</td>
+										<td>
+											Frankfurt, Germany
+										</td>
+										<td>
+											11-11-2014
+										</td>
+									</tr>
+								</tbody>
+							</table>		
+						</div>
+						<script>
+						$('body').on('change', 'input:radio[name="f_radio_pilih_laporan_pengiriman"]', function() {
 
-							<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------- -->				
-						</div>
-						<div role="tabpanel" class="tab-pane fade" id="4">
-							@include('pages.admin.cms.edit_news')							
-						</div>
-						<div role="tabpanel" class="tab-pane fade" id="5">
-							@include('pages.admin.cms.edit_slideshow')							
-						</div>
+							if ($(this).is(':checked') && $(this).val() == 'one_month') {
+								$('#f_laporan_pengiriman_range').addClass('hidden');
+								$('#f_laporan_pengiriman_status').removeClass('hidden');
+							}else{
+								$('#f_laporan_pengiriman_range').removeClass('hidden');
+								$('#f_laporan_pengiriman_status').addClass('hidden');
+							}
+
+						});
+						</script>
+
+						<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------- -->				
 					</div>
+						<!--
+						<div role="tabpanel" class="tab-pane fade" id="4">					
+						</div>
+						<div role="tabpanel" class="tab-pane fade" id="5">				
+						</div>
+					-->
 				</div>
 			</div>
 		</div>
-
 	</div>
+
+</div>
 </div>
 </div>
 
 @include('includes.modals.alertYesNo')
-@include('pages.admin.report.pop_up_view_report_produk_detail')
+@include('pages.admin.report.pop_up_view_report_pengiriman_detail')
 
 <script>
 $('body').on('click','#rangeClick',function(){
