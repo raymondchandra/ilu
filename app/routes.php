@@ -557,6 +557,17 @@ Route::group(array('prefix' => 'test'), function()
 	{
 		return View::make('pages.admin.report.manage_report_pengiriman');
 	});
+    // Report
+    Route::get('/manage_report_pembayaran', function()
+	{
+		return View::make('pages.admin.report.manage_report_pembayaran');
+	});
+
+    // manage_payment_proof
+    Route::get('/manage_payment_proof', function()
+	{
+		return View::make('pages.admin.payment_proof.manage_payment_proof');
+	});
 
 });
 
