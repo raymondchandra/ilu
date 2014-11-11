@@ -262,7 +262,7 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 
 	//information
 		Route::get('/information', ['as' => 'get.information' , 'uses' => 'InformationManagementController@get_information']);
-		Route::post('/information', ['as' => 'add.information' , 'uses' => 'InformationController@insert']);
+		Route::post('/information', ['as' => 'add.information' , 'uses' => 'InformationManagementController@insert_information']);
     	Route::put('/information/{id}', ['as' => 'edit.information' , 'uses' => 'InformationController@updateFull']);
     	Route::delete('/information/{id}', ['as' => 'delete.information' , 'uses' => 'InformationManagementController@delete']);
     //newsletter

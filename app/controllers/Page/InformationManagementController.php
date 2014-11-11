@@ -8,7 +8,8 @@ class InformationManagementController extends \BaseController {
 	}
 	
 	public function insert_information(){
-		
+		$info = new InformationController();
+		return $info->insert();
 	}
 	
 	
