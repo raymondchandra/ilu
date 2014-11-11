@@ -76,5 +76,14 @@
 
 			document.onclick = jsddm_close;
 		</script>
+		<script>
+			$('body').on('click','[data-dismiss=modal]',function(){
+				var x = $(this).parents('.modal').length;
+				if(x == true){
+					alert('true');
+					$(this).has('input[type=text]').val('1');
+				}
+			});
+		</script>
 	</body>
 </html>
