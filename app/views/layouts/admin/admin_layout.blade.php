@@ -77,7 +77,7 @@
 			document.onclick = jsddm_close;
 		</script>
 		<script>
-			//Reseter input[type=text] untuk seluruh modal
+			//Resetter input[type=text] untuk seluruh modal
 			$('.modal').on('hidden.bs.modal', function (e) {
 			  //alert('modal closed');
 			  //-- fungsi untuk me-reset sluruh input[type=text] pada modal --
