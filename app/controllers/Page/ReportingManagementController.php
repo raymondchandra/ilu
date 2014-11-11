@@ -82,4 +82,9 @@ class ReportingManagementController extends \BaseController
 			return View::make('pages.admin.report.manage_report_produk', compact('hsl2'));
 		}
 	}
+	
+	public function view_reporting_pengiriman()
+	{
+		
+	}
 }

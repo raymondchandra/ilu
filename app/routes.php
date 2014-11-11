@@ -14,38 +14,20 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
+		$tgl = '16-October-2014';
+		$prodId = '1';
+		$d1 = new Carbon($tgl);
+		$blnTemp = Carbon::parse($d1)->format('n');
+		$tglTemp = Carbon::parse($d1)->format('d');
+		$thnTemp = Carbon::parse($d1)->format('Y');
 		$respond = array();
-		$report = Transaction::where('paid','=','1')->get();
-		$bulan = date('n') -5;
-		$tahun = date('Y');
-		$idx = 1;
-		$bulanAkhir = 6;
-		$hasil = array();
-		while($idx <= $bulanAkhir)
+		$report = Transaction::join('orders','transactions.id','=','orders.transaction_id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.id','=',$prodId)->where(DB::raw('MONTH(transactions.created_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.created_at)'), '=', $thnTemp)->where(DB::raw('DAY(transactions.created_at)'), '=', $tglTemp)->where('transactions.paid','=','1')->get(array('transactions.invoice','orders.quantity'));
+		if(count($report) == 0)
 		{
-			$tempHasil = 0;
-			$tempBulan = Carbon::parse($tahun."-".$bulan."-01")->format('n');
-			$tempBulanHsl = Carbon::parse($tahun."-".$bulan."-01")->format('F');
-			$tempTahun = Carbon::parse($tahun."-01-01")->format('Y');
-			foreach($report as $key)
-			{
-				$dd = $key->updated_at;
-				$tahunCek = Carbon::parse($dd)->format('Y');
-				$bulanCek = Carbon::parse($dd)->format('n');
-				if($tahunCek == $tempTahun)
-				{
-					if($bulanCek == $tempBulan)
-					{
-						$tempHasil = $tempHasil + $key->total_price;
-					}
-				}
-			}
-			$hasil[] = array('tanggal'=>$tempBulan, 'penjualan' => $tempHasil,'ket'=>'sixmonth','tgl'=>$tempBulanHsl.' '.$tempTahun);
-			$idx = $idx + 1;
-			$bulan = $bulan +1;
+			echo 'as';
 		}
-		$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
-		echo $respond['status'];
+		$respond = array('code'=>'200','status' => 'OK','messages'=>$report);
+		//echo $respond['messages'];
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -547,5 +529,11 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.report.manage_report_produk');
 	});
 
+	Route::get('/manage_report_produk_jeffry', ['as' =>'jeffry.getReportProduk', 'uses' => 'ReportingManagementController@view_reporting_product']);
+
+	Route::get('/manage_report_produk1month_jeffry', ['as' =>'jeffry.getReportProduk1Month', 'uses' => 'TransactionsController@getMostCurrentProdukOneMonth']);
+	
+	Route::get('/manage_report_produk1month_detail_jeffry', ['as' =>'jeffry.getReportProduk1MonthDetail', 'uses' => 'TransactionsController@getDetailMostCurrentProdukOneMonth']);
+	
 });
 
