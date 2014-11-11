@@ -606,6 +606,7 @@ class TransactionsController extends \BaseController {
 		else
 		{
 			$idxLast = count($qtyProd);
+			$allProd = null;
 			foreach($prod as $key)
 			{
 				$ct = 0;

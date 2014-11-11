@@ -5,6 +5,40 @@
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 				<h4 class="modal-title" id="myModalLabel">Edit SEO</h4>
 			</div>-->
+		<script>
+			$('document').ready(function(){
+				$.ajax({
+					type: 'GET',
+					url: "{{URL('admin/information')}}",
+					success: function(response){
+						if(response.code == 404){
+							
+						}
+						else{
+							var msgs = response.messages;
+							var div = '';
+							$(msgs).each(function(){
+								div+="<tr>";
+								div+="<td>";
+								div+=$(this)[0].title;
+								div+="</td>";
+								div+="<td>";
+								div+="<button type='button' class='btn btn-warning' data-toggle='modal' data-target='.pop_up_detail_info'>Edit</button>";
+								div+="<input type='hidden' value='"+$(this)[0].id+"' />";
+								div+="<button type='button' class='btn btn-danger delete_info' data-toggle='modal' data-target='.pop_up_delete_info'>Delete</button>";
+								div+="</td>";
+								div+="</tr>";
+							});
+							$('.f_info_table').html(div);
+						}
+						
+					},
+					error: function(jqXHR, textStatus, errorThrown){
+						alert(errorThrown);
+					}
+				});
+			});
+		</script>
 			<h3>
 				Daftar Informasi <button id="f_add_informasi" class="btn btn-success pull-right" style="margin-bottom: 20px;" data-toggle="modal" data-target=".pop_up_add_container_info">+ Add New Info</button>
 			</h3>
@@ -12,9 +46,9 @@
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th>
+							<!--<th>
 								Nama Link
-							</th>
+							</th>-->
 							<th>
 								Judul Informasi
 							</th>
@@ -25,9 +59,6 @@
 					</thead>
 					<tbody class="f_info_table">
 						<tr>
-							<td>
-								Lorem Ipsum
-							</td>
 							<td>
 								Das Epic
 							</td>
@@ -142,6 +173,11 @@
 									}
 
 								});
+								
+								$('body').on('click','.delete_info',function(){
+									$id = $(this).prev().val();
+									$('#deleted_id').val($id);
+								})
 								</script>
 
 
@@ -168,12 +204,61 @@
 						Apakah Anda yakin ingin menghapus image ini?
 				  </div>
 				  <div class="modal-footer" style="text-align: center;">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Ya</button>
+					<button type="button" class="btn btn-danger yes-delete" data-dismiss="modal">Ya</button>
+					<input type='hidden' id='deleted_id' />
 					<button type="button" class="btn btn-primary" data-dismiss="modal">Tidak</button>
 				  </div>
 				</div>
 			  </div>
 			</div>
+			
+		<script>
+			$('body').on('click','.yes-delete',function(){
+				$id = $(this).next().val();
+				$.ajax({
+					type: 'DELETE',
+					url: "{{URL('admin/information')}}/"+$id,
+					success: function(response){
+						if(response.code == 200){
+							$.ajax({
+								type: 'GET',
+								url: "{{URL('admin/information')}}",
+								success: function(response){
+									if(response.code == 404){
+										
+									}
+									else{
+										var msgs = response.messages;
+										var div = '';
+										$(msgs).each(function(){
+											div+="<tr>";
+											div+="<td>";
+											div+=$(this)[0].title;
+											div+="</td>";
+											div+="<td>";
+											div+="<button type='button' class='btn btn-warning' data-toggle='modal' data-target='.pop_up_detail_info'>Edit</button>";
+											div+="<input type='hidden' value='"+$(this)[0].id+"' />";
+											div+="<button type='button' class='btn btn-danger delete_info' data-toggle='modal' data-target='.pop_up_delete_info'>Delete</button>";
+											div+="</td>";
+											div+="</tr>";
+										});
+										$('.f_info_table').html(div);
+										alert('Success Delete Information');
+									}
+									
+								},
+								error: function(jqXHR, textStatus, errorThrown){
+									alert(errorThrown);
+								}
+							});
+						}
+					},
+					error: function(jqXHR, textStatus, errorThrown){
+						alert(errorThrown);
+					}
+				});
+			});
+		</script>
 		<!--</div>
 	</div>
 </div>-->

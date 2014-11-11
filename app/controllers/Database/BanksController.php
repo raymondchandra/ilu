@@ -36,7 +36,7 @@ class BanksController extends \BaseController {
 	 */
 	public function getAll(){
 		$respond = array();
-		$bank = Bank::all();
+		$bank = Bank::where('deleted','=',0)->get();
 		if (count($bank) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -119,7 +119,7 @@ class BanksController extends \BaseController {
 			//save
 			try {
 				$bank->update($data);
-				$respond = array('code'=>'204','status' => 'No Content');
+				$respond = array('code'=>'200','status' => 'OK');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 			}
@@ -177,8 +177,9 @@ class BanksController extends \BaseController {
 		else
 		{
 			try {
-				$bank->delete();
-				$respond = array('code'=>'204','status' => 'No Content');
+				$bank->deleted = 1;
+				$bank->save();
+				$respond = array('code'=>'200','status' => 'OK');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 			}
