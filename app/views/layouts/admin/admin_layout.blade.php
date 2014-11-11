@@ -77,17 +77,12 @@
 			document.onclick = jsddm_close;
 		</script>
 		<script>
-			/*$('body').on('click','[data-dismiss=modal]',function(){
-				var x = $(this).parents('.modal').length;
-				if(x == true){
-					alert('true');
-					$(this).has('input[type=text]').val('1');
-				}
-			});*/
-
-			/*$('.modal').on('hidden.bs.modal', function (e) {
-			  alert('modal closed');
-			})*/
+			//Reseter input[type=text] untuk seluruh modal
+			$('.modal').on('hidden.bs.modal', function (e) {
+			  //alert('modal closed');
+			  //-- fungsi untuk me-reset sluruh input[type=text] pada modal --
+			  $(this).find('input[type=text]').val('');
+			})
 		</script>
 	</body>
 </html>

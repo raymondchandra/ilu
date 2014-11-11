@@ -9,14 +9,20 @@
 				<div class="modal-body">
 					
 					
-					<div class="form-group" id="nama_promosi">
+					<div class="form-group" id="">
+						<div class="col-sm-12">
+							<img src="" height="200" width="150" style="margin-left: auto; margin-right: auto; display: block;">
+						</div>
+					</div>
+
+					<div class="form-group" id="">
 						<label class="col-sm-4 control-label">Full Name</label>
 						<div class="col-sm-8">
 							<p class="form-control-static" id="custName"></p>
 						</div>
 					</div>
 
-					<div class="form-group" id="nama_promosi">
+					<div class="form-group" id="">
 						<label class="col-sm-4 control-label" >Name in Profile</label>
 						<div class="col-sm-8">
 							<p class="form-control-static" id="custProfileName"></p>
