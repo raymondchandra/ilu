@@ -36,7 +36,7 @@ class NewsController extends \BaseController {
 	 */
 	public function getAll(){
 		$respond = array();
-		$news = News::orderBy('updated_at','desc')->get();
+		$news = News::orderBy('updated_at','desc ')->get();
 		if (count($news) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');

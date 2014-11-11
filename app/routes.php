@@ -80,7 +80,7 @@ Route::group(['before' => 'check_token'], function()
 	//contact
 		Route::get('/contact', ['as' => 'get.contact.list' , 'uses' => '']);
 	//seo
-		Route::get('/seo', ['as' => 'get.seo' , 'uses' => 'SeosController@getAll']);
+		Route::get('/seo', ['as' => 'get.seo' , 'uses' => 'SeosManagementController@get_all_seos']);
 });
 
 Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
@@ -261,9 +261,10 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
     //transaction
 
 	//information
+		Route::get('/information', ['as' => 'get.information' , 'uses' => 'InformationManagementController@get_information']);
 		Route::post('/information', ['as' => 'add.information' , 'uses' => 'InformationController@insert']);
     	Route::put('/information/{id}', ['as' => 'edit.information' , 'uses' => 'InformationController@updateFull']);
-    	Route::delete('/information/{id}', ['as' => 'delete.information' , 'uses' => 'InformationController@delete']);
+    	Route::delete('/information/{id}', ['as' => 'delete.information' , 'uses' => 'InformationManagementController@delete']);
     //newsletter
     	Route::get('/newsletter', ['as' => 'get.newsletter.list' , 'uses' => 'TemplatesController@getAll']);
     	Route::get('/newsletter/{id}', ['as' => 'get.newsletter.detail' , 'uses' => 'TemplatesController@getById']);
@@ -278,7 +279,7 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		Route::post('/slideshow/{id}', ['as' => 'post.slideshow' , 'uses' => 'SlideshowManagementController@update']);
 		Route::delete('/slideshow/{id}', ['as' => 'delete.slideshow' , 'uses' => 'SlideshowManagementController@delete']);
     //seo
-		Route::get('/seo', ['as' => 'get.seo' , 'uses' => 'SeosController@getAll']);
+		Route::get('/seo', ['as' => 'get.seo' , 'uses' => 'SeosManagementController@get_all_seos']);
     	Route::post('/seo', ['as' => 'add.seo' , 'uses' => 'SeosController@insert']);
     	Route::put('/seo/{id}', ['as' => 'edit.seo' , 'uses' => 'SeosController@updateFull']);
     	Route::delete('/seo/{id}', ['as' => 'delete.seo' , 'uses' => 'SeosController@delete']);
@@ -292,6 +293,11 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		Route::get('/supportMsg/{ticket_id}', ['as' => 'get.supportMsg.ticket' , 'uses' => 'SupportMsgsController@getByTicket']);
 		Route::post('/supportMsg', ['as' => 'add.supportMsg' , 'uses' => 'SupportMsgsController@insert']);
 
+	//banks
+		Route::get('/banks', ['as' => 'get.banks' , 'uses' => 'BankManagementController@get_all']);
+		Route::post('/banks', ['as' => 'post.banks' , 'uses' => 'BankManagementController@insert']);
+		Route::put('/banks/{id}', ['as' => 'put.banks' , 'uses' => 'BankManagementController@update']);
+		Route::delete('/banks/{id}', ['as' => 'delete.banks' , 'uses' => 'BankManagementController@delete']);
 		
 		
 	//SHIPPING

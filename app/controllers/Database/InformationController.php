@@ -184,7 +184,7 @@ class InformationController extends \BaseController {
 		{
 			try {
 				$information->delete();
-				$respond = array('code'=>'204','status' => 'No Content');
+				$respond = array('code'=>'200','status' => 'OK');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 			}
