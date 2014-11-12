@@ -31,7 +31,7 @@
 			<li><a href="{{ URL::to('admin/manage_reviews') }}"><span class="glyphicon glyphicon-home" style="color:#fff; margin-right:10px;"></span>Reviews</a></li>
 			
 			<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-envelope" style="color:#fff; margin-right:10px;"></span>Shipping and Transaction<span class="caret"></span></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-envelope" style="color:#fff; margin-right:10px;"></span>Ship & Transaction<span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
 					<li><a href="{{ URL::to('admin/manage_shipping') }}"> Manage  Shipping</a></li>
 					<li><a href="{{ URL::to('admin/manage_shipping_agent') }}"> Manage Shipping Agent</a></li>	
@@ -94,7 +94,7 @@
 				</ul>
 			</li>
 			
-			<li><a href="#">Other Link</a></li>
+			<li><a href="{{ URL::to('test/manage_payment_proof') }}"><span class="glyphicon glyphicon-list-alt" style="color:#fff; margin-right:10px;"></span>Payment Proof</a></li>
 		</ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container -->

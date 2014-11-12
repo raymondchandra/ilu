@@ -199,7 +199,6 @@
 						
 							@foreach($hasil as $key)
 								<tr> 
-								
 									<td>{{$key->invoice}}</td>
 									<td>{{$key->account_id}}</td>
 									<td>{{$key->full_name}}</td>
@@ -502,7 +501,7 @@
 							
 							var tab ="";
 							var obj = response['messages']['0'].order;
-							alert(obj);
+							
 							var responses = obj;
 							$(responses).each(function() {
 								tab+= "<tr>";

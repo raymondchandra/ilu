@@ -275,7 +275,8 @@ class ProductsController extends \BaseController {
 	public function getAllProductName()
 	{
 		$respond = array();
-		$product = DB::table('products')->lists('name');
+		// $product = DB::table('products')->where('deleted','=',0)->lists('id','name');
+		$product = Product::where('deleted','=',0)->get(array('id','name'));
 		if (count($product) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');

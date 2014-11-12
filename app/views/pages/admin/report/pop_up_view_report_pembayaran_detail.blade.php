@@ -3,7 +3,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title" id="myModalLabelDet">Detail Pada Produk Terkait</h4>
+				<h4 class="modal-title" id="myModalLabel">Detail Pembayaran No. Transaksi ...</h4>
 			</div>
 			<form class="form-horizontal" role="form">
 				<div class="modal-body">
@@ -13,18 +13,76 @@
 								<thead>
 									<tr>
 										<th>
-											Invoice #
+											Nama Produk
 										</th>
 										<th>
 											Qty.
 										</th>
 										<th>
-											Nama Pembeli
+											@harga
+										</th>
+										<th>
+											Subtotal
 										</th>
 									</tr>
 								</thead>
-								<tbody class="detailProdTab">
-									
+								<tbody>
+									<tr>
+										<td>
+											wer23x23rc
+										</td>
+										<td>
+											2
+										</td>
+										<td>
+											200.000
+										</td>
+										<td>
+											400.000
+										</td>
+									</tr>
+									<tr>
+										<td>
+											rc4234rc2
+										</td>
+										<td>
+											1
+										</td>
+										<td>
+											200.000
+										</td>
+										<td>
+											400.000
+										</td>
+									</tr>
+									<tr>
+										<td>
+											v54y2
+										</td>
+										<td>
+											5
+										</td>
+										<td>
+											200.000
+										</td>
+										<td>
+											400.000
+										</td>
+									</tr>
+									<tr>
+										<td>
+											3242456h234
+										</td>
+										<td>
+											1
+										</td>
+										<td>
+											200.000
+										</td>
+										<td>
+											400.000
+										</td>
+									</tr>
 								</tbody>
 							</table>			
 						</div>

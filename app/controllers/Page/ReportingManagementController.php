@@ -70,4 +70,21 @@ class ReportingManagementController extends \BaseController
 			return View::make('pages.admin.report.manage_report', compact('hasil','hsl2'));
 		}
 	}
+	
+	public function view_reporting_product()
+	{
+		$prod = new ProductsController();
+		$json = $prod->getAllProductName();
+		$hsl = json_decode($json->getContent());
+		$hsl2 = $hsl->{'messages'};
+		if($hsl->{'code'} == "200")
+		{
+			return View::make('pages.admin.report.manage_report_produk', compact('hsl2'));
+		}
+	}
+	
+	public function view_reporting_pengiriman()
+	{
+		
+	}
 }

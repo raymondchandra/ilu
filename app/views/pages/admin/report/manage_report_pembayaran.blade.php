@@ -6,7 +6,7 @@
 			
 			<div class="s_title_n_control">
 				<h3 style="float: left;">
-					Manage Report Pengiriman
+					Manage Report Pembayaran
 				</h3>
 				<!--<a data-toggle="modal" data-target=".pop_up_view_report_range" href="javascript:void(0);" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Range</a>
 				<a href="{{action('ReportingManagementController@view_reporting_mgmt_day', array('reportBy' => 'day'))}}" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Day</a>
@@ -48,7 +48,7 @@
 					</style>
 					<!-- Nav tabs -->
 					<ul class="nav nav-tabs" role="tablist" style="border: 0px;">
-						<li role="presentation" class="active pull-right"><a href="#3" role="tab" data-toggle="tab" style="">Laporan Pengiriman</a></li>
+						<li role="presentation" class="active pull-right"><a href="#3" role="tab" data-toggle="tab" style="">Laporan Pembayaran</a></li>
 						<span class="clearfix "></span>
 						<!--
 						<li role="presentation" class="pull-right"><a href="#4" id='cms_news' role="tab" data-toggle="tab" style="">News</a></li>
@@ -67,33 +67,38 @@
 
 						</h3>
 						<label class="radio-inline pull-right" style="margin-top: 20px;">
-							<input type="radio" name="f_radio_pilih_laporan_pengiriman" id="" value="range"> By Range
+							<input type="radio" name="f_radio_pilih_laporan_pembayaran" id="" value="this_3_month"> This 3 Month
 						</label>
 						<label class="radio-inline pull-right" style="margin-right: 20px; margin-top: 20px;">
-							<input type="radio" name="f_radio_pilih_laporan_pengiriman" id="" value="one_month" checked> By Status
+							<input type="radio" name="f_radio_pilih_laporan_pembayaran" id="" value="this_month"> This Month
 						</label>
-						<div id="f_laporan_pengiriman_status">
+						<label class="radio-inline pull-right" style="margin-right: 20px; margin-top: 20px;">
+							<input type="radio" name="f_radio_pilih_laporan_pembayaran" id="" value="this_week"> This Week
+						</label>
+						<label class="radio-inline pull-right" style="margin-right: 20px; margin-top: 20px;">
+							<input type="radio" name="f_radio_pilih_laporan_pembayaran" id="" value="today" checked> Today
+						</label>
+
+						<div id="f_laporan_pembayaran_today" class="f_m">
 							<form class="form-horizontal" role="form">
 								<table class="table table-bordered">
 									<thead>
 										<tr>
 											<th>
-												Status
+												Status Today
 											</th>
 											<th>
 												Command 
 											</th>
 										</tr>
 									</thead>
-									<tbody class="f_laporan_pengiriman">
+									<tbody class="f_laporan_pembayaran">
 										<tr>
 											<td>
 												<select class="form-control">
-													<option value="Cancel">Cancel</option>
-													<option value="Pending">Pending</option>
-													<option value="On-process">On-process</option>
-													<option value="On-ship">On-ship</option>
-													<option value="Complete">Complete</option>
+													<option value="all">All</option>
+													<option value="paid">Paid</option>
+													<option value="unpaid">Unpaid</option>
 												</select>
 											</td>
 											<td>
@@ -107,56 +112,234 @@
 								<thead>
 									<tr>
 										<th>
-											Nama Penerima
+											Nama Pembayar
 										</th>
 										<th>
 											No. Transaksi
 										</th>
 										<th>
-											No. Resi
+											Nominal
 										</th>
 										<th>
-											Kurir
-										</th>
-										<th>
-											Asal
-										</th>
-										<th>
-											Destinasi
-										</th>
-										<th>
-											Tanggal Pengiriman
+											Status
 										</th>
 									</tr>
 								</thead>
-								<tbody class="f_laporan_pengiriman_hasil">
+								<tbody class="f_laporan_pembayaran_hasil">
 									<tr data-toggle="modal" data-target=".pop_up_view_report_produk_detail">
 										<td>
-											Orang
+											Seseorang
 										</td>
 										<td>
-											24234234252
+											65487465
 										</td>
 										<td>
-											234fv2343v
+											2.700.000
 										</td>
 										<td>
-											JNE
-										</td>
-										<td>
-											Narnia, Antah Berantah
-										</td>
-										<td>
-											Frankfurt, Germany
-										</td>
-										<td>
-											11-11-2014
+											Unpaid
 										</td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
-						<div id="f_laporan_pengiriman_range" class="hidden">								
+						
+						<div id="f_laporan_pembayaran_this_week" class="hidden f_m">
+							<form class="form-horizontal" role="form">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>
+												Status This Week
+											</th>
+											<th>
+												Command 
+											</th>
+										</tr>
+									</thead>
+									<tbody class="f_laporan_pembayaran">
+										<tr>
+											<td>
+												<select class="form-control">
+													<option value="all">All</option>
+													<option value="paid">Paid</option>
+													<option value="unpaid">Unpaid</option>
+												</select>
+											</td>
+											<td>
+												<button type="button" class="btn btn-success">Show</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</form>		
+							<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>
+											Nama Pembayar
+										</th>
+										<th>
+											No. Transaksi
+										</th>
+										<th>
+											Nominal
+										</th>
+										<th>
+											Status
+										</th>
+									</tr>
+								</thead>
+								<tbody class="f_laporan_pembayaran_hasil">
+									<tr data-toggle="modal" data-target=".pop_up_view_report_produk_detail">
+										<td>
+											Seseorang
+										</td>
+										<td>
+											65487465
+										</td>
+										<td>
+											2.700.000
+										</td>
+										<td>
+											Unpaid
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						
+						<div id="f_laporan_pembayaran_this_month" class="hidden f_m">
+							<form class="form-horizontal" role="form">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>
+												Status This Month
+											</th>
+											<th>
+												Command 
+											</th>
+										</tr>
+									</thead>
+									<tbody class="f_laporan_pembayaran">
+										<tr>
+											<td>
+												<select class="form-control">
+													<option value="all">All</option>
+													<option value="paid">Paid</option>
+													<option value="unpaid">Unpaid</option>
+												</select>
+											</td>
+											<td>
+												<button type="button" class="btn btn-success">Show</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</form>		
+							<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>
+											Nama Pembayar
+										</th>
+										<th>
+											No. Transaksi
+										</th>
+										<th>
+											Nominal
+										</th>
+										<th>
+											Status
+										</th>
+									</tr>
+								</thead>
+								<tbody class="f_laporan_pembayaran_hasil">
+									<tr data-toggle="modal" data-target=".pop_up_view_report_produk_detail">
+										<td>
+											Seseorang
+										</td>
+										<td>
+											65487465
+										</td>
+										<td>
+											2.700.000
+										</td>
+										<td>
+											Unpaid
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						
+						<div id="f_laporan_pembayaran_this_3_month" class="hidden f_m">
+							<form class="form-horizontal" role="form">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>
+												Status This 3 Month
+											</th>
+											<th>
+												Command 
+											</th>
+										</tr>
+									</thead>
+									<tbody class="f_laporan_pembayaran">
+										<tr>
+											<td>
+												<select class="form-control">
+													<option value="all">All</option>
+													<option value="paid">Paid</option>
+													<option value="unpaid">Unpaid</option>
+												</select>
+											</td>
+											<td>
+												<button type="button" class="btn btn-success">Show</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</form>		
+							<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>
+											Nama Pembayar
+										</th>
+										<th>
+											No. Transaksi
+										</th>
+										<th>
+											Nominal
+										</th>
+										<th>
+											Status
+										</th>
+									</tr>
+								</thead>
+								<tbody class="f_laporan_pembayaran_hasil">
+									<tr data-toggle="modal" data-target=".pop_up_view_report_produk_detail">
+										<td>
+											Seseorang
+										</td>
+										<td>
+											65487465
+										</td>
+										<td>
+											2.700.000
+										</td>
+										<td>
+											Unpaid
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						
+						<!--<div id="f_laporan_pembayaran_range" class="hidden">								
 							<form class="form-horizontal" role="form">
 
 								<table class="table table-bordered">
@@ -173,14 +356,14 @@
 											</th>
 										</tr>
 									</thead>
-									<tbody class="f_laporan_pengiriman">
+									<tbody class="f_laporan_pembayaran">
 										<tr>
 											<td>
-												<input type='text' class="form-control"  id='datepicker00_laporan_pengiriman'/>
+												<input type='text' class="form-control"  id='datepicker00_laporan_pembayaran'/>
 												<input type="hidden">
 											</td>
 											<td>
-												<input type='text' class="form-control"  id='datepicker01_laporan_pengiriman'/>
+												<input type='text' class="form-control"  id='datepicker01_laporan_pembayaran'/>
 												<input type="hidden">
 											</td>
 											<td>
@@ -192,11 +375,11 @@
 									</tbody>
 									<script type="text/javascript">
 									$(function () {
-										$('#datepicker00_laporan_pengiriman').datepicker({
+										$('#datepicker00_laporan_pembayaran').datepicker({
 											format:"dd-MM-yyyy"
 
 										});
-										$('#datepicker01_laporan_pengiriman').datepicker({
+										$('#datepicker01_laporan_pembayaran').datepicker({
 											format:"dd-MM-yyyy"
 
 										});
@@ -230,7 +413,7 @@
 										</th>
 									</tr>
 								</thead>
-								<tbody class="f_laporan_pengiriman_hasil">
+								<tbody class="f_laporan_pembayaran_hasil">
 									<tr data-toggle="modal" data-target=".pop_up_view_report_produk_detail">
 										<td>
 											Orang
@@ -256,16 +439,22 @@
 									</tr>
 								</tbody>
 							</table>		
-						</div>
+						</div>-->
 						<script>
-						$('body').on('change', 'input:radio[name="f_radio_pilih_laporan_pengiriman"]', function() {
+						$('body').on('change', 'input:radio[name="f_radio_pilih_laporan_pembayaran"]', function() {
 
-							if ($(this).is(':checked') && $(this).val() == 'one_month') {
-								$('#f_laporan_pengiriman_range').addClass('hidden');
-								$('#f_laporan_pengiriman_status').removeClass('hidden');
+							if ($(this).is(':checked') && $(this).val() == 'today') {
+								$('#f_laporan_pembayaran_today').siblings('.f_m').addClass('hidden');
+								$('#f_laporan_pembayaran_today').removeClass('hidden');
+							}else if($(this).is(':checked') && $(this).val() == 'this_week'){
+								$('#f_laporan_pembayaran_this_week').siblings('.f_m').addClass('hidden');
+								$('#f_laporan_pembayaran_this_week').removeClass('hidden');
+							}else if($(this).is(':checked') && $(this).val() == 'this_month'){
+								$('#f_laporan_pembayaran_this_month').siblings('.f_m').addClass('hidden');
+								$('#f_laporan_pembayaran_this_month').removeClass('hidden');
 							}else{
-								$('#f_laporan_pengiriman_range').removeClass('hidden');
-								$('#f_laporan_pengiriman_status').addClass('hidden');
+								$('#f_laporan_pembayaran_this_3_month').siblings('.f_m').addClass('hidden');
+								$('#f_laporan_pembayaran_this_3_month').removeClass('hidden');
 							}
 
 						});
@@ -289,7 +478,7 @@
 </div>
 
 @include('includes.modals.alertYesNo')
-@include('pages.admin.report.pop_up_view_report_pengiriman_detail')
+@include('pages.admin.report.pop_up_view_report_pembayaran_detail')
 
 <script>
 $('body').on('click','#rangeClick',function(){
