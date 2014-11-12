@@ -281,6 +281,11 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		Route::put('/banks/{id}', ['as' => 'put.banks' , 'uses' => 'BankManagementController@update']);
 		Route::delete('/banks/{id}', ['as' => 'delete.banks' , 'uses' => 'BankManagementController@delete']);
 		
+	//company info
+		Route::get('/company', ['as' => 'get.company' , 'uses' => 'CompanyInfoManagementController@get_company_info']);
+		Route::post('/company', ['as' => 'post.company' , 'uses' => 'CompanyInfoManagementController@insert']);
+		
+		
 		
 	//SHIPPING
 	Route::get('/manage_shipping', ['as'=>'jeffry.getShipping', 'uses' => 'ShippingManagementController@view_shipping_mgmt']);
