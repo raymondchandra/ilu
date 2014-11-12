@@ -288,9 +288,9 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		Route::delete('/slideshow/{id}', ['as' => 'delete.slideshow' , 'uses' => 'SlideshowManagementController@delete']);
     //seo
 		Route::get('/seo', ['as' => 'get.seo' , 'uses' => 'SeosManagementController@get_all_seos']);
-    	Route::post('/seo', ['as' => 'add.seo' , 'uses' => 'SeosController@insert']);
-    	Route::put('/seo/{id}', ['as' => 'edit.seo' , 'uses' => 'SeosController@updateFull']);
-    	Route::delete('/seo/{id}', ['as' => 'delete.seo' , 'uses' => 'SeosController@delete']);
+    	//Route::post('/seo', ['as' => 'add.seo' , 'uses' => 'SeosController@insert']);
+    	Route::put('/seo/{id}', ['as' => 'edit.seo' , 'uses' => 'SeosManagementController@edit_seos']);
+    	//Route::delete('/seo/{id}', ['as' => 'delete.seo' , 'uses' => 'SeosController@delete']);
 		
 	//news management
 		Route::get('/news', ['as' => 'get.news' , 'uses' => 'NewsManagementController@getNews']);
@@ -307,6 +307,12 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		Route::put('/banks/{id}', ['as' => 'put.banks' , 'uses' => 'BankManagementController@update']);
 		Route::delete('/banks/{id}', ['as' => 'delete.banks' , 'uses' => 'BankManagementController@delete']);
 		
+	//company info
+		Route::get('/company', ['as' => 'get.company' , 'uses' => 'CompanyInfoManagementController@get_company_info']);
+		Route::post('/company', ['as' => 'post.company' , 'uses' => 'CompanyInfoManagementController@insert']);
+		
+	//messages
+		Route::get('/messages', ['as' => 'get.messages' , 'uses' => 'MessagesManagementController@get_all_messages']);
 		
 	//SHIPPING
 	Route::get('/manage_shipping', ['as'=>'jeffry.getShipping', 'uses' => 'ShippingManagementController@view_shipping_mgmt']);
@@ -575,6 +581,12 @@ Route::group(array('prefix' => 'test'), function()
     Route::get('/manage_payment_proof', function()
 	{
 		return View::make('pages.admin.payment_proof.manage_payment_proof');
+	});
+
+    // manage_payment_proof
+    Route::get('/edit_informasi_detail', function()
+	{
+		return View::make('pages.admin.cms.edit_informasi_detail');
 	});
 
 	Route::get('/manage_report_produk_jeffry', ['as' =>'jeffry.getReportProduk', 'uses' => 'ReportingManagementController@view_reporting_product']);

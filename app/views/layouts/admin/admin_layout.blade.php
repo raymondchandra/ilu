@@ -11,7 +11,17 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-lg-4">
-						<img src="" height="50" width="75" style="float: left; margin-right:20px; margin-top: 10px;"/><h2>Ilu Panel</h2>
+						<img src="{{asset('assets/company_logo.jpeg')}}" height="50" width="75" style="float: left; margin-right:20px; margin-top: 10px;"/><h2>
+						<?php
+								$info = new CompanyInfoManagementController();
+								$result = $info->get_company_info();
+								if($result == NULL){
+									
+								}
+								else{
+									echo $result['company_name'];
+								}
+						?> Panel</h2>
 					</div>
 					<div class="col-lg-8" style="line-height: 69px; text-align: right;">
 						@if(Auth::check())

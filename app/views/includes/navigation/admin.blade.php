@@ -38,6 +38,8 @@
 					<li class="divider"></li>
 					<li><a href="{{ URL::to('admin/manage_transaction') }}">Manage  Transaction</a></li>	
 					<li><a href="{{ URL::to('admin/manage_order') }}">Manage Order</a></li>	
+					<li class="divider"></li>
+					<li><a href="{{ URL::to('test/manage_payment_proof') }}">Payment Proof</a></li>
 				</ul>
 			</li>
 
@@ -62,14 +64,8 @@
 					<li><a href="{{ URL::to('admin/get_trans_history') }}">Transaction History</a></li>-->
 				</ul>
 			</li>
-			
-			<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-volume-up" style="color:#fff; margin-right:10px;"></span>Newsletter<span class="caret"></span></a>
-				<ul class="dropdown-menu" role="menu">
-					<li><a href="#">Add New Newsletter</a></li>
-					
-				</ul>
-			</li>
+						
+			<li><a href="{{ URL::to('test/manage_newsletter') }}"><span class="glyphicon glyphicon-volume-up" style="color:#fff; margin-right:10px;"></span>Newsletter</a></li>
 
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book" style="color:#fff; margin-right:10px;"></span>Configuration<span class="caret"></span></a>
@@ -94,7 +90,7 @@
 				</ul>
 			</li>
 			
-			<li><a href="{{ URL::to('test/manage_payment_proof') }}"><span class="glyphicon glyphicon-list-alt" style="color:#fff; margin-right:10px;"></span>Payment Proof</a></li>
+			
 		</ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container -->
