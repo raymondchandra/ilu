@@ -14,20 +14,46 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-		$tgl = '16-October-2014';
-		$prodId = '1';
-		$d1 = new Carbon($tgl);
-		$blnTemp = Carbon::parse($d1)->format('n');
-		$tglTemp = Carbon::parse($d1)->format('d');
-		$thnTemp = Carbon::parse($d1)->format('Y');
+		//$tgl = '16-October-2014';
+		$bln = 'November';
+		$thn = '2014';
+		
+		$blnTemp = Carbon::parse($bln.'-01-'.$thn)->format('n');
+		
 		$respond = array();
-		$report = Transaction::join('orders','transactions.id','=','orders.transaction_id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.id','=',$prodId)->where(DB::raw('MONTH(transactions.created_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.created_at)'), '=', $thnTemp)->where(DB::raw('DAY(transactions.created_at)'), '=', $tglTemp)->where('transactions.paid','=','1')->get(array('transactions.invoice','orders.quantity'));
-		if(count($report) == 0)
+		$report = Transaction::join('orders','transactions.id','=','orders.transaction_id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where(DB::raw('MONTH(transactions.updated_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.updated_at)'), '=', $thn)->where('transactions.paid','=','1')->orderBy('products.id','asc')->get(array('transactions.id','orders.priceNow','transactions.updated_at','products.id as idProduct','orders.quantity'));
+		$prod = Product::orderBy('id','asc')->get();
+		
+		$hasil = array();
+		
+			
+		foreach($prod as $key)
 		{
-			echo 'as';
+			$tempHasil = 0;
+			$tempHasil2 = 0;
+			foreach($report as $key2)
+			{
+				if($key->id == $key2->idProduct)
+				{
+					$qty = $key2->quantity;
+					$price = ($key2->priceNow * $key2->quantity	);
+					$tempHasil = $tempHasil + $price;
+					$tempHasil2 = $tempHasil2 + $qty;
+				}
+			}
+			if($tempHasil2 != 0)
+			{
+				$hasil[] = array('idProd' => $key->id, 'namaProd' => $key->name,'qty' => $tempHasil2,'penjualan'=>$tempHasil);
+			}
 		}
-		$respond = array('code'=>'200','status' => 'OK','messages'=>$report);
-		//echo $respond['messages'];
+		$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		echo $respond['messages']['0']['idProd'];
+		echo '<br />';
+		echo $respond['messages']['0']['namaProd'];
+		echo '<br />';
+		echo $respond['messages']['0']['qty'];
+		echo '<br />';
+		echo $respond['messages']['0']['penjualan'];
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 

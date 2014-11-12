@@ -1291,7 +1291,7 @@ class TransactionsController extends \BaseController {
 		$blnTemp = Carbon::parse($bln.'-01-'.$thn)->format('n');
 		
 		$respond = array();
-		$report = Transaction::join('orders','transactions.id','=','orders.transaction_id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.id','=',$prod)->where(DB::raw('MONTH(transactions.updated_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.updated_at)'), '=', $thn)->where('transactions.paid','=','1')->get(array('transactions.id','transactions.total_price','transactions.updated_at','products.id as idProduct'));
+		$report = Transaction::join('orders','transactions.id','=','orders.transaction_id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.id','=',$prod)->where(DB::raw('MONTH(transactions.updated_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.updated_at)'), '=', $thn)->where('transactions.paid','=','1')->get(array('transactions.id','orders.priceNow','transactions.updated_at','orders.quantity','products.id as idProduct'));
 		$idx = 1;
 		$tgl = date('t');
 		$hasil = array();
@@ -1304,7 +1304,7 @@ class TransactionsController extends \BaseController {
 				$created = Carbon::parse($dd)->format('d');
 				if($created == $idx)
 				{
-					$tempHasil = $tempHasil + $key->total_price;
+					$tempHasil = $tempHasil + ($key->priceNow * $key->quantity);
 				}
 			}
 			$hasil[] = array('tanggal' => $idx, 'penjualan' => $tempHasil,'bulan' => $bln.'-'.$thn);
@@ -1361,7 +1361,7 @@ class TransactionsController extends \BaseController {
 		$blnTemp = Carbon::parse($bln.'-01-'.$thn)->format('n');
 		
 		$respond = array();
-		$report = Transaction::join('orders','transactions.id','=','orders.transaction_id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.id','=',$prod)->where('transactions.paid','=','1')->get(array('transactions.id','transactions.total_price','transactions.updated_at','products.id as idProduct'));
+		$report = Transaction::join('orders','transactions.id','=','orders.transaction_id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.id','=',$prod)->where('transactions.paid','=','1')->get(array('transactions.id','orders.priceNow','transactions.updated_at','orders.quantity','products.id as idProduct'));
 		
 		
 		$idx = 1;
@@ -1380,7 +1380,7 @@ class TransactionsController extends \BaseController {
 				$dc1 = Carbon::parse($d1)->format('Ynd');
 				if($dd2 == $dc1)
 				{
-					$tempHasil = $tempHasil + $key->total_price;
+					$tempHasil = $tempHasil +  ($key->priceNow * $key->quantity);
 				}
 				$tgl = Carbon::parse($d1)->format('d');
 				$bln = Carbon::parse($d1)->format('F');
@@ -1390,8 +1390,13 @@ class TransactionsController extends \BaseController {
 			$hasil[] = array('tanggal' => $tgl, 'penjualan' => $tempHasil,'bulan' => $bln.'-'.$thn);
 				$idx = $idx + 1;
 		}
-		$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
-		
+		if($hasil != null)
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		}else
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
 		return Response::json($respond);
 	}
 	
@@ -1403,27 +1408,144 @@ class TransactionsController extends \BaseController {
 		$blnTemp = Carbon::parse($bln.'-01-'.$thn)->format('n');
 		
 		$respond = array();
-		$report = Transaction::join('orders','transactions.id','=','orders.transaction_id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.id','=',$prod)->where(DB::raw('MONTH(transactions.updated_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.updated_at)'), '=', $thn)->where('transactions.paid','=','1')->get(array('transactions.id','transactions.total_price','transactions.updated_at','products.id as idProduct'));
-		$idx = 1;
-		$tgl = date('t');
+		$report = Transaction::join('orders','transactions.id','=','orders.transaction_id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where(DB::raw('MONTH(transactions.updated_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.updated_at)'), '=', $thn)->where('transactions.paid','=','1')->orderBy('products.id','asc')->get(array('transactions.id','orders.priceNow','transactions.updated_at','products.id as idProduct','orders.quantity'));
+		$prod = Product::orderBy('id','asc')->get();
+		
 		$hasil = array();
-		while($idx <= $tgl)
+		
+			
+		foreach($prod as $key)
 		{
 			$tempHasil = 0;
-			foreach($report as $key)
+			$tempHasil2 = 0;
+			foreach($report as $key2)
 			{
-				$dd = $key->updated_at;
-				$created = Carbon::parse($dd)->format('d');
-				if($created == $idx)
+				if($key->id == $key2->idProduct)
 				{
-					$tempHasil = $tempHasil + $key->total_price;
+					$qty = $key2->quantity;
+					$price =  ($key2->priceNow * $key2->quantity);
+					$tempHasil = $tempHasil + $price;
+					$tempHasil2 = $tempHasil2 + $qty;
 				}
 			}
-			$hasil[] = array('tanggal' => $idx, 'penjualan' => $tempHasil,'bulan' => $bln.'-'.$thn);
-			$idx = $idx + 1;
+			if($tempHasil2 != 0)
+			{
+				$hasil[] = array('idProd' => $key->id, 'namaProd' => $key->name,'qty' => $tempHasil2,'penjualan'=>$tempHasil,'hargaNow' =>$key2->priceNow);
+			}
 		}
-		$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		
+		if($hasil != null)
+		{
+			foreach($hasil as $key=>$row)
+			{
+				$qt[$key] = $row['qty'];
+				$pro[$key] = $row['idProd'];
+			}
+			array_multisort($qt, SORT_DESC,$pro,SORT_ASC,$hasil);
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		}else
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		
+		
 		
 		return Response::json($respond);
 	}
+	
+	public function getPenjualanProdukRange()
+	{
+		$date1 = Input::get('date1');
+		$date2 = Input::get('date2');
+		
+		$d1 = new Carbon($date1);
+		$d2 = new Carbon($date2);
+		
+		$tgl1 = Carbon::parse($d1)->format('d');
+		$bln1 = Carbon::parse($d1)->format('F');
+		$thn1 = Carbon::parse($d1)->format('Y');
+		
+		$tgl2 = Carbon::parse($d2)->format('d');
+		$bln2 = Carbon::parse($d2)->format('F');
+		$thn2 = Carbon::parse($d2)->format('Y');
+		
+		$difference = ($d1->diff($d2)->days);
+		
+		$blnTemp = Carbon::parse($bln.'-01-'.$thn)->format('n');
+		
+		$respond = array();
+		$report = Transaction::join('orders','transactions.id','=','orders.transaction_id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.id','=',$prod)->where('transactions.paid','=','1')->orderBy('products.id','asc')->get(array('transactions.id','orders.priceNow','transactions.updated_at','products.id as idProduct', 'orders.quantity'));
+		$prod = Product::orderBy('id','asc')->get();
+		
+		$hasil = array();
+		$idx = 1;
+		
+		foreach($prod as $key)
+		{
+			$tempHasil = 0;
+			$tempHasil2 = 0;
+			$idx = 1;
+			while($idx <= ($difference+1))
+			{
+				if($idx != 1)
+				{
+					$d1->addDay(1);
+				}
+				foreach($report as $key2)
+				{
+					if($key->id == $key2->idProduct)
+					{
+						$dd = $key2->updated_at;
+						$dd2 = Carbon::parse($dd)->format('Ynd');
+						$dc1 = Carbon::parse($d1)->format('Ynd');
+						if($dd2 == $dc1)
+						{
+							$qty = $key2->quantity;
+							$price =  ($key2->priceNow * $key2->quantity);
+							$tempHasil = $tempHasil + $price;
+							$tempHasil2 = $tempHasil2 + $qty;
+						}
+					}
+				}
+				$idx = $idx + 1;
+			}
+			
+			if($tempHasil2 != 0)
+			{
+				$hasil[] = array('idProd' => $key->id, 'namaProd' => $key->name,'qty' => $tempHasil2,'penjualan'=>$tempHasil,'hargaNow' =>$key2->priceNow);
+			}
+		}
+		if($hasil != null)
+		{
+			foreach($hasil as $key=>$row)
+			{
+				$qt[$key] = $row['qty'];
+				$pro[$key] = $row['idProd'];
+			}
+			array_multisort($qt, SORT_DESC,$pro,SORT_ASC,$hasil);
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		}else
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		return Response::json($respond);
+	}
+	
+	public function getDetailPenjualanProduk()
+	{
+		$prod = Input::get('idProd');
+		$respond = array();
+		$product = Product::where('id','=',$prod)->join('categories','products.category_id','=','categories.id')->join('galleries','galleries.product_id','=','products.id')->where('type','=','main_photo')->get();
+		if (count($product) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
+		}
+		return Response::json($respond);
+	}
+	
+	
 }
