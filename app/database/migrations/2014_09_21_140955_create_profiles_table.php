@@ -16,7 +16,7 @@ class CreateProfilesTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('member_id');
-			%table->string('file_path');
+			$table->string('file_path');
 			$table->string('full_name');
 			$table->string('name_in_profile');
 			$table->string('no_ktp');
