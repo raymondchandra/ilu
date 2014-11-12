@@ -64,7 +64,7 @@
 			</li>
 			
 			<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-volume-up" style="color:#fff; margin-right:10px;"></span>Newsletter<span class="caret"></span></a>
+				<a href="{{ URL::to('admin/newsletter') }}" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-volume-up" style="color:#fff; margin-right:10px;"></span>Newsletter<span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
 					<li><a href="#">Add New Newsletter</a></li>
 					
