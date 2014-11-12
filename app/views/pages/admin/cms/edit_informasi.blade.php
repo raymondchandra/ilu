@@ -58,15 +58,15 @@
 						</tr>
 					</thead>
 					<tbody class="f_info_table">
-						<!--<tr>
+						<tr>
 							<td>
 								Das Epic
 							</td>
 							<td>
-								<button type="button" class="btn btn-warning" data-toggle="modal" data-target=".pop_up_detail_info">Edit</button>
+								<a href="{{ URL::to('test/edit_informasi_detail') }}" class="btn btn-warning">Edit</a>
 								<button type="button" class="btn btn-danger" data-toggle="modal" data-target=".pop_up_delete_info">Delete</button>
 							</td>
-						</tr>-->
+						</tr>
 					</tbody>
 				</table>
 
@@ -110,7 +110,7 @@
 			</div>
 
 			<!-- modal add -->
-			<div class="modal fade pop_up_detail_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<!--<div class="modal fade pop_up_detail_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -270,7 +270,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div>-->
 
 			<!-- Modal ".alertYesNo"-->
 			<div class="modal fade pop_up_delete_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
