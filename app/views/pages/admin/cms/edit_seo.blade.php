@@ -99,6 +99,54 @@
 							$(this).addClass('hidden');
 							//alert('dsa');
 						});
+						
+						$('body').on('change','.content',function(){
+							$element = $(this);
+							$id = $(this).parent().siblings('.seo_id').val();
+							$content = $(this).val();
+							$.ajax({
+								type: 'PUT',
+								url: "{{URL('admin/seo')}}/"+$id,
+								data:{
+									content:$content
+								},
+								success: function(response){
+									if(response.code == 200){
+										alert('Success');
+										$element.siblings('.meta').removeClass('hidden');
+										$element.siblings('.meta').text($content);   
+										$element.addClass('hidden');
+									}
+								},
+								error: function(jqXHR, textStatus, errorThrown){
+									alert(errorThrown);
+								}
+							});
+						});
+						
+						$('body').on('change','.key',function(){
+							$element = $(this);
+							$id = $(this).parent().siblings('.seo_id').val();
+							$key = $(this).val();
+							$.ajax({
+								type: 'PUT',
+								url: "{{URL('admin/seo')}}/"+$id,
+								data:{
+									key:$key
+								},
+								success: function(response){
+									if(response.code == 200){
+										alert('Success');
+										$element.siblings('.meta').removeClass('hidden');
+										$element.siblings('.meta').text($key);   
+										$element.addClass('hidden');
+									}
+								},
+								error: function(jqXHR, textStatus, errorThrown){
+									alert(errorThrown);
+								}
+							});
+						});
 
 						$('input.meta').keypress(function(event){
 							 

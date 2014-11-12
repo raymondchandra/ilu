@@ -100,7 +100,7 @@ class SeosController extends \BaseController {
 	 */
 	public function updateFull($id)
 	{
-		$input = json_decode(Input::all());
+		$input = Input::all();
 		$respond = array();
 		$seo = Seo::find($id);
 		if ($seo == null)
@@ -120,7 +120,7 @@ class SeosController extends \BaseController {
 			//save
 			try {
 				$seo->update($data);
-				$respond = array('code'=>'204','status' => 'No Content');
+				$respond = array('code'=>'200','status' => 'OK');
 			} catch (Exception $e) {
 				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 			}

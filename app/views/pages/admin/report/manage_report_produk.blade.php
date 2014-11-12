@@ -142,7 +142,7 @@
 											</th>
 										</tr>
 									</thead>
-									<tbody class="f_lakunya_sebuah_produk_hasil">
+									<tbody class="f_lakunya_sebuah_produk_hasil1">
 										
 									</tbody>
 								</table>
@@ -176,37 +176,26 @@
 													</select>
 												</td>
 												<td>
-													<select class="form-control bulanRepPro">
-														<option value="January">Januari</option>
-														<option value="February">Februari</option>
-														<option value="March">Maret</option>
-														<option value="April">April</option>
-														<option value="May">Mei</option>
-														<option value="June">Juni</option>
-														<option value="July">Juli</option>
-														<option value="August">Agustus</option>
-														<option value="September">September</option>
-														<option value="October">Oktober</option>
-														<option value="November">November</option>
-														<option value="December">Desember</option>
-													</select>
+													<input type='text' class="form-control"  id='datepicker000_lakunya_sebuah_produk'/> 
 												</td>
 												<td>
-													<select class="form-control tahunRepPro">
-														<?php
-														for($i = 0; $i<50; $i++){
-															?>
-															<option value="<?php echo(date('Y')-$i);?>"><?php echo(date('Y')-$i); ?></option>
-															<?php
-														}
-														?>
-
-													</select>
+													<input type='text' class="form-control"  id='datepicker010_lakunya_sebuah_produk'/>
 												</td>
 												<td>
 													<button type="button" class="btn btn-success procBut">Show</button>
 												</td>
 											</tr>
+											<script type="text/javascript">
+											$(function () {
+												$('#datepicker000_lakunya_sebuah_produk').datepicker({
+													format:"dd-MM-yyyy"
+												});
+												$('#datepicker010_lakunya_sebuah_produk').datepicker({
+													format:"dd-MM-yyyy"
+													
+												});
+											});
+											</script>
 										</tbody>
 									</table>
 								</form>		
@@ -278,13 +267,35 @@
 												</th>
 											</tr>
 										</thead>
-										<tbody class="f_lakunya_sebuah_produk">
+										<tbody class="f_lakunya_sebuah_produk_1">
 											<tr>
 												<td>
-													<input type='text' class="form-control"  id='datepicker001_lakunya_sebuah_produk'/> 
+													<select class="form-control bulanRepPro">
+														<option value="January">Januari</option>
+														<option value="February">Februari</option>
+														<option value="March">Maret</option>
+														<option value="April">April</option>
+														<option value="May">Mei</option>
+														<option value="June">Juni</option>
+														<option value="July">Juli</option>
+														<option value="August">Agustus</option>
+														<option value="September">September</option>
+														<option value="October">Oktober</option>
+														<option value="November">November</option>
+														<option value="December">Desember</option>
+													</select>
 												</td>
 												<td>
-													<input type='text' class="form-control"  id='datepicker011_lakunya_sebuah_produk'/>
+													<select class="form-control tahunRepPro">
+														<?php
+														for($i = 0; $i<50; $i++){
+															?>
+															<option value="<?php echo(date('Y')-$i);?>"><?php echo(date('Y')-$i); ?></option>
+															<?php
+														}
+														?>
+
+													</select>
 												</td>
 												<td>
 													<button type="button" class="btn btn-success butRepPro">
@@ -295,10 +306,10 @@
 										</tbody>
 										<script type="text/javascript">
 										$(function () {
-											$('#datepicker001_lakunya_sebuah_produk').datepicker({
+											$('#datepicker00_lakunya_sebuah_produk').datepicker({
 												format:"dd-MM-yyyy"
 											});
-											$('#datepicker011_lakunya_sebuah_produk').datepicker({
+											$('#datepicker01_lakunya_sebuah_produk').datepicker({
 												format:"dd-MM-yyyy"
 												
 											});
@@ -317,7 +328,7 @@
 											</th>
 										</tr>
 									</thead>
-									<tbody class="f_lakunya_sebuah_produk_hasil">
+									<tbody class="f_lakunya_sebuah_produk_hasil3">
 										
 									</tbody>
 								</table>
@@ -338,7 +349,7 @@
 												</th>
 											</tr>
 										</thead>
-										<tbody class="f_lakunya_sebuah_produk">
+										<tbody class="f_lakunya_sebuah_produk_1">
 											<tr>
 												<td>
 													<input type='text' class="form-control"  id='datepicker00_lakunya_sebuah_produk'/> 
@@ -377,7 +388,7 @@
 											</th>
 										</tr>
 									</thead>
-									<tbody class="f_lakunya_sebuah_produk_hasil2">
+									<tbody class="f_lakunya_sebuah_produk_hasil4">
 										<tr data-toggle="modal" data-target=".pop_up_view_report_produk_detail">
 											<td>
 												45 45 3454
@@ -453,7 +464,7 @@
 						tab+="<td>"+toRp((this)['penjualan'])+"</td>";
 						tab+="</tr>";
 					});
-					$('.f_lakunya_sebuah_produk_hasil').html(tab);
+					$('.f_lakunya_sebuah_produk_hasil1').html(tab);
 			}
 		},error: function(xhr, textStatus, errorThrown){
 			alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);

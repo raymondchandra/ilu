@@ -1,5 +1,88 @@
 @extends('layouts.admin.admin_layout'){{-- WARNING! fase ini sementara untuk show saja, untuk lebih lanjut akan dibuat controller agar tidak meng-extend layout --}}
-@section('content')	
+@section('content')
+
+<script>
+	$('document').ready(getMessages());
+	function getMessages(){
+		$.ajax({
+			type: 'GET',
+			url: "{{URL('admin/messages')}}",
+			success: function(response){
+				$msgs = response.messages;
+				var div = '';
+				var div2 ='';
+				for($i = 0;$i<$msgs.length;$i++){
+					if($i==0){
+						div+="<li role='presentation' class='active pull-right'>";
+						div+="<a href='#0' role='tab' data-toggle='tab' style=''>";
+						div+="<b class='show'>"+$msgs[$i].name+"</b>";
+						div+="<span>"+$msgs[$i].subject+"</span>";
+						div+="</a>";
+						div+="</li>";
+						
+						div2+="<div role='tabpanel' class='tab-pane fade in active' id='0'>";
+						div2+="<div class='col-lg-8 col-lg-push-2'>"
+						div2+="<div>"
+						div2+="<b class='show'>Name: "+$msgs[$i].name+"</b>";
+						div2+="<span class='show'>Email: "+$msgs[$i].email+"</span>";
+						div2+="<span>Subject: "+$msgs[$i].subject+"</span>";
+						div2+="<span class='pull-right'>"+$msgs[$i].created_at+"</span>";
+						div2+="<p style='margin-top: 20px;'>";
+						div2+=$msgs[$i].text;
+						div2+="</p>";
+						div2+="<hr></hr>";
+						div2+="</div>";
+						div2+="<div class='msg_area'>";
+						div2+="</div>";
+						div2+="<div>";
+						//text editor
+						div2+="<textarea class='form-control f_message_textinput' id='0' rows='3'></textarea>";
+						div2+="<button type='button' class='btn btn-success pull-right f_message_textbtn' style='margin-top: 20px;'>Send</button>";
+						div2+="</div>";
+						div2+="</div>";
+						div2+="</div>";
+					}
+					else{
+						div+="<li role='presentation' class='pull-right'>";
+						div+="<a href='#"+$i+"' role='tab' data-toggle='tab' style=''>";
+						div+="<b class='show'>"+$msgs[$i].name+"</b>";
+						div+="<span>"+$msgs[$i].subject+"</span>";
+						div+="</a>";
+						div+="</li>";
+						div+="<span class='clearfix'></span>";
+						
+						div2+="<div role='tabpanel' class='tab-pane fade in' id='"+$i+"'>";
+						div2+="<div class='col-lg-8 col-lg-push-2'>"
+						div2+="<div>"
+						div2+="<b class='show'>Name: "+$msgs[$i].name+"</b>";
+						div2+="<span class='show'>Email: "+$msgs[$i].email+"</span>";
+						div2+="<span>Subject: "+$msgs[$i].subject+"</span>";
+						div2+="<span class='pull-right'>"+$msgs[$i].created_at+"</span>";
+						div2+="<p style='margin-top: 20px;'>";
+						div2+=$msgs[$i].text;
+						div2+="</p>";
+						div2+="<hr></hr>";
+						div2+="</div>";
+						div2+="<div class='msg_area'>";
+						div2+="</div>";
+						div2+="<div>";
+						//text editor
+						div2+="<textarea class='form-control f_message_textinput' id='"+$i+"' rows='3'></textarea>";
+						div2+="<button type='button' class='btn btn-success pull-right f_message_textbtn' style='margin-top: 20px;'>Send</button>";
+						div2+="</div>";
+						div2+="</div>";
+						div2+="</div>";
+					}
+				}
+				$('.message_list').html(div);
+				$('.messages_content').html(div2);
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+				alert(errorThrown);
+			}
+		});
+	}
+</script>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-lg-12">
@@ -38,31 +121,13 @@
 						}
 						</style>
 						<!-- Nav tabs -->
-						<ul class="nav nav-tabs f_height_display" role="tablist" style="border: 0px; overflow-y: scroll;">
-							<li role="presentation" class="active pull-right">
-								<a href="#0" role="tab" data-toggle="tab" style="">
-									<b class="show">Nama Seseorang 0</b>
-									<span>Subjectnya taruh disini</span>
-								</a>
-							</li>
-							<?php
-							for($i=1; $i<16; $i++){
-								?>
-								<li role="presentation" class="pull-right">
-									<a href="#<?php echo($i); ?>" role="tab" data-toggle="tab" style="">
-										<b class="show">Nama Seseorang <?php echo($i); ?></b>
-										<span>Subjectnya taruh disini</span>
-									</a>
-								</li>
-								<span class="clearfix "></span>
-								<?php
-							}
-							?>
+						<ul class="nav nav-tabs f_height_display message_list" role="tablist" style="border: 0px; overflow-y: scroll;">
+							
 						</ul>
 					</div>
 					<div class="col-sm-9">
 						<!-- Tab panes -->
-						<div class="tab-content f_height_display" style="overflow-y: scroll;">
+						<div class="tab-content f_height_display messages_content" style="overflow-y: scroll;">
 
 							<div role="tabpanel" class="tab-pane fade in active" id="0">
 								<div class="col-lg-8 col-lg-push-2">
