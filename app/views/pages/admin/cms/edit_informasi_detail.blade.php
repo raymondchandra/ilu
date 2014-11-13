@@ -10,7 +10,7 @@
 				</h3>
 			</div>
 			<span class="clearfix"></span>
-			<hr></hr>
+			<hr></hr> 
 
 			<div>
 				<!-- <ul class="pagination">
@@ -98,10 +98,6 @@
 											</div>
 										</div>
 									</div>
-									
-									
-									
-
 									<!--<h3>Detail Informasi
 										<button type="button" class="btn btn-success f_add_new_section pull-right" >
 											Add New Section
