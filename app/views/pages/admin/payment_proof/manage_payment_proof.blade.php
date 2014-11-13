@@ -12,65 +12,78 @@
 				<span class="clearfix"></span>
 				<hr></hr>
 				
-				<div>
-					<table class="table table-striped table-hover table-bordered">
-						<thead class="table-bordered">
-							<tr>
-								<th>
-									Nama Pembayar
-								</th>
-								<th>
-									Bank Asal
-								</th>
-								<th>
-									No. Rek. Asal
-								</th>
-								<th>
-									Bank Tujuan
-								</th>
-								<th>
-									No. Rek. Tujuan
-								</th>
-								<th>
-									No. Invoice
-								</th>
-								<th>
-									Nominal
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php
-								for($i = 0; $i < 10; $i++){
-							?>
-							<tr>
-								<td>
-									Seseorang
-								</td>
-								<td>
-									BCA
-								</td>
-								<td>
-									12345 12345
-								</td>
-								<td>
-									BCA
-								</td>
-								<td>
-									45677 45677
-								</td>
-								<td>
-									54689684543634
-								</td>
-								<td>
-									7.000.000
-								</td>
-							</tr>
-							<?php
-								}
-							?>
-						</tbody>
-					</table>
+				<div>					
+						@if($paymentProff == null)							
+							<p>No Payment Proff</p>							
+							<table class="table table-striped table-hover table-bordered">
+								<thead class="table-bordered">
+									<tr>
+										<th>
+											Nama Pembayar
+										</th>
+										<th>
+											Bank Asal
+										</th>
+										<th>
+											No. Rek. Asal
+										</th>
+										<th>
+											Bank Tujuan
+										</th>
+										<th>
+											No. Rek. Tujuan
+										</th>
+										<th>
+											No. Invoice
+										</th>
+										<th>
+											Nominal
+										</th>
+									</tr>
+								</thead>
+							</table>	
+						@else
+							{{$paymentProff->links()}}
+							<table class="table table-striped table-hover table-bordered">
+								<thead class="table-bordered">
+									<tr>
+										<th>
+											Nama Pembayar
+										</th>
+										<th>
+											Bank Asal
+										</th>
+										<th>
+											No. Rek. Asal
+										</th>
+										<th>
+											Bank Tujuan
+										</th>
+										<th>
+											No. Rek. Tujuan
+										</th>
+										<th>
+											No. Invoice
+										</th>
+										<th>
+											Nominal
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									@foreach($paymentProff as $paypro)
+										<td>{{$paypro->nama_pembayar}}</td>
+										<td>{{$paypro->bank_asal}}</td>
+										<td>{{$paypro->norek_asal}}</td>
+										<td>{{$paypro->name}}</td>	<!-- name di banks-->
+										<td>{{$paypro->acc_number}}</td> <!-- acc_number di banks-->
+										<td>{{$paypro->invoice}}</td>
+										<td>{{$paypro->nominal}}</td>
+									@endforeach									
+								</tbody>
+							</table>	
+						@endif												
+											
 				</div>
 			</div>
 		</div>
