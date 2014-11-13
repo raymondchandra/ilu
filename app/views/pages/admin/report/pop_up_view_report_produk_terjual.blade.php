@@ -1,9 +1,9 @@
-<div class="modal fade pop_up_view_report_produk_detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade pop_up_view_report_produk_terjual" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title" id="myModalLabel">Detail Pembayaran No. Transaksi ...</h4>
+				<h4 class="modal-title" id="myModalLabelDetTr">Detail Produk Terjual</h4>
 			</div>
 			<form class="form-horizontal" role="form">
 				<div class="modal-body">
@@ -12,6 +12,15 @@
 							<table class="table table-bordered">
 								<thead>
 									<tr>
+										<th>
+											Nama Pembeli
+										</th>
+										<th>
+											No. Invoice
+										</th>
+										<th>
+											Tanggal Transaksi
+										</th>
 										<th>
 											Nama Produk
 										</th>
@@ -22,20 +31,20 @@
 											Category Produk
 										</th>
 										<th>
-											Attribut Produk
+											Attribute
+										</th>
+										<th>
+											Harga
 										</th>
 										<th>
 											Qty.
-										</th>
-										<th>
-											Harga satuan
 										</th>
 										<th>
 											Subtotal
 										</th>
 									</tr>
 								</thead>
-								<tbody class="isiTab">
+								<tbody class="detailProdTerjual">
 									
 								</tbody>
 							</table>			
