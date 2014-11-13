@@ -36,7 +36,7 @@ class MessagesController extends \BaseController {
 	 */
 	public function getAll(){
 		$respond = array();
-		$message = Message::all();
+		$message = Message::orderBy('updated_at','desc')->get();
 		if (count($message) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');

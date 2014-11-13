@@ -1,7 +1,7 @@
 <?php
 use Carbon\Carbon;
 
-Route::get('/tes', 'ProductsController@getAllProductName');
+Route::get('/tes', 'PromotionsController@getTenProductFromNewestPromotion');
 
 // Route::get('/tes', 'ProductsController@getAll');
 
@@ -135,6 +135,7 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 {
 	//DASHBOARD
 	Route::get('/', ['as' =>'jeffry.getDashboard', 'uses' => 'DashboardsManagementController@view_dashboard_mgmt']);
+	Route::get('/manage_dashboard', ['as' =>'jeffry.getDashboard', 'uses' => 'DashboardsManagementController@view_dashboard_mgmt']);
 	
 	
 	//-------------------------------------------ATTRIBUTE VIEW ADMIN-------------------------------------------		
@@ -187,10 +188,15 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		Route::post('/product/editGallery', ['as' => 'product.editGallery', 'uses' => 'ProductsManagementController@editGallery']);
 	Route::post('/product/deleteProduct', ['as' => 'product.deleteProduct', 'uses' => 'ProductsManagementController@deleteProduct']);	
 	
-	//ooooooooooooooooooooooooooooooooooooooKERJAAN DAVIDoooooooooooooooooooooooooooooooooooooooo
+	//ooooooooooooooooooooooooooooooooooooooKERJAAN DAVIDoooooooooooooooooooooooooooooooooooooooo	
+	Route::get('/getTopTenNewProduct', ['as' => 'getTopTenNewProduct', 'uses' => 'ProductsController@getTopTenNewProduct']);
+	Route::get('/getProductFromNewestPromotion', ['as' => 'getProductFromNewestPromotion', 'uses' => 'PromotionsController@getProductFromNewestPromotion']);
+	
 	Route::get('/manage_customer', ['as'=>'david.viewCustomerManagement','uses' => 'CustomerManagementController@view_cust_mgmt']);
 	
 	Route::get('/get_wishlist', ['as'=>'david.getWishlist','uses' => 'WishlistsController@getWishListByAccountId']);
+	
+	Route::get('/get_cart', ['as'=>'david.getCart','uses' => 'CartsController@getCartByAccountId']);
 	
 	Route::get('/get_search_history', ['as'=>'david.getSearchHistory','uses' => 'LogsController@getSearchLogByAccountId']);
 
@@ -314,6 +320,11 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		
 	//messages
 		Route::get('/messages', ['as' => 'get.messages' , 'uses' => 'MessagesManagementController@get_all_messages']);
+		Route::post('/messages', ['as' => 'get.messages' , 'uses' => 'MessagesManagementController@send_email']);
+		
+	//ticket messages
+		Route::get('/ticket_messages', ['as' => 'get.messages' , 'uses' => 'MessagesManagementController@get_all_messages']);
+		Route::post('/ticket_messages', ['as' => 'get.messages' , 'uses' => 'MessagesManagementController@send_email']);	
 		
 	//SHIPPING
 	Route::get('/manage_shipping', ['as'=>'jeffry.getShipping', 'uses' => 'ShippingManagementController@view_shipping_mgmt']);
@@ -355,6 +366,9 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	
 	//REPORT
 	Route::get('/manage_report', ['as' =>'jeffry.getReport', 'uses' => 'ReportingManagementController@view_reporting_mgmt_day']);
+	
+	
+	Route::get('/top_ten_product', ['as' =>'jeffry.top10product', 'uses' => 'TransactionsController@getTopTenProduct']);
 	
 	
 

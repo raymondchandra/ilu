@@ -11,7 +11,7 @@
 					
 					<div class="form-group" id="">
 						<div class="col-sm-12">
-							<img src="" height="200" width="150" style="margin-left: auto; margin-right: auto; display: block;">
+							<img id="profilePic" src="" height="200" width="150" style="margin-left: auto; margin-right: auto; display: block;">
 						</div>
 					</div>
 
