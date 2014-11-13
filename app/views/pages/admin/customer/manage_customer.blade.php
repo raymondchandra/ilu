@@ -472,6 +472,7 @@
 		$('body').on('click','.profilebutton',function(){
 			$id = $(this).prev().val();
 			$nama = $('#full_name_'+$id).html();
+			$('#profilePic').attr('src',"");
 			$('.title1').html("Data Customer Dari " + $nama);
 			$('#custName').html("");
 			$('#custProfileName').html("");
@@ -509,6 +510,15 @@
 							$('#custCompanyAddress').html(response['messages'].company_address);
 							$('#custCompanyAddress').html(response['messages'].company_address);
 							$('#custMemberDate').html(response['messages'].created_at);
+							if(response['messages'].file_path)
+							{
+								$('#profilePic').attr('src',"../../"+response['messages'].file_path);
+							}
+							else
+							{
+								
+							}
+							
 							//ajax buat voucher
 							
 							$.ajax({
