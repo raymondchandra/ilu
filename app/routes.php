@@ -362,6 +362,9 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	Route::get('/manage_report', ['as' =>'jeffry.getReport', 'uses' => 'ReportingManagementController@view_reporting_mgmt_day']);
 	
 	
+	Route::get('/top_ten_product', ['as' =>'jeffry.top10product', 'uses' => 'TransactionsController@getTopTenProduct']);
+	
+	
 
 });
 
