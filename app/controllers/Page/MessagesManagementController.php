@@ -20,6 +20,10 @@ class MessagesManagementController extends \BaseController {
 		
 	}
 	
+	public function send_email(){
+		return 'Email! from: '.Session::get('company_name');
+	}
+	
 	/*public function edit($id){
 		$slide = new GalleriesController();
 		return $slide->updateFull($id);

@@ -80,7 +80,7 @@
 				$('.messages_content').html(div2);
 				
 		
-			$('textarea').jqte();
+				
 
 				/*var te = document.createElement("script");
 				te.type = "text/javascript";
@@ -96,9 +96,11 @@
 	
 	
 	jQuery(document).ready(function(){
+		
 		getMessages();
-		setInterval('getMessages()', 30000);
+		setInterval('getMessages()', 1200000);
 		$('textarea').jqte();
+		//$('textarea').jqte();
 	});
 	
 	
@@ -149,66 +151,11 @@
 						<!-- Tab panes -->
 						<div class="tab-content f_height_display messages_content" style="overflow-y: scroll;">
 
-							<div role="tabpanel" class="tab-pane fade in active" id="0">
-								<div class="col-lg-8 col-lg-push-2">
-									<div>
-										<b class="show">Nama: Nama Seseorang 0</b>
-										<span class="show">Email: epic0@gmail.com</span>
-										<span>Subject: Subjectnya taruh disini</span>
-										<span class="pull-right">12.30</span>
-
-										<p style="margin-top: 20px;">
-											It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-										</p>
-									<hr></hr>
-									</div>
-									<div class="msg_area">
-									</div>
-									<div>
-										<textarea class="form-control f_message_textinput" id="0" rows="3"></textarea>
-										<button type="button" class="btn btn-success pull-right f_message_textbtn" style="margin-top: 20px;">
-											Send
-										</button>
-									</div>
-								</div>
-							</div>
-							<?php
-							for($i=1; $i<16; $i++){
-								?>
-								<div role="tabpanel" class="tab-pane fade in" id="<?php echo($i); ?>">
-
-									<div class="col-lg-8 col-lg-push-2">
-										<div>
-											<b class="show">Nama: Nama Seseorang <?php echo($i); ?></b>
-											<span class="show">Email: epic<?php echo($i); ?>@gmail.com</span>
-											<span>Subject: Subjectnya taruh disini</span>
-											<span class="pull-right">12.30</span>
-
-											<p style="margin-top: 20px;">
-												It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-											</p>
-										<hr></hr>
-									</div>
-									<div class="msg_area">
-									</div>
-									<div>
-										<textarea class="form-control f_message_textinput" id="0" rows="3"></textarea>
-										<button type="button" class="btn btn-success pull-right f_message_textbtn" style="margin-top: 20px;">
-											Send
-										</button>
-									</div>								
-									</div>
-
-								</div>
-								<?php
-							}
-							?>
-
 						</div>
 
 									<script>
 									$('body').on('click','.f_message_textbtn',function(){
-										var id=$('.f_message_textinput').attr('id');
+										/*var id=$('.f_message_textinput').attr('id');
 
 										var text='<div>';
 										text+='<b class="show">Nama: Administrator</b>';
@@ -221,7 +168,19 @@
 										text+='</div>';
 										text+='<hr></hr>';
 
-										$(this).parent().siblings('.msg_area').append(text);
+										$(this).parent().siblings('.msg_area').append(text);*/
+										$message = $(this).siblings('.jqte').children('.jqte_editor').html();
+										
+										$.ajax({
+											type: 'POST',
+											url: "{{URL('admin/messages')}}",
+											success: function(response){
+												alert(response);
+											},
+											error: function(jqXHR, textStatus, errorThrown){
+												alert(errorThrown);
+											}
+										});
 
 
 									});

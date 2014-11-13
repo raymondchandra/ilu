@@ -314,6 +314,11 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		
 	//messages
 		Route::get('/messages', ['as' => 'get.messages' , 'uses' => 'MessagesManagementController@get_all_messages']);
+		Route::post('/messages', ['as' => 'get.messages' , 'uses' => 'MessagesManagementController@send_email']);
+		
+	//ticket messages
+		Route::get('/ticket_messages', ['as' => 'get.messages' , 'uses' => 'MessagesManagementController@get_all_messages']);
+		Route::post('/ticket_messages', ['as' => 'get.messages' , 'uses' => 'MessagesManagementController@send_email']);	
 		
 	//SHIPPING
 	Route::get('/manage_shipping', ['as'=>'jeffry.getShipping', 'uses' => 'ShippingManagementController@view_shipping_mgmt']);

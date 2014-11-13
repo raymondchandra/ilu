@@ -19,6 +19,12 @@
 									
 								}
 								else{
+									if(Session::has('company_name')){
+									
+									}
+									else{
+										Session::put('company_name', $result['company_name']);
+									}
 									echo $result['company_name'];
 								}
 						?> Panel</h2>
