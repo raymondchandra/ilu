@@ -134,6 +134,7 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 {
 	//DASHBOARD
 	Route::get('/', ['as' =>'jeffry.getDashboard', 'uses' => 'DashboardsManagementController@view_dashboard_mgmt']);
+	Route::get('/manage_dashboard', ['as' =>'jeffry.getDashboard', 'uses' => 'DashboardsManagementController@view_dashboard_mgmt']);
 	
 	
 	//-------------------------------------------ATTRIBUTE VIEW ADMIN-------------------------------------------		

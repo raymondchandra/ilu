@@ -5,7 +5,6 @@
 <script src="{{ asset('assets/js/jqte/jquery-te-1.4.0.min.js') }}"></script>
 
 <script>
-	$('document').ready(getMessages());
 	function getMessages(){
 		$.ajax({
 			type: 'GET',
@@ -79,18 +78,30 @@
 				}
 				$('.message_list').html(div);
 				$('.messages_content').html(div2);
+				
+		
+			$('textarea').jqte();
 
-				var te = document.createElement("script");
+				/*var te = document.createElement("script");
 				te.type = "text/javascript";
 				te.innerHTML = "$(textarea').jqte();";
-				$('.message_list').append(div);
-				$('.messages_content').append(div2);
+				$('.message_list').append(te);
+				$('.messages_content').append(te);*/
 			},
 			error: function(jqXHR, textStatus, errorThrown){
 				alert(errorThrown);
 			}
 		});
-	}
+	};
+	
+	
+	jQuery(document).ready(function(){
+		getMessages();
+		setInterval('getMessages()', 30000);
+		$('textarea').jqte();
+	});
+	
+	
 </script>
 <div class="container-fluid">
 	<div class="row">
@@ -225,7 +236,13 @@
 	</div>
 </div>
 <script>
+$(document).ready(function(){
+setTimeout(function() {
+      // Do something after 5 seconds
 	$("textarea").jqte();
+},500);
+
+});
 </script>
 
 @include('includes.modals.alertYesNo')	
