@@ -1,7 +1,7 @@
 <?php
 use Carbon\Carbon;
 
-Route::get('/tes', 'ProductsController@getAllProductName');
+Route::get('/tes', 'PromotionsController@getTenProductFromNewestPromotion');
 
 // Route::get('/tes', 'ProductsController@getAll');
 
@@ -187,7 +187,10 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		Route::post('/product/editGallery', ['as' => 'product.editGallery', 'uses' => 'ProductsManagementController@editGallery']);
 	Route::post('/product/deleteProduct', ['as' => 'product.deleteProduct', 'uses' => 'ProductsManagementController@deleteProduct']);	
 	
-	//ooooooooooooooooooooooooooooooooooooooKERJAAN DAVIDoooooooooooooooooooooooooooooooooooooooo
+	//ooooooooooooooooooooooooooooooooooooooKERJAAN DAVIDoooooooooooooooooooooooooooooooooooooooo	
+	Route::get('/getTopTenNewProduct', ['as' => 'getTopTenNewProduct', 'uses' => 'ProductsController@getTopTenNewProduct']);
+	Route::get('/getProductFromNewestPromotion', ['as' => 'getProductFromNewestPromotion', 'uses' => 'PromotionsController@getProductFromNewestPromotion']);
+	
 	Route::get('/manage_customer', ['as'=>'david.viewCustomerManagement','uses' => 'CustomerManagementController@view_cust_mgmt']);
 	
 	Route::get('/get_wishlist', ['as'=>'david.getWishlist','uses' => 'WishlistsController@getWishListByAccountId']);
