@@ -1,8 +1,10 @@
 @extends('layouts.admin.admin_layout'){{-- WARNING! fase ini sementara untuk show saja, untuk lebih lanjut akan dibuat controller agar tidak meng-extend layout --}}
 @section('content')
 
+<link href="{{ asset('assets/js/jqte/jquery-te-1.4.0.css') }}" rel="stylesheet">
+<script src="{{ asset('assets/js/jqte/jquery-te-1.4.0.min.js') }}"></script>
+
 <script>
-	$('document').ready(getMessages());
 	function getMessages(){
 		$.ajax({
 			type: 'GET',
@@ -30,7 +32,7 @@
 						div2+="<p style='margin-top: 20px;'>";
 						div2+=$msgs[$i].text;
 						div2+="</p>";
-						div2+="<hr></hr>";
+						div2+="<hr></hr>"; 
 						div2+="</div>";
 						div2+="<div class='msg_area'>";
 						div2+="</div>";
@@ -76,12 +78,30 @@
 				}
 				$('.message_list').html(div);
 				$('.messages_content').html(div2);
+				
+		
+			$('textarea').jqte();
+
+				/*var te = document.createElement("script");
+				te.type = "text/javascript";
+				te.innerHTML = "$(textarea').jqte();";
+				$('.message_list').append(te);
+				$('.messages_content').append(te);*/
 			},
 			error: function(jqXHR, textStatus, errorThrown){
 				alert(errorThrown);
 			}
 		});
-	}
+	};
+	
+	
+	jQuery(document).ready(function(){
+		getMessages();
+		setInterval('getMessages()', 30000);
+		$('textarea').jqte();
+	});
+	
+	
 </script>
 <div class="container-fluid">
 	<div class="row">
@@ -215,6 +235,15 @@
 		</div>
 	</div>
 </div>
+<script>
+$(document).ready(function(){
+setTimeout(function() {
+      // Do something after 5 seconds
+	$("textarea").jqte();
+},500);
+
+});
+</script>
 
 @include('includes.modals.alertYesNo')	
 
