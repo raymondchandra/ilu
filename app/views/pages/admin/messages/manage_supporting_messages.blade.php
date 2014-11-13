@@ -33,7 +33,7 @@
 						div2+="<p style='margin-top: 20px;'>";
 						div2+=$msgs[$i].text;
 						div2+="</p>";
-						div2+="<hr></hr>";
+						div2+="<hr></hr>"; 
 						div2+="</div>";
 						div2+="<div class='msg_area'>";
 						div2+="</div>";
@@ -79,6 +79,12 @@
 				}
 				$('.message_list').html(div);
 				$('.messages_content').html(div2);
+
+				var te = document.createElement("script");
+				te.type = "text/javascript";
+				te.innerHTML = "$(textarea').jqte();";
+				$('.message_list').append(div);
+				$('.messages_content').append(div2);
 			},
 			error: function(jqXHR, textStatus, errorThrown){
 				alert(errorThrown);
