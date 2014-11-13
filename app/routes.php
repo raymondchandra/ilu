@@ -195,6 +195,8 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	
 	Route::get('/get_wishlist', ['as'=>'david.getWishlist','uses' => 'WishlistsController@getWishListByAccountId']);
 	
+	Route::get('/get_cart', ['as'=>'david.getCart','uses' => 'CartsController@getCartByAccountId']);
+	
 	Route::get('/get_search_history', ['as'=>'david.getSearchHistory','uses' => 'LogsController@getSearchLogByAccountId']);
 
 	Route::get('/get_trans_history', ['as'=>'david.getTransHistory','uses' => 'TransactionsController@getByAccountId']);
