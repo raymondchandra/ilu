@@ -50,6 +50,8 @@
 					<ul class="nav nav-tabs" role="tablist" style="border: 0px;">
 						<li role="presentation" class="active pull-right"><a href="#3" role="tab" data-toggle="tab" style="">Laporan Pengiriman</a></li>
 						<span class="clearfix "></span>
+						<li role="presentation" class="pull-right"><a href="#4" id='' role="tab" data-toggle="tab" style="">Laporan Pengiriman 2</a></li>
+
 						<!--
 						<li role="presentation" class="pull-right"><a href="#4" id='cms_news' role="tab" data-toggle="tab" style="">News</a></li>
 						<span class="clearfix "></span>
@@ -70,7 +72,7 @@
 							<input type="radio" name="f_radio_pilih_laporan_pengiriman" id="" value="range"> By Range
 						</label>
 						<label class="radio-inline pull-right" style="margin-right: 20px; margin-top: 20px;">
-							<input type="radio" name="f_radio_pilih_laporan_pengiriman" id="" value="one_month" checked> By Status
+							<input type="radio" name="f_radio_pilih_laporan_pengiriman" id="" value="one_month" checked> By Month
 						</label>
 						<div id="f_laporan_pengiriman_status">
 							<form class="form-horizontal" role="form">
@@ -81,6 +83,12 @@
 												Status
 											</th>
 											<th>
+												Bulan
+											</th>
+											<th>
+												Tahun
+											</th>
+											<th>
 												Command 
 											</th>
 										</tr>
@@ -88,16 +96,44 @@
 									<tbody class="f_laporan_pengiriman">
 										<tr>
 											<td>
-												<select class="form-control">
+												<select class="form-control status">
 													<option value="Cancel">Cancel</option>
 													<option value="Pending">Pending</option>
 													<option value="On-process">On-process</option>
-													<option value="On-ship">On-ship</option>
+													<option value="On-shipping">On-shipping</option>
 													<option value="Complete">Complete</option>
 												</select>
 											</td>
 											<td>
-												<button type="button" class="btn btn-success">Show</button>
+												<select class="form-control bulanRepPro">
+													<option value="January">Januari</option>
+													<option value="February">Februari</option>
+													<option value="March">Maret</option>
+													<option value="April">April</option>
+													<option value="May">Mei</option>
+													<option value="June">Juni</option>
+													<option value="July">Juli</option>
+													<option value="August">Agustus</option>
+													<option value="September">September</option>
+													<option value="October">Oktober</option>
+													<option value="November">November</option>
+													<option value="December">Desember</option>
+												</select>
+											</td>
+											<td>
+												<select class="form-control tahunRepPro">
+													<?php
+													for($i = 0; $i<50; $i++){
+														?>
+														<option value="<?php echo(date('Y')-$i);?>"><?php echo(date('Y')-$i); ?></option>
+														<?php
+													}
+													?>
+
+												</select>
+											</td>
+											<td>
+												<button type="button" class="btn btn-success procRepSent">Show</button>
 											</td>
 										</tr>
 									</tbody>
@@ -110,7 +146,7 @@
 											Nama Penerima
 										</th>
 										<th>
-											No. Transaksi
+											No. Invoice
 										</th>
 										<th>
 											No. Resi
@@ -125,34 +161,13 @@
 											Destinasi
 										</th>
 										<th>
-											Tanggal Pengiriman
+											Tanggal Transaksi
 										</th>
 									</tr>
 								</thead>
 								<tbody class="f_laporan_pengiriman_hasil">
-									<tr data-toggle="modal" data-target=".pop_up_view_report_produk_detail">
-										<td>
-											Orang
-										</td>
-										<td>
-											24234234252
-										</td>
-										<td>
-											234fv2343v
-										</td>
-										<td>
-											JNE
-										</td>
-										<td>
-											Narnia, Antah Berantah
-										</td>
-										<td>
-											Frankfurt, Germany
-										</td>
-										<td>
-											11-11-2014
-										</td>
-									</tr>
+									<!---->
+										
 								</tbody>
 							</table>
 						</div>
@@ -162,6 +177,9 @@
 								<table class="table table-bordered">
 									<thead>
 										<tr>
+											<th>
+												Status
+											</th>
 											<th>
 												Dari Tanggal
 											</th>
@@ -176,6 +194,15 @@
 									<tbody class="f_laporan_pengiriman">
 										<tr>
 											<td>
+												<select class="form-control status2">
+													<option value="Cancel">Cancel</option>
+													<option value="Pending">Pending</option>
+													<option value="On-process">On-process</option>
+													<option value="On-shipping">On-shipping</option>
+													<option value="Complete">Complete</option>
+												</select>
+											</td>
+											<td>
 												<input type='text' class="form-control"  id='datepicker00_laporan_pengiriman'/>
 												<input type="hidden">
 											</td>
@@ -184,7 +211,7 @@
 												<input type="hidden">
 											</td>
 											<td>
-												<button type="button" class="btn btn-success">
+												<button type="button" class="btn btn-success showRange">
 													Show
 												</button>
 											</td>
@@ -230,30 +257,8 @@
 										</th>
 									</tr>
 								</thead>
-								<tbody class="f_laporan_pengiriman_hasil">
-									<tr data-toggle="modal" data-target=".pop_up_view_report_produk_detail">
-										<td>
-											Orang
-										</td>
-										<td>
-											24234234252
-										</td>
-										<td>
-											234fv2343v
-										</td>
-										<td>
-											JNE
-										</td>
-										<td>
-											Narnia, Antah Berantah
-										</td>
-										<td>
-											Frankfurt, Germany
-										</td>
-										<td>
-											11-11-2014
-										</td>
-									</tr>
+								<tbody class="f_laporan_pengiriman_hasil_range">
+									
 								</tbody>
 							</table>		
 						</div>
@@ -272,6 +277,214 @@
 						</script>
 
 						<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------- -->				
+					</div>
+
+
+					<div role="tabpanel" class="tab-pane fade" id="4">
+							<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+							<h3 class="pull-left">
+								Daftar Informasi 
+
+							</h3>
+							<label class="radio-inline pull-right" style="margin-top: 20px;">
+								<input type="radio" name="f_radio_pilih_lakunya_sebuah_produk_1" id="" value="range"> Range
+							</label>
+							<label class="radio-inline pull-right" style="margin-right: 20px; margin-top: 20px;">
+								<input type="radio" name="f_radio_pilih_lakunya_sebuah_produk_1" id="" value="one_month" checked> Per 1 Bulan
+							</label>
+							<div id="f_lakunya_sebuah_produk_bulan_1">
+								<form class="form-horizontal" role="form">
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>
+													Bulan
+												</th>
+												<th>
+													Tahun
+												</th>
+												<th>
+													Command 
+												</th>
+											</tr>
+										</thead>
+										<tbody class="f_lakunya_sebuah_produk_1">
+											<tr>
+												<td>
+													<select class="form-control bulanRepPro2">
+														<option value="January">Januari</option>
+														<option value="February">Februari</option>
+														<option value="March">Maret</option>
+														<option value="April">April</option>
+														<option value="May">Mei</option>
+														<option value="June">Juni</option>
+														<option value="July">Juli</option>
+														<option value="August">Agustus</option>
+														<option value="September">September</option>
+														<option value="October">Oktober</option>
+														<option value="November">November</option>
+														<option value="December">Desember</option>
+													</select>
+												</td>
+												<td>
+													<select class="form-control tahunRepPro2">
+														<?php
+														for($i = 0; $i<50; $i++){
+															?>
+															<option value="<?php echo(date('Y')-$i);?>"><?php echo(date('Y')-$i); ?></option>
+															<?php
+														}
+														?>
+
+													</select>
+												</td>
+												<td>
+													<button type="button" class="btn btn-success butRepPro1">
+														Show
+													</button>
+												</td>
+											</tr>
+										</tbody>
+										<script type="text/javascript">
+										$(function () {
+											$('#datepicker00_lakunya_sebuah_produk').datepicker({
+												format:"dd-MM-yyyy"
+											});
+											$('#datepicker01_lakunya_sebuah_produk').datepicker({
+												format:"dd-MM-yyyy"
+												
+											});
+										});
+										</script>
+									</table>
+								</form>		
+								<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>
+											Nama
+										</th>
+										<th>
+											No. Transaksi
+										</th>
+										<th>
+											No. Resi
+										</th>
+										<th>
+											Kurir
+										</th>
+										<th>
+											Asal
+										</th>
+										<th>
+											Destinasi
+										</th>
+										<th>
+											Tanggal Pengiriman
+										</th>
+										<th>
+											Status
+										</th>
+									</tr>
+								</thead>
+								<tbody class="f_laporan_pengiriman_hasil_range3">
+									
+								</tbody>
+							</table>	
+							</div>
+							<div id="f_lakunya_sebuah_produk_range_1" class="hidden">
+								<form class="form-horizontal" role="form">
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>
+													Dari Tanggal
+												</th>
+												<th>
+													Sampai Tanggal
+												</th>
+												<th>
+													Command 
+												</th>
+											</tr>
+										</thead>
+										<tbody class="f_lakunya_sebuah_produk_1">
+											<tr>
+												<td>
+													<input type='text' class="form-control"  id='datepicker00_lakunya_sebuah_produk'/> 
+												</td>
+												<td>
+													<input type='text' class="form-control"  id='datepicker01_lakunya_sebuah_produk'/>
+												</td>
+												<td>
+													<button type="button" class="btn btn-success butRepPro2">
+														Show
+													</button>
+												</td>
+											</tr>
+										</tbody>
+										<script type="text/javascript">
+										$(function () {
+											$('#datepicker00_lakunya_sebuah_produk').datepicker({
+												format:"dd-MM-yyyy"
+											});
+											$('#datepicker01_lakunya_sebuah_produk').datepicker({
+												format:"dd-MM-yyyy"
+												
+											});
+										});
+										</script>
+									</table>
+								</form>		
+								<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>
+											Nama
+										</th>
+										<th>
+											No. Transaksi
+										</th>
+										<th>
+											No. Resi
+										</th>
+										<th>
+											Kurir
+										</th>
+										<th>
+											Asal
+										</th>
+										<th>
+											Destinasi
+										</th>
+										<th>
+											Tanggal Pengiriman
+										</th>
+										<th>
+											Status
+										</th>
+									</tr>
+								</thead>
+								<tbody class="f_laporan_pengiriman_hasil_range4">
+									
+								</tbody>
+							</table>			
+							</div>
+							<script>
+							$('body').on('change', 'input:radio[name="f_radio_pilih_lakunya_sebuah_produk_1"]', function() {
+
+								if ($(this).is(':checked') && $(this).val() == 'one_month') {
+									$('#f_lakunya_sebuah_produk_range_1').addClass('hidden');
+									$('#f_lakunya_sebuah_produk_bulan_1').removeClass('hidden');
+								}else{
+									$('#f_lakunya_sebuah_produk_range_1').removeClass('hidden');
+									$('#f_lakunya_sebuah_produk_bulan_1').addClass('hidden');
+								}
+
+							});
+							</script>
+
+							<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------- -->				
 					</div>
 						<!--
 						<div role="tabpanel" class="tab-pane fade" id="4">					
@@ -292,158 +505,293 @@
 @include('pages.admin.report.pop_up_view_report_pengiriman_detail')
 
 <script>
-$('body').on('click','#rangeClick',function(){
-			//$('#datepicker00').html("");
-			//$('#datepicker01').html("");
+	$('body').on('click','.procRepSent',function(){
+	$stat = $('.status').val();
+	$bln = $('.bulanRepPro').val();
+	$thn = $('.tahunRepPro').val(); 
+	$.ajax({
+		type: 'GET',
+		url: '{{URL::route('jeffry.getReportPengirimanMonth')}}',
+		data: {	
+			"status": $stat,
+			"bulanRepPro": $bln,
+			"tahunRepPro" : $thn
+		},
+		success: function(response){
+			if(response['code'] == '404')
+			{
+				var tab ="";
+				tab += "<tr>";
+				tab+= "<td colspan='7'>Not Found</td>";
+				tab+= "</tr>";
+				$('.f_laporan_pengiriman_hasil').html(tab);
+			}
+			else
+			{
+				var tab ="";
+				var obj = response['messages'];
+				var responses = obj;
+				var tab = "";
+				var idx = 0;
+					$(responses).each(function() {
+						tab+= "<input type='hidden'  value='"+responses[idx].id+"'/>";
+						tab+= "<tr data-toggle='modal' data-target='.pop_up_view_report_pengiriman_detail' class='viewDet'>";
+						tab+="<td>"+responses[idx].full_name+"</td>";
+						tab+="<td>"+responses[idx].invoice+"</td>";
+						tab+="<td>"+responses[idx].number+"</td>";
+						tab+="<td>"+responses[idx].courier+"</td>";
+						tab+="<td>"+responses[idx].destination+"</td>";
+						tab+="<td>"+responses[idx].destination+"</td>";
+						var monthNames = [ "January", "February", "March", "April", "May", "June",
+									"July", "August", "September", "October", "November", "December" ];
+						var d = new Date(responses[idx].updated_at);
+						var t = d.getDate();
+						var b = d.getMonth();
+						var th = d.getFullYear();
+
+						tab+="<td>"+t+"-"+monthNames[b]+"-"+th+"</td>";
+						tab+="</tr>";
+						idx = idx+1;
+					});
+					$('.f_laporan_pengiriman_hasil').html(tab);
+			}
+		},error: function(xhr, textStatus, errorThrown){
+			alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+			alert("responseText: "+xhr.responseText);
+		}
+	},'json');
+
+});
+
+$('body').on('click','.showRange',function(){
+	$stat = $('.status2').val();
+	$d1 = $('#datepicker00_laporan_pengiriman').val();
+	$d2 = $('#datepicker01_laporan_pengiriman').val();
+	$.ajax({
+		type: 'GET',
+		url: '{{URL::route('jeffry.getReportPengirimanRange')}}',
+		data: {	
+			"status": $stat,
+			"date1": $d1,
+			"date2" : $d2
+		},
+		success: function(response){
+			if(response['code'] == '404')
+			{
+				var tab ="";
+				tab += "<tr>";
+				tab+= "<td colspan='7'>Not Found</td>";
+				tab+= "</tr>";
+				$('.f_laporan_pengiriman_hasil_range').html(tab);
+			}
+			else
+			{
+				var tab ="";
+				var obj = response['messages'];
+				var responses = obj;
+				var tab = "";
+				var idx = 0;
+					$(responses).each(function() {
+						tab+= "<input type='hidden'  value='"+responses[idx].id+"'/>";
+						tab+= "<tr data-toggle='modal' data-target='.pop_up_view_report_pengiriman_detail' class='viewDet'>";
+						tab+="<td>"+responses[idx].full_name+"</td>";
+						tab+="<td>"+responses[idx].invoice+"</td>";
+						tab+="<td>"+responses[idx].number+"</td>";
+						tab+="<td>"+responses[idx].courier+"</td>";
+						tab+="<td>"+responses[idx].destination+"</td>";
+						tab+="<td>"+responses[idx].destination+"</td>";
+						var monthNames = [ "January", "February", "March", "April", "May", "June",
+									"July", "August", "September", "October", "November", "December" ];
+						var d = new Date(responses[idx].updated_at);
+						var t = d.getDate();
+						var b = d.getMonth();
+						var th = d.getFullYear();
+
+						tab+="<td>"+t+"-"+monthNames[b]+"-"+th+"</td>";
+						tab+="</tr>";
+						idx = idx+1;
+					});
+					$('.f_laporan_pengiriman_hasil_range').html(tab);
+			}
+		},error: function(xhr, textStatus, errorThrown){
+			alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+			alert("responseText: "+xhr.responseText);
+		}
+	},'json');
+
+});
+
+$('body').on('click','.viewDet',function(){
+			$idTrans = $(this).prev().val();
 			$.ajax({
 				type: 'GET',
-				url: "{{URL::route('jeffry.getReport')}}",
+				url: '{{URL::route('jeffry.getReportPengirimanMonthDetail')}}',
 				data: {	
-					"reportBy": "range",
-					"date1" : $('#datepicker00').val(),
-					"date2" : $('#datepicker01').val()
+					"id" : $idTrans
 				},
 				success: function(response){
 					if(response['code'] == '404')
 					{
-							//$('#wishlistcontent').append("<td>agent tidak ditemukan</td>");
-							
-						}
-						else
-						{
-							var respon = response['hasil2'];
-							var pjln = '';
-							var tgl='';
-							var bln='';
-							var ket='';
-							for(i=0; i < respon.length;i++)
-							{
-								if(i == 0)
-								{
-									pjln = pjln + (respon[i].penjualan);
-									tgl = tgl + (respon[i].tanggal);
-									
-								}else
-								{
-									pjln = pjln + ',' + (respon[i].penjualan);
-									tgl = tgl + ',' + (respon[i].tanggal);
-								}
-								bln = (respon[i].bulan);
-								ket = (respon[i].ket);
-							}
-							$('#penjualanGraf').val(pjln);
-							$('#tanggalGraf').val(tgl);
-							$('#bulanGraf').val(bln);
-							$('#ket').val(ket);
-							
-							var a = $('#penjualanGraf').val();
-							var b = $('#tanggalGraf').val();
-							var c;
-							var d = $('#ket').val();
-							var e;
-							if(d == 'day')
-							{
-								e = 'Report By Day';
-								c = $('#bulanGraf').val().replace('-',' ');
-							}else if(d == 'week')
-							{
-								e = 'Report By Week';
-								c = $('#bulanGraf').val().replace('-',' ');
-							}else if(d == 'month')
-							{
-								e = 'Report By Month';
-								c = $('#bulanGraf').val();
-							}else if(d == 'year')
-							{
-								e = 'Report By Year';
-							}else if(d == 'range')
-							{
-								e = 'Report By Range';
-								c = $('#bulanGraf').val();
-							}
-							b = b.split(",");
-							$('#container').highcharts({
-								chart: {
-									type: 'line'
-								},
-								title: {
-									text: e
-								},
-								subtitle: {
-									text: c
-								},
-								xAxis: {
-									categories: b	
-								},
-								yAxis: {
-									title: {
-										text: 'Rupiah'
-									}
-								},
-								plotOptions: {
-									line: {
-										dataLabels: {
-											enabled: true
-										},
-										enableMouseTracking: false
-									}
-								},
-								series: [{
-									name: 'Penjualan',
-									data: JSON.parse("[" + a + "]")
-								}]
-							});
-							
-							var tab ="";
-							var obj = response['hasil1'];
-							var responses = obj;
-							$(responses).each(function() {
-								tab+= "<tr>";
-								tab+="<td>"+$(this)[0].tanggal2+"</td>";
-								tab+="<td>"+$(this)[0].penjualan+"</td>";
-								tab+="</tr>";
-							});
-							$('#tblrg').html(tab);
-							$('#navigator').html(jQuery.parseJSON(response.links));
-						}
-					},error: function(xhr, textStatus, errorThrown){
-						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
-						alert("responseText: "+xhr.responseText);
+						var tab="";
+						tab+= "<tr>";
+						tab+="<td colspan='4'>"+"Not Found"+"</td>";
+						tab+="</tr>";
+						
+						$('.isiTab').html(tab);
 					}
-				},'json');
-});
-
-$('body').on('click','#navigator ul li a',function(){
-
-	var cek;
-	var link = $(this).attr('href');
-	$.get(link,function(response){
-		try
-		{
-			if(response['hasil2'][0].ket == 'range')
-			{
-				cek = false;
-				var tab ="";
-				var obj = response['hasil1'];
-				var responses = obj;
-				$(responses).each(function() {
-					tab+= "<tr>";
-					tab+="<td>"+$(this)[0].tanggal2+"</td>";
-					tab+="<td>"+$(this)[0].penjualan+"</td>";
-					tab+="</tr>";
-				});
-				$('#tblrg').html(tab);
-				$('#navigator').html(jQuery.parseJSON(response.links));
-			}
-		}catch(e)
-		{
-			window.location.assign(link);
-		}
+					else
+					{
+						var tab = "";
+						var obj = response['messages'];
+						$('#myModalLabelPe').text("Detail Pengiriman No Invoice "+ obj[0]['invoice']);
+						var responses = obj;
+						var idx = 0;
+						$(responses).each(function() {
+								tab+= "<tr>";
+								tab+="<td>"+responses[idx].name+"</td>";
+								tab+="<td><img width='100' height='100' src='"+responses[idx].path_photo+"' /></td>";
+								tab+="<td>"+responses[idx].catName+"</td>";
+								tab+="<td>"+responses[idx].attName+" - "+responses[idx].attr_value+"</td>";
+								tab+="<td>"+responses[idx].quantity+"</td>";
+								tab+="<td>"+toRp(responses[idx].priceNow)+"</td>";
+								tab+="<td>"+toRp((responses[idx].priceNow * responses[idx].quantity))+"</td>";
+								tab+="</tr>";
+								idx = idx+1;
+							});
+							$('.isiTab').html(tab);
+					}
+				},error: function(xhr, textStatus, errorThrown){
+					alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+					alert("responseText: "+xhr.responseText);
+				}
+			},'json');
 	});
-
-	return false;
+	
+	$('body').on('click','.butRepPro1',function(){
+	$bln = $('.bulanRepPro2').val();
+	$thn = $('.tahunRepPro2').val(); 
+	$.ajax({
+		type: 'GET',
+		url: '{{URL::route('jeffry.getReportAllPengirimanMonth')}}',
+		data: {	
+			"bulanRepPro": $bln,
+			"tahunRepPro" : $thn
+		},
+		success: function(response){
+			if(response['code'] == '404')
+			{
+				var tab ="";
+				tab += "<tr>";
+				tab+= "<td colspan='7'>Not Found</td>";
+				tab+= "</tr>";
+				$('.f_laporan_pengiriman_hasil_range3').html(tab);
+			}
+			else
+			{
+				var tab ="";
+				var obj = response['messages'];
+				var responses = obj;
+				var tab = "";
+				var idx = 0;
+					$(responses).each(function() {
+						tab+= "<input type='hidden'  value='"+responses[idx].id+"'/>";
+						tab+= "<tr data-toggle='modal' data-target='.pop_up_view_report_pengiriman_detail' class='viewDet'>";
+						tab+="<td>"+responses[idx].full_name+"</td>";
+						tab+="<td>"+responses[idx].invoice+"</td>";
+						tab+="<td>"+responses[idx].number+"</td>";
+						tab+="<td>"+responses[idx].courier+"</td>";
+						tab+="<td>"+responses[idx].destination+"</td>";
+						tab+="<td>"+responses[idx].destination+"</td>";
+						var monthNames = [ "January", "February", "March", "April", "May", "June",
+									"July", "August", "September", "October", "November", "December" ];
+						var d = new Date(responses[idx].updated_at);
+						var t = d.getDate();
+						var b = d.getMonth();
+						var th = d.getFullYear();
+			
+						tab+="<td>"+t+"-"+monthNames[b]+"-"+th+"</td>";
+						tab+="<td>"+responses[idx].status+"</td>";
+						tab+="</tr>";
+						idx = idx+1;
+					});
+					$('.f_laporan_pengiriman_hasil_range3').html(tab);
+			}
+		},error: function(xhr, textStatus, errorThrown){
+			alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+			alert("responseText: "+xhr.responseText);
+		}
+	},'json');
 
 });
+	
+	$('body').on('click','.butRepPro2',function(){
+	$d1 = $('#datepicker00_lakunya_sebuah_produk').val();
+	$d2 = $('#datepicker01_lakunya_sebuah_produk').val();
+	$.ajax({
+		type: 'GET',
+		url: '{{URL::route('jeffry.getReportAllPengirimanRange')}}',
+		data: {	
+			"date1": $d1,
+			"date2" : $d2
+		},
+		success: function(response){
+			if(response['code'] == '404')
+			{
+				var tab ="";
+				tab += "<tr>";
+				tab+= "<td colspan='7'>Not Found</td>";
+				tab+= "</tr>";
+				$('.f_laporan_pengiriman_hasil_range4').html(tab);
+			}
+			else
+			{
+				var tab ="";
+				var obj = response['messages'];
+				var responses = obj;
+				var tab = "";
+				var idx = 0;
+					$(responses).each(function() {
+						tab+= "<input type='hidden'  value='"+responses[idx].id+"'/>";
+						tab+= "<tr data-toggle='modal' data-target='.pop_up_view_report_pengiriman_detail' class='viewDet'>";
+						tab+="<td>"+responses[idx].full_name+"</td>";
+						tab+="<td>"+responses[idx].invoice+"</td>";
+						tab+="<td>"+responses[idx].number+"</td>";
+						tab+="<td>"+responses[idx].courier+"</td>";
+						tab+="<td>"+responses[idx].destination+"</td>";
+						tab+="<td>"+responses[idx].destination+"</td>";
+						var monthNames = [ "January", "February", "March", "April", "May", "June",
+									"July", "August", "September", "October", "November", "December" ];
+						var d = new Date(responses[idx].updated_at);
+						var t = d.getDate();
+						var b = d.getMonth();
+						var th = d.getFullYear();
 
+						tab+="<td>"+t+"-"+monthNames[b]+"-"+th+"</td>";
+						tab+="<td>"+responses[idx].status+"</td>";
+						tab+="</tr>";
+						idx = idx+1;
+					});
+					$('.f_laporan_pengiriman_hasil_range4').html(tab);
+			}
+		},error: function(xhr, textStatus, errorThrown){
+			alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+			alert("responseText: "+xhr.responseText);
+		}
+	},'json');
+
+});
+	
+	function toRp(angka){
+		var rev     = parseInt(angka, 10).toString().split('').reverse().join('');
+		var rev2    = '';
+		for(var i = 0; i < rev.length; i++){
+			rev2  += rev[i];
+			if((i + 1) % 3 === 0 && i !== (rev.length - 1)){
+				rev2 += '.';
+			}
+		}
+		return 'Rp ' + rev2.split('').reverse().join('')+',-';
+		//return 'IDR ' + rev2.split('').reverse().join('') + ',00';
+	}
 </script>
 @stop
