@@ -1,5 +1,10 @@
 @extends('layouts.admin.admin_layout'){{-- WARNING! fase ini sementara untuk show saja, untuk lebih lanjut akan dibuat controller agar tidak meng-extend layout --}}
 @section('content')	
+
+
+<link href="{{ asset('assets/js/jqte/jquery-te-1.4.0.css') }}" rel="stylesheet">
+<script src="{{ asset('assets/js/jqte/jquery-te-1.4.0.min.js') }}"></script>
+
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-lg-12">
@@ -165,6 +170,10 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	$("textarea").jqte();
+</script>
 
 @include('includes.modals.alertYesNo')	
 
