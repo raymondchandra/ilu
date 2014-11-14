@@ -48,9 +48,9 @@
 					</style>
 					<!-- Nav tabs -->
 					<ul class="nav nav-tabs" role="tablist" style="border: 0px;">
-						<li role="presentation" class="active pull-right"><a href="#3" role="tab" data-toggle="tab" style="">Lakunya Sebuah Produk</a></li>
+						<li role="presentation" class="active pull-right"><a href="#3" role="tab" data-toggle="tab" style=""> Penjualan Produk</a></li>
 						<span class="clearfix "></span>
-						<li role="presentation" class="pull-right"><a href="#4" id='cms_news' role="tab" data-toggle="tab" style="">News</a></li>
+						<li role="presentation" class="pull-right"><a href="#4" id='cms_news' role="tab" data-toggle="tab" style="">Produk terjual</a></li>
 					</ul>
 				</div>
 				<!-- Tab panes -->
@@ -125,7 +125,7 @@
 													</select>
 												</td>
 												<td>
-													<button type="button" class="btn btn-success procBut">Show</button>
+													<button type="button" class="btn btn-success procBut1">Show</button>
 												</td>
 											</tr>
 										</tbody>
@@ -156,10 +156,10 @@
 													Nama Produk
 												</th>
 												<th>
-													Bulan
+													Dari tanggal
 												</th>
 												<th>
-													Tahun
+													Sampai tanggal
 												</th>
 												<th>
 													Command 
@@ -169,7 +169,7 @@
 										<tbody class="f_lakunya_sebuah_produk">
 											<tr>
 												<td>
-													<select class="form-control idPro">
+													<select class="form-control idPro2">
 														@foreach($hsl2 as $key )
 															<option value="{{$key->id}}">{{$key->name}}</option>
 														@endforeach
@@ -182,7 +182,7 @@
 													<input type='text' class="form-control"  id='datepicker010_lakunya_sebuah_produk'/>
 												</td>
 												<td>
-													<button type="button" class="btn btn-success procBut">Show</button>
+													<button type="button" class="btn btn-success procBut2">Show</button>
 												</td>
 											</tr>
 											<script type="text/javascript">
@@ -211,14 +211,7 @@
 										</tr>
 									</thead>
 									<tbody class="f_lakunya_sebuah_produk_hasil2">
-										<tr data-toggle="modal" data-target=".pop_up_view_report_produk_detail">
-											<td>
-												45 45 3454
-											</td>
-											<td>
-												Count Penjualan
-											</td>
-										</tr>
+										
 									</tbody>
 								</table>		
 							</div>
@@ -257,10 +250,10 @@
 										<thead>
 											<tr>
 												<th>
-													Dari Tanggal
+													Bulan
 												</th>
 												<th>
-													Sampai Tanggal
+													Tahun
 												</th>
 												<th>
 													Command 
@@ -270,7 +263,7 @@
 										<tbody class="f_lakunya_sebuah_produk_1">
 											<tr>
 												<td>
-													<select class="form-control bulanRepPro">
+													<select class="form-control bulanRepPro2">
 														<option value="January">Januari</option>
 														<option value="February">Februari</option>
 														<option value="March">Maret</option>
@@ -286,7 +279,7 @@
 													</select>
 												</td>
 												<td>
-													<select class="form-control tahunRepPro">
+													<select class="form-control tahunRepPro2">
 														<?php
 														for($i = 0; $i<50; $i++){
 															?>
@@ -298,7 +291,7 @@
 													</select>
 												</td>
 												<td>
-													<button type="button" class="btn btn-success butRepPro">
+													<button type="button" class="btn btn-success butRepPro1">
 														Show
 													</button>
 												</td>
@@ -321,10 +314,13 @@
 									<thead>
 										<tr>
 											<th>
-												Date
+												Nama Produk
 											</th>
 											<th>
-												Penjualan
+												Total Jumlah Pembelian
+											</th>
+											<th>
+												Total Jual
 											</th>
 										</tr>
 									</thead>
@@ -358,7 +354,7 @@
 													<input type='text' class="form-control"  id='datepicker01_lakunya_sebuah_produk'/>
 												</td>
 												<td>
-													<button type="button" class="btn btn-success butRepPro">
+													<button type="button" class="btn btn-success butRepPro2">
 														Show
 													</button>
 												</td>
@@ -381,22 +377,18 @@
 									<thead>
 										<tr>
 											<th>
-												Date
+												Nama Produk
 											</th>
 											<th>
-												Count Penjualan
+												Total Jumlah Pembelian
+											</th>
+											<th>
+												Total Jual
 											</th>
 										</tr>
 									</thead>
 									<tbody class="f_lakunya_sebuah_produk_hasil4">
-										<tr data-toggle="modal" data-target=".pop_up_view_report_produk_detail">
-											<td>
-												45 45 3454
-											</td>
-											<td>
-												Count Penjualan
-											</td>
-										</tr>
+										
 									</tbody>
 								</table>		
 							</div>
@@ -430,9 +422,10 @@
 
 @include('includes.modals.alertYesNo')
 @include('pages.admin.report.pop_up_view_report_produk_detail')
+@include('pages.admin.report.pop_up_view_report_produk_terjual')
 
 <script>
-	$('body').on('click','.procBut',function(){
+	$('body').on('click','.procBut1',function(){
 	$bln = $('.bulanRepPro').val();
 	$thn = $('.tahunRepPro').val();
 	$id = $('.idPro').val();
@@ -490,7 +483,7 @@ $('body').on('click','.viewDetTgl',function(){
 					{
 						var tab="";
 						tab+= "<tr>";
-						tab+="<td colspan='2'>"+"No Transactions"+"</td>";
+						tab+="<td colspan='3'>"+"No Transactions"+"</td>";
 						tab+="</tr>";
 						
 						$('.detailProdTab').html(tab);
@@ -511,6 +504,305 @@ $('body').on('click','.viewDetTgl',function(){
 								idx = idx+1;
 							});
 							$('.detailProdTab').html(tab);
+					}
+				},error: function(xhr, textStatus, errorThrown){
+					alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+					alert("responseText: "+xhr.responseText);
+				}
+			},'json');
+	});
+
+$('body').on('click','.procBut2',function(){
+	$d1 = $('#datepicker000_lakunya_sebuah_produk').val();
+	$d2 = $('#datepicker010_lakunya_sebuah_produk').val();
+	$id = $('.idPro2').val();
+	$.ajax({
+		type: 'GET',
+		url: '{{URL::route('jeffry.getReportProdukRange')}}',
+		data: {	
+			"date1": $d1,
+			"date2" : $d2,
+			"idPro" : $id
+		},
+		success: function(response){
+			if(response['code'] == '404')
+			{
+				alert('failed');
+				location.reload();
+			}
+			else
+			{
+				var tab ="";
+				var obj = response['messages'];
+				//alert(obj);
+				var responses = obj;
+				var tab = "";
+				$(responses).each(function() {
+						tab+= "<input type='hidden'  value='"+(this)['tanggal']+"-"+(this)['bulan']+"'/>";
+						tab+= "<tr data-toggle='modal' data-target='.pop_up_view_report_produk_detail' class='viewDetTgl2'>";
+						tab+="<td>"+(this)['tanggal']+"-"+(this)['bulan']+"</td>";
+						tab+="<td>"+toRp((this)['penjualan'])+"</td>";
+						tab+="</tr>";
+					});
+					$('.f_lakunya_sebuah_produk_hasil2').html(tab);
+			}
+		},error: function(xhr, textStatus, errorThrown){
+			alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+			alert("responseText: "+xhr.responseText);
+		}
+	},'json');
+
+});
+
+$('body').on('click','.viewDetTgl2',function(){
+			$tgl = $(this).prev().val();
+			$id = $('.idPro2').val();
+			$('#myModalLabelDet').text("Detail Produk "+ $('.idPro2').find(":selected").text()+ " Pada Tanggal "+$tgl);
+			$.ajax({
+				type: 'GET',
+				url: '{{URL::route('jeffry.getReportProduk1MonthDetail')}}',
+				data: {	
+					"tgl": $tgl,
+					"id" : $id
+				},
+				success: function(response){
+					if(response['code'] == '404')
+					{
+						var tab="";
+						tab+= "<tr>";
+						tab+="<td colspan='3'>"+"No Transactions"+"</td>";
+						tab+="</tr>";
+						
+						$('.detailProdTab').html(tab);
+					}
+					else
+					{
+						var tab = "";
+						var obj = response['messages'];
+						
+						var responses = obj;
+						var idx = 0;
+						$(responses).each(function() {
+								tab+= "<tr>";
+								tab+="<td>"+responses[idx].invoice+"</td>";
+								tab+="<td>"+responses[idx].quantity+"</td>";
+								tab+="<td>"+responses[idx].full_name+"</td>";
+								tab+="</tr>";
+								idx = idx+1;
+							});
+							$('.detailProdTab').html(tab);
+					}
+				},error: function(xhr, textStatus, errorThrown){
+					alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+					alert("responseText: "+xhr.responseText);
+				}
+			},'json');
+	});
+
+$('body').on('click','.butRepPro1',function(){
+	$bln = $('.bulanRepPro2').val();
+	$thn = $('.tahunRepPro2').val();
+	$.ajax({
+		type: 'GET',
+		url: '{{URL::route('jeffry.getReportProduk21Month')}}',
+		data: {	
+			"bulanRepPro": $bln,
+			"tahunRepPro" : $thn
+		},
+		success: function(response){
+			if(response['code'] == '404')
+			{
+				var tab="";
+				tab+= "<tr>";
+				tab+="<td colspan='3'>"+"Not Found"+"</td>";
+				tab+="</tr>";
+				
+				$('.f_lakunya_sebuah_produk_hasil3').html(tab);
+	
+			}
+			else
+			{
+				var tab ="";
+				var obj = response['messages'];
+				//alert(obj);
+				var responses = obj;
+				var tab = "";
+				$(responses).each(function() {
+						tab+= "<input type='hidden'  value='"+(this)['idProd']+"'/>";
+						tab+= "<tr data-toggle='modal' data-target='.pop_up_view_report_produk_terjual' class='viewDetTgl3'>";
+						tab+="<td>"+(this)['namaProd']+"</td>";
+						tab+="<td>"+(this)['qty']+"</td>";
+						tab+="<td>"+toRp((this)['penjualan'])+"</td>";
+						tab+="</tr>";
+					});
+					$('.f_lakunya_sebuah_produk_hasil3').html(tab);
+			}
+		},error: function(xhr, textStatus, errorThrown){
+			alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+			alert("responseText: "+xhr.responseText);
+		}
+	},'json');
+
+});
+
+$('body').on('click','.viewDetTgl3',function(){
+			$idProd = $(this).prev().val();
+			$bln = $('.bulanRepPro2').val();
+			$thn = $('.tahunRepPro2').val(); 
+			$.ajax({
+				type: 'GET',
+				url: '{{URL::route('jeffry.getReportProduk21MonthDetail')}}',
+				data: {	
+					"idProd" : $idProd,
+					"bulanRepPro" : $bln,
+					"tahunRepPro" : $thn
+				},
+				success: function(response){
+					if(response['code'] == '404')
+					{
+						var tab="";
+						tab+= "<tr>";
+						tab+="<td colspan='10'>"+"Not Found"+"</td>";
+						tab+="</tr>";
+						
+						$('.detailProdTerjual').html(tab);
+					}
+					else
+					{
+						var tab = "";
+						var obj = response['messages'];
+						$('#myModalLabelDetTr').text("Detail Produk "+ obj[0]['prodName']);
+						var responses = obj;
+						var idx = 0;
+						$(responses).each(function() {
+								tab+= "<tr>";
+								tab+="<td>"+responses[idx]['full_name']+"</td>";
+								tab+="<td>"+responses[idx].invoice+"</td>";
+								var monthNames = [ "January", "February", "March", "April", "May", "June",
+									"July", "August", "September", "October", "November", "December" ];
+								var d = new Date(responses[idx].updated_at);
+								var t = d.getDate();
+								var b = d.getMonth();
+								var th = d.getFullYear();
+
+								tab+="<td>"+t+"-"+monthNames[b]+"-"+th+"</td>";
+								tab+="<td>"+responses[idx].prodName+"</td>";
+								tab+="<td><img width='100' height='100' src='"+responses[idx].photo_path+"' /></td>";
+								tab+="<td>"+responses[idx].catName+"</td>";
+								tab+="<td>"+responses[idx].attName+" - "+responses[idx].attr_value+"</td>";
+								tab+="<td>"+toRp(responses[idx].priceNow)+"</td>";
+								tab+="<td>"+responses[idx].quantity+"</td>";
+								tab+="<td>"+toRp((responses[idx].priceNow * responses[idx].quantity))+"</td>";
+								tab+="</tr>";
+								idx = idx+1;
+							});
+							$('.detailProdTerjual').html(tab);
+					}
+				},error: function(xhr, textStatus, errorThrown){
+					alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+					alert("responseText: "+xhr.responseText);
+				}
+			},'json');
+	});
+
+$('body').on('click','.butRepPro2',function(){
+	$d1 = $('#datepicker00_lakunya_sebuah_produk').val();
+	$d2 = $('#datepicker01_lakunya_sebuah_produk').val();
+	$.ajax({
+		type: 'GET',
+		url: '{{URL::route('jeffry.getReportProduk2Range')}}',
+		data: {	
+			"date1": $d1,
+			"date2" : $d2
+		},
+		success: function(response){
+			if(response['code'] == '404')
+			{
+				var tab="";
+				tab+= "<tr>";
+				tab+="<td colspan='3'>"+"Not Found"+"</td>";
+				tab+="</tr>";
+				
+				$('.f_lakunya_sebuah_produk_hasil4').html(tab);
+	
+			}
+			else
+			{
+				var tab ="";
+				var obj = response['messages'];
+				//alert(obj);
+				var responses = obj;
+				var tab = "";
+				$(responses).each(function() {
+						tab+= "<input type='hidden'  value='"+(this)['idProd']+"'/>";
+						tab+= "<tr data-toggle='modal' data-target='.pop_up_view_report_produk_terjual' class='viewDetTgl4'>";
+						tab+="<td>"+(this)['namaProd']+"</td>";
+						tab+="<td>"+(this)['qty']+"</td>";
+						tab+="<td>"+toRp((this)['penjualan'])+"</td>";
+						tab+="</tr>";
+					});
+					$('.f_lakunya_sebuah_produk_hasil4').html(tab);
+			}
+		},error: function(xhr, textStatus, errorThrown){
+			alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+			alert("responseText: "+xhr.responseText);
+		}
+	},'json');
+
+});
+
+$('body').on('click','.viewDetTgl4',function(){
+			$idProd = $(this).prev().val();
+			$d1 = $('#datepicker00_lakunya_sebuah_produk').val();
+			$d2 = $('#datepicker01_lakunya_sebuah_produk').val();
+			$.ajax({
+				type: 'GET',
+				url: '{{URL::route('jeffry.getReportProduk2RangeDetail')}}',
+				data: {	
+					"idProd" : $idProd,
+					"date1": $d1,
+					"date2" : $d2
+				},
+				success: function(response){
+					if(response['code'] == '404')
+					{
+						var tab="";
+						tab+= "<tr>";
+						tab+="<td colspan='10'>"+"Not Found"+"</td>";
+						tab+="</tr>";
+						
+						$('.detailProdTerjual').html(tab);
+					}
+					else
+					{
+						var tab = "";
+						var obj = response['messages'];
+						$('#myModalLabelDetTr').text("Detail Produk "+ obj[0]['prodName']);
+						var responses = obj;
+						var idx = 0;
+						$(responses).each(function() {
+								tab+= "<tr>";
+								tab+="<td>"+responses[idx]['full_name']+"</td>";
+								tab+="<td>"+responses[idx].invoice+"</td>";
+								var monthNames = [ "January", "February", "March", "April", "May", "June",
+									"July", "August", "September", "October", "November", "December" ];
+								var d = new Date(responses[idx].updated_at);
+								var t = d.getDate();
+								var b = d.getMonth();
+								var th = d.getFullYear();
+
+								tab+="<td>"+t+"-"+monthNames[b]+"-"+th+"</td>";
+								tab+="<td>"+responses[idx].prodName+"</td>";
+								tab+="<td><img width='100' height='100' src='"+responses[idx].photo_path+"' /></td>";
+								tab+="<td>"+responses[idx].catName+"</td>";
+								tab+="<td>"+responses[idx].attName+" - "+responses[idx].attr_value+"</td>";
+								tab+="<td>"+toRp(responses[idx].priceNow)+"</td>";
+								tab+="<td>"+responses[idx].quantity+"</td>";
+								tab+="<td>"+toRp((responses[idx].priceNow * responses[idx].quantity))+"</td>";
+								tab+="</tr>";
+								idx = idx+1;
+							});
+							$('.detailProdTerjual').html(tab);
 					}
 				},error: function(xhr, textStatus, errorThrown){
 					alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);

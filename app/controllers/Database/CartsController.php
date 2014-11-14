@@ -176,6 +176,39 @@ class CartsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	
+	public function getCartByAccountId()
+	{
+		$id = Input::get('acc_id');
+		$respond = array();
+		$cart = Cart::where('account_id', '=', $id)->get();
+		if(count($cart) == 0)
+		{
+			$respond = array('code'=>'404','status'=>'Not Found');
+		}
+		else
+		{
+			foreach($cart as $ca)
+			{
+				$price = Price::where('id','=',$ca->price_id)->first();	
+				$product = Product::where('id','=',$price->product_id)->first();			
+				$main_photo = Gallery::where('product_id','=',$product->id)->where('type','=','main_photo')->first();
+				//add photo
+				if($main_photo != null)
+				{
+					$ca->product_photo = $main_photo->photo_path;
+				}
+				else
+				{
+					$ca->product_photo = "";
+				}
+				//add product_name
+				$ca->product_name = $product->name;				
+			}
+			$respond = array('code'=>'200','status'=>'OK','messages'=>$cart);
+		}			
+		return Response::json($respond);
+	}
 
 	public function updatePriceId($id, $new_price_id)
 	{

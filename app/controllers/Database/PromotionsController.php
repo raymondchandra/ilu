@@ -673,7 +673,7 @@ class PromotionsController extends \BaseController {
 		return Response::json($respond);
 	}
 	
-	public function get3ProductFromNewestPromotion()
+	public function getProductFromNewestPromotion()
 	{
 		$respond = array();
 		
