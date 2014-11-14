@@ -52,7 +52,7 @@ class PaymentProffsController extends \BaseController {
 		$respond = array();
 		$paymentproff = DB::table('paymentproff AS paypro')
 						->join('banks AS ban', 'paypro.id_bank', '=', 'ban.id')
-						-orderBy('created_at', 'desc')
+						->orderBy('paypro.created_at', 'desc')
 						->get();
 		if(count($paymentproff) == 0)
 		{

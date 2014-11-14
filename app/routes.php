@@ -188,6 +188,9 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		Route::post('/product/editGallery', ['as' => 'product.editGallery', 'uses' => 'ProductsManagementController@editGallery']);
 	Route::post('/product/deleteProduct', ['as' => 'product.deleteProduct', 'uses' => 'ProductsManagementController@deleteProduct']);	
 	
+	//-------------------------------------------PAYMENTPROFF VIEW ADMIN-------------------------------------------
+	Route::get('/manage_payment_proof', ['as' => 'viewPaymentProffsManagement', 'uses' => 'PaymentProffsManagementController@view_admin_paymentproff']);
+	
 	//ooooooooooooooooooooooooooooooooooooooKERJAAN DAVIDoooooooooooooooooooooooooooooooooooooooo	
 	Route::get('/getTopTenNewProduct', ['as' => 'getTopTenNewProduct', 'uses' => 'ProductsController@getTopTenNewProduct']);
 	Route::get('/getProductFromNewestPromotion', ['as' => 'getProductFromNewestPromotion', 'uses' => 'PromotionsController@getProductFromNewestPromotion']);

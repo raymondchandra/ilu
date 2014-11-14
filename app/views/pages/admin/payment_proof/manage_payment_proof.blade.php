@@ -13,8 +13,7 @@
 				<hr></hr>
 				
 				<div>					
-						@if($paymentProff == null)							
-							<p>No Payment Proff</p>							
+						@if($paymentProff == null)																	
 							<table class="table table-striped table-hover table-bordered">
 								<thead class="table-bordered">
 									<tr>
@@ -41,7 +40,8 @@
 										</th>
 									</tr>
 								</thead>
-							</table>	
+							</table>
+							<p>No Payment Proff</p>										
 						@else
 							{{$paymentProff->links()}}
 							<table class="table table-striped table-hover table-bordered">
@@ -72,13 +72,15 @@
 								</thead>
 								<tbody>
 									@foreach($paymentProff as $paypro)
-										<td>{{$paypro->nama_pembayar}}</td>
-										<td>{{$paypro->bank_asal}}</td>
-										<td>{{$paypro->norek_asal}}</td>
-										<td>{{$paypro->name}}</td>	<!-- name di banks-->
-										<td>{{$paypro->acc_number}}</td> <!-- acc_number di banks-->
-										<td>{{$paypro->invoice}}</td>
-										<td>{{$paypro->nominal}}</td>
+										<tr>
+											<td>{{$paypro->nama_pembayar}}</td>
+											<td>{{$paypro->bank_asal}}</td>
+											<td>{{$paypro->norek_asal}}</td>
+											<td>{{$paypro->name}}</td>	<!-- name di banks-->
+											<td>{{$paypro->acc_number}}</td> <!-- acc_number di banks-->
+											<td>{{$paypro->invoice}}</td>
+											<td>{{$paypro->nominal}}</td>
+										</tr>
 									@endforeach									
 								</tbody>
 							</table>	
