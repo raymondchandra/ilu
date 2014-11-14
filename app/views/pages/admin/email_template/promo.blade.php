@@ -827,37 +827,42 @@ body.outlook p {
 							</td>
 						</tr>
                       <tr>
-                        <td>
-                          <img src="" style="width:150px; height: 150px;">
-						  <p>Caption Here</p>
-						  <p>Rp. xyz.xyz</p>
+                        <td id="td_1">
+                          <img id="img_1" src="" style="width:150px; height: 150px;">
+						  <span class="clearfix"></span>
+						  <p id="caption_1">Caption Here</p>
+						  <p id="price_1">Rp. xyz.xyz</p>
                         </td>
-                        <td>
-                          <img src="" style="width:150px; height: 150px;">
-						  <p>Caption Here</p>
-						  <p>Rp. xyz.xyz</p>
+                        <td id="td_2">
+                          <img id="img_2" src="" style="width:150px; height: 150px;">
+						  <p id="caption_2">Caption Here</p>
+						  <p id="price_2">Rp. xyz.xyz</p>
                         </td>
-                        <td>
-                          <img src="" style="width:150px; height: 150px;">
-						  <p>Caption Here</p>
-						  <p>Rp. xyz.xyz</p>
+                        <td id="td_3">
+                          <img id="img_3" src="" style="width:150px; height: 150px;">
+						  <span class="clearfix"></span>
+						  <p id="caption_3">Caption Here</p>
+						  <p id="price_3">Rp. xyz.xyz</p>
                         </td>
                       </tr>
                       <tr>
-                        <td>
-                          <img src="" style="width:150px; height: 150px;">
-						  <p>Caption Here</p>
-						  <p>Rp. xyz.xyz</p>
+                        <td id="td_4">
+                          <img id="img_4" src="" style="width:150px; height: 150px;">
+						  <span class="clearfix"></span>
+						  <p id="caption_4">Caption Here</p>
+						  <p id="price_4">Rp. xyz.xyz</p>
                         </td>
-                        <td>
-                          <img src="" style="width:150px; height: 150px;">
-						  <p>Caption Here</p>
-						  <p>Rp. xyz.xyz</p>
+                        <td id="td_5">
+                          <img id="img_5" src="" style="width:150px; height: 150px;">
+						  <span class="clearfix"></span>
+						  <p id="caption_5">Caption Here</p>
+						  <p id="price_5">Rp. xyz.xyz</p>
                         </td>
-                        <td>
-                          <img src="" style="width:150px; height: 150px;">
-						  <p>Caption Here</p>
-						  <p>Rp. xyz.xyz</p>
+                        <td id="td_6">
+                          <img id="img_6" src="" style="width:150px; height: 150px;">
+						  <span class="clearfix"></span>
+						  <p id="caption_6">Caption Here</p>
+						  <p id="price_6">Rp. xyz.xyz</p>
                         </td>
                       </tr>
                     </table>

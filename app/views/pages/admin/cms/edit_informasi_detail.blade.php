@@ -67,37 +67,94 @@
 							<div class="tab-content">
 								<div role="tabpanel" class="tab-pane fade in active" id="0">
 									<h3>Preview Informasi
-										<button type="button" class="btn btn-warning pull-right" data-toggle="modal" data-target=".pop_up_detail_info">Add / Edit</button>
+										<button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target=".pop_up_detail_info">Add</button>
 									</h3>
 
 									<div class="panel panel-default">
 										<div class="panel-body">
-											<div>
+										@foreach($informations as $info)
+											<div class="f_section">
 												<div class="f_subtitle_info">	
 													<h4>
-														Lorem Ipsum	
+														{{$info->sub_title}}
+														<button type="button" class="btn btn-danger pull-right reset hidden">Reset</button>
+														<input type='hidden' />
+														<button type="button" class="btn btn-danger pull-right f_section_deleter information_deleter">X</button>
+														
+														<input type='hidden' class='article_id' value='{{$info->id}}' />
+														
+														@if($info->content[0].$info->content[1].$info->content[2].$info->content[3] == "<img")
+														
+														@else
+															<button type="button" class="btn btn-warning pull-right f_section_editor edit_article" style="margin-right:10px;">Edit</button>
+															<button type="button" class="btn btn-warning pull-right f_section_editor save_article hidden" style="margin-right:10px;">Save</button>
+														@endif
+														
 													</h4>	
 												</div>		
-												<div class="f_konten_info">		
-													<p>
-														There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
-													</p>
-												</div>		
+												<div class="f_konten_info">
+													{{$info->content}}
+												</div>
 											</div>
-											<div>
-												<div class="f_subtitle_info">	
-													<h4>
-														There are Many Variations
-													</h4>	
-												</div>		
-												<div class="f_konten_info">		
-													<p>
-														There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
-													</p>
-												</div>		
-											</div>
+										@endforeach
+										
+										<script>
+											$('body').on('click','.edit_article',function(){
+												$(this).siblings('.save_article').removeClass('hidden');
+												$(this).siblings('.reset').removeClass('hidden');
+												$('.edit_article').addClass('hidden');
+												$('.information_deleter').addClass('hidden');
+												$container = $(this).parent().parent().siblings('.f_konten_info');
+												$content = $container.html();
+												$(this).siblings('.reset').next().val($content);
+												$container.html("<br /><textarea id='edit_article'></textarea>");
+												tinymce.init({selector:'#edit_article'});
+												tinyMCE.activeEditor.setContent($content);
+											})
+											
+											$('body').on('click','.save_article',function(){
+												$id = $(this).siblings('.article_id').val();
+												$content = tinyMCE.activeEditor.getContent();
+												$.ajax({
+													type: 'PUT',
+													url: "{{URL('admin/information_content')}}/"+$id,
+													data:{
+														'content':$content
+													},
+													success: function(response){
+														if(response = 200){
+															alert('Success');
+															location.reload();
+														}
+														else{
+															alert('Failed');
+														}
+													},
+													error: function(jqXHR, textStatus, errorThrown){
+														alert(errorThrown);
+													}
+												})
+											});
+											
+											$('body').on('click','.reset',function(){
+												$(this).siblings('.save_article').addClass('hidden');
+												$(this).addClass('hidden');
+												$('.edit_article').removeClass('hidden');
+												$('.information_deleter').removeClass('hidden');
+												
+												$container = $(this).parent().parent().siblings('.f_konten_info');
+												$container.html($(this).next().val());
+											});
+											
+										</script>
 										</div>
 									</div>
+									<script>
+										$('body').on('click','.f_section_deleter',function(){
+											$(this).closest('.f_section').remove();
+										});
+									</script>
+									
 									<!--<h3>Detail Informasi
 										<button type="button" class="btn btn-success f_add_new_section pull-right" >
 											Add New Section
@@ -332,15 +389,15 @@
 							
 							<div class="modal-body">
 
-							<button type="button" class="btn btn-success f_add_new_section" >
+							<!--<button type="button" class="btn btn-success f_add_new_section" >
 								Add New Section
-							</button>
+							</button>-->
 
 								<div class="f_section_container">
 									<div class="form-group" id="">
 										<label class="col-sm-4 control-label">Judul Section</label>
 										<div class="col-sm-7">
-											<input type="text" class="form-control" id="">
+											<input type="text" class="form-control" id="section_title">
 										</div>
 									</div>
 
@@ -359,8 +416,8 @@
 									<div class="form-group" id="gambar_edit_cont_info0">
 										<label class="col-sm-4 control-label" >Upload Gambar</label>
 										<div class="col-sm-7">
-											<img srs="" width="200" height="200"/>
-											<input type="file" class="" id="">
+											<img src="" id='preview_image' width="200" height="200"/>
+											<input type="file" class="" id="image_uploader">
 										</div>
 									</div>
 
@@ -372,9 +429,9 @@
 									</div>
 								</div>
 								
-								<div class="f_section_container_appenden">
+								<!--<div class="f_section_container_appenden">
 
-								</div>
+								</div>-->
 
 								<script>
 								var i=0;
@@ -434,8 +491,24 @@
 								});
 								
 								//Untuk men-delete section info
-								$('body').on('click','.f_section_info_deleter',function(){
-									$(this).closest('.f_section_container').remove();
+								$('body').on('click','.information_deleter',function(){
+									$id = $(this).next().val();
+									$.ajax({
+										type: 'DELETE',
+										url: "{{URL('admin/information_content')}}/"+$id,
+										success: function(response){
+											if(response = 200){
+												alert('Success');
+												$(this).closest('.f_section').remove();
+											}
+											else{
+												alert('Failed');
+											}
+										},
+										error: function(jqXHR, textStatus, errorThrown){
+											alert(errorThrown);
+										}
+									})
 								});
 
 								//Untuk men-delete section info pada saat di-close
@@ -451,8 +524,9 @@
 										$('#deskripsi_edit_cont_info0').removeClass('hidden');
 										$('#gambar_edit_cont_info0').addClass('hidden');
 									}
-
 								});
+								
+								
 
 								$('body').on('change', 'input:radio[name="metode_pengisian"]', function() {
 									if ($(this).is(':checked') && $(this).val() == 'gambar') {
@@ -475,8 +549,9 @@
 
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-success" data-dismiss="modal">Update Info Baru</button>
-								<button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+								<button type="button" class="btn btn-success add_information_content" data-dismiss="modal">Tambah Info Baru</button>
+								<input type='hidden' value='{{$informations[0]->id_information}}' />
+								<button type="button" class="btn btn-default " data-dismiss="modal">Keluar</button>
 							</div>
 						</div>
 					</div>
@@ -496,6 +571,61 @@
 			setTimeout(function() {
 				$('.modal-backdrop').fadeOut( 300, function(){});
 			}, 500);
+		});
+		
+		var uploaded_image = '';
+		$('#image_uploader').change(function(){
+			var i = 0, len = this.files.length, img, reader, file;
+			for ( ; i < len; i++ ){
+				file = this.files[i];
+				if (!!file.type.match(/image.*/)) {
+					if ( window.FileReader ) {
+						reader = new FileReader();
+						reader.onloadend = function (e) {
+							$('#preview_image').attr('src',e.target.result);
+						};
+						reader.readAsDataURL(file);
+					}
+				}
+				uploaded_image = file;
+			}
+		});
+		
+		$('body').on('click','.add_information_content',function(){
+			$type='';
+			$id_information = $(this).next().val();
+			$title = $('#section_title').val();
+			$form_data = new FormData();
+			$form_data.append('title',$title);
+			if($('#inlineRadio1').is(':checked')){
+				$form_data.append('image',uploaded_image);
+				$form_data.append('type',0);
+			}
+			else{
+				$content = tinyMCE.activeEditor.getContent();
+				$form_data.append('content',$content);
+				$form_data.append('type',1);
+			}
+			
+			$.ajax({
+				type: 'POST',
+				url: "{{URL('admin/information_content')}}/"+$id_information,
+				data:$form_data,
+				processData:false,
+				contentType:false,
+				success: function(response){
+					if(response = 200){
+						alert('Success');
+						location.reload();
+					}
+					else{
+						alert('Failed');
+					}
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					alert(errorThrown);
+				}
+			})
 		});
 		
 		/*$('body').on('click','#cms_news',function(){
@@ -631,5 +761,6 @@
 		</script>
 
 @include('includes.modals.alertYesNo')	
+@include('pages.admin.cms.pop_up_edit_container_info')	
 
 @stop

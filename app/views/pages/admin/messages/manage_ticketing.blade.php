@@ -14,33 +14,97 @@
 			success: function(response){
 				$msgs = response.messages;
 				var div = '';
-				var div2 ='';
+				var div2= '';
 				for($i = 0;$i<$msgs.length;$i++){
 					if($i==0){
 						div+="<li role='presentation' class='active pull-right'>";
 						div+="<a href='#0' role='tab' data-toggle='tab' style=''>";
-						div+="<b class='show'>"+$msgs[$i].name+"</b>";
-						div+="<span class='show'>Ticket #: 123211</span>";
+						div+="<b class='show'>"+$msgs[$i].full_name+"</b>";
+						div+="<span class='show'>Ticket #: "+$msgs[$i].number+"</span>";
 						div+="<span>"+$msgs[$i].subject+"</span>";
 						div+="</a>";
 						div+="</li>";
+						
+						
+						div2+="<div role='tabpanel' class='tab-pane fade in active' id='0'>";
+						div2+="<div class='col-lg-8 col-lg-push-2'>";
+						div2+="<div>";
+						div2+="<b class='show'>Nama: "+$msgs[$i].full_name+"</b>";
+						div2+="<span class='show'>Ticket #: "+$msgs[$i].number+"</span>";
+						div2+="<span>Subject: "+$msgs[$i].subject+"</span>";
+						$.each($msgs[$i].msgs,function(){
+							div2+="<p style='margin-top: 20px;'>";
+							div2+=$(this).text;
+							div2+="</p>";
+						});
+						div2+="<hr></hr>";
+						div2+="</div>";
+						div2+="<div class='msg_area'>";
+						div2+="</div>";
+						div2+="<div>";
+						div2+="<textarea class='form-control f_message_textinput' id='0' rows='3'></textarea>"
+						div2+="<div class='checkbox'>";
+						div2+="<label>";
+						if($msgs[$i].solved == 1){
+							div2+="<input type='checkbox' checked='true' class='solved_check'> Solved"
+						}
+						else{
+							div2+="<input type='checkbox' class='solved_check'> Solved"
+						}
+						div2+="<input type='hidden' value='"+$msgs[$i].id+"' />";
+						div2+="</label>";
+						div2+="<button type='button' class='btn btn-success pull-right f_message_textbtn' style='margin-top: 20px;'>";
+						div2+="Send";
+						div2+="</button>";
+						div2+="</div>";
+						div2+="</div>";
+						div2+="</div>";
+						div2+="</div>";
 					}
 					else{
 						div+="<li role='presentation' class='pull-right'>";
 						div+="<a href='#"+$i+"' role='tab' data-toggle='tab' style=''>";
-						div+="<b class='show'>"+$msgs[$i].name+"</b>";
+						div+="<b class='show'>"+$msgs[$i].full_name+"</b>";
+						div+="<span class='show'>Ticket #: "+$msgs[$i].number+"</span>";
 						div+="<span>"+$msgs[$i].subject+"</span>";
 						div+="</a>";
 						div+="</li>";
-						div+="<span class='clearfix'></span>";
+						
+						div2+="<div role='tabpanel' class='tab-pane fade in' id='"+$i+"'>";
+						div2+="<div class='col-lg-8 col-lg-push-2'>";
+						div2+="<div>";
+						div2+="<b class='show'>Nama: "+$msgs[$i].full_name+"</b>";
+						div2+="<span class='show'>Ticket #: "+$msgs[$i].number+"</span>";
+						div2+="<span>Subject: "+$msgs[$i].subject+"</span>";
+						$.each($msgs[$i].msgs,function(){
+							div2+="<p style='margin-top: 20px;'>";
+							div2+=$(this)[0].text;
+							div2+="</p>";
+							div2+="<hr></hr>";
+						});
+						div2+="<hr></hr>";
+						div2+="</div>";
+						div2+="<div class='msg_area'>";
+						div2+="</div>";
+						div2+="<div>";
+						div2+="<textarea class='form-control f_message_textinput' id='0' rows='3'></textarea>"
+						div2+="<div class='checkbox'>";
+						div2+="<label>";
+						div2+="<input type='checkbox' class='solved_check'> Solved"
+						div2+="<input type='hidden' value='"+$msgs[$i].id+"' />";
+						div2+="</label>";
+						div2+="<button type='button' class='btn btn-success pull-right f_message_textbtn' style='margin-top: 20px;'>";
+						div2+="Send";
+						div2+="</button>";
+						div2+="</div>";
+						div2+="</div>";
+						div2+="</div>";
+						div2+="</div>";
 					}
 				}
 				$('.message_list').html(div);
-				/*var te = document.createElement("script");
-				te.type = "text/javascript";
-				te.innerHTML = "$(textarea').jqte();";
-				$('.message_list').append(te);
-				$('.messages_content').append(te);*/
+				$('.message_replier').html(div2);
+				$('textarea').jqte();
 			},
 			error: function(jqXHR, textStatus, errorThrown){
 				alert(errorThrown);
@@ -52,9 +116,8 @@
 	jQuery(document).ready(function(){
 		
 		getMessages();
-		//setInterval('getMessages()', 1200000);
-		//$('textarea').jqte();
-		//$('textarea').jqte();
+		setInterval('getMessages()', 1200000);
+		
 	});
 	
 	
@@ -158,21 +221,21 @@
 
 									<script>
 									$('body').on('click','.f_message_textbtn',function(){
-										var id=$('.f_message_textinput').attr('id');
 
-										var text='<div>';
-										text+='<b class="show">Nama: Administrator</b>';
-										text+='<span class="show">Email: admin@ilu.com</span>';
-										text+='<span class="show">Ticket #: 324234</span>';
-										text+='<span>Subject: Re-Subjectnya taruh disini</span>';
-										text+='<span class="pull-right">timestamp</span>';
-										text+='<p style="margin-top: 20px;">';
-										text+=''+ $(this).parent().siblings("textarea").val(); +'';
-										text+='</p>';
-										text+='</div>';
-										text+='<hr></hr>';
 
-										$(this).parent().parent().siblings('.msg_area').append(text);
+										$(this).parent().siblings('.msg_area').append(text);*/
+										$message = $(this).siblings('.jqte').children('.jqte_editor').html();
+										
+										$.ajax({
+											type: 'POST',
+											url: "{{URL('admin/messages')}}",
+											success: function(response){
+												alert(response);
+											},
+											error: function(jqXHR, textStatus, errorThrown){
+												alert(errorThrown);
+											}
+										});
 
 
 									});
@@ -188,7 +251,32 @@
 </div>
 
 <script>
-	$("textarea").jqte();
+	//$("textarea").jqte();
+	
+	$('body').on('change','.solved_check',function(){
+		$id = $(this).next().val();
+		if($(this).attr('checked')=='checked'){
+			$solve = 1;
+		}
+		else{
+			$solve = 0;
+		}
+		$.ajax({
+			type: 'PUT',
+			url: "{{URL('admin/ticket_messages')}}/"+$id,
+			data:{
+				solved:$solve
+			},
+			success: function(response){
+				
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+				alert(errorThrown);
+			}
+		});
+		
+		
+	});
 </script>
 
 @include('includes.modals.alertYesNo')	

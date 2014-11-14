@@ -25,7 +25,7 @@
 							</tr>
 						</thead>
 						<tbody class="f_tbody_table">
-							<tr>
+							<!--<tr>
 								<td>
 									Index 
 								</td>
@@ -89,7 +89,7 @@
 									<span class="meta">key 1, key 2, key 3</span>
 									<input type="text" class="form-control hidden meta">
 								</td>
-							</tr>
+							</tr>-->
 						</tbody>
 					</table>
 					<script>
@@ -108,7 +108,7 @@
 								type: 'PUT',
 								url: "{{URL('admin/seo')}}/"+$id,
 								data:{
-									content:$content
+									description:$content
 								},
 								success: function(response){
 									if(response.code == 200){
@@ -132,7 +132,7 @@
 								type: 'PUT',
 								url: "{{URL('admin/seo')}}/"+$id,
 								data:{
-									key:$key
+									keyword:$key
 								},
 								success: function(response){
 									if(response.code == 200){

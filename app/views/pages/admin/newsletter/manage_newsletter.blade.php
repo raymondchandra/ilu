@@ -27,7 +27,7 @@
 							<h2>Editor</h2>
 							<div>
 								<label class="radio-inline">
-								  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked> Promo
+								  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Promo
 								</label>
 								<label class="radio-inline">
 								  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> New Product
@@ -40,15 +40,153 @@
 							<link href="{{ asset('assets/js/jqte/jquery-te-1.4.0.css') }}" rel="stylesheet">
 							<script src="{{ asset('assets/js/jqte/jquery-te-1.4.0.min.js') }}"></script>
 								<textarea class="f_te"></textarea>
+								<button type="button" class="btn btn-success">Send</button>
 								<script>
 									$("textarea").jqte({change: function()
 									{ 
-										
 										//var x = $("textarea").jqteVal('sadasd');
 										$('#email_body_content').html($('.jqte_editor').html());
 									}});
 									
+									$('body').on('click','#inlineRadio1',function()
+									{
+										
+										$.ajax({
+											type: 'GET',
+											url: '{{URL::route('getProductFromNewestPromotion')}}',
+											data: {	
+												
+											},
+											success: function(response){
+												if(response['code'] == '404')
+												{
+													alert(response['code']);
+												}
+												else
+												{
+													$length = 6;
+													if(response['messages']['products'].length < 6)
+													{
+														$length = response['messages']['products'].length;
+													}
+													
+													for ( var i = 0; i < $length; i++ ) {
+														//alert(response['messages']['products'][i].prices[0].amount);
+														$('#caption_'+(i+1)).text(response['messages']['products'][i].name);
+														
+														$('#price_'+(i+1)).text("Rp. " + response['messages']['products'][i].prices[0].amount+",-");
+														
+														//main_photo
+														
+														$('#img_'+(i+1)).attr('src',"../../" + response['messages']['products'][i].main_photo);
+													}
+													
+													for(var j = $length-1 ; j< 6 ; j++)
+													{
+														$('#td_'+(j+2)).addClass('hidden');
+													}
+													
+												}
+											},error: function(xhr, textStatus, errorThrown){
+												alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+												alert("responseText: "+xhr.responseText);
+											}
+										},'json');
+									});
 									
+									$('body').on('click','#inlineRadio2',function()
+									{
+										
+										$.ajax({
+											type: 'GET',
+											url: '{{URL::route('getTopTenNewProduct')}}',
+											data: {	
+												
+											},
+											success: function(response){
+												if(response['code'] == '404')
+												{
+													alert(response['code']);
+												}
+												else
+												{
+													$length = 6;
+													if(response['messages'].length < 6)
+													{
+														$length = response['messages'].length;
+													}
+													
+													for ( var i = 0; i < $length; i++ ) {
+														//alert(response['messages']['products'][i].prices[0].amount);
+														$('#caption_'+(i+1)).text(response['messages'][i].name);
+														
+														$('#price_'+(i+1)).text("Rp. " + response['messages'][i].prices[0].amount+",-");
+														
+														//main_photo
+														
+														$('#img_'+(i+1)).attr('src',"../../" + response['messages'][i].main_photo);
+													}
+													
+													for(var j = $length-1 ; j< 6 ; j++)
+													{
+														$('#td_'+(j+2)).addClass('hidden');
+													}
+													
+												}
+											},error: function(xhr, textStatus, errorThrown){
+												alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+												alert("responseText: "+xhr.responseText);
+											}
+										},'json');	
+									});
+									
+									$('body').on('click','#inlineRadio3',function()
+									{
+										
+										$.ajax({
+											type: 'GET',
+											url: '{{URL::route('jeffry.top10product')}}',
+											data: {	
+												
+											},
+											success: function(response){
+												if(response['code'] == '404')
+												{
+													
+												}
+												else
+												{
+													$length = 6;
+													if(response['messages'].length < 6)
+													{
+														$length = response['messages'].length;
+													}
+													
+													for ( var i = 0; i < $length; i++ ) {
+														//alert(response['messages']['products'][i].prices[0].amount);
+														$('#caption_'+(i+1)).text(response['messages'][i].product.name);
+														
+														$('#price_'+(i+1)).text("Rp. " + response['messages'][i].product.prices[0].amount+",-");
+														
+														//main_photo
+														
+														$('#img_'+(i+1)).attr('src',"../../" + response['messages'][i].product.main_photo);
+													}
+													
+													for(var j = $length-1 ; j< 6 ; j++)
+													{
+														$('#td_'+(j+2)).addClass('hidden');
+													}
+													
+												}
+											},error: function(xhr, textStatus, errorThrown){
+												alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+												alert("responseText: "+xhr.responseText);
+											}
+										},'json');
+										
+										
+									});
 									//email_body_content
 									//jqte_editor
 									
