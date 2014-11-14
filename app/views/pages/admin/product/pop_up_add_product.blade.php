@@ -16,6 +16,7 @@
 						<script>
 							$('body').on('click','#f_add_new_attr',function(){	
 								arr_attr[arr_attr.length] = idx_attr_row;
+								alert(arr_attr);
 								
 								var new_line = '<div class="form-group">'
 								new_line+='	<div class="col-sm-3 ">';							
@@ -357,17 +358,21 @@
 		// var attributes_value_input = new Array();
 		// var prices_input = new Array();		
 		for($i=0; $i<arr_attr.length; $i++){
-			if(arr_attr[$i] != -1){
+			if(arr_attr[$i] != -1){				
 				attributes_id_input[attributes_id_input.length] = $(' .new_attr_id_input'+arr_attr[$i]+' ').val();
+				// alert(attributes_id_input);
 				attributes_value_input[attributes_value_input.length] = $(' .new_attr_value_input'+arr_attr[$i]+' ').val();
+				// alert(attributes_value_input);
 				prices_input[prices_input.length] = $(' .new_price_input'+arr_attr[$i]+' ').val();
+				// alert(prices_input);
 			}
 		}
+		
+		
 		data.append('arr_attr_id', attributes_id_input);
 		data.append('arr_attr_value', attributes_value_input);
 		data.append('arr_price', prices_input);
-						
-		
+								
 		$.ajax({
 			type: 'POST',
 			url: "{{URL('admin/product/addProduct')}}",						
@@ -382,7 +387,8 @@
 			// dataType: 'json',
 			success: function(response){			
 				result = JSON.parse(response);
-				if(result.code == 200)
+				// alert(result);
+				if(result.code == 201)
 				{	
 					alert(result.status);
 					location.reload();					

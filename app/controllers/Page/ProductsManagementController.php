@@ -201,9 +201,9 @@ class ProductsManagementController extends \BaseController
 				
 		//attribute and price
 		$arr_attr_id = Input::get('arr_attr_id');
-			$temp_arr_attr_id = explode(",", $arr_attr_id);
+			$temp_arr_attr_id = explode(",", $arr_attr_id);			
 		$arr_attr_value = Input::get('arr_attr_value');
-			$temp_arr_attr_value = explode(",", $arr_attr_value);
+			$temp_arr_attr_value = explode(",", $arr_attr_value);			
 		$arr_price = Input::get('arr_price');
 			$temp_arr_price = explode(",", $arr_price);
 		$input_price = array(
@@ -219,6 +219,7 @@ class ProductsManagementController extends \BaseController
 		return json_encode($json);				
 		
 		// return $productController->insert(null,null,$input_price);
+		// return $productController->insert($input_product,null,$input_price);
 	}
 	
 	public function editProductNo()
