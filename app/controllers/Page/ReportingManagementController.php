@@ -85,6 +85,11 @@ class ReportingManagementController extends \BaseController
 	
 	public function view_reporting_pengiriman()
 	{
-		
+		return View::make('pages.admin.report.manage_report_pengiriman');
+	}
+	
+	public function view_reporting_pembayaran()
+	{
+		return View::make('pages.admin.report.manage_report_pembayaran');
 	}
 }

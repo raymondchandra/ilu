@@ -192,6 +192,8 @@
 										<input type="hidden" value="{{$profile->acc_id}}">
 										<button class="btn btn-info btn-xs wishlistbutton" data-toggle="modal" data-target=".pop_up_view_wishlist">View Wishlist</button>
 										<input type="hidden" value="{{$profile->acc_id}}">
+										<button class="btn btn-info btn-xs cartbutton" data-toggle="modal" data-target=".pop_up_view_cart">View Cart</button>
+										<input type="hidden" value="">
 										<button class="btn btn-info btn-xs searchbutton" data-toggle="modal" data-target=".pop_up_view_search">View History Search</button>
 										<input type="hidden" value="{{$profile->acc_id}}">
 										<button class="btn btn-info btn-xs belanjabutton" data-toggle="modal" data-target=".pop_up_view_belanja">View History Belanja</button>
@@ -364,6 +366,7 @@
 	@include('includes.modals.alertYesNo')
 	@include('pages.admin.customer.pop_up_view_customer')
 	@include('pages.admin.customer.pop_up_view_wishlist')
+	@include('pages.admin.customer.pop_up_view_cart')
 	@include('pages.admin.customer.pop_up_view_search')
 	@include('pages.admin.customer.pop_up_view_belanja')
 	
@@ -401,6 +404,39 @@
 				},'json');
 		});
 		//------end of script buat wishlist
+		$('body').on('click','.cartbutton',function(){
+			$acc_id = $(this).prev().val();
+			$nama = $('#full_name_'+$acc_id).html();
+			$('.modal-title').html("Cart dari " + $nama);
+			$('#cartcontent').empty();			
+			$.ajax({
+					type: 'GET',
+					url: '{{URL::route('david.getCart')}}',
+					data: {	
+						"acc_id": $acc_id
+					},
+					success: function(response){
+						if(response['code'] == '404')
+						{
+							$('#cartcontent').append("<tr><td>cart tidak ditemukan</td></tr>");
+						}
+						else
+						{
+							$.each(response['messages'], function( i, resp ) {
+								$data = "<tr><td>";
+								$data = $data + "<img src='"+ resp.product_photo +"' alt='no photo' width='100' height='100'>" + "</td><td>";
+								$data = $data + resp.product_name + "</td><td>";
+								$data = $data + resp.quantity + "</td><td></tr>";
+								$('#cartcontent').append($data);
+							});
+						}
+					},error: function(xhr, textStatus, errorThrown){
+						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+						alert("responseText: "+xhr.responseText);
+					}
+				},'json');			
+		});
+		//------end of script buat cart
 		$('body').on('click','.searchbutton',function(){
 			$acc_id = $(this).prev().val();
 			$nama = $('#full_name_'+$acc_id).html();

@@ -106,7 +106,7 @@ class TransactionsController extends \BaseController {
 	public function getAll()
 	{
 		$respond = array();
-		$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->get(array('transactions.id', 'transactions.invoice' ,'transactions.account_id', 'transactions.total_price', 'transactions.voucher_id', 'transactions.status', 'transactions.paid', 'transactions.shipment_id', 'transactions.updated_at', 'transactions.updated_at', 'profiles.full_name'));
+		$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->get(array('transactions.id', 'transactions.invoice' ,'transactions.account_id', 'transactions.total_price', 'transactions.voucher_id', 'transactions.status', 'transactions.paid', 'transactions.shipment_id', 'transactions.created_at', 'transactions.updated_at', 'profiles.full_name'));
 		if (count($transaction) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -571,7 +571,7 @@ class TransactionsController extends \BaseController {
 	public function getAllSort($sortBy, $type)
 	{
 		$respond = array();
-		$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->orderBy($sortBy,$type)->get(array('transactions.id', 'transactions.invoice' ,'transactions.account_id', 'transactions.total_price', 'transactions.voucher_id', 'transactions.status', 'transactions.paid', 'transactions.shipment_id', 'transactions.updated_at', 'transactions.updated_at', 'profiles.full_name'));
+		$transaction = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->orderBy($sortBy,$type)->get(array('transactions.id', 'transactions.invoice' ,'transactions.account_id', 'transactions.total_price', 'transactions.voucher_id', 'transactions.status', 'transactions.paid', 'transactions.shipment_id', 'transactions.created_at', 'transactions.updated_at', 'profiles.full_name'));
 		if (count($transaction) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -1342,6 +1342,7 @@ class TransactionsController extends \BaseController {
 	{
 		$date1 = Input::get('date1');
 		$date2 = Input::get('date2');
+		$prod = Input::get('idPro');
 		
 		$d1 = new Carbon($date1);
 		$d2 = new Carbon($date2);
@@ -1356,9 +1357,7 @@ class TransactionsController extends \BaseController {
 		
 		$difference = ($d1->diff($d2)->days);
 		
-		$prod = Input::get('idPro');
 		
-		$blnTemp = Carbon::parse($bln.'-01-'.$thn)->format('n');
 		
 		$respond = array();
 		$report = Transaction::join('orders','transactions.id','=','orders.transaction_id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.id','=',$prod)->where('transactions.paid','=','1')->get(array('transactions.id','orders.priceNow','transactions.updated_at','orders.quantity','products.id as idProduct'));
@@ -1430,7 +1429,7 @@ class TransactionsController extends \BaseController {
 			}
 			if($tempHasil2 != 0)
 			{
-				$hasil[] = array('idProd' => $key->id, 'namaProd' => $key->name,'qty' => $tempHasil2,'penjualan'=>$tempHasil,'hargaNow' =>$key2->priceNow);
+				$hasil[] = array('idProd' => $key->id, 'namaProd' => $key->name,'qty' => $tempHasil2,'penjualan'=>$tempHasil);
 			}
 		}
 		
@@ -1471,10 +1470,10 @@ class TransactionsController extends \BaseController {
 		
 		$difference = ($d1->diff($d2)->days);
 		
-		$blnTemp = Carbon::parse($bln.'-01-'.$thn)->format('n');
+		
 		
 		$respond = array();
-		$report = Transaction::join('orders','transactions.id','=','orders.transaction_id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('products.id','=',$prod)->where('transactions.paid','=','1')->orderBy('products.id','asc')->get(array('transactions.id','orders.priceNow','transactions.updated_at','products.id as idProduct', 'orders.quantity'));
+		$report = Transaction::join('orders','transactions.id','=','orders.transaction_id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->where('transactions.paid','=','1')->orderBy('products.id','asc')->get(array('transactions.id','orders.priceNow','transactions.updated_at','products.id as idProduct', 'orders.quantity'));
 		$prod = Product::orderBy('id','asc')->get();
 		
 		$hasil = array();
@@ -1485,6 +1484,7 @@ class TransactionsController extends \BaseController {
 			$tempHasil = 0;
 			$tempHasil2 = 0;
 			$idx = 1;
+			$d1 = new Carbon($date1);
 			while($idx <= ($difference+1))
 			{
 				if($idx != 1)
@@ -1512,7 +1512,7 @@ class TransactionsController extends \BaseController {
 			
 			if($tempHasil2 != 0)
 			{
-				$hasil[] = array('idProd' => $key->id, 'namaProd' => $key->name,'qty' => $tempHasil2,'penjualan'=>$tempHasil,'hargaNow' =>$key2->priceNow);
+				$hasil[] = array('idProd' => $key->id, 'namaProd' => $key->name,'qty' => $tempHasil2,'penjualan'=>$tempHasil);
 			}
 		}
 		if($hasil != null)
@@ -1534,18 +1534,397 @@ class TransactionsController extends \BaseController {
 	public function getDetailPenjualanProduk()
 	{
 		$prod = Input::get('idProd');
+		$bln = Input::get('bulanRepPro');
+		$thn = Input::get('tahunRepPro');
+		
+		$blnTemp = Carbon::parse($bln.'-01-'.$thn)->format('n');
 		$respond = array();
-		$product = Product::where('id','=',$prod)->join('categories','products.category_id','=','categories.id')->join('galleries','galleries.product_id','=','products.id')->where('type','=','main_photo')->get();
+		$product = Product::where('products.id','=',$prod)->join('prices','prices.product_id','=','products.id')->join('orders','orders.price_id','=','prices.id')->join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('categories','products.category_id','=','categories.id')->join('attributes','prices.attr_id','=','attributes.id')->where(DB::raw('MONTH(transactions.updated_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.updated_at)'), '=', $thn)->where('transactions.paid','=','1')->get(array('profiles.full_name','transactions.invoice','transactions.updated_at','products.name as prodName','categories.name as catName','attributes.name as attName','prices.attr_value','orders.priceNow','orders.quantity'));
 		if (count($product) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
+			foreach($product as $key)
+			{
+				$main_photo = Gallery::where('product_id','=',$prod)->where('type','=','main_photo')->first();
+				if(count($main_photo) == 0)
+				{
+					$phot = "";
+				}else
+				{
+					$phot = $main_photo->photo_path;
+				}
+				$key->path_photo = $phot;
+			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$product);
 		}
 		return Response::json($respond);
 	}
 	
+	public function getDetailPenjualanProdukRange()
+	{
+		$prod = Input::get('idProd');
+		$date1 = Input::get('date1');
+		$date2 = Input::get('date2');
+		
+		$d1 = new Carbon($date1);
+		$d2 = new Carbon($date2);
+		
+		
+		$difference = ($d1->diff($d2)->days);
+		
+		$respond = array();
+		$product = Product::where('products.id','=',$prod)->join('prices','prices.product_id','=','products.id')->join('orders','orders.price_id','=','prices.id')->join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->join('categories','products.category_id','=','categories.id')->join('attributes','prices.attr_id','=','attributes.id')->where('transactions.paid','=','1')->get(array('profiles.full_name','transactions.invoice','transactions.updated_at','products.name as prodName','categories.name as catName','attributes.name as attName','prices.attr_value','orders.priceNow','orders.quantity'));
+		if (count($product) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			foreach($product as $key)
+			{
+				$main_photo = Gallery::where('product_id','=',$prod)->where('type','=','main_photo')->first();
+				if(count($main_photo) == 0)
+				{
+					$phot = "";
+				}else
+				{
+					$phot = $main_photo->photo_path;
+				}
+				$key->path_photo = $phot;
+			}
+			
+			$idx = 1;
+			$hasil = array();
+			while($idx <= ($difference+1))
+			{
+				
+				if($idx != 1)
+				{
+					$d1->addDay(1);
+				}
+				foreach($product as $key)
+				{
+					$dd = $key->updated_at;
+					$dd2 = Carbon::parse($dd)->format('Ynd');
+					$dc1 = Carbon::parse($d1)->format('Ynd');
+					if($dd2 == $dc1)
+					{
+						$dd3 =  Carbon::parse($dd2)->format('Y-n-d');
+						$hasil[] = array('full_name'=>$key->full_name,'invoice'=>$key->invoice,'updated_at'=>$dd3,'prodName'=>$key->prodName,'catName'=>$key->catName,'attName'=>$key->attName,'attr_value'=>$key->attr_value,'priceNow'=>$key->priceNow,'quantity'=>$key->quantity);
+					}
+				}
+				$idx = $idx + 1;
+			}
+			if($hasil != null)
+			{
+				$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+			}else
+			{
+				$respond = array('code'=>'404','status' => 'Not Found');
+			}
+		}
+		return Response::json($respond);
+	}
 	
+	public function getDetailPopUp()
+	{
+		$id = Input::get('id');
+		$trans = Transaction::where('transactions.id','=',$id)->join('orders','orders.transaction_id','=','transactions.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->join('categories','products.category_id','=','categories.id')->join('attributes','prices.attr_id','=','attributes.id')->get(array('transactions.invoice','products.id','products.name','categories.name as catName','attributes.name as attName','prices.attr_value','orders.priceNow','orders.quantity'));
+		if(count($trans) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}else
+		{
+			foreach($trans as $key)
+			{
+				$main_photo = Gallery::where('product_id','=',$key->id)->where('type','=','main_photo')->first();
+				if(count($main_photo) == 0)
+				{
+					$phot = "";
+				}else
+				{
+					$phot = $main_photo->photo_path;
+				}
+				$key->path_photo = $phot;
+			}
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$trans);
+		}
+		
+		return Response::json($respond);
+	}
+	
+	public function getStatusMonth()
+	{
+		$stat = Input::get('status');
+		$bln = Input::get('bulanRepPro');
+		$thn = Input::get('tahunRepPro');
+		$blnTemp = Carbon::parse($bln.'-01-'.$thn)->format('n');
+
+		
+		$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->where(DB::raw('MONTH(transactions.updated_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.updated_at)'), '=', $thn)->join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->join('shipments','transactions.shipment_id','=','shipments.id')->join('shipmentdatas','shipments.shipmentData_id','=','shipmentdatas.id')->where('transactions.status','=',$stat)->distinct()->get(array('transactions.id','profiles.full_name','transactions.invoice','shipments.number','shipmentdatas.courier','shipmentdatas.destination','transactions.updated_at'));
+		
+		if(count($order) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
+		}
+		
+		return Response::json($respond);
+	}
+	
+	public function getStatusRange()
+	{
+		$stat = Input::get('status');
+		
+		$date1 = Input::get('date1');
+		$date2 = Input::get('date2');
+		
+		$d1 = new Carbon($date1);
+		$d2 = new Carbon($date2);
+		
+		
+		$difference = ($d1->diff($d2)->days);
+		
+		$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->join('shipments','transactions.shipment_id','=','shipments.id')->join('shipmentdatas','shipments.shipmentData_id','=','shipmentdatas.id')->where('transactions.status','=',$stat)->distinct()->get(array('transactions.id','profiles.full_name','transactions.invoice','shipments.number','shipmentdatas.courier','shipmentdatas.destination','transactions.updated_at'));
+		
+		$idx = 1;
+		$hasil = array();
+		while($idx <= ($difference+1))
+		{
+			
+			if($idx != 1)
+			{
+				$d1->addDay(1);
+			}
+			foreach($order as $key)
+			{
+				$dd = $key->updated_at;
+				$dd2 = Carbon::parse($dd)->format('Ynd');
+				$dc1 = Carbon::parse($d1)->format('Ynd');
+				if($dd2 == $dc1)
+				{
+					$dd3 =  Carbon::parse($dd2)->format('Y-n-d');
+					$hasil[] = array('id'=>$key->id,'full_name'=>$key->full_name,'invoice'=>$key->invoice,'updated_at'=>$dd3,'number'=>$key->number,'courier'=>$key->courier,'destination'=>$key->destination);
+				}
+			}
+			$idx = $idx + 1;
+		}
+		if($hasil != null)
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		}else
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		
+		return Response::json($respond);
+	}
+	
+	public function getAllStatusMonth()
+	{
+		$bln = Input::get('bulanRepPro');
+		$thn = Input::get('tahunRepPro');
+		$blnTemp = Carbon::parse($bln.'-01-'.$thn)->format('n');
+
+		
+		$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->where(DB::raw('MONTH(transactions.updated_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.updated_at)'), '=', $thn)->join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->join('shipments','transactions.shipment_id','=','shipments.id')->join('shipmentdatas','shipments.shipmentData_id','=','shipmentdatas.id')->distinct()->get(array('transactions.id','profiles.full_name','transactions.invoice','shipments.number','shipmentdatas.courier','shipmentdatas.destination','transactions.updated_at','transactions.status'));
+		
+		if(count($order) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
+		}
+		
+		return Response::json($respond);
+	}
+	
+	public function getAllStatusRange()
+	{
+		
+		$date1 = Input::get('date1');
+		$date2 = Input::get('date2');
+		
+		$d1 = new Carbon($date1);
+		$d2 = new Carbon($date2);
+		
+		
+		$difference = ($d1->diff($d2)->days);
+		
+		$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->join('shipments','transactions.shipment_id','=','shipments.id')->join('shipmentdatas','shipments.shipmentData_id','=','shipmentdatas.id')->distinct()->get(array('transactions.id','profiles.full_name','transactions.invoice','shipments.number','shipmentdatas.courier','shipmentdatas.destination','transactions.updated_at','transactions.status'));
+		
+		$idx = 1;
+		$hasil = array();
+		while($idx <= ($difference+1))
+		{
+			
+			if($idx != 1)
+			{
+				$d1->addDay(1);
+			}
+			foreach($order as $key)
+			{
+				$dd = $key->updated_at;
+				$dd2 = Carbon::parse($dd)->format('Ynd');
+				$dc1 = Carbon::parse($d1)->format('Ynd');
+				if($dd2 == $dc1)
+				{
+					$dd3 =  Carbon::parse($dd2)->format('Y-n-d');
+					$hasil[] = array('id'=>$key->id,'full_name'=>$key->full_name,'invoice'=>$key->invoice,'updated_at'=>$dd3,'number'=>$key->number,'courier'=>$key->courier,'destination'=>$key->destination,'status'=>$key->status);
+				}
+			}
+			$idx = $idx + 1;
+		}
+		if($hasil != null)
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		}else
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		
+		return Response::json($respond);
+	}
+	
+	public function getPaidMonth()
+	{
+		$paid = Input::get('status');
+		$bln = Input::get('bulanRepPro');
+		$thn = Input::get('tahunRepPro');
+		$blnTemp = Carbon::parse($bln.'-01-'.$thn)->format('n');
+
+		
+		$order = Transaction::where(DB::raw('MONTH(transactions.updated_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.updated_at)'), '=', $thn)->join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('transactions.paid','=',$paid)->get(array('transactions.id','profiles.full_name','transactions.invoice','transactions.status','transactions.total_price'));
+		
+		if(count($order) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
+		}
+		
+		return Response::json($respond);
+	}
+	
+	public function getPaidRange()
+	{
+		$stat = Input::get('status');
+		
+		$date1 = Input::get('date1');
+		$date2 = Input::get('date2');
+		
+		$d1 = new Carbon($date1);
+		$d2 = new Carbon($date2);
+		
+		
+		$difference = ($d1->diff($d2)->days);
+		
+		$order = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('transactions.paid','=',$stat)->get(array('transactions.id','profiles.full_name','transactions.invoice','transactions.total_price','transactions.updated_at'));
+		
+		$idx = 1;
+		$hasil = array();
+		while($idx <= ($difference+1))
+		{
+			
+			if($idx != 1)
+			{
+				$d1->addDay(1);
+			}
+			foreach($order as $key)
+			{
+				$dd = $key->updated_at;
+				$dd2 = Carbon::parse($dd)->format('Ynd');
+				$dc1 = Carbon::parse($d1)->format('Ynd');
+				if($dd2 == $dc1)
+				{
+					$dd3 =  Carbon::parse($dd2)->format('Y-n-d');
+					$hasil[] = array('id'=>$key->id,'full_name'=>$key->full_name,'invoice'=>$key->invoice,'total_price'=>$key->total_price);
+				}
+			}
+			$idx = $idx + 1;
+		}
+		if($hasil != null)
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		}else
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		
+		return Response::json($respond);
+	}
+	
+	public function getAllPaidMonth()
+	{
+		$bln = Input::get('bulanRepPro');
+		$thn = Input::get('tahunRepPro');
+		$blnTemp = Carbon::parse($bln.'-01-'.$thn)->format('n');
+
+		
+		$order = Transaction::where(DB::raw('MONTH(transactions.updated_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.updated_at)'), '=', $thn)->join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->get(array('transactions.id','profiles.full_name','transactions.invoice','transactions.status','transactions.total_price','transactions.paid'));
+		
+		if(count($order) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
+		}
+		
+		return Response::json($respond);
+	}
+	
+	public function getAllPaidRange()
+	{
+		
+		$date1 = Input::get('date1');
+		$date2 = Input::get('date2');
+		
+		$d1 = new Carbon($date1);
+		$d2 = new Carbon($date2);
+		
+		
+		$difference = ($d1->diff($d2)->days);
+		
+		$order = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->get(array('transactions.id','profiles.full_name','transactions.invoice','transactions.total_price','transactions.updated_at','transactions.paid'));
+		
+		$idx = 1;
+		$hasil = array();
+		while($idx <= ($difference+1))
+		{
+			
+			if($idx != 1)
+			{
+				$d1->addDay(1);
+			}
+			foreach($order as $key)
+			{
+				$dd = $key->updated_at;
+				$dd2 = Carbon::parse($dd)->format('Ynd');
+				$dc1 = Carbon::parse($d1)->format('Ynd');
+				if($dd2 == $dc1)
+				{
+					$dd3 =  Carbon::parse($dd2)->format('Y-n-d');
+					$hasil[] = array('id'=>$key->id,'full_name'=>$key->full_name,'invoice'=>$key->invoice,'total_price'=>$key->total_price,'paid'=>$key->paid);
+				}
+			}
+			$idx = $idx + 1;
+		}
+		if($hasil != null)
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
+		}else
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		
+		return Response::json($respond);
+	}
 }

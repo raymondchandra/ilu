@@ -1,9 +1,9 @@
-<div class="modal fade pop_up_view_report_produk_detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade pop_up_view_report_pengiriman_detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title" id="myModalLabel">Detail Pengiriman No. Transaksi ...</h4>
+				<h4 class="modal-title" id="myModalLabelPe">Detail Pengiriman No Invoice </h4>
 			</div>
 			<form class="form-horizontal" role="form">
 				<div class="modal-body">
@@ -16,73 +16,27 @@
 											Nama Produk
 										</th>
 										<th>
+											Foto Produk
+										</th>
+										<th>
+											Category Produk
+										</th>
+										<th>
+											Attribut Produk
+										</th>
+										<th>
 											Qty.
 										</th>
 										<th>
-											@harga
+											Harga satuan
 										</th>
 										<th>
 											Subtotal
 										</th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr>
-										<td>
-											wer23x23rc
-										</td>
-										<td>
-											2
-										</td>
-										<td>
-											200.000
-										</td>
-										<td>
-											400.000
-										</td>
-									</tr>
-									<tr>
-										<td>
-											rc4234rc2
-										</td>
-										<td>
-											1
-										</td>
-										<td>
-											200.000
-										</td>
-										<td>
-											400.000
-										</td>
-									</tr>
-									<tr>
-										<td>
-											v54y2
-										</td>
-										<td>
-											5
-										</td>
-										<td>
-											200.000
-										</td>
-										<td>
-											400.000
-										</td>
-									</tr>
-									<tr>
-										<td>
-											3242456h234
-										</td>
-										<td>
-											1
-										</td>
-										<td>
-											200.000
-										</td>
-										<td>
-											400.000
-										</td>
-									</tr>
+								<tbody class="isiTab">
+									
 								</tbody>
 							</table>			
 						</div>
@@ -94,7 +48,8 @@
 
 				</div>
 				<div class="modal-footer">
-					<button type="button" id="rangeClick" class="btn btn-default" data-dismiss="modal">Show</button>
+					<button type="button" class="btn btn-info" >Save to PDF</button>
+					<button type="button" class="btn btn-info" >Print</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
 				</div>
 			</form>
