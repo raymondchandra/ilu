@@ -1,6 +1,6 @@
 
 		<script>
-			$('document').ready(function(){
+			function get_info(){
 				$.ajax({ 
 					type: 'GET',
 					url: "{{URL('admin/information')}}",
@@ -17,21 +17,21 @@
 								div+=$(this)[0].title;
 								div+="</td>";
 								div+="<td>";
-								div+="<button type='button' class='btn btn-warning' data-toggle='modal' data-target='.pop_up_detail_info'>Edit</button>";
+								div+="<a href='{{URL::to('admin/edit_informasi_detail')}}/"+$(this)[0].id+"' class='btn btn-warning'>Edit</a>";
 								div+="<input type='hidden' value='"+$(this)[0].id+"' />";
 								div+="<button type='button' class='btn btn-danger delete_info' data-toggle='modal' data-target='.pop_up_delete_info'>Delete</button>";
 								div+="</td>";
 								div+="</tr>";
 							});
-							$('.f_info_table').html(div);
+							$('.information_list').html(div);
 						}
-						
 					},
 					error: function(jqXHR, textStatus, errorThrown){
 						alert(errorThrown);
 					}
 				});
-			});
+			}
+			$('document').ready(get_info());
 		</script>
 			<h3>
 				Daftar Informasi <button id="f_add_informasi" class="btn btn-success pull-right" style="margin-bottom: 20px;" data-toggle="modal" data-target=".pop_up_add_container_info">+ Add New Info</button>
@@ -51,7 +51,7 @@
 							</th>
 						</tr>
 					</thead>
-					<tbody class="f_info_table">
+					<tbody class="f_info_table information_list">
 						<tr>
 							<td>
 								Das Epic
@@ -95,7 +95,7 @@
 
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-success add_info" data-dismiss="modal">Add Container Info</button>
+								<button type="button" class="btn btn-success add_information" data-dismiss="modal">Add Container Info</button>
 								<button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
 							</div>
 						</div>
@@ -294,37 +294,7 @@
 					url: "{{URL('admin/information')}}/"+$id,
 					success: function(response){
 						if(response.code == 200){
-							$.ajax({
-								type: 'GET',
-								url: "{{URL('admin/information')}}",
-								success: function(response){
-									if(response.code == 404){
-										
-									}
-									else{
-										var msgs = response.messages;
-										var div = '';
-										$(msgs).each(function(){
-											div+="<tr>";
-											div+="<td>";
-											div+=$(this)[0].title;
-											div+="</td>";
-											div+="<td>";
-											div+="<button type='button' class='btn btn-warning' data-toggle='modal' data-target='.pop_up_detail_info'>Edit</button>";
-											div+="<input type='hidden' value='"+$(this)[0].id+"' />";
-											div+="<button type='button' class='btn btn-danger delete_info' data-toggle='modal' data-target='.pop_up_delete_info'>Delete</button>";
-											div+="</td>";
-											div+="</tr>";
-										});
-										$('.f_info_table').html(div);
-										alert('Success Delete Information');
-									}
-									
-								},
-								error: function(jqXHR, textStatus, errorThrown){
-									alert(errorThrown);
-								}
-							});
+							get_info();
 						}
 					},
 					error: function(jqXHR, textStatus, errorThrown){
@@ -333,7 +303,7 @@
 				});
 			});
 		
-			$('body').on('click','.add_info',function(){
+			$('body').on('click','.add_information',function(){
 				$.ajax({
 					type: 'POST',
 					url: "{{URL('admin/information')}}",
@@ -342,37 +312,7 @@
 					},
 					success: function(response){
 						if(response.code == 201){
-							$.ajax({
-								type: 'GET',
-								url: "{{URL('admin/information')}}",
-								success: function(response){
-									if(response.code == 404){
-										
-									}
-									else{
-										var msgs = response.messages;
-										var div = '';
-										$(msgs).each(function(){
-											div+="<tr>";
-											div+="<td>";
-											div+=$(this)[0].title;
-											div+="</td>";
-											div+="<td>";
-											div+="<button type='button' class='btn btn-warning' data-toggle='modal' data-target='.pop_up_detail_info'>Edit</button>";
-											div+="<input type='hidden' value='"+$(this)[0].id+"' />";
-											div+="<button type='button' class='btn btn-danger delete_info' data-toggle='modal' data-target='.pop_up_delete_info'>Delete</button>";
-											div+="</td>";
-											div+="</tr>";
-										});
-										$('.f_info_table').html(div);
-										alert('Success Add Information');
-									}
-									
-								},
-								error: function(jqXHR, textStatus, errorThrown){
-									alert(errorThrown);
-								}
-							});
+							get_info();
 						}
 					},
 					error: function(jqXHR, textStatus, errorThrown){

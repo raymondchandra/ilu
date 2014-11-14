@@ -236,7 +236,7 @@
 							div+=$(this)[0].title;
 							div+="</td>";
 							div+="<td>";
-							div+="<button type='button' class='btn btn-warning' data-toggle='modal' data-target='.pop_up_detail_info'>Edit</button>";
+							div+="<a href='{{URL::to('admin/edit_informasi_detail')}}/"+$(this)[0].id+"' class='btn btn-warning'>Edit</a>";
 							div+="<input type='hidden' value='"+$(this)[0].id+"' />";
 							div+="<button type='button' class='btn btn-danger delete_info' data-toggle='modal' data-target='.pop_up_delete_info'>Delete</button>";
 							div+="</td>";

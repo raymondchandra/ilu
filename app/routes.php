@@ -188,6 +188,9 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		Route::post('/product/editGallery', ['as' => 'product.editGallery', 'uses' => 'ProductsManagementController@editGallery']);
 	Route::post('/product/deleteProduct', ['as' => 'product.deleteProduct', 'uses' => 'ProductsManagementController@deleteProduct']);	
 	
+	//-------------------------------------------PAYMENTPROFF VIEW ADMIN-------------------------------------------
+	Route::get('/manage_payment_proof', ['as' => 'viewPaymentProffsManagement', 'uses' => 'PaymentProffsManagementController@view_admin_paymentproff']);
+	
 	//ooooooooooooooooooooooooooooooooooooooKERJAAN DAVIDoooooooooooooooooooooooooooooooooooooooo	
 	Route::get('/getTopTenNewProduct', ['as' => 'getTopTenNewProduct', 'uses' => 'ProductsController@getTopTenNewProduct']);
 	Route::get('/getProductFromNewestPromotion', ['as' => 'getProductFromNewestPromotion', 'uses' => 'PromotionsController@getProductFromNewestPromotion']);
@@ -280,6 +283,13 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		Route::post('/information', ['as' => 'add.information' , 'uses' => 'InformationManagementController@insert_information']);
     	Route::put('/information/{id}', ['as' => 'edit.information' , 'uses' => 'InformationController@updateFull']);
     	Route::delete('/information/{id}', ['as' => 'delete.information' , 'uses' => 'InformationManagementController@delete']);
+		
+	//detail info
+		Route::get('/edit_informasi_detail/{id}', ['as' => 'get.information_detail' , 'uses' => 'InformationManagementController@view_detail']);
+		Route::post('/information_content/{id}', ['as' => 'post.information_detail' , 'uses' => 'InformationManagementController@insert_information_content']);
+		Route::put('/information_content/{id}', ['as' => 'put.information_detail' , 'uses' => 'InformationManagementController@update_article']);
+		Route::delete('/information_content/{id}', ['as' => 'delete.information_detail' , 'uses' => 'InformationManagementController@delete_information_content']);
+	
     //newsletter
     	Route::get('/newsletter', ['as' => 'get.newsletter.list' , 'uses' => 'TemplatesController@getAll']);
     	Route::get('/newsletter/{id}', ['as' => 'get.newsletter.detail' , 'uses' => 'TemplatesController@getById']);
@@ -323,8 +333,15 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 		Route::post('/messages', ['as' => 'get.messages' , 'uses' => 'MessagesManagementController@send_email']);
 		
 	//ticket messages
-		Route::get('/ticket_messages', ['as' => 'get.messages' , 'uses' => 'MessagesManagementController@get_all_messages']);
-		Route::post('/ticket_messages', ['as' => 'get.messages' , 'uses' => 'MessagesManagementController@send_email']);	
+		Route::get('/ticket_messages', ['as' => 'get.ticket_messages' , 'uses' => 'MessagesManagementController@get_all_ticket_messages']);
+		
+		Route::get('/ticket_messages/{id}', ['as' => 'get.ticket_messages' , 'uses' => 'MessagesManagementController@get_ticket_messages']);
+	
+		Route::put('/ticket_messages/{id}', ['as' => 'put.ticket_messages' , 'uses' => 'MessagesManagementController@update_solve']);
+		
+		
+		
+		Route::post('/ticket_messages', ['as' => 'post.ticket_messages' , 'uses' => 'MessagesManagementController@send_email']);	
 		
 	//SHIPPING
 	Route::get('/manage_shipping', ['as'=>'jeffry.getShipping', 'uses' => 'ShippingManagementController@view_shipping_mgmt']);
@@ -599,10 +616,7 @@ Route::group(array('prefix' => 'test'), function()
 	});
 
     // manage_payment_proof
-    Route::get('/edit_informasi_detail', function()
-	{
-		return View::make('pages.admin.cms.edit_informasi_detail');
-	});
+   
 
 	Route::get('/manage_report_produk_jeffry', ['as' =>'jeffry.getReportProduk', 'uses' => 'ReportingManagementController@view_reporting_product']);
 

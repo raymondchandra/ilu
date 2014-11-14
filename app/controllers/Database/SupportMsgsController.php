@@ -89,7 +89,8 @@ class SupportMsgsController extends \BaseController {
 		{
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$supportmsg);
 		}
-		return Response::json($respond);
+		//return Response::json($respond);
+		return $supportmsg;
 	}
 	
 
