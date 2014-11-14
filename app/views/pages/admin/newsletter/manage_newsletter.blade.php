@@ -13,15 +13,52 @@
 				<hr></hr>
 				
 				<div>
-					<ul class="pagination">
-					  <li><a href="#">&laquo;</a></li>
-					  <li><a href="#">1</a></li>
-					  <li><a href="#">2</a></li>
-					  <li><a href="#">3</a></li>
-					  <li><a href="#">4</a></li>
-					  <li><a href="#">5</a></li>
-					  <li><a href="#">&raquo;</a></li>
-					</ul>
+					<div class="row">
+						<div class="col-lg-6">
+							<h2>Preview</h2>
+							<div class="panel panel-default">
+							  <div class="panel-body">
+								@include('pages.admin.email_template.promo')
+							  </div>
+							</div>
+							
+					</div>
+						<div class="col-lg-6">
+							<h2>Editor</h2>
+							<div>
+								<label class="radio-inline">
+								  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked> Promo
+								</label>
+								<label class="radio-inline">
+								  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> New Product
+								</label>
+								<label class="radio-inline">
+								  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> Top Selling Product
+								</label>
+							</div>
+							<div>
+							<link href="{{ asset('assets/js/jqte/jquery-te-1.4.0.css') }}" rel="stylesheet">
+							<script src="{{ asset('assets/js/jqte/jquery-te-1.4.0.min.js') }}"></script>
+								<textarea class="f_te"></textarea>
+								<script>
+									$("textarea").jqte({change: function()
+									{ 
+										
+										//var x = $("textarea").jqteVal('sadasd');
+										$('#email_body_content').html($('.jqte_editor').html());
+									}});
+									
+									
+									//email_body_content
+									//jqte_editor
+									
+								</script>
+							</div>
+						</div>
+					</div>
+					
+					
+					<!--
 					<button class="btn btn-success" style="float: right; margin-top: 20px;" data-toggle="modal" data-target=".pop_up_add_newsletter">+ Add New Tax</button>
 					<table class="table table-striped table-hover table-condensed table-bordered">
 						<thead class="table-bordered">
@@ -63,6 +100,7 @@
 									<button class="btn btn-info btn-xs" data-toggle="modal" data-target=".pop_up_view_newsletter">View</button>
 									<button class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_newsletter">Edit</button>
 									<!-- Button trigger modal class ".alertYesNo" -->
+									<!--
 									<button class="btn btn-danger btn-xs" data-toggle="modal" data-target=".alertYesNo">Delete</button>
 								</td>
 							</tr> 
@@ -72,6 +110,7 @@
 							
 						</tbody>
 					</table>
+					-->
 				</div>
 				
 			</div>

@@ -820,15 +820,57 @@ body.outlook p {
                   <td class="wrapper last">
 
                     <table class="twelve columns">
+						<tr>
+							<td colspan="3">
+								
+                          <h1>Welcome, Customer</h1>
+							</td>
+						</tr>
                       <tr>
                         <td>
-                          <h1>Welcome, Daneel Olivan</h1>
+                          <img src="" style="width:150px; height: 150px;">
+						  <p>Caption Here</p>
+						  <p>Rp. xyz.xyz</p>
+                        </td>
+                        <td>
+                          <img src="" style="width:150px; height: 150px;">
+						  <p>Caption Here</p>
+						  <p>Rp. xyz.xyz</p>
+                        </td>
+                        <td>
+                          <img src="" style="width:150px; height: 150px;">
+						  <p>Caption Here</p>
+						  <p>Rp. xyz.xyz</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <img src="" style="width:150px; height: 150px;">
+						  <p>Caption Here</p>
+						  <p>Rp. xyz.xyz</p>
+                        </td>
+                        <td>
+                          <img src="" style="width:150px; height: 150px;">
+						  <p>Caption Here</p>
+						  <p>Rp. xyz.xyz</p>
+                        </td>
+                        <td>
+                          <img src="" style="width:150px; height: 150px;">
+						  <p>Caption Here</p>
+						  <p>Rp. xyz.xyz</p>
+                        </td>
+                      </tr>
+                    </table>
+					
+                    <!--<table class="twelve columns">
+                      <tr>
+                        <td>
                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et.</p>
                           <img width="580" height="300" src="http://placehold.it/580x300">
                         </td>
                         <td class="expander"></td>
                       </tr>
-                    </table>
+                    </table>-->
 
                     <table class="twelve columns">
                       <tr>
@@ -851,7 +893,7 @@ body.outlook p {
 
                     <table class="six columns">
                       <tr>
-                        <td>
+                        <td id="email_body_content">
 
                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. Lorem ipsum dolor sit amet.</p>
 
@@ -873,71 +915,6 @@ body.outlook p {
                   </td>
                   <td class="wrapper last">
 
-                    <table class="six columns">
-                      <tr>
-                        <td class="panel">
-                          <h6>Header Thing</h6>
-                          <p>Sub-head or something</p>
-                          <table>
-                              <tr>
-                                <td>
-                                  <a href="#">Just a Plain Link &raquo;</a>
-                                </td>
-                              </tr>
-                            </table>
-                            <hr>
-                            <table>
-                              <tr>
-                                <td>
-                                  <a href="#">Just a Plain Link &raquo;</a>
-                                </td>
-                              </tr>
-                            </table>
-                            <hr>
-                            <table>
-                              <tr>
-                                <td>
-                                  <a href="#">Just a Plain Link &raquo;</a>
-                                </td>
-                              </tr>
-                            </table>
-                            <hr>
-                            <table>
-                              <tr>
-                                <td>
-                                  <a href="#">Just a Plain Link &raquo;</a>
-                                </td>
-                              </tr>
-                            </table>
-                            <hr>
-                            <table>
-                              <tr>
-                                <td>
-                                  <a href="#">Just a Plain Link &raquo;</a>
-                                </td>
-                              </tr>
-                            </table>
-                            <hr>
-                            <table>
-                              <tr>
-                                <td>
-                                  <a href="#">Just a Plain Link &raquo;</a>
-                                </td>
-                              </tr>
-                            </table>
-                            <hr>
-                            <table>
-                              <tr>
-                                <td>
-                                  <a href="#">Just a Plain Link &raquo;</a>
-                                </td>
-                              </tr>
-                            </table>
-                        </td>
-                        <td class="expander"></td>
-                      </tr>
-                    </table>
-                    <br>
                     <table class="six columns">
                       <tr>
                         <td class="panel">
