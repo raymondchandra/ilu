@@ -640,6 +640,7 @@ $('body').on('click','.butRepPro2',function(){
 					$(responses).each(function() {
 						tab+= "<input type='hidden'  value='"+responses[idx].id+"'/>";
 						tab+= "<tr data-toggle='modal' data-target='.pop_up_view_report_pembayaran_detail' class='viewDet'>";
+						
 						tab+="<td>"+responses[idx].full_name+"</td>";
 						tab+="<td>"+responses[idx].invoice+"</td>";
 						tab+="<td>"+toRp(responses[idx].total_price)+"</td>";
@@ -665,6 +666,7 @@ $('body').on('click','.butRepPro2',function(){
 
 $('body').on('click','.viewDet',function(){
 			$idTrans = $(this).prev().val();
+			$stat = $('.stat').val();
 			$.ajax({
 				type: 'GET',
 				url: '{{URL::route('jeffry.getReportPembayaranMonthDetail')}}',
@@ -684,10 +686,20 @@ $('body').on('click','.viewDet',function(){
 					else
 					{
 						var tab = "";
+						var id = "";
 						var obj = response['messages'];
-						$('#myModalLabelPe').text("Detail Pengiriman No Invoice "+ obj[0]['invoice']);
+						if(obj[0]['paid'] == 1)
+						{
+							id = "Paid";
+						}else if(obj[0]['paid'] == 0)
+						{
+							id = "UnPaid";
+						}
+						//var hid="";
+						$('#myModalLabelByr').text("Detail Pembayaran "+id +" Nomor Invoice "+ obj[0]['invoice']);
 						var responses = obj;
 						var idx = 0;
+						//hid += "Detail Pembayaran "+id +" Nomor Invoice "+ obj[0]['invoice'];
 						$(responses).each(function() {
 								tab+= "<tr>";
 								tab+="<td>"+responses[idx].name+"</td>";
@@ -698,8 +710,10 @@ $('body').on('click','.viewDet',function(){
 								tab+="<td>"+toRp(responses[idx].priceNow)+"</td>";
 								tab+="<td>"+toRp((responses[idx].priceNow * responses[idx].quantity))+"</td>";
 								tab+="</tr>";
+								//hid+= tab;
 								idx = idx+1;
 							});
+							//tab+= "<input type='hidden' id='hslprnt' value='"+hid+"' />";
 							$('.isiTab').html(tab);
 					}
 				},error: function(xhr, textStatus, errorThrown){
@@ -709,6 +723,26 @@ $('body').on('click','.viewDet',function(){
 			},'json');
 	});
 
+	$('body').on('click','.pdf',function(){
+			var pdfHeader = $('.print').html();
+			var doc = new jsPDF('l', 'pt', 'a4');
+			var elementHandler = {
+				
+			  '#no': function (element, renderer) {
+				return true;
+			  }
+			};
+			doc.fromHTML(pdfHeader,
+			12,
+			12,
+			{
+			  'elementHandlers': elementHandler
+			}); 
+			doc.output("dataurlnewwindow");
+			//return PDF::load(gabung, 'A4', 'portrait')->show();
+			//PDF::load($html, 'A4', 'portrait')->download($('#myModalLabelByr').text());
+	});
+	
 function toRp(angka){
 		var rev     = parseInt(angka, 10).toString().split('').reverse().join('');
 		var rev2    = '';

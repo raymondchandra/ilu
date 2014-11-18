@@ -14,47 +14,25 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-		$stat = 'On-shipping';
-		$date1 = '01-November-2014';
-		$date2 = '03-November-2014';
-		$d1 = new Carbon($date1);
-		$d2 = new Carbon($date2);
+		//$stat = 'On-shipping';
+		//$date1 = '01-November-2014';
+		//$date2 = '03-November-2014';
+		$paid = 1;
+		$bln = 'October';
+		$thn = '2014';
+		$blnTemp = Carbon::parse($bln.'-01-'.$thn)->format('n');
+
 		
+		$order = Transaction::where(DB::raw('MONTH(transactions.updated_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.updated_at)'), '=', $thn)->join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('transactions.paid','=',$paid)->get(array('transactions.id','profiles.full_name','transactions.invoice','transactions.status','transactions.total_price','transactions.paid'));
 		
-		$difference = ($d1->diff($d2)->days);
-		
-		$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->join('shipments','transactions.shipment_id','=','shipments.id')->join('shipmentdatas','shipments.shipmentData_id','=','shipmentdatas.id')->where('transactions.status','=',$stat)->distinct()->get(array('transactions.id','profiles.full_name','transactions.invoice','shipments.number','shipmentdatas.courier','shipmentdatas.destination','transactions.updated_at'));
-		
-		$idx = 1;
-		$hasil = array();
-		while($idx <= ($difference+1))
-		{
-			
-			if($idx != 1)
-			{
-				$d1->addDay(1);
-			}
-			foreach($order as $key)
-			{
-				$dd = $key->updated_at;
-				$dd2 = Carbon::parse($dd)->format('Ynd');
-				$dc1 = Carbon::parse($d1)->format('Ynd');
-				if($dd2 == $dc1)
-				{
-					$dd3 =  Carbon::parse($dd2)->format('Y-n-d');
-					$hasil[] = array('id'=>$key->id,'full_name'=>$key->full_name,'invoice'=>$key->invoice,'updated_at'=>$dd3,'number'=>$key->number,'courier'=>$key->courier,'destination'=>$key->destination,'updated_at'=>$key->updated_at);
-				}
-			}
-			$idx = $idx + 1;
-		}
-		if($hasil != null)
-		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
-		}else
+		if(count($order) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
+		}else
+		{
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
 		}
-		echo $respond['code'];
+		echo $respond['messages'];
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -370,6 +348,45 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	
 	Route::get('/top_ten_product', ['as' =>'jeffry.top10product', 'uses' => 'TransactionsController@getTopTenProduct']);
 	
+	Route::get('/manage_report_produk', ['as' =>'jeffry.getReportProduk', 'uses' => 'ReportingManagementController@view_reporting_product']);
+
+	Route::get('/manage_report_produk1month', ['as' =>'jeffry.getReportProduk1Month', 'uses' => 'TransactionsController@getMostCurrentProdukOneMonth']);
+	
+	Route::get('/manage_report_produk1month_detail', ['as' =>'jeffry.getReportProduk1MonthDetail', 'uses' => 'TransactionsController@getDetailMostCurrentProdukOneMonth']);
+	
+	Route::get('/manage_report_produk_range', ['as' =>'jeffry.getReportProdukRange', 'uses' => 'TransactionsController@getMostCurrentProdukRange']);
+	
+	Route::get('/manage_report_produk2_1month', ['as' =>'jeffry.getReportProduk21Month', 'uses' => 'TransactionsController@getPenjualanProdukOneMonth']);
+	
+	Route::get('/manage_report_produk2_range', ['as' =>'jeffry.getReportProduk2Range', 'uses' => 'TransactionsController@getPenjualanProdukRange']);
+	
+	Route::get('/manage_report_produk2_1month_detail', ['as' =>'jeffry.getReportProduk21MonthDetail', 'uses' => 'TransactionsController@getDetailPenjualanProduk']);
+	
+	Route::get('/manage_report_produk2_range_detail', ['as' =>'jeffry.getReportProduk2RangeDetail', 'uses' => 'TransactionsController@getDetailPenjualanProdukRange']);
+	
+	Route::get('/manage_report_pengiriman_month', ['as' =>'jeffry.getReportPengirimanMonth', 'uses' => 'TransactionsController@getStatusMonth']);
+	
+	Route::get('/manage_report_pengiriman_month_detail', ['as' =>'jeffry.getReportPengirimanMonthDetail', 'uses' => 'TransactionsController@getDetailPopUp']);
+	
+	Route::get('/manage_report_pengiriman', ['as' =>'jeffry.getReportPengiriman', 'uses' => 'ReportingManagementController@view_reporting_pengiriman']);
+	
+	Route::get('/manage_report_pengiriman_range', ['as' =>'jeffry.getReportPengirimanRange', 'uses' => 'TransactionsController@getStatusRange']);
+	
+	Route::get('/manage_report_all_pengiriman_month', ['as' =>'jeffry.getReportAllPengirimanMonth', 'uses' => 'TransactionsController@getAllStatusMonth']);
+	
+	Route::get('/manage_report_all_pengiriman_range', ['as' =>'jeffry.getReportAllPengirimanRange', 'uses' => 'TransactionsController@getAllStatusRange']);
+	
+	Route::get('/manage_report_pembayaran', ['as' =>'jeffry.getReportPembayaran', 'uses' => 'ReportingManagementController@view_reporting_pembayaran']);
+	
+	Route::get('/manage_report_pembayaran_month', ['as' =>'jeffry.getReportPembayaranMonth', 'uses' => 'TransactionsController@getPaidMonth']);
+	
+	Route::get('/manage_report_pembayaran_range', ['as' =>'jeffry.getReportPembayaranRange', 'uses' => 'TransactionsController@getPaidRange']);
+	
+	Route::get('/manage_report_all_pembayaran_month', ['as' =>'jeffry.getReportAllPembayaranMonth', 'uses' => 'TransactionsController@getAllPaidMonth']);
+	
+	Route::get('/manage_report_all_pembayaran_range', ['as' =>'jeffry.getReportAllPembayaranRange', 'uses' => 'TransactionsController@getAllPaidRange']);
+
+	Route::get('/manage_report_pembayaran_month_detail', ['as' =>'jeffry.getReportPembayaranMonthDetail', 'uses' => 'TransactionsController@getDetailPopUp']);
 	
 
 });
@@ -604,45 +621,51 @@ Route::group(array('prefix' => 'test'), function()
 		return View::make('pages.admin.cms.edit_informasi_detail');
 	});
 
-	Route::get('/manage_report_produk_jeffry', ['as' =>'jeffry.getReportProduk', 'uses' => 'ReportingManagementController@view_reporting_product']);
-
-	Route::get('/manage_report_produk1month_jeffry', ['as' =>'jeffry.getReportProduk1Month', 'uses' => 'TransactionsController@getMostCurrentProdukOneMonth']);
 	
-	Route::get('/manage_report_produk1month_detail_jeffry', ['as' =>'jeffry.getReportProduk1MonthDetail', 'uses' => 'TransactionsController@getDetailMostCurrentProdukOneMonth']);
 	
-	Route::get('/manage_report_produk_range_jeffry', ['as' =>'jeffry.getReportProdukRange', 'uses' => 'TransactionsController@getMostCurrentProdukRange']);
+	Route::get('/print', ['as' =>'jeffry.getPrintPdf', 'uses' => 'TransactionsController@showPDF']);
 	
-	Route::get('/manage_report_produk2_1month_jeffry', ['as' =>'jeffry.getReportProduk21Month', 'uses' => 'TransactionsController@getPenjualanProdukOneMonth']);
-	
-	Route::get('/manage_report_produk2_range_jeffry', ['as' =>'jeffry.getReportProduk2Range', 'uses' => 'TransactionsController@getPenjualanProdukRange']);
-	
-	Route::get('/manage_report_produk2_1month_detail_jeffry', ['as' =>'jeffry.getReportProduk21MonthDetail', 'uses' => 'TransactionsController@getDetailPenjualanProduk']);
-	
-	Route::get('/manage_report_produk2_range_detail_jeffry', ['as' =>'jeffry.getReportProduk2RangeDetail', 'uses' => 'TransactionsController@getDetailPenjualanProdukRange']);
-	
-	Route::get('/manage_report_pengiriman_month_jeffry', ['as' =>'jeffry.getReportPengirimanMonth', 'uses' => 'TransactionsController@getStatusMonth']);
-	
-	Route::get('/manage_report_pengiriman_month_detail_jeffry', ['as' =>'jeffry.getReportPengirimanMonthDetail', 'uses' => 'TransactionsController@getDetailPopUp']);
-	
-	Route::get('/manage_report_pengiriman_jeffry', ['as' =>'jeffry.getReportPengiriman', 'uses' => 'ReportingManagementController@view_reporting_pengiriman']);
-	
-	Route::get('/manage_report_pengiriman_range_jeffry', ['as' =>'jeffry.getReportPengirimanRange', 'uses' => 'TransactionsController@getStatusRange']);
-	
-	Route::get('/manage_report_all_pengiriman_month_jeffry', ['as' =>'jeffry.getReportAllPengirimanMonth', 'uses' => 'TransactionsController@getAllStatusMonth']);
-	
-	Route::get('/manage_report_all_pengiriman_range_jeffry', ['as' =>'jeffry.getReportAllPengirimanRange', 'uses' => 'TransactionsController@getAllStatusRange']);
-	
-	Route::get('/manage_report_pembayaran_jeffry', ['as' =>'jeffry.getReportPembayaran', 'uses' => 'ReportingManagementController@view_reporting_pembayaran']);
-	
-	Route::get('/manage_report_pembayaran_month_jeffry', ['as' =>'jeffry.getReportPembayaranMonth', 'uses' => 'TransactionsController@getPaidMonth']);
-	
-	Route::get('/manage_report_pembayaran_range_jeffry', ['as' =>'jeffry.getReportPembayaranRange', 'uses' => 'TransactionsController@getPaidRange']);
-	
-	Route::get('/manage_report_all_pembayaran_month_jeffry', ['as' =>'jeffry.getReportAllPembayaranMonth', 'uses' => 'TransactionsController@getAllPaidMonth']);
-	
-	Route::get('/manage_report_all_pembayaran_range_jeffry', ['as' =>'jeffry.getReportAllPembayaranRange', 'uses' => 'TransactionsController@getAllPaidRange']);
-
-	Route::get('/manage_report_pembayaran_month_detail_jeffry', ['as' =>'jeffry.getReportPembayaranMonthDetail', 'uses' => 'TransactionsController@getDetailPopUp']);
+	Route::get('/aaa', function()
+{
+    $html = '<html><body>'
+            . '<div class="modal-header printHead">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabelByr">Detail Pembayaran [object Object] No Invoice 3184966</h4>
+			</div> <div class="row">
+						<div class="col-sm-12"><!-- col-sm-5 -->
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>
+											Nama Produk
+										</th>
+										<th>
+											Foto Produk
+										</th>
+										<th>
+											Category Produk
+										</th>
+										<th>
+											Attribut Produk
+										</th>
+										<th>
+											Qty.
+										</th>
+										<th>
+											Harga satuan
+										</th>
+										<th>
+											Subtotal
+										</th>
+									</tr>
+								</thead>
+								<tbody class="isiTab"><tr><td>et</td><td><img width="100" height="100" src=""></td><td>Jonatan Cronin</td><td>omnis - in</td><td>6</td><td>Rp 100,-</td><td>Rp 600,-</td></tr><tr><td>et</td><td><img width="100" height="100" src=""></td><td>Harvey Weber</td><td>voluptas - commodi</td><td>15</td><td>Rp 1.000,-</td><td>Rp 15.000,-</td></tr></tbody>
+							</table>			
+						</div>
+					</div>'
+            . '</body></html>';
+    return PDF::load($html, 'A4', 'portrait')->show();
+});
 	
 });
 

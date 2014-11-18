@@ -1632,7 +1632,7 @@ class TransactionsController extends \BaseController {
 	public function getDetailPopUp()
 	{
 		$id = Input::get('id');
-		$trans = Transaction::where('transactions.id','=',$id)->join('orders','orders.transaction_id','=','transactions.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->join('categories','products.category_id','=','categories.id')->join('attributes','prices.attr_id','=','attributes.id')->get(array('transactions.invoice','products.id','products.name','categories.name as catName','attributes.name as attName','prices.attr_value','orders.priceNow','orders.quantity'));
+		$trans = Transaction::where('transactions.id','=',$id)->join('orders','orders.transaction_id','=','transactions.id')->join('prices','orders.price_id','=','prices.id')->join('products','prices.product_id','=','products.id')->join('categories','products.category_id','=','categories.id')->join('attributes','prices.attr_id','=','attributes.id')->get(array('transactions.invoice','products.id','products.name','categories.name as catName','attributes.name as attName','prices.attr_value','orders.priceNow','orders.quantity','transactions.paid','transactions.status','transactions.updated_at'));
 		if(count($trans) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -1730,7 +1730,7 @@ class TransactionsController extends \BaseController {
 		$bln = Input::get('bulanRepPro');
 		$thn = Input::get('tahunRepPro');
 		$blnTemp = Carbon::parse($bln.'-01-'.$thn)->format('n');
-
+		
 		
 		$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->where(DB::raw('MONTH(transactions.updated_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.updated_at)'), '=', $thn)->join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->join('shipments','transactions.shipment_id','=','shipments.id')->join('shipmentdatas','shipments.shipmentData_id','=','shipmentdatas.id')->distinct()->get(array('transactions.id','profiles.full_name','transactions.invoice','shipments.number','shipmentdatas.courier','shipmentdatas.destination','transactions.updated_at','transactions.status'));
 		
@@ -1800,7 +1800,7 @@ class TransactionsController extends \BaseController {
 		$blnTemp = Carbon::parse($bln.'-01-'.$thn)->format('n');
 
 		
-		$order = Transaction::where(DB::raw('MONTH(transactions.updated_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.updated_at)'), '=', $thn)->join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('transactions.paid','=',$paid)->get(array('transactions.id','profiles.full_name','transactions.invoice','transactions.status','transactions.total_price'));
+		$order = Transaction::where(DB::raw('MONTH(transactions.updated_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.updated_at)'), '=', $thn)->join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('transactions.paid','=',$paid)->get(array('transactions.id','profiles.full_name','transactions.invoice','transactions.status','transactions.total_price','transactions.paid'));
 		
 		if(count($order) == 0)
 		{
@@ -1826,7 +1826,7 @@ class TransactionsController extends \BaseController {
 		
 		$difference = ($d1->diff($d2)->days);
 		
-		$order = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('transactions.paid','=',$stat)->get(array('transactions.id','profiles.full_name','transactions.invoice','transactions.total_price','transactions.updated_at'));
+		$order = Transaction::join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('transactions.paid','=',$stat)->get(array('transactions.id','profiles.full_name','transactions.invoice','transactions.total_price','transactions.updated_at','transactions.paid'));
 		
 		$idx = 1;
 		$hasil = array();
@@ -1845,7 +1845,7 @@ class TransactionsController extends \BaseController {
 				if($dd2 == $dc1)
 				{
 					$dd3 =  Carbon::parse($dd2)->format('Y-n-d');
-					$hasil[] = array('id'=>$key->id,'full_name'=>$key->full_name,'invoice'=>$key->invoice,'total_price'=>$key->total_price);
+					$hasil[] = array('id'=>$key->id,'full_name'=>$key->full_name,'invoice'=>$key->invoice,'total_price'=>$key->total_price,'paid'=>$key->paid);
 				}
 			}
 			$idx = $idx + 1;
@@ -1926,5 +1926,19 @@ class TransactionsController extends \BaseController {
 		}
 		
 		return Response::json($respond);
+	}
+	
+	public function showPDF()
+	{
+		$hasil = Input::get('print');
+		//echo $hasil;
+		$cek = PDF::load($hasil, 'A4', 'portrait')->download('ah');
+		$respond = array('code'=>'404','status' => 'Not Found','messages'=>'berhasil');
+		return Response::json($respond);
+		
+		//$headers = array('Content-Type' => 'application/pdf');
+
+		//return Response::make(PDF::load($hasil, 'A4', 'portrait')->download('my_pdf'), 200, $headers);
+		
 	}
 }
