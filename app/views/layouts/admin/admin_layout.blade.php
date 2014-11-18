@@ -99,6 +99,8 @@
 			  //-- fungsi untuk me-reset sluruh input[type=text] pada modal --
 			  $(this).find('input[type=text]').val('');
 			})
+			
+			
 		</script>
 	</body>
 </html>

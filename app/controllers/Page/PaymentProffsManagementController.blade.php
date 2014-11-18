@@ -1,6 +1,6 @@
 <?php
 
-class PaymentProffsManagementController extend \BaseController
+class PaymentProffsManagementController extends \BaseController
 {
 	public function view_admin_paymentproff()
 	{
@@ -29,6 +29,6 @@ class PaymentProffsManagementController extend \BaseController
 			$paymentProff = null;
 		}
 		
-		return View::make('pages.admin.payment_proff.manage_payment_proof', compact('paymentProff','page'));
+		return View::make('pages.admin.payment_proof.manage_payment_proof', compact('paymentProff','page'));
 	}
 }

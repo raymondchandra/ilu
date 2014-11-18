@@ -18,6 +18,7 @@ class CreateOrdersTable extends Migration {
 			$table->integer('price_id')->unsigned();
 			$table->integer('quantity');
 			$table->integer('transaction_id')->unsigned();
+			$table->integer('priceNow');
 			$table->timestamps();
 		});
 	}

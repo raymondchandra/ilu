@@ -266,11 +266,11 @@
 						tr_seo +=''+ $(this)[0].name +'';
 						tr_seo +='	</td>';
 						tr_seo +='	<td>';
-						tr_seo +='		<span class="meta">'+ $(this)[0].content +'</span>';
+						tr_seo +='		<span class="meta">'+ $(this)[0].description +'</span>';
 						tr_seo +='		<input type="text" class="form-control hidden meta content">';
 						tr_seo +='	</td>';
 						tr_seo +='	<td>';
-						tr_seo +='		<span class="meta key">'+ $(this)[0].key +'</span>';
+						tr_seo +='		<span class="meta key">'+ $(this)[0].keyword +'</span>';
 						tr_seo +='		<input type="text" class="form-control hidden meta key">';
 						tr_seo +='	</td>';
 						tr_seo +='<input type="hidden" class="seo_id" value="'+$(this)[0].id+'" />';

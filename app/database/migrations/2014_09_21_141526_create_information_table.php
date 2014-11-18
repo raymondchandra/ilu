@@ -20,7 +20,7 @@ class CreateInformationTable extends Migration {
 			$table->timestamps();
 		});
 		
-		Schema::create('information_content', function(Blueprint $table)
+		Schema::create('information_contents', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('id_information')->unsigned();

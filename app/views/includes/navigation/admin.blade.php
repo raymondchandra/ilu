@@ -39,7 +39,7 @@
 					<li><a href="{{ URL::to('admin/manage_transaction') }}">Manage  Transaction</a></li>	
 					<li><a href="{{ URL::to('admin/manage_order') }}">Manage Order</a></li>	
 					<li class="divider"></li>
-					<li><a href="{{ URL::to('test/manage_payment_proof') }}">Payment Proof</a></li>
+					<li><a href="{{ URL::to('admin/manage_payment_proof') }}">Payment Proof</a></li>
 				</ul>
 			</li>
 

@@ -150,7 +150,14 @@
 						</div>
 					</div>
 				</div>
-			</div>			
+			</div>	
+			<script>			
+			$('.pop_up_new_image').on('hidden.bs.modal', function (e) {
+			  //alert('modal closed');
+			  //-- fungsi untuk me-reset sluruh input[type=text] pada modal --
+			  $(this).find('img').attr('src','');
+			})
+			</script>			
 
 			<!-- modal edit -->
 			<div class="modal fade pop_up_edit_image" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

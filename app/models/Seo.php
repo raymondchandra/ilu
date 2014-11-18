@@ -8,6 +8,6 @@ class Seo extends \Eloquent {
 	];
 
 	// Don't forget to fill this array
-	protected $fillable = ['name','content','key'];
+	protected $fillable = ['name','description','keyword'];
 
 }
