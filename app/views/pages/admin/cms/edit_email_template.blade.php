@@ -5,89 +5,84 @@
 
 	<form class="form-horizontal">
 		<div class="row">
-			<div class="col-lg-3">
-
-				<div class="form-group">
-					<label class="col-lg-3 control-label">Old Password</label>
-					<div class="col-lg-5">
-						<input type="password" class="form-control" />
-					</div>
-					<div class="col-lg-4">
-						<label class="btn btn-danger">Maaf Password Tidak Cocok</label>
-					</div>
+			<div class="col-lg-2 radioButtonContainer">
+				<div class="radio">
+					<label>
+						<input type="radio" class="templateRadios" name="templateRadios" id="templateView0" value="" checked>
+						Template #0
+					</label>
 				</div>
-				<div class="form-group">
-					<label class="col-lg-3 control-label">New Password</label>
-					<div class="col-lg-5">
-						<input type="password" class="form-control" />
-					</div>
-					<div class="col-lg-4">
-					</div>
+				<div class="radio">
+					<label>
+						<input type="radio" class="templateRadios" name="templateRadios" id="templateView1" value="">
+						Template #1
+					</label>
 				</div>
-				<div class="form-group">
-					<label class="col-lg-3 control-label">Retype New Password</label>
-					<div class="col-lg-5">
-						<input type="password" class="form-control" />
-					</div>
-					<div class="col-lg-4">
-						<label class="btn btn-danger">Maaf Password Tidak Cocok</label>
-					</div>
+				<div class="radio">
+					<label>
+						<input type="radio" class="templateRadios" name="templateRadios" id="templateView2" value="">
+						Template #2
+					</label>
 				</div>
 
+				<div class="radio">
+					<label>
+						<input type="radio" class="templateRadios" name="templateRadios" id="templateView3" value="">
+						Template #3
+					</label>
+				</div>
+
+				<div class="radio">
+					<label>
+						<input type="radio" class="templateRadios" name="templateRadios" id="templateView4" value="">
+						Template #4
+					</label>
+				</div>
+
+				<div class="radio">
+					<label>
+						<input type="radio" class="templateRadios" name="templateRadios" id="templateView5" value="">
+						Template #5
+					</label>
+				</div>
+			</div>
+			<div class="col-lg-10 viewContainer">
+				<div class="templateViews" id="templateView0">
+				@include('pages.admin.email_template.voucher')
+				</div>
+				<div class="templateViews hidden" id="templateView1">
+				@include('pages.admin.email_template.promo')
+				</div>
+				<div class="templateViews hidden" id="templateView2">
+				@include('pages.admin.email_template.news')
+				</div>
+				<div class="templateViews hidden" id="templateView3">
+				@include('pages.admin.email_template.new_registran')
+				</div>
+				<div class="templateViews hidden" id="templateView4">
+				@include('pages.admin.email_template.message')
+				</div>
+				<div class="templateViews hidden" id="templateView5">
+				@include('pages.admin.email_template.forgot_password')
+				</div>
 			</div>
 		</div>
+		<script> 
+			//fucntion untuk merubah view currently use template 
+			$('body').on('click','.templateRadios',function(){
+				var radID = $(this).attr('id');
+				$(this).closest('.radioButtonContainer').siblings('.viewContainer').children('#' + radID).removeClass('hidden');
+				$(this).closest('.radioButtonContainer').siblings('.viewContainer').children(':not(#' + radID + ')').addClass('hidden');
+			});
+		</script>
 	</form>
-	<script>
-
-	</script>
 
 </div>
 <div class="modal-footer">
-
+	<button type="button" class="btn btn-succes">Select This</button>
 </div>
 
 
-<div class="modal fade pop_up_add_seo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title title1" id="myModalLabel">Add SEO</h4>
-			</div>
-			<div class="form-horizontal" role="form">
-				<div class="modal-body">
-
-
-					<div class="form-group" id="nama_edit_cont_info">
-						<label class="col-sm-4 control-label">Page Name</label>
-						<div class="col-sm-7">
-							<input type="text" class="form-control" id="seo_pg_name">
-						</div>
-					</div>
-					<div class="form-group" id="nama_edit_cont_info">
-						<label class="col-sm-4 control-label">Meta Description</label>
-						<div class="col-sm-7">
-							<input type="text" class="form-control" id="seo_desc_name">
-						</div>
-					</div>
-					<div class="form-group" id="nama_edit_cont_info">
-						<label class="col-sm-4 control-label">Meta Keyword</label>
-						<div class="col-sm-7">
-							<input type="text" class="form-control" id="seo_key_name">
-						</div>
-					</div>
-
-
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-success f_tbody_table_save" data-dismiss="modal">Save</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 <script>
-
 </script>
 
