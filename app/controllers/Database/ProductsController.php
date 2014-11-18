@@ -177,7 +177,8 @@ class ProductsController extends \BaseController {
 		}
 			
 		//save
-		try {				
+		try {	
+				
 			$product = new Product();
 			$product->product_no = $input_product['product_no'];
 			$product->name = $input_product['name'];
@@ -251,8 +252,9 @@ class ProductsController extends \BaseController {
 					}
 				}
 			}						
-						
-			$length = count($input_price['arr_attr_id']);																		
+			
+			
+			$length = count($input_price['arr_attr_id']);				
 			for($i=0; $i<$length; $i++)
 			{
 				$price = new Price();
@@ -264,7 +266,7 @@ class ProductsController extends \BaseController {
 				$price->tax_id = 1; //default sementara
 				$price->save();
 			}								
-								
+						
 			$respond = array('code'=>'201','status' => 'Created');
 		} catch (Exception $e) {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);

@@ -36,13 +36,19 @@ class SupportTicketsController extends \BaseController {
 	 */
 	public function getAll(){
 		$respond = array();
-		$supportticket = Supportticket::all();
+		$supportticket = Supportticket::join('accounts', 'supporttickets.account_id', '=', 'accounts.id')->join('profiles', 'accounts.profile_id', '=', 'profiles.id')->select('supporttickets.*','profiles.full_name')->orderBy('updated_at','desc')->get();
+		$spr = new SupportMsgsController();
 		if (count($supportticket) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
 		}
 		else
 		{
+		
+			foreach($supportticket as $key){
+				$supportmessage = $spr->getByTicket($key->id);
+				$key->msgs = $supportmessage;
+			}
 			$respond = array('code'=>'200','status' => 'OK','messages'=>$supportticket);
 		}
 		return Response::json($respond);

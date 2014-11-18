@@ -729,6 +729,10 @@ body.outlook p {
       font-size: 11px;
     }
 
+    .callout .wrapper {
+      padding-bottom: 20px;
+    }
+
     .callout .panel {
       background: #ECF8FF;
       border-color: #b9e5ff;
@@ -770,7 +774,7 @@ body.outlook p {
       }
     }
 
-  </style>
+	</style>
 </head>
 <body>
 	<table class="body">
@@ -793,7 +797,7 @@ body.outlook p {
                               <img src="http://placehold.it/200x50">
                             </td>
                             <td class="six sub-columns last" style="text-align:right; vertical-align:middle;">
-                              <span class="template-label">SIDEBAR HERO</span>
+                              <span class="template-label">BASIC</span>
                             </td>
                             <td class="expander"></td>
                           </tr>
@@ -808,123 +812,57 @@ body.outlook p {
             </tr>
           </table>
 
-          <br>
-
           <table class="container">
             <tr>
               <td>
 
-              <!-- content start -->
-              <table class="row">
-                <tr>
-                  <td class="wrapper last">
+                <table class="row">
+                  <tr>
+                    <td class="wrapper last">
 
-                    <table class="twelve columns">
-						<tr>
-							<td colspan="3">
-								
-                          <h1>Welcome, Customer</h1>
-							</td>
-						</tr>
-                      <tr>
-                        <td id="td_1">
-                          <img id="img_1" src="" style="width:150px; height: 150px;">
-						  <span class="clearfix"></span>
-						  <p id="caption_1">Caption Here</p>
-						  <p id="price_1">Rp. xyz.xyz</p>
-                        </td>
-                        <td id="td_2">
-                          <img id="img_2" src="" style="width:150px; height: 150px;">
-						  <p id="caption_2">Caption Here</p>
-						  <p id="price_2">Rp. xyz.xyz</p>
-                        </td>
-                        <td id="td_3">
-                          <img id="img_3" src="" style="width:150px; height: 150px;">
-						  <span class="clearfix"></span>
-						  <p id="caption_3">Caption Here</p>
-						  <p id="price_3">Rp. xyz.xyz</p>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td id="td_4">
-                          <img id="img_4" src="" style="width:150px; height: 150px;">
-						  <span class="clearfix"></span>
-						  <p id="caption_4">Caption Here</p>
-						  <p id="price_4">Rp. xyz.xyz</p>
-                        </td>
-                        <td id="td_5">
-                          <img id="img_5" src="" style="width:150px; height: 150px;">
-						  <span class="clearfix"></span>
-						  <p id="caption_5">Caption Here</p>
-						  <p id="price_5">Rp. xyz.xyz</p>
-                        </td>
-                        <td id="td_6">
-                          <img id="img_6" src="" style="width:150px; height: 150px;">
-						  <span class="clearfix"></span>
-						  <p id="caption_6">Caption Here</p>
-						  <p id="price_6">Rp. xyz.xyz</p>
-                        </td>
-                      </tr>
-                    </table>
-					
-                    <!--<table class="twelve columns">
-                      <tr>
-                        <td>
-                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et.</p>
-                          <img width="580" height="300" src="http://placehold.it/580x300">
-                        </td>
-                        <td class="expander"></td>
-                      </tr>
-                    </table>-->
+                      <table class="twelve columns">
+                        <tr>
+                          <td>
+                            <h1>Hi, Susan Calvin</h1>
+                						<p class="lead">Phasellus dictum sapien a neque luctus cursus. Pellentesque sem dolor, fringilla et pharetra vitae.</p>
+                						<p>Phasellus dictum sapien a neque luctus cursus. Pellentesque sem dolor, fringilla et pharetra vitae. consequat vel lacus. Sed iaculis pulvinar ligula, ornare fringilla ante viverra et. In hac habitasse platea dictumst. Donec vel orci mi, eu congue justo. Integer eget odio est, eget malesuada lorem. Aenean sed tellus dui, vitae viverra risus. Nullam massa sapien, pulvinar eleifend fringilla id, convallis eget nisi. Mauris a sagittis dui. Pellentesque non lacinia mi. Fusce sit amet libero sit amet erat venenatis sollicitudin vitae vel eros. Cras nunc sapien, interdum sit amet porttitor ut, congue quis urna.</p>
+                          </td>
+                          <td class="expander"></td>
+                        </tr>
+                      </table>
 
-                    <table class="twelve columns">
-                      <tr>
-                        <td class="panel">
-                          <p>Phasellus dictum sapien a neque luctus cursus. Pellentesque sem dolor, fringilla et pharetra vitae. <a href="#">Click it! »</a></p>
-                        </td>
-                        <td class="expander"></td>
-                      </tr>
-                    </table>
+                    </td>
+                  </tr>
+                </table>
 
-                  </td>
-                </tr>
-              </table>
+                <table class="row callout">
+                  <tr>
+                    <td class="wrapper last">
 
-              <br>  <!-- Break Tag for row -->
+                      <table class="twelve columns">
+                        <tr>
+                          <td class="panel">
+                            <p>Phasellus dictum sapien a neque luctus cursus. Pellentesque sem dolor, fringilla et pharetra vitae. <a href="#">Click it! »</a></p>
+                          </td>
+                          <td class="expander"></td>
+                        </tr>
+                      </table>
 
-              <table class="row">
-                <tr>
-                  <td class="wrapper">
+                    </td>
+                  </tr>
+                </table>
 
-                    <table class="six columns">
-                      <tr>
-                        <td id="email_body_content">
+                <table class="row footer">
+                  <tr>
+                    <td class="wrapper">
 
-                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. Lorem ipsum dolor sit amet.</p>
+                      <table class="six columns">
+                        <tr>
+                          <td class="left-text-pad">
 
-                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. Lorem ipsum dolor sit amet.</p>
+                            <h5>Connect With Us:</h5>
 
-                          <table class="button">
-                            <tr>
-                              <td>
-                                <a href="#">Click Me!</a>
-                              </td>
-                            </tr>
-                          </table>
-
-                        </td>
-                        <td class="expander"></td>
-                      </tr>
-                    </table>
-
-                  </td>
-                  <td class="wrapper last">
-
-                    <table class="six columns">
-                      <tr>
-                        <td class="panel">
-                          <h6 style="margin-bottom:5px;">Connect With Us:</h6>
-                          <table class="tiny-button facebook">
+                            <table class="tiny-button facebook">
                               <tr>
                                 <td>
                                   <a href="#">Facebook</a>
@@ -932,7 +870,7 @@ body.outlook p {
                               </tr>
                             </table>
 
-                            <hr>
+                            <br>
 
                             <table class="tiny-button twitter">
                               <tr>
@@ -942,7 +880,7 @@ body.outlook p {
                               </tr>
                             </table>
 
-                            <hr>
+                            <br>
 
                             <table class="tiny-button google-plus">
                               <tr>
@@ -951,39 +889,49 @@ body.outlook p {
                                 </td>
                               </tr>
                             </table>
-                          <br>
-                          <h6 style="margin-bottom:5px;">Contact Info:</h6>
-                          <p>Phone: <b>408.341.0600</b></p>
-                          <p>Email: <a href="mailto:hseldon@trantor.com">hseldon@trantor.com</a></p>
-                        </td>
-                        <td class="expander"></td>
-                      </tr>
-                    </table>
 
-                  </td>
-                </tr>
-              </table>
-              <br>
-              <br>
-              <!-- Legal + Unsubscribe -->
-              <table class="row">
-                <tr>
-                  <td class="wrapper last">
+                          </td>
+                          <td class="expander"></td>
+                        </tr>
+                      </table>
 
-                    <table class="twelve columns">
-                      <tr>
-                        <td align="center">
-                          <center>
-                            <p style="text-align:center;"><a href="#">Terms</a> | <a href="#">Privacy</a> | <a href="#">Unsubscribe</a></p>
-                          </center>
-                        </td>
-                        <td class="expander"></td>
-                      </tr>
-                    </table>
+                    </td>
+                    <td class="wrapper last">
 
-                  </td>
-                </tr>
-              </table>
+                      <table class="six columns">
+                        <tr>
+                          <td class="last right-text-pad">
+                            <h5>Contact Info:</h5>
+                            <p>Phone: 408.341.0600</p>
+                            <p>Email: <a href="mailto:hseldon@trantor.com">hseldon@trantor.com</a></p>
+                          </td>
+                          <td class="expander"></td>
+                        </tr>
+                      </table>
+
+                    </td>
+                  </tr>
+                </table>
+
+
+                <table class="row">
+                  <tr>
+                    <td class="wrapper last">
+
+                      <table class="twelve columns">
+                        <tr>
+                          <td align="center">
+                            <center>
+                              <p style="text-align:center;"><a href="#">Terms</a> | <a href="#">Privacy</a> | <a href="#">Unsubscribe</a></p>
+                            </center>
+                          </td>
+                          <td class="expander"></td>
+                        </tr>
+                      </table>
+
+                    </td>
+                  </tr>
+                </table>
 
               <!-- container end below -->
               </td>

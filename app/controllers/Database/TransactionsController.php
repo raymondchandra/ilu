@@ -655,7 +655,7 @@ class TransactionsController extends \BaseController {
 						$productTopTen = $product->getById($row['prod_id']);// here
 						$temp = json_decode($productTopTen->getContent());
 						$temp2 = $temp->{'messages'};
-						$topTenProduct[] = array('idProd'=>$row['prod_id'], 'product_name'=>$temp2->name);
+						$topTenProduct[] = array('idProd'=>$row['prod_id'], 'product_name'=>$temp2->name, 'product'=>$temp2);
 						$idx++;
 					}else
 					{

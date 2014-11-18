@@ -17,6 +17,7 @@ class CreatePaymentproff extends Migration {
 		{
 			$table->increments('id');
 			$table->string('invoice');
+			$table->string('nama_pembayar');
 			$table->integer('id_bank')->unsigned();
 			$table->string('bank_asal');
 			$table->string('norek_asal');

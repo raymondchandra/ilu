@@ -59,6 +59,9 @@
 								<span class="clearfix "></span>
 								<li role="presentation" class="pull-right"><a href="#2" id='cms_seo' role="tab" data-toggle="tab" style="">SEO</a></li>
 								<span class="clearfix "></span>
+								<li role="presentation" class="pull-right"><a href="#3" id='cms_change_pass' role="tab" data-toggle="tab" style="">Change Password</a></li>
+								<span class="clearfix "></span>
+								<li role="presentation" class="pull-right"><a href="#4" id='cms_email_temp' role="tab" data-toggle="tab" style="">Change Email Template</a></li>
 								<!--<li role="presentation" class="pull-right"><a href="#3" role="tab" data-toggle="tab" style="">Informasi</a></li>
 								<span class="clearfix "></span>
 								<li role="presentation" class="pull-right"><a href="#4" id='cms_news' role="tab" data-toggle="tab" style="">News</a></li>
@@ -78,6 +81,12 @@
 								<div role="tabpanel" class="tab-pane fade" id="2">
 									@include('pages.admin.cms.edit_seo')							
 								</div>
+								<div role="tabpanel" class="tab-pane fade" id="3">
+									@include('pages.admin.cms.edit_change_pass')
+								</div>
+								<div role="tabpanel" class="tab-pane fade" id="4">
+									@include('pages.admin.cms.edit_email_template')
+								</div>
 								<!--<div role="tabpanel" class="tab-pane fade" id="3">
 									{{-- @include('pages.admin.cms.edit_informasi')	--}}						
 								</div>
@@ -91,47 +100,6 @@
 						</div>
 					</div>
 				</div>
-
-
-
-
-				<!-- <table class="table table-striped table-hover ">
-					<thead class="table-bordered">
-						<tr>
-							<th class="table-bordered">
-								<a href="javascript:void(0)">Name</a>
-								<a href="javascript:void(0)">
-									<span class="glyphicon glyphicon-sort" style="float: right;"></span>
-								</a>
-							</th>
-							<th class="table-bordered">
-
-							</th>
-						</thead>
-						<thead>
-							<tr>
-								<td><input type="text" class="form-control input-sm"></td>
-
-								<td width=""><a class="btn btn-primary btn-xs">Filter</a></td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Header Title</td>
-
-								<td>
-									<button class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_company_info">Edit</button>
-								</td>
-							</tr> 
-							<tr>
-								<td>SEO</td>
-
-								<td>
-									<button class="btn btn-warning btn-xs" data-toggle="modal" data-target=".pop_up_edit_seo">Edit</button>
-								</td>
-							</tr> 
-						</tbody>
-					</table> -->
 				</div>
 
 			</div>
@@ -266,11 +234,11 @@
 						tr_seo +=''+ $(this)[0].name +'';
 						tr_seo +='	</td>';
 						tr_seo +='	<td>';
-						tr_seo +='		<span class="meta">'+ $(this)[0].content +'</span>';
+						tr_seo +='		<span class="meta">'+ $(this)[0].description +'</span>';
 						tr_seo +='		<input type="text" class="form-control hidden meta content">';
 						tr_seo +='	</td>';
 						tr_seo +='	<td>';
-						tr_seo +='		<span class="meta key">'+ $(this)[0].key +'</span>';
+						tr_seo +='		<span class="meta key">'+ $(this)[0].keyword +'</span>';
 						tr_seo +='		<input type="text" class="form-control hidden meta key">';
 						tr_seo +='	</td>';
 						tr_seo +='<input type="hidden" class="seo_id" value="'+$(this)[0].id+'" />';

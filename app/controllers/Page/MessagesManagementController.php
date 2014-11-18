@@ -11,6 +11,21 @@ class MessagesManagementController extends \BaseController {
 		return $messages->getAll();
 	}
 	
+	public function get_all_ticket_messages(){
+		$messages = new SupportTicketsController();
+		return $messages->getAll();
+	}
+	
+	public function get_ticket_messages($id){
+		$messages = new SupportMsgsController();
+		return $messages->getByTicket($id);
+	}
+	
+	public function update_solve($id){
+		$messages = new SupportTicketsController();
+		return $messages->updateFull($id);
+	}
+	
 	public function get_one_message($id){
 		$messages = new MessagesController();
 		return $messages->getById($id);
