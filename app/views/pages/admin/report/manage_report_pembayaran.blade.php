@@ -8,6 +8,8 @@
 				<h3 style="float: left;">
 					Manage Report Pembayaran
 				</h3>
+								<span class="clearfix"></span>
+
 				<!--<a data-toggle="modal" data-target=".pop_up_view_report_range" href="javascript:void(0);" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Range</a>
 				<a href="{{action('ReportingManagementController@view_reporting_mgmt_day', array('reportBy' => 'day'))}}" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Day</a>
 				<a href="{{action('ReportingManagementController@view_reporting_mgmt_day', array('reportBy' => 'week'))}}" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Week</a>
@@ -68,6 +70,7 @@
 							Daftar Informasi 
 
 						</h3>
+
 							<label class="radio-inline pull-right" style="margin-top: 20px;">
 								<input type="radio" name="f_radio_pilih_laporan_pembayaran" id="" value="one_month"> Range
 							</label>
@@ -75,6 +78,7 @@
 								<input type="radio" name="f_radio_pilih_laporan_pembayaran" id="" value="range" checked> Per 1 Bulan
 							</label>
 
+										<span class="clearfix"></span>
 						<div id="f_laporan_pembayaran_today" class="f_m">
 							<form class="form-horizontal" role="form">
 								<table class="table table-bordered">
@@ -263,6 +267,9 @@
 							<label class="radio-inline pull-right" style="margin-right: 20px; margin-top: 20px;">
 								<input type="radio" name="f_radio_pilih_lakunya_sebuah_produk_1" id="" value="one_month" checked> Per 1 Bulan
 							</label>
+											<span class="clearfix"></span>
+
+							
 							<div id="f_lakunya_sebuah_produk_bulan_1">
 								<form class="form-horizontal" role="form">
 									<table class="table table-bordered">

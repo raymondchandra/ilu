@@ -47,7 +47,9 @@
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-envelope" style="color:#fff; margin-right:10px;"></span>Report<span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
 					<li><a href="{{ URL::to('admin/manage_report') }}">Report Penjualan</a></li>
-					<li><a href="{{ URL::to('test/manage_report_produk') }}">Report Produk</a></li>
+					<li><a href="{{ URL::to('admin/manage_report_produk') }}">Report Produk</a></li>
+					<li><a href="{{ URL::to('admin/manage_report_pengiriman') }}">Report Pengiriman</a></li>
+					<li><a href="{{ URL::to('admin/manage_report_pembayaran') }}">Report Pembayaran</a></li>
 				</ul>
 			</li>
 						
