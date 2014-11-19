@@ -1,9 +1,9 @@
-<div class="modal fade pop_up_view_report_produk_detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade pop_up_view_report_pembayaran_detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
+		<div class="modal-content print">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title" id="myModalLabel">Detail Pembayaran No. Transaksi ...</h4>
+				<button type="button" class="close" id="no" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabelByr">Detail Pembayaran No. Transaksi ...</h4>
 			</div>
 			<form class="form-horizontal" role="form">
 				<div class="modal-body">
@@ -47,8 +47,8 @@
 					
 
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-info" >Save to PDF</button>
+				<div class="modal-footer" id="no">
+					<button type="button" class="btn btn-info pdf" >Save to PDF</button>
 					<button type="button" class="btn btn-info" >Print</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
 				</div>
