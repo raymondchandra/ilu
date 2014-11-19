@@ -14,47 +14,15 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-		$stat = 'On-shipping';
-		$date1 = '01-November-2014';
-		$date2 = '03-November-2014';
-		$d1 = new Carbon($date1);
-		$d2 = new Carbon($date2);
+		$profileController = new ProfilesController();
+		$profilesJson = $profileController->getAll();
 		
-		
-		$difference = ($d1->diff($d2)->days);
-		
-		$order = Order::join('transactions','orders.transaction_id','=','transactions.id')->join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->join('shipments','transactions.shipment_id','=','shipments.id')->join('shipmentdatas','shipments.shipmentData_id','=','shipmentdatas.id')->where('transactions.status','=',$stat)->distinct()->get(array('transactions.id','profiles.full_name','transactions.invoice','shipments.number','shipmentdatas.courier','shipmentdatas.destination','transactions.updated_at'));
-		
-		$idx = 1;
-		$hasil = array();
-		while($idx <= ($difference+1))
+		$json = json_decode($profilesJson->getContent());
+		$paginator = $json->{'messages'};
+		foreach($paginator as $prof)
 		{
-			
-			if($idx != 1)
-			{
-				$d1->addDay(1);
-			}
-			foreach($order as $key)
-			{
-				$dd = $key->updated_at;
-				$dd2 = Carbon::parse($dd)->format('Ynd');
-				$dc1 = Carbon::parse($d1)->format('Ynd');
-				if($dd2 == $dc1)
-				{
-					$dd3 =  Carbon::parse($dd2)->format('Y-n-d');
-					$hasil[] = array('id'=>$key->id,'full_name'=>$key->full_name,'invoice'=>$key->invoice,'updated_at'=>$dd3,'number'=>$key->number,'courier'=>$key->courier,'destination'=>$key->destination,'updated_at'=>$key->updated_at);
-				}
-			}
-			$idx = $idx + 1;
+			echo $prof->email;
 		}
-		if($hasil != null)
-		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$hasil);
-		}else
-		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		echo $respond['code'];
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -191,7 +159,8 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	//-------------------------------------------PAYMENTPROFF VIEW ADMIN-------------------------------------------
 	Route::get('/manage_payment_proof', ['as' => 'viewPaymentProffsManagement', 'uses' => 'PaymentProffsManagementController@view_admin_paymentproff']);
 	
-	//ooooooooooooooooooooooooooooooooooooooKERJAAN DAVIDoooooooooooooooooooooooooooooooooooooooo	
+	//ooooooooooooooooooooooooooooooooooooooKERJAAN DAVIDooooooooooooooooooooooooooooooooooooooo
+	Route::post('/sendNewsLetter', ['as' => 'david.sendNewsLetter', 'uses' => 'NewsLetterController@send_news_letter']);
 	Route::get('/getTopTenNewProduct', ['as' => 'getTopTenNewProduct', 'uses' => 'ProductsController@getTopTenNewProduct']);
 	Route::get('/getProductFromNewestPromotion', ['as' => 'getProductFromNewestPromotion', 'uses' => 'PromotionsController@getProductFromNewestPromotion']);
 	
