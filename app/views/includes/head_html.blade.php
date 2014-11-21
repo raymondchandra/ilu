@@ -27,3 +27,5 @@
 		<script src="{{ asset('assets/js/jsPDF-master/jspdf.plugin.standard_fonts_metrics.js') }}"></script>
 		
 		<script type="text/javascript" src="{{ asset('assets/js/jsPDF-master/dist/jspdf.debug.js') }}"></script>
+		
+		<script src="{{ asset('assets/js/css-to-pdf-master/css-to-pdf-master/js/xepOnline.jqPlugin.js') }}"></script>

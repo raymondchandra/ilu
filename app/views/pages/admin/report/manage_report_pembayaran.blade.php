@@ -673,7 +673,8 @@ $('body').on('click','.butRepPro2',function(){
 
 $('body').on('click','.viewDet',function(){
 			$idTrans = $(this).prev().val();
-			$stat = $('.stat').val();
+			var bln = $('.bulanRepPro').val();
+			var thn = $('.tahunRepPro').val(); 
 			$.ajax({
 				type: 'GET',
 				url: '{{URL::route('jeffry.getReportPembayaranMonthDetail')}}',
@@ -703,7 +704,7 @@ $('body').on('click','.viewDet',function(){
 							id = "UnPaid";
 						}
 						//var hid="";
-						$('#myModalLabelByr').text("Detail Pembayaran "+id +" Nomor Invoice "+ obj[0]['invoice']);
+						$('#myModalLabelByr').text("Detail Pembayaran "+id +" Nomor Invoice "+ obj[0]['invoice']+" Pada "+bln +" - "+thn);
 						var responses = obj;
 						var idx = 0;
 						//hid += "Detail Pembayaran "+id +" Nomor Invoice "+ obj[0]['invoice'];
@@ -730,25 +731,31 @@ $('body').on('click','.viewDet',function(){
 			},'json');
 	});
 
-	$('body').on('click','.pdf',function(){
-			var pdfHeader = $('.print').html();
-			var doc = new jsPDF('l', 'pt', 'a4');
-			var elementHandler = {
-				
-			  '#no': function (element, renderer) {
-				return true;
-			  }
-			};
-			doc.fromHTML(pdfHeader,
-			12,
-			12,
-			{
-			  'elementHandlers': elementHandler
-			}); 
-			doc.output("dataurlnewwindow");
-			//return PDF::load(gabung, 'A4', 'portrait')->show();
-			//PDF::load($html, 'A4', 'portrait')->download($('#myModalLabelByr').text());
-	});
+	function downloadPdf()
+	{
+		document.getElementById('no').style.display = 'hidden'; 
+		$('.modal-header').css('border','0px');
+		$('thead').css('background','none');
+		//document.getElementsByClassName('modal-header').style.border-bottom = '0px';
+		//alert('a');
+		xepOnline.Formatter.Format('print', {
+			render: "download",
+			pageMargin: ".25in"
+		});
+	}
+	
+	function printPdf()
+	{
+		document.getElementById('no').style.display = 'hidden'; 
+		$('.modal-header').css('border','0px');
+		$('thead').css('background','none');
+		//document.getElementsByClassName('modal-header').style.border-bottom = '0px';
+		//alert('a');
+		xepOnline.Formatter.Format('print', {
+			
+			pageMargin: ".25in"
+		});
+	}
 	
 function toRp(angka){
 		var rev     = parseInt(angka, 10).toString().split('').reverse().join('');

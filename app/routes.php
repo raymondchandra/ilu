@@ -365,6 +365,7 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	
 	Route::get('/top_ten_product', ['as' =>'jeffry.top10product', 'uses' => 'TransactionsController@getTopTenProduct']);
 	
+	//jeje
 	Route::get('/manage_report_produk', ['as' =>'jeffry.getReportProduk', 'uses' => 'ReportingManagementController@view_reporting_product']);
 
 	Route::get('/manage_report_produk1month', ['as' =>'jeffry.getReportProduk1Month', 'uses' => 'TransactionsController@getMostCurrentProdukOneMonth']);
