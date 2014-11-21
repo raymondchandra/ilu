@@ -1928,17 +1928,5 @@ class TransactionsController extends \BaseController {
 		return Response::json($respond);
 	}
 	
-	public function showPDF()
-	{
-		$hasil = Input::get('print');
-		//echo $hasil;
-		$cek = PDF::load($hasil, 'A4', 'portrait')->download('ah');
-		$respond = array('code'=>'404','status' => 'Not Found','messages'=>'berhasil');
-		return Response::json($respond);
-		
-		//$headers = array('Content-Type' => 'application/pdf');
-
-		//return Response::make(PDF::load($hasil, 'A4', 'portrait')->download('my_pdf'), 200, $headers);
-		
-	}
+	
 }
