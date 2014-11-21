@@ -40,7 +40,7 @@
 							<link href="{{ asset('assets/js/jqte/jquery-te-1.4.0.css') }}" rel="stylesheet">
 							<script src="{{ asset('assets/js/jqte/jquery-te-1.4.0.min.js') }}"></script>
 								<textarea class="f_te"></textarea>
-								<button type="button" class="btn btn-success">Send</button>
+								<button type="button" id="send-button" class="btn btn-success">Send</button>
 								<script>
 									$("textarea").jqte({change: function()
 									{ 
@@ -186,6 +186,34 @@
 										},'json');
 										
 										
+									});
+									
+									$('body').on('click','#send-button',function()
+									{
+										$body = $('.panel-body').html();
+										alert($body);
+										
+										$.ajax({
+											type: 'POST',
+											url: '{{URL::route('david.sendNewsLetter')}}',
+											data: {	
+												'body':$body
+											},
+											success: function(response){
+												if(response['code'] == '404')
+												{
+													alert(response['code']);
+												}
+												else
+												{
+													alert('success');
+													
+												}
+											},error: function(xhr, textStatus, errorThrown){
+												alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+												alert("responseText: "+xhr.responseText);
+											}
+										},'json');
 									});
 									//email_body_content
 									//jqte_editor

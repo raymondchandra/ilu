@@ -785,21 +785,23 @@ body.outlook p {
 
                   <table class="container">
                     <tr>
-                      <td class="wrapper last">
+						<!--
+						<td class="wrapper last">
 
-                        <table class="twelve columns">
-                          <tr>
-                            <td class="six sub-columns">
-                              <img src="http://placehold.it/200x50">
-                            </td>
-                            <td class="six sub-columns last" style="text-align:right; vertical-align:middle;">
-                              <span class="template-label">SIDEBAR HERO</span>
-                            </td>
-                            <td class="expander"></td>
-                          </tr>
-                        </table>
+						<table class="twelve columns">
+							<tr>
+								<td class="six sub-columns">
+									<img src="http://placehold.it/200x50">
+								</td>
+								<td class="six sub-columns last" style="text-align:right; vertical-align:middle;">
+									<span class="template-label">SIDEBAR HERO</span>
+								</td>
+								<td class="expander"></td>
+							</tr>
+						</table>
 
-                      </td>
+						</td>
+					  -->
                     </tr>
                   </table>
 
@@ -831,18 +833,18 @@ body.outlook p {
                           <img id="img_1" src="" style="width:150px; height: 150px;">
 						  <span class="clearfix"></span>
 						  <p id="caption_1">Caption Here</p>
-						  <p id="price_1">Rp. xyz.xyz</p>
+						  <p id="price_1">Price Goes Here</p>
                         </td>
                         <td id="td_2">
                           <img id="img_2" src="" style="width:150px; height: 150px;">
 						  <p id="caption_2">Caption Here</p>
-						  <p id="price_2">Rp. xyz.xyz</p>
+						  <p id="price_2">Price Goes Here</p>
                         </td>
                         <td id="td_3">
                           <img id="img_3" src="" style="width:150px; height: 150px;">
 						  <span class="clearfix"></span>
 						  <p id="caption_3">Caption Here</p>
-						  <p id="price_3">Rp. xyz.xyz</p>
+						  <p id="price_3">Price Goes Here</p>
                         </td>
                       </tr>
                       <tr>
@@ -850,19 +852,19 @@ body.outlook p {
                           <img id="img_4" src="" style="width:150px; height: 150px;">
 						  <span class="clearfix"></span>
 						  <p id="caption_4">Caption Here</p>
-						  <p id="price_4">Rp. xyz.xyz</p>
+						  <p id="price_4">Price Goes Here</p>
                         </td>
                         <td id="td_5">
                           <img id="img_5" src="" style="width:150px; height: 150px;">
 						  <span class="clearfix"></span>
 						  <p id="caption_5">Caption Here</p>
-						  <p id="price_5">Rp. xyz.xyz</p>
+						  <p id="price_5">Price Goes Here</p>
                         </td>
                         <td id="td_6">
                           <img id="img_6" src="" style="width:150px; height: 150px;">
 						  <span class="clearfix"></span>
 						  <p id="caption_6">Caption Here</p>
-						  <p id="price_6">Rp. xyz.xyz</p>
+						  <p id="price_6">Price Goes Here</p>
                         </td>
                       </tr>
                     </table>
@@ -876,7 +878,8 @@ body.outlook p {
                         <td class="expander"></td>
                       </tr>
                     </table>-->
-
+					
+					<!--
                     <table class="twelve columns">
                       <tr>
                         <td class="panel">
@@ -885,7 +888,7 @@ body.outlook p {
                         <td class="expander"></td>
                       </tr>
                     </table>
-
+					-->
                   </td>
                 </tr>
               </table>
@@ -896,22 +899,19 @@ body.outlook p {
                 <tr>
                   <td class="wrapper">
 
-                    <table class="six columns">
+                    <table class="twelve columns">
                       <tr>
-                        <td id="email_body_content">
+                        <td id="email_body_content" style="word-wrap: break-word;">
 
-                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. Lorem ipsum dolor sit amet.</p>
-
-                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et. Lorem ipsum dolor sit amet.</p>
-
-                          <table class="button">
-                            <tr>
-                              <td>
-                                <a href="#">Click Me!</a>
-                              </td>
-                            </tr>
-                          </table>
-
+							<!--
+							  <table class="button">
+								<tr>
+								  <td>
+									<a href="#">Click Me!</a>
+								  </td>
+								</tr>
+							  </table>
+							-->
                         </td>
                         <td class="expander"></td>
                       </tr>
@@ -919,7 +919,7 @@ body.outlook p {
 
                   </td>
                   <td class="wrapper last">
-
+					<!--
                     <table class="six columns">
                       <tr>
                         <td class="panel">
@@ -959,13 +959,14 @@ body.outlook p {
                         <td class="expander"></td>
                       </tr>
                     </table>
-
+					-->
                   </td>
                 </tr>
               </table>
               <br>
               <br>
               <!-- Legal + Unsubscribe -->
+			  <!--
               <table class="row">
                 <tr>
                   <td class="wrapper last">
@@ -984,7 +985,7 @@ body.outlook p {
                   </td>
                 </tr>
               </table>
-
+				-->
               <!-- container end below -->
               </td>
             </tr>

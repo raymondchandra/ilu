@@ -1,10 +1,4 @@
-<!--<div class="modal fade pop_up_edit_seo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title" id="myModalLabel">Edit SEO</h4>
-			</div>-->
+
 			<h3>
 				Seo <!--<button id="f_add_informasi" class="btn btn-success pull-right" style="margin-bottom: 20px;" data-toggle="modal" data-target=".pop_up_add_seo">+ Add New SEO</button>-->
 			</h3>
@@ -25,71 +19,10 @@
 							</tr>
 						</thead>
 						<tbody class="f_tbody_table">
-							<!--<tr>
-								<td>
-									Index 
-								</td>
-								<td>
-									<span class="meta">The description of seo</span>
-									<input type="text" class="form-control hidden meta">
-								</td>
-								<td>
-									<span class="meta">key 1, key 2, key 3</span>
-									<input type="text" class="form-control hidden meta">
-								</td>
-							</tr>
-							<tr>
-								<td>
-									Category
-								</td>
-								<td>
-									<span class="meta">The description of seo</span>
-									<input type="text" class="form-control hidden meta">
-								</td>
-								<td>
-									<span class="meta">key 1, key 2, key 3</span>
-									<input type="text" class="form-control hidden meta">
-								</td>
-							</tr>
-							<tr>
-								<td>
-									News
-								</td>
-								<td>
-									<span class="meta">The description of seo</span>
-									<input type="text" class="form-control hidden meta">
-								</td>
-								<td>
-									<span class="meta">key 1, key 2, key 3</span>
-									<input type="text" class="form-control hidden meta">
-								</td>
-							</tr>
-							<tr>
-								<td>
-									Informasi
-								</td>
-								<td>
-									<span class="meta">The description of seo</span>
-									<input type="text" class="form-control hidden meta">
-								</td>
-								<td>
-									<span class="meta">key 1, key 2, key 3</span>
-									<input type="text" class="form-control hidden meta">
-								</td>
-							</tr>
-							<tr>
-								<td>
-									Other pages
-								</td>
-								<td>
-									<span class="meta">The description of seo</span>
-									<input type="text" class="form-control hidden meta">
-								</td>
-								<td>
-									<span class="meta">key 1, key 2, key 3</span>
-									<input type="text" class="form-control hidden meta">
-								</td>
-							</tr>-->
+
+
+
+
 						</tbody>
 					</table>
 					<script>
@@ -253,8 +186,3 @@
 				$('.f_tbody_table').append(tr_seo);});
 			</script>
 
-
-			
-		<!--</div>
-	</div>
-</div>-->
