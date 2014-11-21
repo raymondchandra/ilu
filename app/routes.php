@@ -14,25 +14,15 @@ Route::get('/tesview', function (){
 
 Route::get('/tes2', function()
 {
-		//$stat = 'On-shipping';
-		//$date1 = '01-November-2014';
-		//$date2 = '03-November-2014';
-		$paid = 1;
-		$bln = 'October';
-		$thn = '2014';
-		$blnTemp = Carbon::parse($bln.'-01-'.$thn)->format('n');
-
+		$profileController = new ProfilesController();
+		$profilesJson = $profileController->getAll();
 		
-		$order = Transaction::where(DB::raw('MONTH(transactions.updated_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.updated_at)'), '=', $thn)->join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('transactions.paid','=',$paid)->get(array('transactions.id','profiles.full_name','transactions.invoice','transactions.status','transactions.total_price','transactions.paid'));
-		
-		if(count($order) == 0)
+		$json = json_decode($profilesJson->getContent());
+		$paginator = $json->{'messages'};
+		foreach($paginator as $prof)
 		{
-			$respond = array('code'=>'404','status' => 'Not Found');
-		}else
-		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
+			echo $prof->email;
 		}
-		echo $respond['messages'];
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -169,7 +159,8 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	//-------------------------------------------PAYMENTPROFF VIEW ADMIN-------------------------------------------
 	Route::get('/manage_payment_proof', ['as' => 'viewPaymentProffsManagement', 'uses' => 'PaymentProffsManagementController@view_admin_paymentproff']);
 	
-	//ooooooooooooooooooooooooooooooooooooooKERJAAN DAVIDoooooooooooooooooooooooooooooooooooooooo	
+	//ooooooooooooooooooooooooooooooooooooooKERJAAN DAVIDooooooooooooooooooooooooooooooooooooooo
+	Route::post('/sendNewsLetter', ['as' => 'david.sendNewsLetter', 'uses' => 'NewsLetterController@send_news_letter']);
 	Route::get('/getTopTenNewProduct', ['as' => 'getTopTenNewProduct', 'uses' => 'ProductsController@getTopTenNewProduct']);
 	Route::get('/getProductFromNewestPromotion', ['as' => 'getProductFromNewestPromotion', 'uses' => 'PromotionsController@getProductFromNewestPromotion']);
 	
@@ -365,46 +356,6 @@ Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 	
 	Route::get('/top_ten_product', ['as' =>'jeffry.top10product', 'uses' => 'TransactionsController@getTopTenProduct']);
 	
-	//jeje
-	Route::get('/manage_report_produk', ['as' =>'jeffry.getReportProduk', 'uses' => 'ReportingManagementController@view_reporting_product']);
-
-	Route::get('/manage_report_produk1month', ['as' =>'jeffry.getReportProduk1Month', 'uses' => 'TransactionsController@getMostCurrentProdukOneMonth']);
-	
-	Route::get('/manage_report_produk1month_detail', ['as' =>'jeffry.getReportProduk1MonthDetail', 'uses' => 'TransactionsController@getDetailMostCurrentProdukOneMonth']);
-	
-	Route::get('/manage_report_produk_range', ['as' =>'jeffry.getReportProdukRange', 'uses' => 'TransactionsController@getMostCurrentProdukRange']);
-	
-	Route::get('/manage_report_produk2_1month', ['as' =>'jeffry.getReportProduk21Month', 'uses' => 'TransactionsController@getPenjualanProdukOneMonth']);
-	
-	Route::get('/manage_report_produk2_range', ['as' =>'jeffry.getReportProduk2Range', 'uses' => 'TransactionsController@getPenjualanProdukRange']);
-	
-	Route::get('/manage_report_produk2_1month_detail', ['as' =>'jeffry.getReportProduk21MonthDetail', 'uses' => 'TransactionsController@getDetailPenjualanProduk']);
-	
-	Route::get('/manage_report_produk2_range_detail', ['as' =>'jeffry.getReportProduk2RangeDetail', 'uses' => 'TransactionsController@getDetailPenjualanProdukRange']);
-	
-	Route::get('/manage_report_pengiriman_month', ['as' =>'jeffry.getReportPengirimanMonth', 'uses' => 'TransactionsController@getStatusMonth']);
-	
-	Route::get('/manage_report_pengiriman_month_detail', ['as' =>'jeffry.getReportPengirimanMonthDetail', 'uses' => 'TransactionsController@getDetailPopUp']);
-	
-	Route::get('/manage_report_pengiriman', ['as' =>'jeffry.getReportPengiriman', 'uses' => 'ReportingManagementController@view_reporting_pengiriman']);
-	
-	Route::get('/manage_report_pengiriman_range', ['as' =>'jeffry.getReportPengirimanRange', 'uses' => 'TransactionsController@getStatusRange']);
-	
-	Route::get('/manage_report_all_pengiriman_month', ['as' =>'jeffry.getReportAllPengirimanMonth', 'uses' => 'TransactionsController@getAllStatusMonth']);
-	
-	Route::get('/manage_report_all_pengiriman_range', ['as' =>'jeffry.getReportAllPengirimanRange', 'uses' => 'TransactionsController@getAllStatusRange']);
-	
-	Route::get('/manage_report_pembayaran', ['as' =>'jeffry.getReportPembayaran', 'uses' => 'ReportingManagementController@view_reporting_pembayaran']);
-	
-	Route::get('/manage_report_pembayaran_month', ['as' =>'jeffry.getReportPembayaranMonth', 'uses' => 'TransactionsController@getPaidMonth']);
-	
-	Route::get('/manage_report_pembayaran_range', ['as' =>'jeffry.getReportPembayaranRange', 'uses' => 'TransactionsController@getPaidRange']);
-	
-	Route::get('/manage_report_all_pembayaran_month', ['as' =>'jeffry.getReportAllPembayaranMonth', 'uses' => 'TransactionsController@getAllPaidMonth']);
-	
-	Route::get('/manage_report_all_pembayaran_range', ['as' =>'jeffry.getReportAllPembayaranRange', 'uses' => 'TransactionsController@getAllPaidRange']);
-
-	Route::get('/manage_report_pembayaran_month_detail', ['as' =>'jeffry.getReportPembayaranMonthDetail', 'uses' => 'TransactionsController@getDetailPopUp']);
 	
 
 });
@@ -636,51 +587,45 @@ Route::group(array('prefix' => 'test'), function()
     // manage_payment_proof
    
 
+	Route::get('/manage_report_produk_jeffry', ['as' =>'jeffry.getReportProduk', 'uses' => 'ReportingManagementController@view_reporting_product']);
+
+	Route::get('/manage_report_produk1month_jeffry', ['as' =>'jeffry.getReportProduk1Month', 'uses' => 'TransactionsController@getMostCurrentProdukOneMonth']);
 	
+	Route::get('/manage_report_produk1month_detail_jeffry', ['as' =>'jeffry.getReportProduk1MonthDetail', 'uses' => 'TransactionsController@getDetailMostCurrentProdukOneMonth']);
 	
-	Route::get('/print', ['as' =>'jeffry.getPrintPdf', 'uses' => 'TransactionsController@showPDF']);
+	Route::get('/manage_report_produk_range_jeffry', ['as' =>'jeffry.getReportProdukRange', 'uses' => 'TransactionsController@getMostCurrentProdukRange']);
 	
-	Route::get('/aaa', function()
-{
-    $html = '<html><body>'
-            . '<div class="modal-header printHead">
-				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title" id="myModalLabelByr">Detail Pembayaran [object Object] No Invoice 3184966</h4>
-			</div> <div class="row">
-						<div class="col-sm-12"><!-- col-sm-5 -->
-							<table class="table table-bordered">
-								<thead>
-									<tr>
-										<th>
-											Nama Produk
-										</th>
-										<th>
-											Foto Produk
-										</th>
-										<th>
-											Category Produk
-										</th>
-										<th>
-											Attribut Produk
-										</th>
-										<th>
-											Qty.
-										</th>
-										<th>
-											Harga satuan
-										</th>
-										<th>
-											Subtotal
-										</th>
-									</tr>
-								</thead>
-								<tbody class="isiTab"><tr><td>et</td><td><img width="100" height="100" src=""></td><td>Jonatan Cronin</td><td>omnis - in</td><td>6</td><td>Rp 100,-</td><td>Rp 600,-</td></tr><tr><td>et</td><td><img width="100" height="100" src=""></td><td>Harvey Weber</td><td>voluptas - commodi</td><td>15</td><td>Rp 1.000,-</td><td>Rp 15.000,-</td></tr></tbody>
-							</table>			
-						</div>
-					</div>'
-            . '</body></html>';
-    return PDF::load($html, 'A4', 'portrait')->show();
-});
+	Route::get('/manage_report_produk2_1month_jeffry', ['as' =>'jeffry.getReportProduk21Month', 'uses' => 'TransactionsController@getPenjualanProdukOneMonth']);
+	
+	Route::get('/manage_report_produk2_range_jeffry', ['as' =>'jeffry.getReportProduk2Range', 'uses' => 'TransactionsController@getPenjualanProdukRange']);
+	
+	Route::get('/manage_report_produk2_1month_detail_jeffry', ['as' =>'jeffry.getReportProduk21MonthDetail', 'uses' => 'TransactionsController@getDetailPenjualanProduk']);
+	
+	Route::get('/manage_report_produk2_range_detail_jeffry', ['as' =>'jeffry.getReportProduk2RangeDetail', 'uses' => 'TransactionsController@getDetailPenjualanProdukRange']);
+	
+	Route::get('/manage_report_pengiriman_month_jeffry', ['as' =>'jeffry.getReportPengirimanMonth', 'uses' => 'TransactionsController@getStatusMonth']);
+	
+	Route::get('/manage_report_pengiriman_month_detail_jeffry', ['as' =>'jeffry.getReportPengirimanMonthDetail', 'uses' => 'TransactionsController@getDetailPopUp']);
+	
+	Route::get('/manage_report_pengiriman_jeffry', ['as' =>'jeffry.getReportPengiriman', 'uses' => 'ReportingManagementController@view_reporting_pengiriman']);
+	
+	Route::get('/manage_report_pengiriman_range_jeffry', ['as' =>'jeffry.getReportPengirimanRange', 'uses' => 'TransactionsController@getStatusRange']);
+	
+	Route::get('/manage_report_all_pengiriman_month_jeffry', ['as' =>'jeffry.getReportAllPengirimanMonth', 'uses' => 'TransactionsController@getAllStatusMonth']);
+	
+	Route::get('/manage_report_all_pengiriman_range_jeffry', ['as' =>'jeffry.getReportAllPengirimanRange', 'uses' => 'TransactionsController@getAllStatusRange']);
+	
+	Route::get('/manage_report_pembayaran_jeffry', ['as' =>'jeffry.getReportPembayaran', 'uses' => 'ReportingManagementController@view_reporting_pembayaran']);
+	
+	Route::get('/manage_report_pembayaran_month_jeffry', ['as' =>'jeffry.getReportPembayaranMonth', 'uses' => 'TransactionsController@getPaidMonth']);
+	
+	Route::get('/manage_report_pembayaran_range_jeffry', ['as' =>'jeffry.getReportPembayaranRange', 'uses' => 'TransactionsController@getPaidRange']);
+	
+	Route::get('/manage_report_all_pembayaran_month_jeffry', ['as' =>'jeffry.getReportAllPembayaranMonth', 'uses' => 'TransactionsController@getAllPaidMonth']);
+	
+	Route::get('/manage_report_all_pembayaran_range_jeffry', ['as' =>'jeffry.getReportAllPembayaranRange', 'uses' => 'TransactionsController@getAllPaidRange']);
+
+	Route::get('/manage_report_pembayaran_month_detail_jeffry', ['as' =>'jeffry.getReportPembayaranMonthDetail', 'uses' => 'TransactionsController@getDetailPopUp']);
 	
 });
 

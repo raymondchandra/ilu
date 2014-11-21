@@ -84,7 +84,7 @@
 								<div role="tabpanel" class="tab-pane fade" id="3">
 									@include('pages.admin.cms.edit_change_pass')
 								</div>
-								<div role="tabpanel" class="tab-pane fade" id="4">
+								<div role="tabpanel" class="tab-pane fade" id="4"> 
 									@include('pages.admin.cms.edit_email_template')
 								</div>
 								<!--<div role="tabpanel" class="tab-pane fade" id="3">
