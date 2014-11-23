@@ -26,7 +26,7 @@
 										</th>
 										<th>
 											Qty.
-										</th>
+										</th> 
 										<th>
 											Harga satuan
 										</th>

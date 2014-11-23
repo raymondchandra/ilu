@@ -8,6 +8,8 @@
 				<h3 style="float: left;">
 					Manage Report Pembayaran
 				</h3>
+								<span class="clearfix"></span>
+
 				<!--<a data-toggle="modal" data-target=".pop_up_view_report_range" href="javascript:void(0);" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Range</a>
 				<a href="{{action('ReportingManagementController@view_reporting_mgmt_day', array('reportBy' => 'day'))}}" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Day</a>
 				<a href="{{action('ReportingManagementController@view_reporting_mgmt_day', array('reportBy' => 'week'))}}" class="btn btn-primary" style="float: right; margin-top: 20px;margin-left: 10px;" >By Week</a>
@@ -68,6 +70,7 @@
 							Daftar Informasi 
 
 						</h3>
+
 							<label class="radio-inline pull-right" style="margin-top: 20px;">
 								<input type="radio" name="f_radio_pilih_laporan_pembayaran" id="" value="one_month"> Range
 							</label>
@@ -75,6 +78,7 @@
 								<input type="radio" name="f_radio_pilih_laporan_pembayaran" id="" value="range" checked> Per 1 Bulan
 							</label>
 
+										<span class="clearfix"></span>
 						<div id="f_laporan_pembayaran_today" class="f_m">
 							<form class="form-horizontal" role="form">
 								<table class="table table-bordered">
@@ -263,6 +267,9 @@
 							<label class="radio-inline pull-right" style="margin-right: 20px; margin-top: 20px;">
 								<input type="radio" name="f_radio_pilih_lakunya_sebuah_produk_1" id="" value="one_month" checked> Per 1 Bulan
 							</label>
+											<span class="clearfix"></span>
+
+							
 							<div id="f_lakunya_sebuah_produk_bulan_1">
 								<form class="form-horizontal" role="form">
 									<table class="table table-bordered">
@@ -640,6 +647,7 @@ $('body').on('click','.butRepPro2',function(){
 					$(responses).each(function() {
 						tab+= "<input type='hidden'  value='"+responses[idx].id+"'/>";
 						tab+= "<tr data-toggle='modal' data-target='.pop_up_view_report_pembayaran_detail' class='viewDet'>";
+						
 						tab+="<td>"+responses[idx].full_name+"</td>";
 						tab+="<td>"+responses[idx].invoice+"</td>";
 						tab+="<td>"+toRp(responses[idx].total_price)+"</td>";
@@ -665,6 +673,8 @@ $('body').on('click','.butRepPro2',function(){
 
 $('body').on('click','.viewDet',function(){
 			$idTrans = $(this).prev().val();
+			var bln = $('.bulanRepPro').val();
+			var thn = $('.tahunRepPro').val(); 
 			$.ajax({
 				type: 'GET',
 				url: '{{URL::route('jeffry.getReportPembayaranMonthDetail')}}',
@@ -684,10 +694,20 @@ $('body').on('click','.viewDet',function(){
 					else
 					{
 						var tab = "";
+						var id = "";
 						var obj = response['messages'];
-						$('#myModalLabelPe').text("Detail Pengiriman No Invoice "+ obj[0]['invoice']);
+						if(obj[0]['paid'] == 1)
+						{
+							id = "Paid";
+						}else if(obj[0]['paid'] == 0)
+						{
+							id = "UnPaid";
+						}
+						//var hid="";
+						$('#myModalLabelByr').text("Detail Pembayaran "+id +" Nomor Invoice "+ obj[0]['invoice']+" Pada "+bln +" - "+thn);
 						var responses = obj;
 						var idx = 0;
+						//hid += "Detail Pembayaran "+id +" Nomor Invoice "+ obj[0]['invoice'];
 						$(responses).each(function() {
 								tab+= "<tr>";
 								tab+="<td>"+responses[idx].name+"</td>";
@@ -698,8 +718,10 @@ $('body').on('click','.viewDet',function(){
 								tab+="<td>"+toRp(responses[idx].priceNow)+"</td>";
 								tab+="<td>"+toRp((responses[idx].priceNow * responses[idx].quantity))+"</td>";
 								tab+="</tr>";
+								//hid+= tab;
 								idx = idx+1;
 							});
+							//tab+= "<input type='hidden' id='hslprnt' value='"+hid+"' />";
 							$('.isiTab').html(tab);
 					}
 				},error: function(xhr, textStatus, errorThrown){
@@ -709,6 +731,32 @@ $('body').on('click','.viewDet',function(){
 			},'json');
 	});
 
+	function downloadPdf()
+	{
+		document.getElementById('no').style.display = 'hidden'; 
+		$('.modal-header').css('border','0px');
+		$('thead').css('background','none');
+		//document.getElementsByClassName('modal-header').style.border-bottom = '0px';
+		//alert('a');
+		xepOnline.Formatter.Format('print', {
+			render: "download",
+			pageMargin: ".25in"
+		});
+	}
+	
+	function printPdf()
+	{
+		document.getElementById('no').style.display = 'hidden'; 
+		$('.modal-header').css('border','0px');
+		$('thead').css('background','none');
+		//document.getElementsByClassName('modal-header').style.border-bottom = '0px';
+		//alert('a');
+		xepOnline.Formatter.Format('print', {
+			
+			pageMargin: ".25in"
+		});
+	}
+	
 function toRp(angka){
 		var rev     = parseInt(angka, 10).toString().split('').reverse().join('');
 		var rev2    = '';

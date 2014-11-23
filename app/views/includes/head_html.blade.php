@@ -17,3 +17,15 @@
 		<script src="{{ asset('assets/js/datepicker/js/bootstrap-datepicker.js') }}"></script>
 		
 		<script src="{{ asset('assets/js/tinymce/js/tinymce/tinymce.min.js') }}"></script>
+		
+		<script src="{{ asset('assets/js/jsPDF-master/jspdf.js') }}"></script>
+		
+		<script src="{{ asset('assets/js/jsPDF-master/jspdf.plugin.from_html.js') }}"></script>
+		
+		<script src="{{ asset('assets/js/jsPDF-master/jspdf.plugin.split_text_to_size.js') }}"></script>
+		
+		<script src="{{ asset('assets/js/jsPDF-master/jspdf.plugin.standard_fonts_metrics.js') }}"></script>
+		
+		<script type="text/javascript" src="{{ asset('assets/js/jsPDF-master/dist/jspdf.debug.js') }}"></script>
+		
+		<script src="{{ asset('assets/js/css-to-pdf-master/css-to-pdf-master/js/xepOnline.jqPlugin.js') }}"></script>
