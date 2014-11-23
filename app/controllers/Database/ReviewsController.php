@@ -1781,5 +1781,78 @@ class ReviewsController extends \BaseController {
 		return Response::json($respond);
 	}
 	
+	//---------------------------------------------------------------------WEBSERVICE BUAT FRONT---------------------------------------------------------------------
+	
+	public function ws_insert()
+	{
+		$json = Input::get('json');
+		$jsonContent = json_decode($json);
+		
+		$product_id = $jsonContent->{'product_id'};							
+		$text = $jsonContent->{'text'};
+		$rating = $jsonContent->{'rating'};
+		$approved = 0;
+		
+		$input = array(
+			'product_id' => $product_id,
+			'text' => $text,
+			'rating' => $rating,
+			'approved' => $approved
+		);
+		
+		$respond = array();
+		//validate
+		$validator = Validator::make($data = $input, Review::$rules);
 
+		if ($validator->fails())
+		{
+			$respond = array('code'=>'400','status' => 'Bad Request','messages' => $validator->messages());
+			return Response::json($respond);
+		}
+
+		//save
+		try {
+			Review::create($data);
+			// Review::create([
+					// 'product_id' => $input['product_id'],
+					// 'text' => $input['text'],
+					// 'rating' => $input['rating'],
+					// 'approved' => 0
+				// ]);				
+			$respond = array('code'=>'201','status' => 'Created');
+		} catch (Exception $e) {
+			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+		}
+		return Response::json($respond);
+	}		
+	
+	public function ws_getReviewProduct
+	{
+		$json = Input::get('json');
+		$jsonContent = json_decode($json);
+		
+		$product_id = $jsonContent->{'product_id'};							
+		
+		$respond = array();
+		$review = Review::where('product_id', '=', $product_id)->get();
+		if (count($review) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{			
+			foreach($review as $key)
+			{
+				$product = Product::find($key->product_id);
+				//add product_no, product_name
+				$key->product_no = $product->product_no;
+				$key->product_name = $product->name;
+			}		
+		
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$review);
+		}
+		return Response::json($respond);
+	}
+	
+	//-------------------------------------------------------------------END WEBSERVICE BUAT FRONT-------------------------------------------------------------------
 }

@@ -261,6 +261,28 @@ class CategoriesController extends \BaseController {
 	}	
 	*/
 	
+	//---------------------------------------------------------------------WEBSERVICE BUAT FRONT---------------------------------------------------------------------
+	public function ws_getCategory()
+	{			
+		$respond = array();
+		$category = DB::table('categories AS cat')
+					->where('cat.deleted', '=', 0)
+					->leftJoin('categories AS par', 'cat.parent_category', '=', 'par.id')
+					->get(array('cat.id','cat.name','cat.parent_category','cat.deleted','cat.created_at',
+							'cat.updated_at','par.name AS parent_name'));
+				
+		if (count($category) == 0)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$category);
+		}
+		return Response::json($respond);
+	}	
+	//-------------------------------------------------------------------END WEBSERVICE BUAT FRONT-------------------------------------------------------------------
+	
 	public function getListCategory()
 	{
 		$category = Category::all();		

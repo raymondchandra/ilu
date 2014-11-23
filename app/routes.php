@@ -67,15 +67,15 @@ Route::group(['before' => 'check_token'], function()
 		Route::post('/register', ['as' => 'register' , 'uses' => '']);
 		Route::post('/forgotPass', ['as' => 'forgotPass' , 'uses' => '']);
 	//product (+ detail,promo,wishlist,cart)
-		Route::get('/product/{id}', ['as' => 'get.product' , 'uses' => '']);
-		Route::get('/product/category/{:category_id}', ['as' => 'get.product.category' , 'uses' => '']);
-		Route::get('/product/name/{:name}', ['as' => 'get.product.name' , 'uses' => '']);
+		Route::get('/product/{id}', ['as' => 'get.product' , 'uses' => 'ProductsController@ws_getById']);
+		Route::get('/product/category/{:category_id}', ['as' => 'get.product.category' , 'uses' => 'ProductsController@ws_getByCategoryId']);
+		Route::get('/product/name/{:name}', ['as' => 'get.product.name' , 'uses' => 'ProductsController@ws_getByName']);
 		Route::get('/product/top', ['as' => 'get.product.top' , 'uses' => '']);
-		Route::get('/product/new', ['as' => 'get.product.new' , 'uses' => '']);
+		Route::get('/product/new', ['as' => 'get.product.new' , 'uses' => 'ProductsController@ws_getTopTenNewProduct']);
 		Route::get('/product/random', ['as' => 'get.product.random' , 'uses' => '']);
-		Route::post('/compare', ['as' => 'compare.product' , 'uses' => '']);
+		Route::get('/compare', ['as' => 'compare.product' , 'uses' => 'ProductsController@ws_compare']);
 	//category
-		Route::get('/category', ['as' => 'get.category.list' , 'uses' => '']);
+		Route::get('/category', ['as' => 'get.category.list' , 'uses' => 'CategoriesController@ws_getCategory']);
 	//slideshow
 		Route::get('/slideshow', ['as' => 'get.slideshow.list' , 'uses' => 'GalleryController@getSlideshow']);
 	//news
@@ -105,15 +105,15 @@ Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
 		Route::put('/address', ['as' => 'edit.address' , 'uses' => '']);
 		Route::delete('/address/{:id}', ['as' => 'delete.address' , 'uses' => '']);
 	//wishlist
-		Route::get('/wishlist', ['as' => 'get.wishlist' , 'uses' => 'WishlistsController@getWishList']);
-		Route::post('/wishlist', ['as' => 'add.wishlist' , 'uses' => 'WishlistsController@insert']);
-		Route::delete('/wishlist/{:product_id}', ['as' => 'delete.wishlist' , 'uses' => 'WishlistsController@delete']);
+		Route::get('/wishlist', ['as' => 'get.wishlist' , 'uses' => 'WishlistsController@ws_getWishlist']);
+		Route::post('/wishlist', ['as' => 'add.wishlist' , 'uses' => 'WishlistsController@ws_insert']);
+		Route::delete('/wishlist/{:product_id}', ['as' => 'delete.wishlist' , 'uses' => 'WishlistsController@ws_delete']);
 	//cart
 		Route::get('/classification', ['as' => 'get.classification' , 'uses' => '']);
 		Route::post('/cart', ['as' => 'add.cart' , 'uses' => '']);
 		Route::put('/cart', ['as' => 'edit.cart.classification' , 'uses' => '']);
-		Route::put('/cart/quantity', ['as' => 'edit.cart.quantity' , 'uses' => '']);
-		Route::delete('/cart/{id}', ['as' => 'delete.cart' , 'uses' => '']);
+		Route::put('/cart/quantity', ['as' => 'edit.cart.quantity' , 'uses' => 'ws_updateQuantity']);
+		Route::delete('/cart/{id}', ['as' => 'delete.cart' , 'uses' => 'CartsController@ws_delete']);
 	//voucher
 		Route::post('/checkVoucher', ['as' => 'check.voucher' , 'uses' => '']);
 	//order
@@ -124,11 +124,11 @@ Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
 		Route::get('/shipment', ['as' => 'get.shipment.list' , 'uses' => '']);
 		Route::post('/payment', ['as' => 'add.payment' , 'uses' => '']);
 	//review
-		Route::get('/review/{product_id}', ['as' => 'get.review.product' , 'uses' => '']);
-		Route::post('/review', ['as' => 'add.review' , 'uses' => '']);
+		Route::get('/review/{product_id}', ['as' => 'get.review.product' , 'uses' => 'ReviewsController@ws_getReviewProduct']);
+		Route::post('/review', ['as' => 'add.review' , 'uses' => 'ReviewsController@ws_insert']);
 	//supportMsg
 		Route::get('/supportMsg/{ticket_id}', ['as' => 'get.supportMsg.ticket' , 'uses' => 'SupportMsgsController@getByTicket']);
-		Route::post('/supportMsg', ['as' => 'add.supportMsg' , 'uses' => 'SupportMsgsController@insert']);
+		Route::post('/supportMsg', ['as' => 'add.supportMsg' , 'uses' => 'SupportMsgsController@insert']);	
 });
 
 Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()

@@ -292,4 +292,75 @@ class CartsController extends \BaseController {
 		return Response::json($respond);
 	}	
 
+	//---------------------------------------------------------------------WEBSERVICE BUAT FRONT---------------------------------------------------------------------
+	
+	public function ws_insert()
+	{
+		$respond = array();
+		return Response::json($respond);
+	}
+	
+	public function ws_updateClassification()
+	{
+		$respond = array();
+		return Response::json($respond);
+	}
+	
+	//inputnya card_id
+	public function ws_updateQuantity()
+	{
+		$json = Input::get('json');
+		$jsonContent = json_decode($json);
+		
+		$id = $jsonContent->{'id'};							
+		$quantity = $jsonContent->{'quantity'};
+		
+		$respond = array();
+		$cart = Cart::find($id);
+		if ($cart == null)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			//edit value
+			$cart->quantity = $quantity;
+			try {
+				$cart->save();
+				$respond = array('code'=>'204','status' => 'No Content');
+			} catch (Exception $e) {
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
+			
+		}
+		return Response::json($respond);
+	}
+	
+	//inputnya cart_id
+	public function ws_delete()
+	{
+		$json = Input::get('json');
+		$jsonContent = json_decode($json);
+		
+		$id = $jsonContent->{'id'};							
+		
+		$cart = Cart::find($id);
+		if ($cart == null)
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			try {
+				$cart->delete();
+				$respond = array('code'=>'204','status' => 'No Content');
+			} catch (Exception $e) {
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+			}
+			
+		}
+		return Response::json($respond);
+				
+	}
+	//-------------------------------------------------------------------END WEBSERVICE BUAT FRONT-------------------------------------------------------------------
 }
