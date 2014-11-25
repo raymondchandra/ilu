@@ -86,6 +86,15 @@ Route::filter('checkAccessToken', function()
 	}
 });
 
+Route::filter('force_https', function()
+{
+    if( ! Request::secure())
+    {
+        return Redirect::secure(Request::path());
+    }
+
+});
+
 
 Route::filter('auth.basic', function()
 {

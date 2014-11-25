@@ -12,6 +12,10 @@ Route::get('/tesview', function (){
 	return View::make('pages.admin.product.manage_product');
 });
 
+Route::get('pwd',function(){
+	var_dump(Hash::make('admin123'));
+});
+
 Route::get('/tes2', function()
 {
 		//$stat = 'On-shipping';
@@ -109,7 +113,7 @@ Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
 		Route::post('/supportMsg', ['as' => 'add.supportMsg' , 'uses' => 'SupportMsgsController@insert']);	
 });
 
-Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
+Route::group(['prefix' => 'admin', 'before' => array('auth_admin' , 'force_https')], function()
 {
 	//DASHBOARD
 	Route::get('/', ['as' =>'jeffry.getDashboard', 'uses' => 'DashboardsManagementController@view_dashboard_mgmt']);

@@ -84,7 +84,7 @@ $('body').on('click','.flogin',function(){
 			}
 			else
 			{
-				alert("unauthorized");
+				window.location = "{{URL::route('admin/login')}}";
 			}
 		},
 		error: function(xhr, textStatus, errorThrown){
