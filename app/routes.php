@@ -18,25 +18,99 @@ Route::get('pwd',function(){
 
 Route::get('/tes2', function()
 {
-		//$stat = 'On-shipping';
-		//$date1 = '01-November-2014';
-		//$date2 = '03-November-2014';
-		$paid = 1;
-		$bln = 'October';
-		$thn = '2014';
-		$blnTemp = Carbon::parse($bln.'-01-'.$thn)->format('n');
-
+		$page = 1;
+		$limit = 10;
 		
-		$order = Transaction::where(DB::raw('MONTH(transactions.updated_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.updated_at)'), '=', $thn)->join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('transactions.paid','=',$paid)->get(array('transactions.id','profiles.full_name','transactions.invoice','transactions.status','transactions.total_price','transactions.paid'));
-		
-		if(count($order) == 0)
+		$respond = array();
+		$prod = Order::join('prices','orders.price_id','=','prices.id')->groupBy('prices.product_id')->select(array('prices.product_id'))->orderBy('product_id','asc')->get();
+		$qtyProd = Order::join('prices','orders.price_id','=','prices.id')->select(array('prices.product_id', 'orders.quantity'))->orderBy('product_id','asc')->get();
+		if (count($prod) == 0 && count($qtyProd))
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
-		}else
-		{
-			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
 		}
-		echo $respond['messages'];
+		else
+		{
+			$idxLast = count($qtyProd);
+			$allProd = null;
+			foreach($prod as $key)
+			{
+				$ct = 0;
+				$tempProd = -1;
+				$first = true;
+				$idxCt = 0;
+				foreach($qtyProd as $key2)
+				{
+					$idxCt++;
+					if($key2->product_id == $key->product_id)
+					{
+						$ct = $ct + $key2->quantity;
+						$tempProd = $key->product_id;
+						
+						if($idxLast ==  $idxCt && $first == true)
+						{
+							$allProd[] = array('prod_id'=> $tempProd, 'total'=>$ct);
+						}
+						
+					}else
+					{
+						if($first == true && $ct != 0)
+						{
+							$allProd[] = array('prod_id'=> $tempProd, 'total'=>$ct);
+							$ct = 0;
+							$first = false;
+						}
+					}
+				}
+			}
+			if($allProd != null)
+			{
+				foreach ($allProd as $key=>$row) 
+				{
+					$pro[$key]  = $row['prod_id'];
+					$tot[$key] = $row['total'];
+				}
+				array_multisort($tot, SORT_DESC, $pro, SORT_ASC, $allProd);
+				$idx = 0;
+				$start = ($page-1) * $limit;
+				$end = ( $page * $limit ) -1;
+				echo $start;
+				echo $end;
+				
+				if($end > 10)
+				{
+					$end = 10;
+				}
+				foreach($allProd as $key => $row)
+				{
+					if($idx < 10)
+					{
+						if($idx >= $start && $idx <= $end)
+						{
+							echo 'in';
+							$product = new ProductsController();
+							$productTopTen = $product->getById($row['prod_id']);// here
+							$temp = json_decode($productTopTen->getContent());
+							$temp2 = $temp->{'messages'};
+							$topTenProduct[] = array('idProd'=>$row['prod_id'], 'product_name'=>$temp2->name, 'product'=>$temp2);
+							
+						}
+						
+						$idx++;
+					}else
+					{
+						break;
+					}
+				}
+				
+				$respond = array('code'=>'200','status' => 'OK','messages'=>$topTenProduct);
+			}else
+			{
+					$respond = array('code'=>'404','status' => 'Not Found');
+			}
+			
+			
+		}
+		echo $respond['messages'][5]['product_name'];
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -111,6 +185,8 @@ Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
 	//supportMsg
 		Route::get('/supportMsg/{ticket_id}', ['as' => 'get.supportMsg.ticket' , 'uses' => 'SupportMsgsController@getByTicket']);
 		Route::post('/supportMsg', ['as' => 'add.supportMsg' , 'uses' => 'SupportMsgsController@insert']);	
+	//Top ten
+		Route::get('/product/top',['as'=>'get.TopTenProdFE','uses'=>'TransactionsController@getTopTenProductFE']);
 });
 
 Route::group(['prefix' => 'admin', 'before' => array('auth_admin' , 'force_https')], function()
