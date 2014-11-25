@@ -675,6 +675,104 @@ class TransactionsController extends \BaseController {
 	}
 	
 	/**
+	 * Display top ten product
+	 *
+	 * @return Response
+	 */
+	public function getTopTenProductFE(){
+		
+		$page = Input::get('page');
+		$limit = Input::get('limit');
+		
+		$respond = array();
+		$prod = Order::join('prices','orders.price_id','=','prices.id')->groupBy('prices.product_id')->select(array('prices.product_id'))->orderBy('product_id','asc')->get();
+		$qtyProd = Order::join('prices','orders.price_id','=','prices.id')->select(array('prices.product_id', 'orders.quantity'))->orderBy('product_id','asc')->get();
+		if (count($prod) == 0 && count($qtyProd))
+		{
+			$respond = array('code'=>'404','status' => 'Not Found');
+		}
+		else
+		{
+			$idxLast = count($qtyProd);
+			$allProd = null;
+			foreach($prod as $key)
+			{
+				$ct = 0;
+				$tempProd = -1;
+				$first = true;
+				$idxCt = 0;
+				foreach($qtyProd as $key2)
+				{
+					$idxCt++;
+					if($key2->product_id == $key->product_id)
+					{
+						$ct = $ct + $key2->quantity;
+						$tempProd = $key->product_id;
+						
+						if($idxLast ==  $idxCt && $first == true)
+						{
+							$allProd[] = array('prod_id'=> $tempProd, 'total'=>$ct);
+						}
+						
+					}else
+					{
+						if($first == true && $ct != 0)
+						{
+							$allProd[] = array('prod_id'=> $tempProd, 'total'=>$ct);
+							$ct = 0;
+							$first = false;
+						}
+					}
+				}
+			}
+			if($allProd != null)
+			{
+				foreach ($allProd as $key=>$row) 
+				{
+					$pro[$key]  = $row['prod_id'];
+					$tot[$key] = $row['total'];
+				}
+				array_multisort($tot, SORT_DESC, $pro, SORT_ASC, $allProd);
+				$idx = 0;
+				$start = ($page-1) * $limit;
+				$end = ( $page * $limit ) -1;
+				if($end > 10)
+				{
+					$end = 10;
+				}
+				foreach($allProd as $key => $row)
+				{
+					if($idx < 10)
+					{
+						if($idx >= $start && $idx <= $end)
+						{
+							$product = new ProductsController();
+							$productTopTen = $product->getById($row['prod_id']);// here
+							$temp = json_decode($productTopTen->getContent());
+							$temp2 = $temp->{'messages'};
+							$topTenProduct[] = array('idProd'=>$row['prod_id'], 'product_name'=>$temp2->name, 'product'=>$temp2);
+							
+						}
+						
+						$idx++;
+					}else
+					{
+						break;
+					}
+				}
+				
+				$respond = array('code'=>'200','status' => 'OK','messages'=>$topTenProduct);
+			}else
+			{
+					$respond = array('code'=>'404','status' => 'Not Found');
+			}
+			
+			
+		}
+		return Response::json($respond);
+	}
+	
+	/**
 	 * Display top ten buyer
 	 *
 	 * @return Response
