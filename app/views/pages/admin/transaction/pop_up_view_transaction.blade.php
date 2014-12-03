@@ -39,11 +39,11 @@
 								<div class="col-sm-5">
 									<p id="transaction_status" class="form-control-static" ></p>
 									<select id="transaction_status_list" class="form-control hidden">
-										<option value="Cancel">Cancel</option>
-										<option value="Pending">Pending</option>
-										<option value="On-process">On-process</option>
-										<option value="On-ship">On-ship</option>
-										<option value="Complete">Complete</option>
+										<option value="Cancel" id="cncl">Cancel</option>
+										<option value="Pending" id="pdg">Pending</option>
+										<option value="On-process" id="opc">On-process</option>
+										<option value="On-ship" id="osp">On-ship</option>
+										<option value="Complete" id="cpt">Complete</option>
 									</select>
 								</div>
 								<div class="col-sm-3">
@@ -57,6 +57,23 @@
 										$('#transaction_status_setter').removeClass('hidden');
 										$('#transaction_status').addClass('hidden');
 										$('#transaction_status_editor').addClass('hidden');
+										$cek = $('#transaction_status').text();
+										if($cek == "Cancel")
+										{
+											$('#cncl').attr('selected', 'selected');
+										}else if($cek == "Pending")
+										{
+											$('#pdg').attr('selected', 'selected');
+										}else if($cek == "On-process")
+										{
+											$('#opc').attr('selected', 'selected');
+										}else if($cek == "On-ship")
+										{	
+											$('#osp').attr('selected', 'selected');
+										}else if($cek == "Complete")
+										{
+											$('#cpt').attr('selected', 'selected');
+										}
 									});
 
 									$( 'body' ).on( "click",'#transaction_status_setter', function() {
@@ -77,8 +94,8 @@
 								<div class="col-sm-5">
 									<p id="transaction_paid" class="form-control-static"></p>
 									<select id="transaction_paid_list" class="form-control hidden">
-										<option value="1">Paid</option>
-										<option value="0">Unpaid</option>
+										<option value="1" id="pd">Paid</option>
+										<option value="0" id="upd">Unpaid</option>
 									</select>
 								</div>
 								<div class="col-sm-3">
@@ -90,6 +107,15 @@
 										$('#transaction_paid_setter').removeClass('hidden');
 										$('#transaction_paid').addClass('hidden');
 										$('#transaction_paid_editor').addClass('hidden');
+										
+										$cek = $('#transaction_paid').text();
+										if($cek == "Paid")
+										{
+											$('#pd').attr('selected', 'selected');
+										}else if($cek == "Unpaid")
+										{
+											$('#upd').attr('selected', 'selected');
+										}
 									});
 
 									$( 'body' ).on( "click",'#transaction_paid_setter', function() {
@@ -272,7 +298,7 @@
 
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+					<button type="button" class="btn btn-default butKel" data-dismiss="modal">Keluar</button>
 				</div>
 			</form>
 		</div>

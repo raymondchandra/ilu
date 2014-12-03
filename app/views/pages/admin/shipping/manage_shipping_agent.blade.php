@@ -155,7 +155,7 @@
 									<td>{{$key->id}}</td>
 									<td>{{$key->courier}}</td>
 									<td>{{$key->destination}}</td>
-									<td>Rp <?php echo number_format($key->price,0,",",".") ?>,-</td>
+									<td>Rp <?php echo number_format((double)$key->price,0,",",".") ?>,-</td>
 									<td>
 										<input type="hidden" value="{{$key->id}}" id="shipAgtId">
 										<button class="btn btn-info btn-xs viewShippingAgent" data-toggle="modal" data-target=".pop_up_view_shipping_agent">View</button>

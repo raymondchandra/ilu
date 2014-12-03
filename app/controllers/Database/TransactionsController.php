@@ -2026,5 +2026,53 @@ class TransactionsController extends \BaseController {
 		return Response::json($respond);
 	}
 	
-	
+	public function send_progress()
+	{
+		$ket = Input::get('ket');
+		$invoice = Input::get('invoice');
+		$kurir = Input::get('kurir');
+		$noResi = Input::get('noresi');
+		
+		//$profileController = new ProfilesController();
+		//$profilesJson = $profileController->getAll();
+		/*
+		$json = json_decode($profilesJson->getContent());
+		$paginator = $json->{'messages'};
+		foreach($paginator as $prof)
+		{
+			$data = array(
+				'body'=>$body
+			);
+			$address = array(
+				'email'=>$prof->email,
+				'subject'=>'newsletter'
+			);
+			
+			Mail::queue('emails.newsletter', $data, function($message) use($address)
+			{
+				$message->to($address['email'])->subject($address['subject']);
+			});
+			
+		}
+		*/
+		
+		$isi = "Transaksi Anda dengan nomor invoice ".$invoice." sedang dalam proses ".$ket;
+		if($ket == "On-shipping")
+		{
+			$isi = $isi." dengan menggunakan ".$kurir." dengan nomor resi ".$noResi;
+		}
+		$data = array(
+				'body'=>$isi
+		);
+		$address = array(
+			'email'=>'davidsenjayagm@gmail.com',
+			'subject'=>'Perubahan status transaksi no.'.$invoice
+		);
+		
+		Mail::queue('emails.transaction_admin', $data, function($message) use($address)
+		{
+			$message->to($address['email'])->subject($address['subject']);
+		});
+		return $respond = array('code'=>'200','status' => 'OK');
+	}
 }

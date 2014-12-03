@@ -534,13 +534,38 @@
 						if(response['code'] == '404')
 						{
 							alert('failed');
-							location.reload();
+							
 						}
 						else
 						{
 							
 							alert('success');
-							location.reload();
+							$.ajax({
+								type: 'POST',
+								url: '{{URL::route('jeffry.sendEmailTrans')}}',
+								data: {	
+									"ket": $('#transaction_status').val(),
+									"invoice" : $('#invoice').val(),
+									"kurir": $('#courier').val(),
+									"noresi" : $('#idShipment').val()
+								},
+								success: function(response){
+									if(response['code'] == '404')
+									{
+										alert('failed');
+										
+									}
+									else
+									{
+										
+										alert('success');
+										
+									}
+								},error: function(xhr, textStatus, errorThrown){
+									alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+									alert("responseText: "+xhr.responseText);
+								}
+							},'json');
 						}
 					},error: function(xhr, textStatus, errorThrown){
 						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
@@ -563,13 +588,13 @@
 						if(response['code'] == '404')
 						{
 							alert('failed');
-							location.reload();
+							
 						}
 						else
 						{
 							
 							alert('success');
-							location.reload();
+							
 						}
 					},error: function(xhr, textStatus, errorThrown){
 						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
@@ -592,13 +617,13 @@
 						if(response['code'] == '404')
 						{
 							alert('failed');
-							location.reload();
+							
 						}
 						else
 						{
 							
 							alert('success');
-							location.reload();
+							
 						}
 					},error: function(xhr, textStatus, errorThrown){
 						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
@@ -617,8 +642,19 @@
 			$paid = $('#filterPaid').val();
 			window.location = "{{URL::route('jeffry.getTransaction')}}" + "?filtered=1&invoice="+$invoice+"&accId="+$accId+"&fullName="+$fullName+"&totalPrice="+$totalPrice+"&status="+$status+"&paid="+$paid;
 		});
+		
+		
 		$('body').on('click','.backButton',function(){
 			window.location = "{{URL::route('jeffry.getTransaction')}}" ;
+		});
+		
+		$('body').on('click','.butKel',function(){
+			location.reload() ;
+		});
+		
+		$('.pop_up_view_transaction').on('hidden.bs.modal',function(e){
+		//alert('a')
+			location.reload() ;
 		});
 		
 		function toRp(angka){
@@ -633,6 +669,8 @@
 		return 'Rp ' + rev2.split('').reverse().join('')+',-';
 		//return 'IDR ' + rev2.split('').reverse().join('') + ',00';
 	}
+	
+	
 	</script>
 	
 	
