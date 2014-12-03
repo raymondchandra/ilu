@@ -8,23 +8,23 @@
 	
 	
 		<!-- Style -->
-		<link href="{{ secure_asset('assets/css/all.css') }}" rel="stylesheet"><!-- {{ asset('assets/css/all.css') }} -->
-		<link href="{{ secure_asset('assets/js/datepicker/css/datepicker.css') }}" rel="stylesheet">
+		<link href="{{ asset('assets/css/all.css') }}" rel="stylesheet"><!-- {{ asset('assets/css/all.css') }} -->
+		<link href="{{ asset('assets/js/datepicker/css/datepicker.css') }}" rel="stylesheet">
 		<!--<link rel="icon" type="image/png" href="assets/img/favicon.png">--> <!-- {{ asset('assets/img/favicon.png') }} -->
-		<script src="{{ secure_asset('assets/js/jquery-1.11.1.min.js') }}"></script>
-		<script src="{{ secure_asset('assets/js/jquery-migrate-1.2.1.min.js') }}"></script>
-		<script src="{{ secure_asset('assets/js/bootstrap.min.js') }}"></script>
-		<script src="{{ secure_asset('assets/js/datepicker/js/bootstrap-datepicker.js') }}"></script>
+		<script src="{{ asset('assets/js/jquery-1.11.1.min.js') }}"></script>
+		<script src="{{ asset('assets/js/jquery-migrate-1.2.1.min.js') }}"></script>
+		<script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+		<script src="{{ asset('assets/js/datepicker/js/bootstrap-datepicker.js') }}"></script>
 		
-		<script src="{{ secure_asset('assets/js/tinymce/js/tinymce/tinymce.min.js') }}"></script>
+		<script src="{{ asset('assets/js/tinymce/js/tinymce/tinymce.min.js') }}"></script>
 		
-		<script src="{{ secure_asset('assets/js/jsPDF-master/jspdf.js') }}"></script>
+		<script src="{{ asset('assets/js/jsPDF-master/jspdf.js') }}"></script>
 		
-		<script src="{{ secure_asset('assets/js/jsPDF-master/jspdf.plugin.from_html.js') }}"></script>
+		<script src="{{ asset('assets/js/jsPDF-master/jspdf.plugin.from_html.js') }}"></script>
 		
-		<script src="{{ secure_asset('assets/js/jsPDF-master/jspdf.plugin.split_text_to_size.js') }}"></script>
+		<script src="{{ asset('assets/js/jsPDF-master/jspdf.plugin.split_text_to_size.js') }}"></script>
 		
-		<script src="{{ secure_asset('assets/js/jsPDF-master/jspdf.plugin.standard_fonts_metrics.js') }}"></script>
+		<script src="{{ asset('assets/js/jsPDF-master/jspdf.plugin.standard_fonts_metrics.js') }}"></script>
 		
 		<script type="text/javascript" src="{{ secure_asset('assets/js/jsPDF-master/dist/jspdf.debug.js') }}"></script>
 		
