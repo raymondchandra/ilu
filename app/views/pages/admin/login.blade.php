@@ -1,4 +1,4 @@
-@extends('layouts.admin.admin_layout'){{-- WARNING! fase ini sementara untuk show saja, untuk lebih lanjut akan dibuat controller agar tidak meng-extend layout --}}
+@extends('layouts.admin.adminlogin_layout'){{-- WARNING! fase ini sementara untuk show saja, untuk lebih lanjut akan dibuat controller agar tidak meng-extend layout --}}
 @section('content')	
 <div class="container-fluid">
 	<div class="row ">
@@ -72,19 +72,20 @@ $('body').on('click','.flogin',function(){
 	}
 	$json_data = JSON.stringify($data);
 	$.ajax({
-		url: '{{URL::route('david.adminSignIn')}}',
+		url: "{{URL::route('david.adminSignIn')}}",
 		type: 'GET',
 		data: {
 			'json' : $json_data
 		},
 		success: function (res) {
+			alert(res);
 			if(res['code'] == 200)
 			{
-				window.location = "{{URL::route('ilu.main.dashboard')}}" ;
+				window.location = "{{URL::route('admin.getDashboard')}}" ;
 			}
 			else
 			{
-				window.location = "{{URL::route('admin/login')}}";
+				alert("unauthorized");
 			}
 		},
 		error: function(xhr, textStatus, errorThrown){

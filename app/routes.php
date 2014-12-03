@@ -1,7 +1,17 @@
 <?php
 use Carbon\Carbon;
 
-Route::get('/tes', 'PromotionsController@getTenProductFromNewestPromotion');
+//ROUTE FRONT END
+Route::get('/', function (){
+	return View::make('pages.frontend.frontend');
+});
+
+Route::get('/tes', function()
+{
+	$priceController = new PricesController();
+	
+	return $priceController;
+});
 
 // Route::get('/tes', 'ProductsController@getAll');
 
@@ -12,105 +22,27 @@ Route::get('/tesview', function (){
 	return View::make('pages.admin.product.manage_product');
 });
 
-Route::get('pwd',function(){
-	var_dump(Hash::make('admin123'));
-});
-
 Route::get('/tes2', function()
 {
-		$page = 1;
-		$limit = 10;
+		//$stat = 'On-shipping';
+		//$date1 = '01-November-2014';
+		//$date2 = '03-November-2014';
+		$paid = 1;
+		$bln = 'October';
+		$thn = '2014';
+		$blnTemp = Carbon::parse($bln.'-01-'.$thn)->format('n');
+
 		
-		$respond = array();
-		$prod = Order::join('prices','orders.price_id','=','prices.id')->groupBy('prices.product_id')->select(array('prices.product_id'))->orderBy('product_id','asc')->get();
-		$qtyProd = Order::join('prices','orders.price_id','=','prices.id')->select(array('prices.product_id', 'orders.quantity'))->orderBy('product_id','asc')->get();
-		if (count($prod) == 0 && count($qtyProd))
+		$order = Transaction::where(DB::raw('MONTH(transactions.updated_at)'), '=', $blnTemp)->where(DB::raw('YEAR(transactions.updated_at)'), '=', $thn)->join('accounts','transactions.account_id','=','accounts.id')->join('profiles','accounts.profile_id','=','profiles.id')->where('transactions.paid','=',$paid)->get(array('transactions.id','profiles.full_name','transactions.invoice','transactions.status','transactions.total_price','transactions.paid'));
+		
+		if(count($order) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
-		}
-		else
+		}else
 		{
-			$idxLast = count($qtyProd);
-			$allProd = null;
-			foreach($prod as $key)
-			{
-				$ct = 0;
-				$tempProd = -1;
-				$first = true;
-				$idxCt = 0;
-				foreach($qtyProd as $key2)
-				{
-					$idxCt++;
-					if($key2->product_id == $key->product_id)
-					{
-						$ct = $ct + $key2->quantity;
-						$tempProd = $key->product_id;
-						
-						if($idxLast ==  $idxCt && $first == true)
-						{
-							$allProd[] = array('prod_id'=> $tempProd, 'total'=>$ct);
-						}
-						
-					}else
-					{
-						if($first == true && $ct != 0)
-						{
-							$allProd[] = array('prod_id'=> $tempProd, 'total'=>$ct);
-							$ct = 0;
-							$first = false;
-						}
-					}
-				}
-			}
-			if($allProd != null)
-			{
-				foreach ($allProd as $key=>$row) 
-				{
-					$pro[$key]  = $row['prod_id'];
-					$tot[$key] = $row['total'];
-				}
-				array_multisort($tot, SORT_DESC, $pro, SORT_ASC, $allProd);
-				$idx = 0;
-				$start = ($page-1) * $limit;
-				$end = ( $page * $limit ) -1;
-				echo $start;
-				echo $end;
-				
-				if($end > 10)
-				{
-					$end = 10;
-				}
-				foreach($allProd as $key => $row)
-				{
-					if($idx < 10)
-					{
-						if($idx >= $start && $idx <= $end)
-						{
-							echo 'in';
-							$product = new ProductsController();
-							$productTopTen = $product->getById($row['prod_id']);// here
-							$temp = json_decode($productTopTen->getContent());
-							$temp2 = $temp->{'messages'};
-							$topTenProduct[] = array('idProd'=>$row['prod_id'], 'product_name'=>$temp2->name, 'product'=>$temp2);
-							
-						}
-						
-						$idx++;
-					}else
-					{
-						break;
-					}
-				}
-				
-				$respond = array('code'=>'200','status' => 'OK','messages'=>$topTenProduct);
-			}else
-			{
-					$respond = array('code'=>'404','status' => 'Not Found');
-			}
-			
-			
+			$respond = array('code'=>'200','status' => 'OK','messages'=>$order);
 		}
-		echo $respond['messages'][5]['product_name'];
+		echo $respond['messages'];
 });
 Route::post('/test_login', ['as' => 'test_login' , 'uses' => 'HomeController@wrapper']);
 
@@ -124,8 +56,8 @@ Route::group(['before' => 'check_token'], function()
 		Route::post('/forgotPass', ['as' => 'forgotPass' , 'uses' => '']);
 	//product (+ detail,promo,wishlist,cart)
 		Route::get('/product/{id}', ['as' => 'get.product' , 'uses' => 'ProductsController@ws_getById']);
-		Route::get('/product/category/{:category_id}', ['as' => 'get.product.category' , 'uses' => 'ProductsController@ws_getByCategoryId']);
-		Route::get('/product/name/{:name}', ['as' => 'get.product.name' , 'uses' => 'ProductsController@ws_getByName']);
+		Route::get('/product/category/{category_id}', ['as' => 'get.product.category' , 'uses' => 'ProductsController@ws_getByCategoryId']);
+		Route::get('/product/name/{name}', ['as' => 'get.product.name' , 'uses' => 'ProductsController@ws_getByName']);
 		Route::get('/product/top', ['as' => 'get.product.top' , 'uses' => '']);
 		Route::get('/product/new', ['as' => 'get.product.new' , 'uses' => 'ProductsController@ws_getTopTenNewProduct']);
 		Route::get('/product/random', ['as' => 'get.product.random' , 'uses' => '']);
@@ -133,10 +65,10 @@ Route::group(['before' => 'check_token'], function()
 	//category
 		Route::get('/category', ['as' => 'get.category.list' , 'uses' => 'CategoriesController@ws_getCategory']);
 	//slideshow
-		Route::get('/slideshow', ['as' => 'get.slideshow.list' , 'uses' => 'GalleryController@getSlideshow']);
+		Route::get('/slideshow', ['as' => 'get.slideshow.list' , 'uses' => 'SlideshowManagementController@get_all_slideshow']);
 	//news
-		Route::get('/news', ['as' => 'get.news.list' , 'uses' => '']);
-		Route::get('/news/{:id}', ['as' => 'get.news.detail' , 'uses' => '']);
+		Route::get('/news', ['as' => 'get.news.list' , 'uses' => 'NewsManagementController@getNews']);
+		Route::get('/news/{id}', ['as' => 'get.news.detail' , 'uses' => '']);
 	//message
 		Route::post('/message', ['as' => 'send.message' , 'uses' => '']);
 	//information
@@ -185,11 +117,9 @@ Route::group(['prefix' => 'user', 'before' => 'auth_user'], function()
 	//supportMsg
 		Route::get('/supportMsg/{ticket_id}', ['as' => 'get.supportMsg.ticket' , 'uses' => 'SupportMsgsController@getByTicket']);
 		Route::post('/supportMsg', ['as' => 'add.supportMsg' , 'uses' => 'SupportMsgsController@insert']);	
-	//Top ten
-		Route::get('/product/top',['as'=>'get.TopTenProdFE','uses'=>'TransactionsController@getTopTenProductFE']);
 });
 
-Route::group(['prefix' => 'admin', 'before' => array('auth_admin' , 'force_https')], function()
+Route::group(['prefix' => 'admin', 'before' => 'auth_admin'], function()
 {
 	//DASHBOARD
 	Route::get('/', ['as' =>'jeffry.getDashboard', 'uses' => 'DashboardsManagementController@view_dashboard_mgmt']);
@@ -204,7 +134,7 @@ Route::group(['prefix' => 'admin', 'before' => array('auth_admin' , 'force_https
 	Route::post('/attribute/deleteAttribute', ['as' => 'attribute.deleteAttribute', 'uses' => 'AttributesManagementController@deleteAttribute']);	
 	
 	//-------------------------------------------CATEGORY VIEW ADMIN-------------------------------------------	
-	Route::get('manage_categories', ['as' => 'viewCategoriesManagement', 'uses' => 'CategoriesManagementController@view_admin_category']);
+	Route::get('/manage_categories', ['as' => 'viewCategoriesManagement', 'uses' => 'CategoriesManagementController@view_admin_category']);
 	Route::get('/category/{id}', ['as' => 'category_detail', 'uses' => 'CategoriesManagementController@view_detail_category']);
 	Route::post('/category/addCategory', ['as' => 'category.addCategory', 'uses' => 'CategoriesManagementController@addCategory']);
 	Route::post('/category/editFull', ['as' => 'category.editFull', 'uses' => 'CategoriesManagementController@editFull']);	
@@ -245,11 +175,18 @@ Route::group(['prefix' => 'admin', 'before' => array('auth_admin' , 'force_https
 		Route::post('/product/editPrice', ['as' => 'product.editPrice', 'uses' => 'ProductsManagementController@editPrice']);		
 		Route::post('/product/editGallery', ['as' => 'product.editGallery', 'uses' => 'ProductsManagementController@editGallery']);
 	Route::post('/product/deleteProduct', ['as' => 'product.deleteProduct', 'uses' => 'ProductsManagementController@deleteProduct']);	
+	Route::delete('/product/deletePrice', ['as' => 'product.deletePrice', 'uses' => 'ProductsManagementController@deletePrice']);
+	Route::post('/product/additionalPrices', ['as' => 'product.additionalPrices', 'uses' => 'ProductsManagementController@additionalPrices']);
 	
 	//-------------------------------------------PAYMENTPROFF VIEW ADMIN-------------------------------------------
 	Route::get('/manage_payment_proof', ['as' => 'viewPaymentProffsManagement', 'uses' => 'PaymentProffsManagementController@view_admin_paymentproff']);
 	
-	//ooooooooooooooooooooooooooooooooooooooKERJAAN DAVIDoooooooooooooooooooooooooooooooooooooooo	
+	//ooooooooooooooooooooooooooooooooooooooKERJAAN DAVIDoooooooooooooooooooooooooooooooooooooooo
+	Route::get('/manage_newsletter', function()
+	{
+		return View::make('pages.admin.newsletter.manage_newsletter');
+	});
+	Route::post('/sendNewsLetter', ['as' => 'david.sendNewsLetter', 'uses' => 'NewsLetterController@send_news_letter']);
 	Route::get('/getTopTenNewProduct', ['as' => 'getTopTenNewProduct', 'uses' => 'ProductsController@getTopTenNewProduct']);
 	Route::get('/getProductFromNewestPromotion', ['as' => 'getProductFromNewestPromotion', 'uses' => 'PromotionsController@getProductFromNewestPromotion']);
 	
@@ -486,6 +423,16 @@ Route::group(['prefix' => 'admin', 'before' => array('auth_admin' , 'force_https
 
 	Route::get('/manage_report_pembayaran_month_detail', ['as' =>'jeffry.getReportPembayaranMonthDetail', 'uses' => 'TransactionsController@getDetailPopUp']);
 	
+	
+	 Route::get('/manage_cms', function()
+	{
+		return View::make('pages.admin.cms.manage_cms');
+	});
+    // Setting
+    Route::get('/manage_setting', function()
+	{
+		return View::make('pages.admin.cms.manage_setting');
+	});
 
 });
 
@@ -593,6 +540,12 @@ Route::group(array('prefix' => 'test'), function()
 	
 	
 	
+	Route::post('/sendNewsLetter', ['as' => 'david.sendNewsLetter', 'uses' => 'NewsLetterController@send_news_letter']);
+	
+	Route::get('/getTopTenNewProduct', ['as' => 'getTopTenNewProduct', 'uses' => 'ProductsController@getTopTenNewProduct']);
+	
+	Route::get('/getProductFromNewestPromotion', ['as' => 'getProductFromNewestPromotion', 'uses' => 'PromotionsController@getProductFromNewestPromotion']);
+	
 	Route::get('/manage_customer_david', ['as'=>'david.viewCustomerManagement','uses' => 'CustomerManagementController@view_cust_mgmt']);
 	
 	Route::get('/get_wishlist', ['as'=>'david.getWishlist','uses' => 'WishlistsController@getWishListByAccountId']);
@@ -620,15 +573,7 @@ Route::group(array('prefix' => 'test'), function()
 	});
 
     // CMS
-    Route::get('/manage_cms', function()
-	{
-		return View::make('pages.admin.cms.manage_cms');
-	});
-    // Setting
-    Route::get('/manage_setting', function()
-	{
-		return View::make('pages.admin.cms.manage_setting');
-	});
+   
 
 
 

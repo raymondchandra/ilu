@@ -8,13 +8,93 @@
 			<form class="form-horizontal" role="form">
 				<div class="modal-body">
 					<div class="row">
-						<div class="col-sm-12">
-
+						<div class="col-sm-12">							
+							
 							<div class="form-group" id="nama_promosi">
 								<label class="col-sm-4 control-label">ID</label>
-								<div class="col-sm-8">
-									<p id="edit_id" class="form-control-static">0000000</p>
-								</div>
+								<div class="col-sm-4">
+									<p id="edit_id" class="form-control-static">0000000</p>									
+								</div>	
+								<button type="button" id="f_edit_add_new_attr" class="btn btn-success pull-right">
+									Add New Attribute
+								</button>							
+								<script>
+									$('body').on('click','#f_edit_add_new_attr',function(){	
+										edit_arr_prices[edit_arr_prices.length] = edit_idx_prices_row;
+										alert(edit_arr_prices);
+										
+										var new_line = '<div class="form-group">'
+										new_line+='	<div class="col-sm-3 ">';							
+										new_line+=' <select class="form-control edit_new_attr_id_input'+edit_idx_prices_row+'"><?php foreach($list_attribute as $key => $value){ ?><option value="<?php echo $key; ?>"><?php echo $value; ?></option><?php } ?></select> ';
+										new_line+='	</div>';
+										new_line+='	<div class="col-sm-4">';
+										new_line+='		<input type="text" class="form-control edit_new_attr_value_input'+edit_idx_prices_row+'" placeholder="value"/>';
+										new_line+='	</div>';
+										new_line+='	<div class="col-sm-3">';
+										new_line+='		<input type="text" onkeypress="return isNumberKey(event)" class="form-control edit_new_price_input'+edit_idx_prices_row+'" placeholder="harga (optional)"/>';
+										new_line+='	</div>';
+										new_line+='	<div class="col-sm-2">';
+										new_line += '<input type="hidden" value="" />';
+										new_line+='		<input type="hidden" value="'+edit_idx_prices_row+'"/><button type="button" class="btn btn-danger f_delete_row_attr">X</button>';
+										new_line+='	</div>';
+										new_line+='</div>';
+										// $('#f_add_product_container').append(new_line);
+										$('.div_edit_price').append(new_line);
+										
+										edit_idx_prices_row++;
+									});
+									
+									$( 'body' ).on( "click",'.f_delete_row_attr', function() {					
+										//delete from arr_attr
+										$id_del_attr = $(this).prev().val();
+										for($i = 0; $i < edit_arr_prices.length; $i++)
+										{
+											if(edit_arr_prices[$i] == $id_del_attr)
+											{
+												edit_arr_prices[$i] = -1;
+											}
+										}
+										
+										$(this).parent().parent().hide(300, function(){ 
+											$(this).remove(); 
+										});
+										
+										//delete langsung prices
+										$delete_id_price = $(this).prev().prev().val();									
+										$data = {'id' : $delete_id_price};
+										var json_data = JSON.stringify($data);										
+										if($delete_id_price != "")
+										{
+											// alert($delete_id_price);
+											
+											//panggil ajax delete price
+											$.ajax({
+												type: 'DELETE',
+												url: "{{URL('admin/product/deletePrice')}}",
+												data: {'json_data' : json_data},
+												success: function(response){
+													// alert(response);				
+													result = JSON.parse(response);
+													if(result.code==204)
+													{
+														alert(result.status);
+													}
+													else
+													{
+														alert(result.status);
+														alert(result.messages);
+													}
+												},
+												error: function(jqXHR, textStatus, errorThrown){
+													alert(errorThrown);
+												}
+											
+											},'json');										
+										}
+										
+										alert(edit_arr_prices);
+									});							
+								</script>
 							</div>
 
 							<div class="form-group">
@@ -496,9 +576,77 @@
 
 				</div>
 				<div class="modal-footer">
+					<button type="button" class="btn btn-success saveAddPrice" data-dismiss="modal">Save</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
+
+<script>
+	$('body').on('click', '.saveAddPrice', function(){		
+		var additional_attribute_id = new Array();		
+		var additional_attribute_value = new Array();
+		var additional_price_value = new Array();
+		for($i = initial_count_price; $i < edit_arr_prices.length; $i++)
+		{
+			if(edit_arr_prices[$i] != -1)
+			{
+				additional_attribute_id[additional_attribute_id.length] = $(' .edit_new_attr_id_input'+edit_arr_prices[$i]+' ').val();
+				additional_attribute_value[additional_attribute_value.length] = $(' .edit_new_attr_value_input'+edit_arr_prices[$i]+' ').val();
+				additional_price_value[additional_price_value.length] = $(' .edit_new_price_input'+edit_arr_prices[$i]+' ').val();
+			}
+		}
+		// additional = new Array();
+		
+		if(additional_attribute_id.length == 0)
+		{
+			$data = {
+				'status' : 'kosong',
+				'additional_attribute_id' : '',
+				'additional_attribute_value' : '',
+				'additional_price_value' : '',
+				'product_id' : $id
+			};				
+		}
+		else
+		{
+			$data = {
+				'status' : 'isi',
+				'additional_attribute_id' : additional_attribute_id,
+				'additional_attribute_value' : additional_attribute_value,
+				'additional_price_value' : additional_price_value,
+				'product_id' : $id
+			};
+		}
+				
+		var json_data = JSON.stringify($data);
+		
+		$.ajax({		
+			type: "POST",
+			url: "{{URL('admin/product/additionalPrices')}}",
+			data: {
+				'json_data' : json_data
+			},
+			success: function(response){
+				// alert(response);
+				result = JSON.parse(response);
+				if(result.code == 201)
+				{
+					alert(result.status);
+					alert('prices masuk ke database');
+				}
+				else
+				{
+					alert(result.status);
+					alert(result.messages);
+				}					
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+				alert('error loh');
+				alert(errorThrown);
+			}
+		},'json');
+	});
+</script>

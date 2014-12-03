@@ -88,6 +88,15 @@
 								</div>
 							</div>
 							
+							<!-- NEW CODE -->
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Price</label>
+								<div class="col-sm-5">
+									<input id="new_price_default_input" type="text" onkeypress="return isNumberKey(event)" class="form-control" placeholder="(default price)" />
+								</div>
+							</div>
+							<!-- END NEW CODE -->
+							
 							<div class="form-group">
 								<label class="col-sm-4 control-label">Product Image</label>
 								<div class="col-sm-5">
@@ -117,6 +126,16 @@
 
 						</div>
 						<script>
+					/*
+					fungsi buat keyprees cuma bisa angka
+					*/
+					function isNumberKey(evt){
+						var charCode = (evt.which) ? evt.which : event.keyCode
+						if (charCode > 31 && (charCode < 48 || charCode > 57))
+							return false;
+						return true;
+					}	
+						
 					/*
 					Script untuk add baris produk
 					*/
@@ -325,6 +344,10 @@
 			data.append('category_id', $category_id);
 		$promotion_id = $('#new_promotion_id_input').val();
 			data.append('promotion_id', $promotion_id);
+		<!-- NEW CODE -->
+		$default_price = $('#new_price_default_input').val();	
+			data.append('default_price', $default_price);
+		<!-- END NEW CODE -->
 		$deleted = 0;
 			data.append('deleted', $deleted);		
 			
@@ -357,6 +380,7 @@
 		// var attributes_id_input = new Array();
 		// var attributes_value_input = new Array();
 		// var prices_input = new Array();		
+		var indikatorPrice = 0;
 		for($i=0; $i<arr_attr.length; $i++){
 			if(arr_attr[$i] != -1){				
 				attributes_id_input[attributes_id_input.length] = $(' .new_attr_id_input'+arr_attr[$i]+' ').val();
@@ -365,6 +389,8 @@
 				// alert(attributes_value_input);
 				prices_input[prices_input.length] = $(' .new_price_input'+arr_attr[$i]+' ').val();
 				// alert(prices_input);
+				
+				indikatorPrice++;
 			}
 		}
 		
@@ -372,7 +398,8 @@
 		data.append('arr_attr_id', attributes_id_input);
 		data.append('arr_attr_value', attributes_value_input);
 		data.append('arr_price', prices_input);
-								
+		data.append('indikatorPrice', indikatorPrice);
+		
 		$.ajax({
 			type: 'POST',
 			url: "{{URL('admin/product/addProduct')}}",						

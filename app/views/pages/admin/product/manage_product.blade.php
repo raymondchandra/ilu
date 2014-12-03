@@ -25,6 +25,17 @@
 		
 	//global variabel buat edit product
 	var arr_edit_price = "";
+		
+	var edit_arr_prices = new Array();
+	var edit_idx_prices_row = 1;
+	
+	var edit_array_input_other_prices = new Array();
+	
+	var edit_arr_id_prices = new Array();
+	
+	var edit_arr_delete_prices = new Array();
+	
+	var initial_count_price = 0;
 	
 	//global variabel buat edit photo
 	var edit_main_photo = "";
@@ -312,7 +323,7 @@
 					success: function(response){
 						result = JSON.parse(response);
 						if(result.code==200){
-							$message = result.messages;
+							$message = result.messages;							
 							//set value di pop up edit						
 							$('#edit_id').text($message.id);
 							$('#edit_product_no').text($message.product_no);
@@ -325,11 +336,25 @@
 								
 							arr_edit_price = $message.prices;	
 							
+							//default variable
+							edit_arr_prices = new Array();
+							edit_idx_prices_row = 1;
+							
+							edit_array_input_other_prices = new Array();
+							
+							edit_arr_id_prices = new Array();
+							
+							edit_arr_delete_prices = new Array();
+							
+							initial_count_price = 0;
+							
 							if(arr_edit_price != "")
 							{
 								var text = '';	
 								for($i=0; $i<($message.prices).length; $i++)
 								{
+									edit_arr_prices[edit_arr_prices.length] = edit_idx_prices_row;
+									
 									text += '<div class="form-group ">';
 										text += '<div class="col-sm-3 div_attr_name">';
 											text += '<p class="form-control-static custom_attr_n">'+$message.prices[$i]['attr_name']+'</p>';												
@@ -346,14 +371,24 @@
 											text += '<input class="form-control hidden custom_price_value" value="'+$message.prices[$i]['amount']+'"/>';
 										text += '</div>';
 										
-										text += '<div class="col-sm-3">';
+										text += '<div class="col-sm-2">';
 											text += '<button type="button" class="btn btn-warning custom_attr_edit">Edit</button>';
 											text += '<button type="button" class="btn btn-success hidden custom_attr_setter">Set</button>';
 											text += '<input type="hidden" value="'+$message.prices[$i]['id']+'" />';
+											text += '<input type="hidden" value="'+edit_idx_prices_row+'"/>';
+											text += '<button type="button" class="btn btn-danger f_delete_row_attr">X</button>';
+											// text += '<input type="hidden" value="'+$message.prices[$i]['id']+'" />';
 										text += '</div>';
+																				
 									text += '</div>';
+									
+									edit_idx_prices_row++;
+									
+									initial_count_price++;
 								}																																	
 								$('.div_edit_price').html(text);
+								
+								alert(edit_arr_prices);
 							}
 							else
 							{
@@ -500,7 +535,40 @@
 		
 		$('body').on('click', '.deleteButton', function(){
 			$id = $(this).prev().val();					
+			$deleted = 1;
+			$data = {
+				'id' : $id,
+				'deleted' : $deleted
+			};
+			var json_data = JSON.stringify($data);
 			// alert($id);
+			$.ajax({
+				type: 'POST',
+				url: "{{URL('admin/product/deleteProduct')}}",										
+				data: {
+					'json_data' : json_data
+				},				
+				success: function(response){	
+					// alert(response);					
+					result = JSON.parse(response);
+					// alert(result);
+					if(result.code == 204)
+					{	
+						alert(result.status);
+						// location.reload();					
+						window.location = "{{URL::route('viewProductsManagement')}}";
+					}
+					else
+					{
+						alert(result.status);
+						alert(result.messages);
+					}								
+				},
+				error:function(errorThrown){
+					alert('errror loh');
+					alert(errorThrown);
+				}
+			},'json');				
 		});
 		
 		$('body').on('click', '.filterButton', function(){

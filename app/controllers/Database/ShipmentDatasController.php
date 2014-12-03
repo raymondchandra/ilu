@@ -93,7 +93,7 @@ class ShipmentDatasController extends \BaseController {
 	 */
 	public function getAll(){
 		$respond = array();
-		$shipmentdata = Shipmentdata::where('deleted','=','0')->get();
+		$shipmentdata = ShipmentData::where('deleted','=','0')->get();
 		if (count($shipmentdata) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -115,7 +115,7 @@ class ShipmentDatasController extends \BaseController {
 	public function getAllSort($sortBy, $type)
 	{
 		$respond = array();
-		$shipmentdata = Shipmentdata::where('deleted','=','0')->orderBy($sortBy, $type)->get();
+		$shipmentdata = ShipmentData::where('deleted','=','0')->orderBy($sortBy, $type)->get();
 		if (count($shipmentdata) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -140,7 +140,7 @@ class ShipmentDatasController extends \BaseController {
 		{
 			if($isFirst == false)
 			{
-				$shipmentAgt = Shipmentdata::where('deleted','=','0')->where('id','LIKE', '%'.$id.'%');
+				$shipmentAgt = ShipmentData::where('deleted','=','0')->where('id','LIKE', '%'.$id.'%');
 				$isFirst = true;
 			}
 		}
@@ -149,7 +149,7 @@ class ShipmentDatasController extends \BaseController {
 		{
 			if($isFirst == false)
 			{
-				$shipmentAgt = Shipmentdata::where('deleted','=','0')->where('courier','LIKE', '%'.$courier.'%');
+				$shipmentAgt = ShipmentData::where('deleted','=','0')->where('courier','LIKE', '%'.$courier.'%');
 				$isFirst = true;
 			}else
 			{
@@ -161,7 +161,7 @@ class ShipmentDatasController extends \BaseController {
 		{
 			if($isFirst == false)
 			{
-				$shipmentAgt = Shipmentdata::where('deleted','=','0')->where('destination','LIKE', '%'.$destinasi.'%');
+				$shipmentAgt = ShipmentData::where('deleted','=','0')->where('destination','LIKE', '%'.$destinasi.'%');
 				$isFirst = true;
 			}else
 			{
@@ -173,7 +173,7 @@ class ShipmentDatasController extends \BaseController {
 		{
 			if($isFirst == false)
 			{
-				$shipmentAgt = Shipmentdata::where('deleted','=','0')->where('price','LIKE', '%'.$price.'%');
+				$shipmentAgt = ShipmentData::where('deleted','=','0')->where('price','LIKE', '%'.$price.'%');
 				$isFirst = true;
 			}else
 			{
@@ -183,7 +183,7 @@ class ShipmentDatasController extends \BaseController {
 		
 		if($isFirst == false)
 		{
-			$shipmentAgt = Shipmentdata::where('deleted','=','0')->get();
+			$shipmentAgt = ShipmentData::where('deleted','=','0')->get();
 			$isFirst = true;
 		}else
 		{
@@ -214,7 +214,7 @@ class ShipmentDatasController extends \BaseController {
 		{
 			if($isFirst == false)
 			{
-				$shipmentAgt = Shipmentdata::where('deleted','=','0')->where('id','LIKE', '%'.$id.'%');
+				$shipmentAgt = ShipmentData::where('deleted','=','0')->where('id','LIKE', '%'.$id.'%');
 				$isFirst = true;
 			}
 		}
@@ -223,7 +223,7 @@ class ShipmentDatasController extends \BaseController {
 		{
 			if($isFirst == false)
 			{
-				$shipmentAgt = Shipmentdata::where('deleted','=','0')->where('courier','LIKE', '%'.$courier.'%');
+				$shipmentAgt = ShipmentData::where('deleted','=','0')->where('courier','LIKE', '%'.$courier.'%');
 				$isFirst = true;
 			}else
 			{
@@ -235,7 +235,7 @@ class ShipmentDatasController extends \BaseController {
 		{
 			if($isFirst == false)
 			{
-				$shipmentAgt = Shipmentdata::where('deleted','=','0')->where('destination','LIKE', '%'.$destinasi.'%');
+				$shipmentAgt = ShipmentData::where('deleted','=','0')->where('destination','LIKE', '%'.$destinasi.'%');
 				$isFirst = true;
 			}else
 			{
@@ -247,7 +247,7 @@ class ShipmentDatasController extends \BaseController {
 		{
 			if($isFirst == false)
 			{
-				$shipmentAgt = Shipmentdata::where('deleted','=','0')->where('price','LIKE', '%'.$price.'%');
+				$shipmentAgt = ShipmentData::where('deleted','=','0')->where('price','LIKE', '%'.$price.'%');
 				$isFirst = true;
 			}else
 			{
@@ -257,7 +257,7 @@ class ShipmentDatasController extends \BaseController {
 		
 		if($isFirst == false)
 		{
-			$shipmentAgt = Shipmentdata::where('deleted','=','0')->orderBy($sortBy, $sortType)->get();
+			$shipmentAgt = ShipmentData::where('deleted','=','0')->orderBy($sortBy, $sortType)->get();
 			$isFirst = true;
 		}else
 		{
@@ -285,7 +285,7 @@ class ShipmentDatasController extends \BaseController {
 	{
 		$id = Input::get('id');
 		$respond = array();
-		$shipmentdata = Shipmentdata::find($id);
+		$shipmentdata = ShipmentData::find($id);
 		if (count($shipmentdata) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -329,7 +329,7 @@ class ShipmentDatasController extends \BaseController {
 	public function updateFull($id)
 	{
 		$respond = array();
-		$shipmentdata = Shipmentdata::find($id);
+		$shipmentdata = ShipmentData::find($id);
 		if ($shipmentdata == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -337,7 +337,7 @@ class ShipmentDatasController extends \BaseController {
 		else
 		{
 			//validate
-			$validator = Validator::make($data = Input::all(), Shipmentdata::$rules);
+			$validator = Validator::make($data = Input::all(), ShipmentData::$rules);
 
 			if ($validator->fails())
 			{
@@ -398,7 +398,7 @@ class ShipmentDatasController extends \BaseController {
 	{
 		$id = Input::get('id');
 		$respond = array();
-		$shipmentdata = Shipmentdata::find($id);
+		$shipmentdata = ShipmentData::find($id);
 		if ($shipmentdata == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -450,7 +450,7 @@ class ShipmentDatasController extends \BaseController {
 	 public function getByDestination($destination)
 	{
 		$respond = array();
-		$shipmentdata = Shipmentdata::where('destination','=',$destination)->where('deleted','=','0')->get();
+		$shipmentdata = ShipmentData::where('destination','=',$destination)->where('deleted','=','0')->get();
 		if (count($shipmentdata) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -471,7 +471,7 @@ class ShipmentDatasController extends \BaseController {
 	 public function getByCourier($courier)
 	{
 		$respond = array();
-		$shipmentdata = Shipmentdata::where('courier','=',$courier)->where('deleted','=','0')->get();
+		$shipmentdata = ShipmentData::where('courier','=',$courier)->where('deleted','=','0')->get();
 		if (count($shipmentdata) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -492,7 +492,7 @@ class ShipmentDatasController extends \BaseController {
 	 public function getByDestinationAndCourier($destination, $courier)
 	{
 		$respond = array();
-		$shipmentdata = Shipmentdata::where('destination','=',$destination)->where('courier','=',$courier)->where('deleted','=','0')->get();
+		$shipmentdata = ShipmentData::where('destination','=',$destination)->where('courier','=',$courier)->where('deleted','=','0')->get();
 		if (count($shipmentdata) == 0)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -515,7 +515,7 @@ class ShipmentDatasController extends \BaseController {
 		$price = Input::get('price');
 		$id = Input::get('id');
 		$respond = array();
-		$shipmentdata = Shipmentdata::where('id','=',$id)->first();
+		$shipmentdata = ShipmentData::where('id','=',$id)->first();
 		if ($shipmentdata == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -546,7 +546,7 @@ class ShipmentDatasController extends \BaseController {
 	public function deleteByCourier($courier)
 	{
 		$respond = array();
-		$shipmentdata = Shipmentdata::where('courier','=',$courier)->get();
+		$shipmentdata = ShipmentData::where('courier','=',$courier)->get();
 		if ($shipmentdata == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -574,7 +574,7 @@ class ShipmentDatasController extends \BaseController {
 	public function deleteByDestination($destination)
 	{
 		$respond = array();
-		$shipmentdata = Shipmentdata::where('destination','=',$destination)->get();
+		$shipmentdata = ShipmentData::where('destination','=',$destination)->get();
 		if ($shipmentdata == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -601,7 +601,7 @@ class ShipmentDatasController extends \BaseController {
 	public function updateCourier($courier, $new_courier)
 	{
 		$respond = array();
-		$shipmentdata = Shipmentdata::where('courier','=',$courier)->get();
+		$shipmentdata = ShipmentData::where('courier','=',$courier)->get();
 		if ($shipmentdata == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');

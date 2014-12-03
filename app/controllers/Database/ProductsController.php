@@ -184,9 +184,37 @@ class ProductsController extends \BaseController {
 			$product->name = $input_product['name'];
 			$product->description = $input_product['description'];
 			$product->category_id = $input_product['category_id'];
-			$product->promotion_id = $input_product['promotion_id'];
+			$product->promotion_id = $input_product['promotion_id'];			
 			$product->deleted = $input_product['deleted'];
-			$product->save();										
+			try{	
+				$product->save();										
+			}catch(Exception $e){								
+				$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+				return Response::json($respond);
+			}
+			
+			//NEW CODE
+			//add default price
+			if($input_product['default_price'] != '')
+			{				
+				$price = new Price();
+				$price->attr_id = null;
+				$price->attr_value = null;
+				$price->product_id = $product->id;
+				// $price->product_id = 5; //sementara
+				$price->amount = $input_product['default_price'];
+				$price->tax_id = 1; //default sementara
+				try{
+					$price->save();
+				}catch(Exception $e){
+					//delete product
+					$product->delete();
+					
+					$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+					return Response::json($respond);
+				}
+			}
+			//END NEW CODE
 			
 			$main_photo = $input_photo['main_photo'];						
 			if($main_photo != "")
@@ -198,7 +226,17 @@ class ProductsController extends \BaseController {
 				$new_main_photo = new Gallery();
 				$new_main_photo->product_id = $product->id;				
 				$new_main_photo->type = "main_photo";
-				$new_main_photo->save();
+				try{
+					$new_main_photo->save();
+				}catch(Exception $e){
+					//delete product
+					$product->delete();
+					//delete default price
+					$price->delete();
+					
+					$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+					return Response::json($respond);
+				}				
 				
 				$new_main_photo_id = $product->id;
 				$destinationPath .= $new_main_photo_id;
@@ -208,17 +246,44 @@ class ProductsController extends \BaseController {
 					File::makeDirectory($destinationPath, $mode = 0777, true, true);
 					$uploadSuccess = $file->move($destinationPath, $fileName);
 					$new_main_photo->photo_path = $destinationPath.$fileName;
-					$new_main_photo->save();
+					try{
+						$new_main_photo->save();
+					}catch(Exception $e){
+						//delete product
+						$product->delete();
+						//delete default price
+						$price->delete();
+						
+						$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+						return Response::json($respond);
+					}
+					
 				}
 				else
 				{
 					$uploadSuccess = $file->move($destinationPath, $fileName);
 					$new_main_photo->photo_path = $destinationPath.$fileName;
-					$new_main_photo->save();
+					try{
+						$new_main_photo->save();
+					}catch(Exception $e){
+						//delete product
+						$product->delete();
+						//delete default price
+						$price->delete();
+					
+						$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+						return Response::json($respond);
+					}
 				}
 			}
-						
+			
+			
 			$other_photos = $input_photo['other_photos'];
+				//untuk keperluan delete
+				$length_other_photos = 0;
+				//indikator udah beres
+				$delete_pro_pri_mainpho = 0;
+				
 			if($other_photos != "")
 			{
 				foreach($other_photos as $key)				
@@ -231,7 +296,33 @@ class ProductsController extends \BaseController {
 					$new_other_photos->product_id = $product->id;					
 					// $new_other_photos->product_id = 5;	//sementara
 					$new_other_photos->type = "other_photos";
-					$new_other_photos->save();
+					try{
+						$new_other_photos->save();
+					}catch(Exception $e){
+						if($delete_pro_pri_mainpho == 0)
+						{
+							//delete product
+							$product->delete();
+							//delete default price
+							$price->delete();
+							//delete main_photo
+							$new_main_photo->delete();
+							
+							//change status delete
+							$delete_pro_pri_mainpho == 1;							
+						}
+						//delete other_photos
+						if($length_other_photos > 0)						
+						{
+							for($i = 0; $i < $length_other_photos; $i++ )
+							{
+								$other_photo = DB::table('galleries')->orderBy('created_at', 'desc')->first();
+								$other_photo->delete();
+							}
+						}
+						$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+						return Response::json($respond);
+					}					
 					
 					$new_other_photos_id = $product->id;
 					// $new_other_photos_id = 5; //sementara
@@ -242,36 +333,137 @@ class ProductsController extends \BaseController {
 						File::makeDirectory($destinationPath, $mode = 0777, true, true);
 						$uploadSuccess = $file->move($destinationPath, $fileName);
 						$new_other_photos->photo_path = $destinationPath.$fileName;
-						$new_other_photos->save();
+						try{
+							$new_other_photos->save();
+						}catch(Exception $e){
+							if($delete_pro_pri_mainpho == 0)
+							{
+								//delete product
+								$product->delete();
+								//delete default price
+								$price->delete();
+								//delete main_photo
+								$new_main_photo->delete();
+								
+								//change status delete
+								$delete_pro_pri_mainpho == 1;
+							}
+							//delete other_photos
+							if($length_other_photos > 0)						
+							{
+								for($i = 0; $i < $length_other_photos; $i++ )
+								{
+									$other_photo = DB::table('galleries')->orderBy('created_at', 'desc')->first();
+									$other_photo->delete();
+								}
+							}
+							$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+							return Response::json($respond);							
+						}
 					}
 					else
 					{
 						$uploadSuccess = $file->move($destinationPath, $fileName);
 						$new_other_photos->photo_path = $destinationPath.$fileName;
-						$new_other_photos->save();
+						try{
+							$new_other_photos->save();
+						}catch(Exception $e){
+							if($delete_pro_pri_mainpho == 0)
+							{
+								//delete product
+								$product->delete();
+								//delete default price
+								$price->delete();
+								//delete main_photo
+								$new_main_photo->delete();
+								
+								//change status delete
+								$delete_pro_pri_mainpho == 1;
+							}
+							//delete other_photos
+							if($length_other_photos > 0)						
+							{
+								for($i = 0; $i < $length_other_photos; $i++ )
+								{
+									$other_photo = DB::table('galleries')->orderBy('created_at', 'desc')->first();
+									$other_photo->delete();
+								}
+							}
+							$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+							return Response::json($respond);							
+						}						
 					}
+					//add length_other_photos
+					$length_other_photos++;
 				}
+								
 			}						
-			
-			
-			$length = count($input_price['arr_attr_id']);				
-			for($i=0; $i<$length; $i++)
-			{
-				$price = new Price();
-				$price->attr_id = $input_price['arr_attr_id'][$i];
-				$price->attr_value = $input_price['arr_attr_value'][$i];
-				$price->product_id = $product->id;
-				// $price->product_id = 5; //sementara
-				$price->amount = $input_price['arr_price'][$i];
-				$price->tax_id = 1; //default sementara
-				$price->save();
-			}								
 						
+			//untuk keperluan delete
+				$length_prices = 0;
+			
+					
+			if($input_price['arr_attr_id'] == "") //kalo ternyata ga ada attribute	
+			{
+				//ga masukin attribute apa"
+			}
+			else
+			{
+				$length = count($input_price['arr_attr_id']);				
+				for($i=0; $i<$length; $i++)
+				{
+					$price = new Price();
+					$price->attr_id = $input_price['arr_attr_id'][$i];
+					$price->attr_value = $input_price['arr_attr_value'][$i];
+					$price->product_id = $product->id;
+					// $price->product_id = 5; //sementara
+					$price->amount = $input_price['arr_price'][$i];
+					$price->tax_id = 1; //default sementara
+					try{
+						$price->save();
+					}catch(Exception $e){
+						if($delete_pro_pri_mainpho == 0)
+						{
+							//delete product
+							$product->delete();
+							//delete default price
+							$price->delete();
+							//delete main_photo
+							$new_main_photo->delete();
+							
+							//change status delete
+							$delete_pro_pri_mainpho == 1;
+						}
+						//delete other_photos
+						if($length_other_photos > 0)						
+						{
+							for($i = 0; $i < $length_other_photos; $i++ )
+							{
+								$other_photo = DB::table('galleries')->orderBy('created_at', 'desc')->first();
+								$other_photo->delete();
+							}
+						}
+						//delete prices
+						if($length_prices > 0)						
+						{
+							for($i = 0; $i < $length_prices; $i++ )
+							{
+								$prices = DB::table('prices')->orderBy('created_at', 'desc')->first();
+								$prices->delete();
+							}
+						}
+						$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+						return Response::json($respond);							
+					}
+					//add length_other_photos
+					$length_prices++;
+				}								
+			}			
 			$respond = array('code'=>'201','status' => 'Created');
-		} catch (Exception $e) {
+		} catch (Exception $e) {						
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
 		}
-		return Response::json($respond);
+		return Response::json($respond);				
 	}			
 	
 	public function getAllProductName()
@@ -343,8 +535,25 @@ class ProductsController extends \BaseController {
 				$prices = Price::where('product_id','=',$key->id)->get();					
 					foreach($prices as $key_prices)
 					{
-						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
-						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
+						try{
+							$temp_attr = Attribute::where('id','=',$key_prices->attr_id)->first();
+							if($temp_attr == NULL){
+								$attr_name = $temp_attr->name;
+							}
+							else{
+								$attr_name = '-';
+							}
+								
+						}
+						catch(Exception $e){
+							$attr_name="-";
+						}
+						try{
+							$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
+						}
+						catch(Exception $e){
+							$tax_amount = 0.01;
+						}
 						//add attribute name
 						$key_prices->attr_name = $attr_name;										
 						//add price with tax
@@ -440,7 +649,12 @@ class ProductsController extends \BaseController {
 				$prices = Price::where('product_id','=',$key->id)->get();					
 					foreach($prices as $key_prices)
 					{
-						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+						try{
+							$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;
+						}
+						catch(Exception $e){
+							$attr_name='-';
+						}						
 						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
 						//add attribute name
 						$key_prices->attr_name = $attr_name;										
@@ -547,7 +761,12 @@ class ProductsController extends \BaseController {
 				$prices = Price::where('product_id','=',$key->id)->get();					
 					foreach($prices as $key_prices)
 					{
-						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+						try{
+							$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;
+						}
+						catch(Exception $e){
+							$attr_name='-';
+						}						
 						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
 						//add attribute name
 						$key_prices->attr_name = $attr_name;										
@@ -655,7 +874,12 @@ class ProductsController extends \BaseController {
 				$prices = Price::where('product_id','=',$key->id)->get();					
 					foreach($prices as $key_prices)
 					{
-						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+						try{
+							$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;
+						}
+						catch(Exception $e){
+							$attr_name='-';
+						}						
 						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
 						//add attribute name
 						$key_prices->attr_name = $attr_name;										
@@ -758,7 +982,12 @@ class ProductsController extends \BaseController {
 					$prices = Price::where('product_id','=',$product->id)->get();					
 						foreach($prices as $key_prices)
 						{					
-							$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+							try{
+								$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;
+							}
+							catch(Exception $e){
+								$attr_name='-';
+							}						
 							$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
 							//add attribute name
 							$key_prices->attr_name = $attr_name;										
@@ -813,15 +1042,18 @@ class ProductsController extends \BaseController {
 		return Response::json($respond);
 	}
 	
-	public function ws_getById()
+	public function ws_getById($id = 0)
 	{
-		$json = Input::get('json');
-		$jsonContent = json_decode($json);
-		
-		$id = $jsonContent->{'id'};		
-		
+		//$json = Input::get('json');
+		//$jsonContent = json_decode($json);	
+		if($id == 0){
+			$product = Product::all();
+		}
+		else{
+			$product = Product::find($id);	
+		}
 		$respond = array();
-		$product = Product::find($id);		
+			
 			
 		if (count($product) == 0)
 		{
@@ -854,7 +1086,12 @@ class ProductsController extends \BaseController {
 			$prices = Price::where('product_id','=',$product->id)->get();					
 				foreach($prices as $key_prices)
 				{					
-					$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+					try{
+							$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;
+						}
+						catch(Exception $e){
+							$attr_name='-';
+						}						
 					$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
 					//add attribute name
 					$key_prices->attr_name = $attr_name;										
@@ -950,7 +1187,12 @@ class ProductsController extends \BaseController {
 					
 					foreach($prices as $key_prices)
 					{
-						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+						try{
+							$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;
+						}
+						catch(Exception $e){
+							$attr_name='-';
+						}
 						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
 						//add attribute name
 						$key_prices->attr_name = $attr_name;										
@@ -1045,8 +1287,13 @@ class ProductsController extends \BaseController {
 				$prices = Price::where('product_id','=',$key->id)->get();
 					
 					foreach($prices as $key_prices)
-					{
-						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+					{	
+						try{
+							$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;
+						}
+						catch(Exception $e){
+							$attr_name='-';
+						}
 						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
 						//add attribute name
 						$key_prices->attr_name = $attr_name;										
@@ -1145,7 +1392,12 @@ class ProductsController extends \BaseController {
 				$prices = Price::where('product_id','=',$key->id)->get();					
 					foreach($prices as $key_prices)
 					{
-						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+						try{
+							$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;
+						}
+						catch(Exception $e){
+							$attr_name='-';
+						}						
 						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
 						//add attribute name
 						$key_prices->attr_name = $attr_name;										
@@ -1233,7 +1485,12 @@ class ProductsController extends \BaseController {
 			$prices = Price::where('product_id','=',$product->id)->get();					
 				foreach($prices as $key_prices)
 				{					
-					$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+					try{
+						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;
+					}
+					catch(Exception $e){
+						$attr_name='-';
+					}					
 					$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
 					//add attribute name
 					$key_prices->attr_name = $attr_name;										
@@ -1282,6 +1539,30 @@ class ProductsController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
+	
+	/*
+	public function hemmm()
+	{
+		$product = Product::find(5);		
+		$prices = Price::where('product_id','=',100)->get();
+		
+		$text = "";
+		foreach($prices as $key)
+		{
+			return "hemmm";
+		}
+		
+		$product->prices = $prices;
+		
+		
+		
+		if(count($prices) == 0)
+		{
+			return "array 0"; 
+		}
+		return $product;
+	}
+	*/
 	
 	/*
 	public function getByProductNo($product_no)
@@ -1592,7 +1873,12 @@ class ProductsController extends \BaseController {
 					
 					foreach($prices as $key_prices)
 					{
-						$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;						
+						try{
+							$attr_name = Attribute::where('id','=',$key_prices->attr_id)->first()->name;
+						}
+						catch(Exception $e){
+							$attr_name='-';
+						}						
 						$tax_amount = Tax::where('id','=',$key_prices->tax_id)->first()->amount;
 						//add attribute name
 						$key_prices->attr_name = $attr_name;										

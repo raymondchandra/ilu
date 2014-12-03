@@ -164,13 +164,19 @@ class ProductsManagementController extends \BaseController
 			{
 				$promotion_id = null;
 			}
-		$deleted = Input::get('deleted');
+		//NEW CODE		
+		$default_price = Input::get('default_price');
+		//END NEW CODE
+		$deleted = Input::get('deleted');		
 		$input_product = array(
 			'product_no' => $product_no,
 			'name' => $name,
 			'description' => $description,
 			'category_id' => $category_id,
 			'promotion_id' => $promotion_id,
+			//NEW CODE
+			'default_price' => $default_price,
+			//END NEW CODE
 			'deleted' => $deleted
 		);
 		
@@ -178,34 +184,50 @@ class ProductsManagementController extends \BaseController
 		
 		//main_photo	
 		$main_photo = Input::file('main_photo');	
-		
-		
-		
-		//arr_other_photos				
-		$arr_name_other_photos = Input::get('other_photos_name');						
-		$temp_arr_other_photos = explode("," , $arr_name_other_photos);
-		foreach($temp_arr_other_photos as $key){
-			$arr_other_photos[] = Input::file($key);		
-		}							
 		if($main_photo == null){
 			$main_photo = "";			
 		}	
-		if($arr_other_photos == null){
+		
+		//arr_other_photos
+		$indikatorOtherPhotos = Input::get('indikatorOtherPhotos');
+		if($indikatorOtherPhotos == 0) //kalo ga ada other photos
+		{
 			$arr_other_photos = "";
-		}
+		}	
+		else
+		{
+			$arr_name_other_photos = Input::get('other_photos_name');						
+			$temp_arr_other_photos = explode("," , $arr_name_other_photos);
+			foreach($temp_arr_other_photos as $key){
+				$arr_other_photos[] = Input::file($key);		
+			}									
+		}			
+		// if($arr_other_photos == null){
+			// $arr_other_photos = "";
+		// }
 		$input_photo = array(
 			'main_photo' => $main_photo,
-			'other_photos' => $arr_other_photos
+			'other_photos' => $arr_other_photos			
 		);	
 		
 				
 		//attribute and price
-		$arr_attr_id = Input::get('arr_attr_id');
-			$temp_arr_attr_id = explode(",", $arr_attr_id);			
-		$arr_attr_value = Input::get('arr_attr_value');
-			$temp_arr_attr_value = explode(",", $arr_attr_value);			
-		$arr_price = Input::get('arr_price');
-			$temp_arr_price = explode(",", $arr_price);
+		$indikatorPrice = Input::get('indikatorPrice');
+		if($indikatorPrice == 0) //kalo ga ada attribute
+		{
+			$temp_arr_attr_id = "";			
+			$temp_arr_attr_value = "";	
+			$temp_arr_price = "";
+		}
+		else
+		{
+			$arr_attr_id = Input::get('arr_attr_id');
+				$temp_arr_attr_id = explode(",", $arr_attr_id);			
+			$arr_attr_value = Input::get('arr_attr_value');
+				$temp_arr_attr_value = explode(",", $arr_attr_value);			
+			$arr_price = Input::get('arr_price');
+				$temp_arr_price = explode(",", $arr_price);
+		}	
 		$input_price = array(
 			'arr_attr_id' => $temp_arr_attr_id,
 			'arr_attr_value' => $temp_arr_attr_value,
@@ -420,17 +442,55 @@ class ProductsManagementController extends \BaseController
 		*/		
 	}
 	
+	//update deleted dari product
 	public function deleteProduct()
 	{
 		$json_data = Input::get('json_data');
 		$json = json_decode($json_data);
 		
 		$id = $json->{'id'};		
-		$new_deleted = $json->{'deleted'};
+		$new_deleted = $json->{'deleted'};				
 		
 		$productController = new ProductsController();
 		$json = json_decode($productController->updateDeleted($id,$new_deleted)->getContent());
 		return json_encode($json);
-	}
+	}	
+	
+	public function deletePrice()
+	{
+		$json_data = Input::get('json_data');
+		$json = json_decode($json_data);
 		
+		$id = $json->{'id'};				
+		
+		$pricesController = new PricesController();
+		// $productController = new ProductsController();
+		// return "trololololol";
+		// return $pricesController->delete($id);
+		$json = json_decode($pricesController->delete($id)->getContent());
+		return json_encode($json);
+	}
+
+	public function additionalPrices()
+	{
+		$json_data = Input::get('json_data');
+		$json = json_decode($json_data);
+		
+		$status = $json->{'status'};
+		$additional_attribute_id = $json->{'additional_attribute_id'};
+		$additional_attribute_value = $json->{'additional_attribute_value'};
+		$additional_price_value = $json->{'additional_price_value'};
+		$product_id = $json->{'product_id'};
+				
+				// $additional_attribute_id = explode(",", $temp_additional_attribute_id);						
+				// $additional_attribute_value = explode(",", $temp_additional_attribute_value);						
+				// $additional_price_value = explode(",", $temp_additional_price_value);
+		
+		
+		$pricesController = new PricesController();
+		$json = json_decode($pricesController->additionalPrices($status, $additional_attribute_id, $additional_attribute_value, $additional_price_value, $product_id)->getContent());
+				
+		return json_encode($json);
+	}
+	
 }

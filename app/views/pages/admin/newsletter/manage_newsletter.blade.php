@@ -195,7 +195,7 @@
 										
 										$.ajax({
 											type: 'POST',
-											url: '{{URL::route('david.sendNewsLetter')}}',
+											url: "{{URL::route('david.sendNewsLetter')}}",
 											data: {	
 												'body':$body
 											},

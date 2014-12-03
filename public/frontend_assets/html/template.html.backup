@@ -1,0 +1,670 @@
+<!-- TEMPLATE -->
+<div id="template" style="display:none">
+    <div id="home">
+        <div id="product-block-1" class="float-left">
+            <div class="title">
+                <div class="title-text">Promo Produk Kami</div>
+                <div class="clear"></div>
+            </div>
+            <div id="promo" >
+                <img src="{{assets}}/resource/produk.jpg" class="float-left" />
+                <div id="details" class="float-left">
+                    <div class="title">
+                        Kalender Dinding 260gr - 6 Lembar
+                    </div>
+                    <div id="promo-title">
+                        SISA WAKTU PROMO:
+                    </div>
+                    <div class="counter">
+                        <div class="day counter-section">
+                            <div class="number">99</div>
+                            <div class="text">days</div>
+                        </div>
+                        <div class="hour counter-section">
+                            <div class="number">9</div>
+                            <div class="text">hours</div>
+                        </div>
+                        <div class="minute counter-section">
+                            <div class="number">9</div>
+                            <div class="text">minutes</div>
+                        </div>
+                        <div class="second counter-section">
+                            <div class="number">9</div>
+                            <div class="text">seconds</div>
+                        </div>
+                    </div>
+                    <div class="pricing">
+                        <div class="pricing-section">
+                            <div class="pricing-title">
+                                Harga Produk:
+                            </div>
+                            <div class="pricing-price grey">
+                                Rp. 49.500
+                            </div>
+                        </div>
+                        <div class="pricing-section">
+                            <div class="pricing-title">
+                                Harga Promo:
+                            </div>
+                            <div class="pricing-price red">
+                                Rp. 47.025
+                            </div>
+                        </div>
+                        <div class="pricing-section">
+                            <div class="pricing-title">
+                                Anda Hemat:
+                            </div>
+                            <div class="pricing-price blue">
+                                Rp. -2.475
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="disclaimer">
+                        Promo ini berlaku hanya untuk transaksi Online!
+                    </div>
+                    <div class="buttons">
+                        <a class="button bg-blue bg-after-red" href="produk.html">
+                            <div class="cart-logo"></div>
+                            <div class="text">Lihat Produk</div>
+                        </a>
+                        <a class="button bg-orange bg-after-dark-orange" href="javascript:void();">
+                            <div class="compare-black"></div>
+                            <div class="text">Bandingkan Produk</div>
+                        </a>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div id="newest">
+                <div class="title">
+                    <div class="title-text"><span style="text-decoration:line-through;">Beberapa Produk Kami</span> Produk Terbaru</div>
+                    <div class="clear"></div>
+                </div>
+                <div class="products">
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div id="advertisement">
+                <img src="{{assets}}/resource/banneriklan.png" />
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="product-block-2">
+            <div id="favorite">
+                <div class="title">
+                    <div class="title-text">Produk Favorit</div>
+                    <div class="clear"></div>
+                </div>
+                <div class="products">
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- BANNER -->
+<div id="banner">
+    <div class="perimeter center">
+        <a href="javascript:void();"><img src="{{assets}}/resource/contact.png" /></a>
+        <a href="monitoring.html"><img src="{{assets}}/resource/pesanan.png" /></a>
+        <a href="pembayaran.html"><img src="{{assets}}/resource/payment.png" /></a>
+        <a href="javascript:void();"><img src="{{assets}}/resource/konsul.png" /></a>
+        <a href="javascript:void();"><img src="{{assets}}/resource/membership.png" /></a>
+        <a href="javascript:void();"><img src="{{assets}}/resource/member.png" /></a>
+    </div>
+</div>
+
+<!-- HEADER -->
+<div id="header">
+    <div class="perimeter">
+        <div id="title" class="float-left">
+            <a href="index.html">
+                <img src="{{assets}}/resource/logo.png" />
+            </a>
+        </div>
+        <div id="search" class="float-right">
+            <input type="text" name="search" placeholder="Masukkan pencarian produk, lalu enter." />
+            <!--<div id="cart" onmouseover="$('#cart-content').fadeIn(200);" onmouseout="$('#cart-content').fadeOut(200);">-->
+            <div id="cart" onmouseover="$('#cart-content').css('display','inline-block');" onmouseout="$('#cart-content').css('display','none');">
+                <div id="cart-button">
+                    <img src="{{assets}}/resource/cart-img.png" />
+                    <div>
+                        Lihat (<span id="qty">0</span>)
+                    </div>
+                </div>
+                <div id="cart-content-container">
+                    <div id="cart-content" style="display:none;">
+                        Keranjang belanja Anda saat ini kosong.
+                        <div id="all">
+                            <div id="total"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<!-- NAVIGATION -->
+<div id="navigation">
+    <div class="perimeter">
+        <div class="menuitem current">
+            <a href="index.html">Home</a>
+        </div>
+        <div class="separator"></div>
+        <div class="menuitem">
+            <a href="tentang-kami.html">Tentang Kami</a>
+        </div>
+        <div class="separator"></div>
+        <div class="menuitem">
+            <a href="produk-categories.html">Produk Kami</a>
+        </div>
+        <div class="separator"></div>
+        <div class="menuitem">
+            <a href="news.html">Parahyangan News</a>
+        </div>
+        <div class="separator"></div>
+        <div class="menuitem">
+            <a href="informasi.html">Informasi</a>
+        </div>
+        <div class="separator"></div>
+        <div class="menuitem">
+            <a href="hubungi-kami.html">Hubungi Kami</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<!-- CONTENT -->
+<div id="content">
+    <div class="perimeter">
+        <div id="slideshow"></div>
+        <div id="sidebar" class="float-left">
+            <div class="wrapper">
+                <table id="customer-service">
+                    <tr>
+                        <th colspan="3">Customer Service</th>
+                    </tr>
+                    <tr>
+                        <td>Biah</td>
+                        <td>:</td>
+                        <td>
+                            <img src="{{assets}}/resource/offline.gif" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Mirna</td>
+                        <td>:</td>
+                        <td>
+                            <img src="{{assets}}/resource/online.gif" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Yunus</td>
+                        <td>:</td>
+                        <td>
+                            <img src="{{assets}}/resource/offline.gif" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Technical Support</td>
+                        <td>:</td>
+                        <td>
+                            <img src="{{assets}}/resource/online.gif" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="member-area" class="wrapper">
+                <div class="title">
+                    <img src="{{assets}}/resource/bgmodule.png" />
+                    <div class="title-text">Member Area</div>
+                    <div class="clear"></div>
+                </div>
+                <a class="red-block" href="javascript:void();">Profil Anda</a>
+                <a class="red-block" href="javascript:void();">Data Pesanan Anda</a>
+                <a class="red-block" href="javascript:void();">Form Konfimasi Pembayaran</a>
+            </div>
+            <div id="kategori-produk" class="wrapper">
+                <div class="title">
+                    <img src="{{assets}}/resource/bgmodule.png" />
+                    <div class="title-text">Kategori Produk</div>
+                    <div class="clear"></div>
+                </div>
+                <ul>
+                    <li>
+                        <a class="blue-text" href="produk-list.html">Brosur / Flyer</a>
+                        <a class="drop-down" href="javascript:void();"></a>
+                    </li>
+                    <li>
+                        <a class="blue-text" href="produk-list.html">Business Identity</a>
+                        <a class="drop-down" href="javascript:void();"></a>
+                    </li>
+                    <li>
+                        <a class="blue-text" href="produk-list.html">Cetakan Buku</a>
+                        <a class="drop-down" href="javascript:void();"></a>
+                    </li>
+                    <li>
+                        <a class="blue-text" href="produk-list.html">Goody Bag</a>
+                    </li>
+                    <li>
+                        <a class="blue-text" href="produk-list.html">Kalender Dinding</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="statistik-pengunjung" class="wrapper">
+                <div class="title">
+                    <img src="{{assets}}/resource/bgmodule.png" />
+                    <div class="title-text">Statistik Pengunjung</div>
+                    <div class="clear"></div>
+                </div>
+                <table>
+                    <tr>
+                        <td class="left">Hari Ini</td>
+                        <td class="right">9</td>
+                    </tr>
+                    <tr>
+                        <td class="left">Kemarin</td>
+                        <td class="right">99</td>
+                    </tr>
+                    <tr>
+                        <td class="left">Keseluruhan</td>
+                        <td class="right">9999</td>
+                    </tr>
+                </table>
+                <div class="wrapper">
+                    Saat ini Tidak Ada Pengunjung dan 1 member yang sedang online.
+                </div>
+            </div>
+        </div>
+        <div id="product-block-1" class="float-left">
+            <div class="title">
+                <div class="title-text">Promo Produk Kami</div>
+                <div class="clear"></div>
+            </div>
+            <div id="promo" >
+                <img src="{{assets}}/resource/produk.jpg" class="float-left" />
+                <div id="details" class="float-left">
+                    <div class="title">
+                        Kalender Dinding 260gr - 6 Lembar
+                    </div>
+                    <div id="promo-title">
+                        SISA WAKTU PROMO:
+                    </div>
+                    <div class="counter">
+                        <div class="day counter-section">
+                            <div class="number">99</div>
+                            <div class="text">days</div>
+                        </div>
+                        <div class="hour counter-section">
+                            <div class="number">9</div>
+                            <div class="text">hours</div>
+                        </div>
+                        <div class="minute counter-section">
+                            <div class="number">9</div>
+                            <div class="text">minutes</div>
+                        </div>
+                        <div class="second counter-section">
+                            <div class="number">9</div>
+                            <div class="text">seconds</div>
+                        </div>
+                    </div>
+                    <div class="pricing">
+                        <div class="pricing-section">
+                            <div class="pricing-title">
+                                Harga Produk:
+                            </div>
+                            <div class="pricing-price grey">
+                                Rp. 49.500
+                            </div>
+                        </div>
+                        <div class="pricing-section">
+                            <div class="pricing-title">
+                                Harga Promo:
+                            </div>
+                            <div class="pricing-price red">
+                                Rp. 47.025
+                            </div>
+                        </div>
+                        <div class="pricing-section">
+                            <div class="pricing-title">
+                                Anda Hemat:
+                            </div>
+                            <div class="pricing-price blue">
+                                Rp. -2.475
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="disclaimer">
+                        Promo ini berlaku hanya untuk transaksi Online!
+                    </div>
+                    <div class="buttons">
+                        <a class="button bg-blue bg-after-red" href="produk.html">
+                            <div class="cart-logo"></div>
+                            <div class="text">Lihat Produk</div>
+                        </a>
+                        <a class="button bg-orange bg-after-dark-orange" href="javascript:void();">
+                            <div class="compare-black"></div>
+                            <div class="text">Bandingkan Produk</div>
+                        </a>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div id="newest">
+                <div class="title">
+                    <div class="title-text"><span style="text-decoration:line-through;">Beberapa Produk Kami</span> Produk Terbaru</div>
+                    <div class="clear"></div>
+                </div>
+                <div class="products">
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div id="advertisement">
+                <img src="{{assets}}/resource/banneriklan.png" />
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="product-block-2">
+            <div id="favorite">
+                <div class="title">
+                    <div class="title-text">Produk Favorit</div>
+                    <div class="clear"></div>
+                </div>
+                <div class="products">
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                    <div class="product" onclick="window.location='produk.html'">
+                        <img src="{{assets}}/resource/kop-surat-satu-warna-artpaper-70_280x280.png" />
+                        <div class="product-name">Kop Surat 70gr - 1 Rim - 1 Warna</div>
+                        <div class="product-price">
+                            <div class="before">Rp. 130.000</div>
+                            <div class="after">Rp. 123.500</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div id="footer">
+    <div class="perimeter">
+        <div class="footer-section">
+            <div class="title">
+                <img src="{{assets}}/resource/bgmodule.png" />
+                <div class="title-text">Section 1</div>
+                <div class="clear"></div>
+            </div>
+            <a class="red-block" href="javascript:void();">Link 1</a>
+            <a class="red-block" href="javascript:void();">Link 2</a>
+            <a class="red-block" href="javascript:void();">Link 3</a>
+        </div>
+        <div class="footer-section">
+            <div class="title">
+                <img src="{{assets}}/resource/bgmodule.png" />
+                <div class="title-text">Section 2</div>
+                <div class="clear"></div>
+            </div>
+            <a class="red-block" href="javascript:void();">Link 1</a>
+            <a class="red-block" href="javascript:void();">Link 2</a>
+            <a class="red-block" href="javascript:void();">Link 3</a>
+            <a class="red-block" href="javascript:void();">Link 4</a>
+        </div>
+        <div class="footer-section">
+            <div class="title">
+                <img src="{{assets}}/resource/bgmodule.png" />
+                <div class="title-text">Section 3</div>
+                <div class="clear"></div>
+            </div>
+            <a class="red-block" href="javascript:void();">Link 1</a>
+            <a class="red-block" href="javascript:void();">Link 2</a>
+            <a class="red-block" href="javascript:void();">Link 3</a>
+            <a class="red-block" href="javascript:void();">Link 4</a>
+            <a class="red-block" href="javascript:void();">Link 5</a>
+        </div>
+        <div class="footer-section">
+            <div class="title">
+                <img src="{{assets}}/resource/bgmodule.png" />
+                <div class="title-text">Newsletter</div>
+                <div class="clear"></div>
+            </div>
+            <div class="description">
+                Daftarkan Email Anda pada Newsletter kami dan dapatkan Penawaran Spesial dari kami !
+            </div>
+            <input type="email" placeholder="Email" />
+            <input type="buton" class="button bg-blue bg-after-red" value="Berlangganan" />
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div id="copyright">
+    <div class="perimeter">
+        Copyright &copy; 2014 Parahyangan Quick Print - Percetakan Makassar - Cetak Cepat 15 Menit. All Rights Reserved. Developed & Maintenance by iLugroup Multimedia | Peta Situs.
+    </div>
+</div>

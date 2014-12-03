@@ -8,8 +8,8 @@ class PricesController extends \BaseController {
 		$decode = json_decode($json);
 		
 		$attr_id = $decode->{'attr_id'};
-		$attr_value $decode->{'attr_value'};
-		$product_id = $decode->{'product_id'};
+		$attr_value = $decode->{'attr_value'};
+		$product_id = $decode->{'product_id'};		
 		$amount = $decode->{'amount'};
 		$tax_id = $decode->{'tax_id'};
 		
@@ -42,6 +42,37 @@ class PricesController extends \BaseController {
 			$respond = array('code'=>'201','status' => 'Created');
 		} catch (Exception $e) {
 			$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+		}
+		return Response::json($respond);
+	}
+	
+	public function additionalPrices($status, $additional_attribute_id, $additional_attribute_value, $additional_price_value, $product_id)
+	{
+		$respond = array();
+		if($status == "kosong") //ga nambah apa"
+		{
+			//do nothing
+		}
+		else
+		{
+			$length = count($additional_attribute_id);
+			for($i=0 ; $i<$length ; $i++)
+			{
+				$price = new Price();
+				$price->attr_id = $additional_attribute_id[$i];
+				$price->attr_value = $additional_attribute_value[$i];
+				$price->product_id = $product_id;
+				// $price->product_id = 5; //sementara
+				$price->amount = $additional_price_value[$i];
+				$price->tax_id = 1; //default sementara
+				try{
+					$price->save();
+				}catch(Exception $e){
+					$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
+						return Response::json($respond);	
+				}
+			}
+			$respond = array('code'=>'201','status' => 'Created');
 		}
 		return Response::json($respond);
 	}
@@ -185,7 +216,7 @@ class PricesController extends \BaseController {
 	public function delete($id)
 	{
 		$respond = array();
-		$price = Price::find($id);
+		$price = Price::find($id);		
 		if ($price == null)
 		{
 			$respond = array('code'=>'404','status' => 'Not Found');
@@ -217,6 +248,6 @@ class PricesController extends \BaseController {
 		}
 		return Response::json($respond);
 	}
-	*/
+	
 
 }

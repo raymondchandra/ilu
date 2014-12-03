@@ -10,7 +10,7 @@
 		<div class="s_top_header">
 			<div class="container-fluid">
 				<div class="row">
-					<div class="col-lg-4">
+					<div class="col-lg-8">
 						<img src="{{asset('assets/company_logo.jpeg')}}" height="50" width="75" style="float: left; margin-right:20px; margin-top: 10px;"/><h2>
 						<?php
 								$info = new CompanyInfoManagementController();
@@ -29,7 +29,7 @@
 								}
 						?> Panel</h2>
 					</div>
-					<div class="col-lg-8" style="line-height: 69px; text-align: right;">
+					<div class="col-lg-4" style="line-height: 69px; text-align: right;">
 						@if(Auth::check())
 							log in as admin | <a href="{{action('AccountsController@postLogout', array())}}">log out</a>
 						@endif
