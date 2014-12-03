@@ -601,7 +601,8 @@ Route::group(array('prefix' => 'test'), function()
 
 
 
-
+	//jeje send
+	Route::post('/sendTransaction', ['as' => 'jeffry.sendEmailTrans', 'uses' => 'TransactionsController@send_progress']);
 
 
 
