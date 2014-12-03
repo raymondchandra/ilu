@@ -6,7 +6,8 @@
 	"require": {
 		"laravel/framework": "4.2.*",
 		"fzaninotto/faker": "1.5.*@dev",
-		"thujohn/pdf": "dev-master"
+		"thujohn/pdf": "dev-master",
+		"maatwebsite/excel": "1.*"
 	},
 	"require-dev": {
 		"way/generators": "2.*"
