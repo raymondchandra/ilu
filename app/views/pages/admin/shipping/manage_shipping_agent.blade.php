@@ -81,7 +81,7 @@
 							</th>
 							<th class="table-bordered">
 								<a href="javascript:void(0)">Asal</a>
-								<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+								
 							</th>
 							<th class="table-bordered">
 								<a href="javascript:void(0)">Destinasi</a>
@@ -143,6 +143,7 @@
 							<tr>
 								<td><input type="text" class="form-control input-sm idFilter"></td>
 								<td><input type="text" class="form-control input-sm courierFilter"></td>
+								<td></td>
 								<td><input type="text" class="form-control input-sm destinationFilter"></td>
 								<td><input type="text" class="form-control input-sm priceFilter"></td>
 								
@@ -154,6 +155,7 @@
 								<tr> 
 									<td>{{$key->id}}</td>
 									<td>{{$key->courier}}</td>
+									<td>{{Session::get('company_city')}}</td>
 									<td>{{$key->destination}}</td>
 									<td>Rp <?php echo number_format((double)$key->price,0,",",".") ?>,-</td>
 									<td>
@@ -230,7 +232,7 @@
 							</th>
 							<th class="table-bordered">
 								<a href="javascript:void(0)">Asal</a>
-								<span class="glyphicon glyphicon-sort" style="float: right;"></span>
+								
 							</th>
 							<th class="table-bordered">
 								<a href="javascript:void(0)">Destinasi</a>
@@ -292,7 +294,7 @@
 							<tr>
 								<td><input type="text" class="form-control input-sm idFilter"></td>
 								<td><input type="text" class="form-control input-sm courierFilter"></td>
-								<td><input type="text" class="form-control input-sm asalFilter"></td>
+								<td></td>
 								<td><input type="text" class="form-control input-sm destinationFilter"></td>
 								<td><input type="text" class="form-control input-sm priceFilter"></td>
 								
@@ -302,7 +304,7 @@
 						<tbody>
 							
 								<tr> 
-									<td colspan="5">Not Found</td>
+									<td colspan="6">Not Found</td>
 									
 									</td>
 								</tr>
@@ -321,6 +323,7 @@
 	@include('pages.admin.shipping.pop_up_import_shipping_agent')
 
 	<script>
+	var fileExcelUpload;
 		//filter button
 		$('body').on('click','.filterButton',function(){
 			$id = $('.idFilter').val();
@@ -357,7 +360,7 @@
 							$('#idAgent').text(response['messages'].id);
 							$('#namaKurir').text(response['messages'].courier);
 							$('#tujuan').text(response['messages'].destination);
-							$('#dari').text(response['messages'].destination);
+							$('#dari').text({{Session::get('company_city')}});
 							$('#harga_pengiriman').text(response['messages'].price);
 							$(document).ready(function(){
 								$('#harga_pengiriman').text(toRp($('#harga_pengiriman').text()));
@@ -459,25 +462,41 @@
 					}
 				},'json');
 		});
+		
+		$('body').on('change','#fileExl',function()
+		{
+			var i = 0, len = this.files.length, img, reader, file;
+			for( ; i <len ;i++)
+			{
+				file = this.files[i];
+				fileExcelUpload = file;
+				
+			}
+		});
+		
 		//add shipment agent excel
 		$('body').on('click','.addShippingAgentExcel',function(){
-			$fileEx = $('#fileExl').val();
+			
+
+			var formData = new FormData();
+			formData.append('fileExl', fileExcelUpload);
 			$.ajax({
 					type: 'POST',
 					url: '{{URL::route('jeffry.addShipmentAgentExcel')}}',
-					data: {	
-						"fileExl": $fileEx
-					},
+					data: formData,
+					cache: false,
+					contentType:false,
+					processData:false,
 					success: function(response){
 						if(response['code'] != '201')
 						{
 							//$('#wishlistcontent').append("<td>agent tidak ditemukan</td>");
-							alert('failed');
+							alert(response['code']);
 							location.reload();
 						}
 						else
 						{
-							alert('success');
+							alert(response['code']);
 							location.reload();
 						}
 					},error: function(xhr, textStatus, errorThrown){
@@ -487,6 +506,14 @@
 				},'json');
 		});
 		
+		$('body').on('click','.butKel',function(){
+			location.reload() ;
+		});
+		
+		$('.pop_up_view_shipping_agent').on('hidden.bs.modal',function(e){
+		//alert('a')
+			location.reload() ;
+		});
 		
 		
 		function toRp(angka){

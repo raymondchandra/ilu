@@ -55,9 +55,8 @@
 								<div class="col-sm-5">
 									<p id="shipment_status" class="form-control-static"></p>
 									<select id="shipment_status_list" class="form-control hidden">
-										<option value="Pending">Pending</option>
-										<option value="On-ship">On-ship</option>
-										<option value="Complete">Complete</option>
+										<option value="On-ship" id="shp">On-ship</option>
+										<option value="Complete" id="cpt">Complete</option>
 									</select>
 								</div>
 								<div class="col-sm-3">
@@ -70,6 +69,10 @@
 										$('#shipment_status_setter').removeClass('hidden');
 										$('#shipment_status').addClass('hidden');
 										$('#shipment_status_editor').addClass('hidden');
+										
+										
+										
+										
 									});
 
 									$( 'body' ).on( "click",'#shipment_status_setter', function() {
@@ -174,7 +177,7 @@
 
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+					<button type="button" class="btn btn-default butKel" data-dismiss="modal">Keluar</button>
 				</div>
 			</form>
 		</div>

@@ -26,7 +26,7 @@
 							</div>
 
 							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-4 control-label">Dari Kota</label>
+								<label for="inputPassword3" class="col-sm-4 control-label">Asal</label>
 								<div class="col-sm-8">
 									<p class="form-control-static" id="dari"></p>
 								</div>
@@ -77,7 +77,7 @@
 
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+					<button type="button" class="btn btn-default butKel" data-dismiss="modal">Keluar</button>
 				</div>
 			</form>
 		</div>

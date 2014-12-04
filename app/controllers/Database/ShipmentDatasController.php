@@ -54,32 +54,26 @@ class ShipmentDatasController extends \BaseController {
 			$fileName = $file->getClientOriginalName();
 			$uploadSuccess   = $file->move($destinationPath, $fileName);
 			
-			$file_handle = fopen("assets/file_csv/shipmendata/".$fileName,"r");
-			while (!feof($file_handle) ) 
+			$temp = Excel::load($destinationPath.$fileName)->get();
+			
+			foreach($temp as $key)
 			{
-				try
+				foreach($key as $key2)
 				{
-					$line_of_text = fgetcsv($file_handle, 1024);	
 					$shipData = new ShipmentData();
-					$shipData->courier = $line_of_text[0];
-					$shipData->destination = $line_of_text[1];
-					$shipData->price = $line_of_text[2];
+					$shipData->courier = $key2->kurir;
+					$shipData->destination = $key2->destinasi;
+					$shipData->price = $key2->harga;
 					$shipData->deleted = '0';
 					$shipData->save();
-					/*
-					if(File::exists($file_handle))
-					{
-						File::delete($file_handle);
-					}*/
-					$respond = array('code'=>'201','status' => 'Created');
 				}
-				catch(Exception $e){
-					$respond = array('code'=>'500','status' => 'Internal Server Error', 'messages' => $e);
-				}
-				fclose($file_handle);
 			}
+			File::delete($destinationPath.$fileName);
+			$respond = array('code'=>'201','status' => 'Created');
+		
 		}else
 		{
+			//echo 'kadieu';
 			$respond = array('code'=>'404','status' => 'Not Found data');
 		}
 		

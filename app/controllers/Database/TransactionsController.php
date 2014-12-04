@@ -2032,6 +2032,7 @@ class TransactionsController extends \BaseController {
 		$invoice = Input::get('invoice');
 		$kurir = Input::get('kurir');
 		$noResi = Input::get('noresi');
+		$email = Input::get('email');
 		
 		//$profileController = new ProfilesController();
 		//$profilesJson = $profileController->getAll();
@@ -2065,7 +2066,7 @@ class TransactionsController extends \BaseController {
 				'body'=>$isi
 		);
 		$address = array(
-			'email'=>'davidsenjayagm@gmail.com',
+			'email'=>$email,
 			'subject'=>'Perubahan status transaksi no.'.$invoice
 		);
 		

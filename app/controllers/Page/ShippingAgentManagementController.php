@@ -33,6 +33,24 @@ class ShippingAgentManagementController extends \BaseController
 				$offset = ($page * $perPage) - $perPage;
 				$articles = array_slice($paginator,$offset,$perPage);
 				$hasil = Paginator::make($articles, count($paginator), $perPage);
+				if(count($hasil->getCollection()->toArray()) == 0)
+				{
+					if($page-1 != 0)
+					{
+						$page = $page -1;
+						if ($page > count($paginator) or $page < 1)
+						{
+							$page = 1; 
+						}
+						$offset = ($page * $perPage) - $perPage;
+						$articles = array_slice($paginator,$offset,$perPage);
+						$hasil = Paginator::make($articles, count($paginator), $perPage);
+					}else
+					{
+						$page = null;
+						$hasil = null;
+					}
+				}
 			}else
 			{
 				$page = null;
@@ -66,6 +84,7 @@ class ShippingAgentManagementController extends \BaseController
 				$paginator = $json2->{'messages'};
 				
 				$hasil=$paginator;
+				
 			}
 			
 			return View::make('pages.admin.shipping.manage_shipping_agent', compact('hasil','sortBy','sortType','page','filtered', 'id', 'courier', 'destination', 'price'));

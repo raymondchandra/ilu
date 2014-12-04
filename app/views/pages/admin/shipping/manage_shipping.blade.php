@@ -491,13 +491,13 @@
 						if(response['code'] == '404')
 						{
 							alert('failed');
-							location.reload();
+							
 						}
 						else
 						{
 							
 							alert('success');
-							location.reload();
+							
 						}
 					},error: function(xhr, textStatus, errorThrown){
 						alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
@@ -506,6 +506,14 @@
 				},'json');
 		});
 		
+		$('body').on('click','.butKel',function(){
+			location.reload() ;
+		});
+		
+		$('.pop_up_view_shipping').on('hidden.bs.modal',function(e){
+		//alert('a')
+			location.reload() ;
+		});
 		
 		function toRp(angka){
 		var rev     = parseInt(angka, 10).toString().split('').reverse().join('');

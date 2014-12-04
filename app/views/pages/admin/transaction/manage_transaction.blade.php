@@ -547,7 +547,8 @@
 									"ket": $('#transaction_status').val(),
 									"invoice" : $('#invoice').val(),
 									"kurir": $('#courier').val(),
-									"noresi" : $('#idShipment').val()
+									"noresi" : $('#idShipment').val(),
+									"email" : $('#email').val()
 								},
 								success: function(response){
 									if(response['code'] == '404')
