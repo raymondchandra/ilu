@@ -24,6 +24,7 @@
 									}
 									else{
 										Session::put('company_name', $result['company_name']);
+										Session::put('company_city', $result['company_city']);
 									}
 									echo $result['company_name'];
 								}
